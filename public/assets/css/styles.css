@@ -1,0 +1,12 @@
+.product-featured .img-wrap {
+  margin-bottom: 10px;
+}
+
+.product-featured .img-wrap img, 
+.discover-benefit .img-wrap img {
+  width: 100%;
+}
+
+.product-featured .price {
+  font-weight: bold;
+}

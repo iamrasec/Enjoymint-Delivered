@@ -1,0 +1,42 @@
+CRITICAL - 2022-02-23 00:12:35 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 13)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-23 00:15:13 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 14)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-23 00:15:20 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 15)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-23 00:19:27 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 15)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-23 00:21:36 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 15)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-23 00:21:39 --> Undefined property: App\Controllers\Home::$template
+#0 /app/app/Controllers/Home.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 15)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\Home->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}

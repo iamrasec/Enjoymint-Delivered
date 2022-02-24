@@ -1,0 +1,73 @@
+version: "3.9"
+services:
+    nginx:
+        container_name: enjoymint-nginx
+        image: "nginx:alpine"
+        restart: always
+        working_dir: /app
+        links:
+            - php-fpm
+        volumes:
+            - ".:/app"
+            - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+        ports:
+            - "80:80"
+
+    php-fpm:
+        container_name: enjoymint-php
+        build: docker/php-fpm
+        restart: always
+        working_dir: /app
+        links:
+            - mariadb
+        volumes:
+            - ".:/app"
+            - "./docker/php-fpm/php-overrides.ini:/usr/local/etc/php/conf/666-overrides.ini"
+
+    mariadb:
+        image: mariadb
+        restart: always
+        working_dir: /app
+        volumes:
+            - ".:/app"
+            - "./mariadb/data:/var/lib/mysql"
+            - "./mariadb/logs:/var/log/mysql"
+            - "./mariadb/conf:/etc/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: example
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        ports:
+            - "3306:3306"
+
+    # adminer:
+    #    image: adminer
+    #    restart: always
+    #    ports:
+    #        - 8080:8080
+
+    # mariadb:
+    #    container_name: enjoymint-mariadb
+    #    image: "mariadb:10.7.1"
+    #    restart: always
+    #    working_dir: /app
+    #    volumes:
+    #        - ".:/app"
+    #        - "./mariadb/data:/var/lib/mysql"
+    #        - "./mariadb/logs:/var/log/mysql"
+    #        - "./mariadb/conf:/etc/mysql"
+    #    environment:
+    #        MARIADB_ROOT_PASSWORD: "enjoymint_root_password"
+    #        MARIADB_DATABASE: "enjoymint_db"
+    #        MARIADB_USER: "enjoymint_db_user"
+    #        MARIADB_PASSWORD: "password"
+    #    ports:
+    #        - "3306:3306"
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+         - 8080:80
+        environment:
+          - PMA_ARBITRARY=1
