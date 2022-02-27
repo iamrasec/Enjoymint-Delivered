@@ -197,7 +197,7 @@
 
       <div class="col-12">
         <div class="text-center">
-          <p class="text-dark my-4 text-sm font-weight-normal">
+          <p class="my-4 text-sm font-weight-normal">
             All rights reserved. Copyright © <script>document.write(new Date().getFullYear())</script> Enjoymint Delivered</a>.
           </p>
         </div>
@@ -232,6 +232,8 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
 <script src="./assets/js/material-kit.min.js?v=3.0.0" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="./assets/js/main.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">

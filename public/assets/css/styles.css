@@ -1,3 +1,12 @@
+.logo {
+  height: 80px;
+}
+
+nav.navbar.sticky_header {
+  background-color: rgba(38,50,48,0.95) !important;
+  border-radius: 15px;
+}
+
 .product-featured .img-wrap {
   margin-bottom: 10px;
 }
@@ -9,4 +18,17 @@
 
 .product-featured .price {
   font-weight: bold;
+}
+
+.bg-dark {
+  background-color: #000000 !important;
+}
+
+footer.footer {
+  background-color: rgba(38,50,48,0.95) !important;
+  color: #ffffff !important;
+}
+
+.footer .nav-link, footer.footer a {
+  color: #ffffff;
 }

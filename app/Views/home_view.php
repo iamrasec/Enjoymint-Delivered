@@ -287,7 +287,7 @@
     <div class="row">
       <div class="col-lg-5 ms-auto">
         <h4 class="mb-1">Thank you for your support!</h4>
-        <p class="lead mb-0">We deliver the best web products</p>
+        <p class="lead mb-0">We deliver only the best products</p>
       </div>
       <div class="col-lg-5 me-lg-auto my-lg-auto text-lg-end mt-5">
         <a href="#" class="btn btn-twitter mb-0 me-2" target="_blank">
@@ -305,6 +305,18 @@
 </div>
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 
+</div>
+
+<div class="container-fluid bg-dark">
+  <div class="row">
+    <div class="col-12">
+      <div class="container">
+        <div class="home-contact-form">
+          <h3>Got Questions?</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php $this->endSection() ?>
