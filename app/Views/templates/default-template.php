@@ -1,6 +1,5 @@
 <?php include('__navigation.php'); ?>
 
-<?php echo $this->renderSection('content') ?>
 <!-- -------- START HEADER 1 w/ text and image on right ------- -->
 
 <header>

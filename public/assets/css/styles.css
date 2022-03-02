@@ -32,3 +32,32 @@ footer.footer {
 .footer .nav-link, footer.footer a {
   color: #ffffff;
 }
+
+.home-contact-form-wrap {
+  background: url('/assets/img/form-bg.jpg') top left no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.home-contact-form {
+  padding: 50px 30px;
+  color: #ffffff;
+}
+
+.home-contact-form h3 {
+  color: #ffffff;
+}
+
+.home-contact-form a {
+  color: #49be99;
+}
+
+#contact_form .card-body {
+  background: rgba(0,0,0,0.50);
+}
+
+#contact_form label, #contact_form input, #contact_form textarea {
+  color: #ffffff;
+}
