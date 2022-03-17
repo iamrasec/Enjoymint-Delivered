@@ -28,7 +28,7 @@
 <link id="pagestyle" href="./assets/css/styles.css" rel="stylesheet" />
 </head>
 
-<body class="index-page bg-gray-200">
+<body class="index-page bg-gray-200" <?php echo ( isset($page_body_id)) ? 'id="'.$page_body_id.'"' : ''; ?>>
 
 <?php echo $this->renderSection("content"); ?>
 
@@ -262,6 +262,10 @@
       console.error(countUp2.error);
     };
   }
+
+  jQuery(document).on('click', '.login-btn', function() {
+    console.log("clicked");
+  });
 </script>
 
 </body>

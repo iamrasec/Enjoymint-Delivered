@@ -1,0 +1,9 @@
+CRITICAL - 2022-03-03 15:17:03 --> Invalid file: login.php
+#0 /app/system/View/View.php(198): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('login.php')
+#1 /app/system/Common.php(1089): CodeIgniter\View\View->render('login', Array, true)
+#2 /app/app/Controllers/Users.php(42): view('login')
+#3 /app/system/CodeIgniter.php(825): App\Controllers\Users->index()
+#4 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#5 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}

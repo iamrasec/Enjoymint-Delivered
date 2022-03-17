@@ -33,6 +33,12 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->get('user', 'User::index', ['filter' => 'noauth']);
+// $routes->get('logout', 'User::logout');
+// $routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);
+// $routes->match(['get', 'post'], 'profile', 'User::profile', ['filter' => 'auth']);
+// $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

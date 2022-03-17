@@ -1,0 +1,78 @@
+CRITICAL - 2022-03-14 10:20:42 --> Undefined property: App\Controllers\User::$input
+#0 /app/app/Controllers/User.php(56): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 56)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\User->login()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-14 10:39:36 --> Undefined property: App\Controllers\User::$load
+#0 /app/app/Controllers/User.php(13): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 13)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\User->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-14 10:39:56 --> Call to undefined method App\Controllers\User::helper()
+#0 /app/system/CodeIgniter.php(825): App\Controllers\User->index()
+#1 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User))
+#2 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-03-14 10:40:00 --> Undefined property: App\Controllers\User::$input
+#0 /app/app/Controllers/User.php(15): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined prope...', '/app/app/Contro...', 15)
+#1 /app/system/CodeIgniter.php(825): App\Controllers\User->index()
+#2 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\User))
+#3 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-14 10:47:37 --> noauth filter must have a matching alias defined.
+#0 /app/system/Filters/Filters.php(340): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('noauth')
+#1 /app/system/CodeIgniter.php(377): CodeIgniter\Filters\Filters->enableFilter('noauth', 'before')
+#2 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-03-14 10:47:48 --> noauth filter must have a matching alias defined.
+#0 /app/system/Filters/Filters.php(340): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('noauth')
+#1 /app/system/CodeIgniter.php(377): CodeIgniter\Filters\Filters->enableFilter('noauth', 'before')
+#2 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-03-14 17:17:34 --> validateUser is not a valid rule.
+#0 /app/system/Validation/Validation.php(300): CodeIgniter\Validation\Exceptions\ValidationException::forRuleNotFound('validateUser')
+#1 /app/system/Validation/Validation.php(157): CodeIgniter\Validation\Validation->processRules('password', 'password', 'asdasdasd', Array, Array)
+#2 /app/system/Controller.php(160): CodeIgniter\Validation\Validation->run()
+#3 /app/app/Controllers/Users.php(32): CodeIgniter\Controller->validate(Array, Array)
+#4 /app/system/CodeIgniter.php(825): App\Controllers\Users->index()
+#5 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#6 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-14 17:18:21 --> Undefined array key "username"
+#0 /app/app/Controllers/Users.php(62): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array...', '/app/app/Contro...', 62)
+#1 /app/app/Controllers/Users.php(42): App\Controllers\Users->setuserSession(Array)
+#2 /app/system/CodeIgniter.php(825): App\Controllers\Users->index()
+#3 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#4 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2022-03-14 18:29:40 --> noauth filter must have a matching alias defined.
+#0 /app/system/Filters/Filters.php(340): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('noauth')
+#1 /app/system/CodeIgniter.php(377): CodeIgniter\Filters\Filters->enableFilter('noauth', 'before')
+#2 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-03-14 18:35:20 --> Invalid file: add_category.php
+#0 /app/system/View/View.php(198): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('add_category.ph...')
+#1 /app/system/Common.php(1089): CodeIgniter\View\View->render('add_category', Array, true)
+#2 /app/app/Controllers/Products.php(31): view('add_category', Array)
+#3 /app/system/CodeIgniter.php(825): App\Controllers\Products->add_category()
+#4 /app/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Products))
+#5 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2022-03-14 22:20:18 --> noauth filter must have a matching alias defined.
+#0 /app/system/Filters/Filters.php(340): CodeIgniter\Filters\Exceptions\FilterException::forNoAlias('noauth')
+#1 /app/system/CodeIgniter.php(377): CodeIgniter\Filters\Filters->enableFilter('noauth', 'before')
+#2 /app/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /app/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}

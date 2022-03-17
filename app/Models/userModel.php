@@ -31,4 +31,8 @@ class UserModel extends Model {
 
     return $data;
   }
+
+  public function saveUser(array $data) {
+    
+  }
 }

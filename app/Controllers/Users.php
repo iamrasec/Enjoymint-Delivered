@@ -6,10 +6,15 @@ use App\Models\UserModel;
 
 class Users extends BaseController
 {
+
 	public function index()
 	{
 		$data = [];
 		helper(['form']);
+
+		$this->data['post_data'] = $this->request->getPost();
+
+		d($this->request->getPost());
 
 		if($this->request->getPost()) {
 			// Form login validation here
@@ -24,31 +29,39 @@ class Users extends BaseController
 				]
 			];
 
-			if(!$this->validate($rules, $errors)) {
-				$data['validation'] = $this->validator;
-			}
-			else {
-				$model = new UserModel();
+			// $model = new UserModel();
 
-				$user = $model->where('username', $this->request->getVar('username'))->first();
+			// $user = $model->where('username', $this->request->getVar('username'))->first();
 
-				$this->setuserSession($user);
+			$user = [
+				'id' => 1,
+				'email' => $this->data['post_data']['email'],
+				'role' => 'admin',
+			];
 
-				return redirect()->to('dashboard');
-			}
+			$this->setuserSession($user);
+
+			return redirect()->to('dashboard');
 		}
 
-		echo view('templates/header', $data);
-		echo view('login');
-		echo view('templates/footer');
+		$this->data['page_body_id'] = "user_login";
+
+		echo view('login', $this->data);
+	}
+
+	public function login() {
+		// helper(['form']);
+		print_r($_POST);
+		die();
+		print_r($this->request->getPost());
 	}
 
 	private function setuserSession($user) {
 		$data = [
 			'id' => $user['id'],
-			'username' => $user['username'],
-			'firstname' => $user['firstname'],
-			'lastname' => $user['lastname'],
+			// 'username' => $user['username'],
+			// 'firstname' => $user['firstname'],
+			// 'lastname' => $user['lastname'],
 			'email' => $user['email'],
 			'role' => $user['role'],
 			'isLoggedIn' => true,
