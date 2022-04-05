@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Products extends BaseController
+class Categories extends BaseController
 {
     var $view_data = array();
 
@@ -11,7 +11,7 @@ class Products extends BaseController
         echo view('product_view');
     }
 
-    public function add_product()
+    public function add_category()
     {
         $data = [];
         helper(['form']);
@@ -23,7 +23,7 @@ class Products extends BaseController
             if($role == 'admin') {
                 $this->data['page_body_id'] = "Add Category";
 
-                echo view('products/add_product', $this->data);
+                echo view('products/add_category', $this->data);
             }
             else {
                 return redirect()->to('/');

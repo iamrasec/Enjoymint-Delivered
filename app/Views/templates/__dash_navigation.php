@@ -56,12 +56,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Add Product </span>
                 </a>
               </li>
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <a class="nav-link text-white" href="/products/add_category">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Add Category </span>
                 </a>
-              </li>
+              </li>-->
               <li class="nav-item">
                 <a class="nav-link text-white" href="../../pages/dashboards/sales.html">
                   <span class="sidenav-mini-icon">  </span>

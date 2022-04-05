@@ -21,11 +21,11 @@
                 </div>
                 <div class="card-body mt-2">
                   <form role="form" method="post" action="/users">
-                    <div class="form-group input-group-outline mb-3">
+                    <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Email</label>
                       <input type="email" name="email" class="form-control">
                     </div>
-                    <div class="form-group input-group-outline mb-3">
+                    <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Password</label>
                       <input type="password" name="password" class="form-control">
                     </div>
@@ -41,7 +41,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-4 text-sm mx-auto">
                     Don't have an account?
-                    <a href="javascript:;" class="text-primary text-gradient font-weight-bold">Sign up</a>
+                    <a href="<?php echo base_url(); ?>/users/register" class="text-primary text-gradient font-weight-bold">Sign up</a>
                   </p>
                 </div>
               </div>

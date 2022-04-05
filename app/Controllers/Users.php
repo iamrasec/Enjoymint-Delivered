@@ -7,39 +7,44 @@ use App\Models\UserModel;
 class Users extends BaseController
 {
 
+	public function __construct() {
+		$data = [];
+		$this->user_model = model('UserModel');
+	}
+
 	public function index()
 	{
-		$data = [];
 		helper(['form']);
 
 		$this->data['post_data'] = $this->request->getPost();
 
-		d($this->request->getPost());
+		// d($this->request->getPost());
 
 		if($this->request->getPost()) {
 			// Form login validation here
 			$rules = [
-				'username' => 'required|min_length[3]|max_length[50]',
+				'email' => 'min_length[6]|max_length[50]|valid_email',
 				'password' => 'required|min_length[3]|max_length[255]|validateUser[username,password]',
 			];
 
 			$errors = [
 				'password' => [
-					'validateUser' => 'Username or Password don\'t match',
+					'validateUser' => 'Email or Password don\'t match',
 				]
 			];
 
 			// $model = new UserModel();
 
 			// $user = $model->where('username', $this->request->getVar('username'))->first();
+			$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
 
-			$user = [
+			/* $user = [
 				'id' => 1,
 				'email' => $this->data['post_data']['email'],
 				'role' => 'admin',
-			];
+			]; */
 
-			$this->setuserSession($user);
+			$this->setUserSession($user);
 
 			return redirect()->to('dashboard');
 		}
@@ -51,81 +56,86 @@ class Users extends BaseController
 
 	public function login() {
 		// helper(['form']);
-		print_r($_POST);
-		die();
+		// print_r($_POST);
+		// die();
 		print_r($this->request->getPost());
 	}
 
-	private function setuserSession($user) {
-		$data = [
+	private function setUserSession($user) {
+		$this->data = [
 			'id' => $user['id'],
+			'guid' => $user['guid'],
 			// 'username' => $user['username'],
-			// 'firstname' => $user['firstname'],
-			// 'lastname' => $user['lastname'],
+			'first_name' => $user['first_name'],
+			'last_name' => $user['last_name'],
 			'email' => $user['email'],
 			'role' => $user['role'],
 			'isLoggedIn' => true,
 		];
 
-		session()->set($data);
+		session()->set($this->data);
 		return true;
 	}
 
 	public function register() {
-		$data = [];
 		helper(['form']);
 
 		// if($this->request->getMethod() == 'post') {
 		if($this->request->getPost()) {
 			// Form validation here
 			$rules = [
-				'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
-				'firstname' => 'required|min_length[3]|max_length[20]',
-				'lastname' => 'required|min_length[3]|max_length[20]',
+				// 'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
+				'first_name' => 'required|min_length[3]|max_length[20]',
+				'last_name' => 'required|min_length[3]|max_length[20]',
 				'email' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
 				'password' => 'required|min_length[8]|max_length[255]',
 				'password_confirm' => 'matches[password]',
 			];
 
 			if(!$this->validate($rules)) {
-				$data['validation'] = $this->validator;
+				$this->data['validation'] = $this->validator;
 			}
 			else {
-				$model = new UserModel();
+				// $model = new UserModel();
 
 				$newData = [
-					'username' => $this->request->getVar('username'),
-					'firstname' => $this->request->getVar('firstname'),
-					'lastname' => $this->request->getVar('lastname'),
+					'guid' => $this->_generate_guid(),
+					// 'username' => $this->request->getVar('username'),
+					'first_name' => $this->request->getVar('first_name'),
+					'last_name' => $this->request->getVar('last_name'),
 					'email' => $this->request->getVar('email'),
 					'password' => $this->request->getVar('password'),
+					'role' => 2,
 				];
 
 				// print_r($newData);
 
-				$model->save($newData);
+				// $model->save($newData);
+				$this->user_model->save($newData);
+
+				$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
+				$this->setUserSession($user);
+				
 				$session = session();
 				$session->setFlashdata('success', 'Successful Registration');
-				return redirect()->to('/');
+				return redirect()->to('/dashboard');
 			}
 		}
 
-		echo view('templates/header', $data);
 		echo view('register');
-		echo view('templates/footer');
 	}
 
 	public function profile() {
 		$data = [];
 		helper(['form']);
-		$model = new UserModel();
+		// $model = new UserModel();
 
 		if($this->request->getPost()) {
 			// Profile validation here
 			$rules = [
 				'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
-				'firstname' => 'required|min_length[3]|max_length[20]',
-				'lastname' => 'required|min_length[3]|max_length[20]',
+				'first_name' => 'required|min_length[3]|max_length[20]',
+				'last_name' => 'required|min_length[3]|max_length[20]',
 			];
 
 			if($this->request->getPost('password') != '') {
@@ -137,26 +147,28 @@ class Users extends BaseController
 				$data['validation'] = $this->validator;
 			}
 			else {
-				$model = new UserModel();
+				// $model = new UserModel();
 
 				$newData = [
 					'id' => session()->get('id'),
 					'username' => $this->request->getPost('username'),
-					'firstname' => $this->request->getPost('firstname'),
-					'lastname' => $this->request->getPost('lastname'),
+					'first_name' => $this->request->getPost('first_name'),
+					'last_name' => $this->request->getPost('last_name'),
 				];
 
 				if($this->request->getPost('password') != '') {
 					$newData['password'] = $this->request->getPost('password');
 				}
 
-				$model->save($newData);
+				// $model->save($newData);
+				$this->user_model->save($newData);
 				session()->setFlashdata('success', 'Successfully Updated');
 				return redirect()->to('/profile');
 			}
 		}
 
-		$data['user'] = $model->where('id', session()->get('id'))->first();
+		// $data['user'] = $model->where('id', session()->get('id'))->first();
+		$data['user'] = $this->user_model->where('id', session()->get('id'))->first();
 		$role = session()->get('role');
 
     if($role == 'admin') {
@@ -172,5 +184,9 @@ class Users extends BaseController
 	public function logout() {
 		session()->destroy();
 		return redirect()->to('/');
+	}
+
+	private function _generate_guid() {
+		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
 }
