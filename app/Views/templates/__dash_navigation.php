@@ -45,13 +45,13 @@
           <div class="collapse  show " id="dashboard">
             <ul class="nav ">
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/dashboards/analytics.html">
+                <a class="nav-link text-white " href="<?php echo base_url('/admin/products'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Products List </span>
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white " href="/products/add_product">
+                <a class="nav-link text-white " href="<?php echo base_url('/admin/products/add_product'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Add Product </span>
                 </a>
@@ -63,9 +63,33 @@
                 </a>
               </li>-->
               <li class="nav-item">
-                <a class="nav-link text-white" href="../../pages/dashboards/sales.html">
+                <a class="nav-link text-white" href="<?php echo base_url('/admin/categories'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Categories </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="<?php echo base_url('/admin/compounds'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Manage Compounds </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="<?php echo base_url('/admin/products/strains'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Manage Strains </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="<?php echo base_url('/admin/products/brands'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Manage Brands </span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="<?php echo base_url('/admin/products/measurements'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Product Measurements </span>
                 </a>
               </li>
               <li class="nav-item active">
