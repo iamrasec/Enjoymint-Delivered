@@ -8,6 +8,7 @@ class Products extends BaseController {
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
+    $this->product_model = model('productModel');
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
@@ -25,6 +26,7 @@ class Products extends BaseController {
         'current' => $page_title,
       ];
       $this->data['page_title'] = $page_title;
+      $this->data['products'] = $this->product_model->get()->getResult();
 
 		  echo view('admin/products_list_view', $this->data);
     }
@@ -48,6 +50,10 @@ class Products extends BaseController {
           'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
+        $this->data['measurements'] = $this->measurement_model->get()->getResult();
+
 
         echo view('admin/add_product', $this->data);
       }
