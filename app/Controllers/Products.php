@@ -10,27 +10,4 @@ class Products extends BaseController
     {
         echo view('product_view');
     }
-
-    public function add_product()
-    {
-        $data = [];
-        helper(['form']);
-
-        $role = session()->get('role');
-        $isLoggedIn = session()->get('isLoggedIn');
-
-        if($isLoggedIn == 1) {
-            if($role == 'admin') {
-                $this->data['page_body_id'] = "Add Category";
-
-                echo view('products/add_product', $this->data);
-            }
-            else {
-                return redirect()->to('/');
-            }
-        }
-        else {
-            return redirect()->to('/');
-        }
-    }
 }
