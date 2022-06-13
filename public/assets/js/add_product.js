@@ -16,6 +16,20 @@
     data.new_strain_url = slugify($("#new_strain_name").val().trim());
     console.log(data);
 
-    
+    $.ajax({
+      type: "POST",
+      url: "/api/strain/add",
+      data: data,
+      dataType: "json",
+      success: function(json) {
+
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+      },
+      beforeSend: function(xhr) {
+        
+      }
+    });
   });
 })(jQuery);
