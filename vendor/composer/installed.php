@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '56efcbbe3303c347c479443b7085f83f147b1237',
+        'reference' => 'a3a6ed5f1a8d0245641f2c4e8b26c553aa2f4308',
         'name' => 'codeigniter4/codeigniter4',
         'dev' => true,
     ),
@@ -61,7 +61,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '56efcbbe3303c347c479443b7085f83f147b1237',
+            'reference' => 'a3a6ed5f1a8d0245641f2c4e8b26c553aa2f4308',
             'dev_requirement' => false,
         ),
         'composer/pcre' => array(
@@ -126,6 +126,15 @@
             'aliases' => array(),
             'reference' => 'd7f08a622b3346766325488aa32ddc93ccdecc75',
             'dev_requirement' => true,
+        ),
+        'firebase/php-jwt' => array(
+            'pretty_version' => 'v6.2.0',
+            'version' => '6.2.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../firebase/php-jwt',
+            'aliases' => array(),
+            'reference' => 'd28e6df83830252650da4623c78aaaf98fb385f3',
+            'dev_requirement' => false,
         ),
         'friendsofphp/php-cs-fixer' => array(
             'pretty_version' => 'v3.8.0',
