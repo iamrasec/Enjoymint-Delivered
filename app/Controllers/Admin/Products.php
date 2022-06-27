@@ -12,6 +12,10 @@ class Products extends BaseController {
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
+
+    if($this->isLoggedIn !== 1 && $this->role !== 1) {
+      return redirect()->to('/');
+    }
   }
   
   public function index() {
@@ -35,51 +39,81 @@ class Products extends BaseController {
     }        
   }
 
-  public function add_product() {
-      // $data = [];
-      helper(['form']);
+  public function add_product() 
+  {
+      $page_title = 'Add Product';
+      $this->data['page_body_id'] = "products_list";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+      $this->data['brands'] = $this->brand_model->get()->getResult();
+      $this->data['strains'] = $this->strain_model->get()->getResult();
+      $this->data['measurements'] = $this->measurement_model->get()->getResult();
+      echo view('admin/add_product', $this->data);
+  }
 
-      if($this->isLoggedIn == 1 && $this->role == 1) {
-        $page_title = 'Add Product';
+   /**
+     * This function will save a product into the server
+     * 
+     * @return object a success indicator and the message
+    */
+  public function addProduct()
+  {
+    helper(['form', 'functions']); // load helpers
+    addJSONResponseHeader(); // set response header to json
 
-        $this->data['page_body_id'] = "products_list";
-        $this->data['breadcrumbs'] = [
-          'parent' => [
-            ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
-          ],
-          'current' => $page_title,
+    if($this->request->getPost()) {
+      $rules = [
+        'name' => 'required|min_length[3]',
+        'sku' => 'required|min_length[3]',
+        'purl' => 'required|min_length[3]',
+        'qty' => 'required|decimal',
+        'thc_val' => 'required',
+        'cbd_val' => 'required',
+      ];
+
+      if($this->validate($rules)) {
+        $data['validation'] = $this->validator;
+
+        //process saving of images
+        //$images = $this->request->getVar('productImages');
+        $images = array();
+        if ($this->request->getFileMultiple('productImages')) {
+          echo 'naay file';
+          foreach($this->request->getFile('productImages') as $img){
+            if (!$img->hasMoved()) {
+              $newName = $img->getRandomName();
+              $img->move(WRITEPATH . 'uploads', $newName);
+              array_push($images,$newName);
+              echo 'new image'. PHP_EOL;
+            }
+          }
+        }
+
+        // data mapping for PRODUCTS table save
+        $to_save = [
+          'name' => $this->request->getVar('name'),
+          'url' => $this->request->getVar('purl'),
+          'description' => $this->request->getVar('description'),
+          'strain' => $this->request->getVar('strain'),
+          'stocks' => $this->request->getVar('qty'),
+          'brands' => $this->request->getVar('brand'),
+          'sku' => $this->request->getVar('sku'),
+          'images' => implode(',', $images),
         ];
-        $this->data['page_title'] = $page_title;
-
-        if($this->request->getPost()) {
-          $rules = [
-            'name' => 'required|min_length[3]',
-            'sku' => 'required|min_length[3]',
-            'purl' => 'required|min_length[3]',
-            'qty' => 'required|decimal',
-            'thc_val' => 'required',
-            'cbd_val' => 'required',
-          ];
-
-          if($this->validate($rules)) {
-            $data['validation'] = $this->validator;
-          }
-          else {
-            
-          }
-        }
-        else {
-          $this->data['brands'] = $this->brand_model->get()->getResult();
-          $this->data['strains'] = $this->strain_model->get()->getResult();
-          $this->data['measurements'] = $this->measurement_model->get()->getResult();
-  
-  
-          echo view('admin/add_product', $this->data);
-        }
+        $this->product_model->save($to_save); // trying to save product to database
+        $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
+      } else {
+        $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
       }
-      else {
-          return redirect()->to('/');
-      }
+    } else {
+      $data_arr = array("success" => FALSE,"message" => 'No posted data!');
+    }
+    die(json_encode($data_arr));
   }
 
   public function strains() {
