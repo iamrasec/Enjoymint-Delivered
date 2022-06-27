@@ -128,6 +128,30 @@
 
   <?php echo $this->renderSection("scripts"); ?>
 
+  <script>
+    function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
+    {
+      swal({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: false,
+        confirmButtonColor: '#32243d',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+          if(is_reload === 1){
+            window.location.reload();
+          }
+          if(redirect){
+            window.location.href = redirect;
+          }
+
+      });
+    }
+
+  </script>
+
 </body>
 
 </html>
