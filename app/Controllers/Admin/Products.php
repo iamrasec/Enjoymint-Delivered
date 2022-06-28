@@ -79,21 +79,19 @@ class Products extends BaseController {
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
 
-        //process saving of images
-        //$images = $this->request->getVar('productImages');
-        $images = array();
-        if ($this->request->getFileMultiple('productImages')) {
-          echo 'naay file';
-          foreach($this->request->getFile('productImages') as $img){
+        $images = array(); // initialize image array
+        if ($this->request->getFiles()) {
+          $file = $this->request->getFiles(); // get all files from post request
+          // loop through all files uploaded
+          foreach($file['productImages'] as $img){
             if (!$img->hasMoved()) {
-              $newName = $img->getRandomName();
-              $img->move(WRITEPATH . 'uploads', $newName);
-              array_push($images,$newName);
-              echo 'new image'. PHP_EOL;
+                $fileName = $img->getRandomName(); // generate a new random name
+                $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+                array_push($images, $fileName);
             }
           }
         }
-
+        
         // data mapping for PRODUCTS table save
         $to_save = [
           'name' => $this->request->getVar('name'),
