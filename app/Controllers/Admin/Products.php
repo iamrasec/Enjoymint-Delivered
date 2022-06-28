@@ -50,36 +50,33 @@ class Products extends BaseController {
           'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
+        $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
-        if($this->request->getPost()) {
-          $rules = [
-            'name' => 'required|min_length[3]',
-            'sku' => 'required|min_length[3]',
-            'purl' => 'required|min_length[3]',
-            'qty' => 'required|decimal',
-            'thc_val' => 'required',
-            'cbd_val' => 'required',
-          ];
 
-          if($this->validate($rules)) {
-            $data['validation'] = $this->validator;
-          }
-          else {
-            
-          }
-        }
-        else {
-          $this->data['brands'] = $this->brand_model->get()->getResult();
-          $this->data['strains'] = $this->strain_model->get()->getResult();
-          $this->data['measurements'] = $this->measurement_model->get()->getResult();
-  
-  
-          echo view('admin/add_product', $this->data);
-        }
+        echo view('admin/add_product', $this->data);
       }
       else {
           return redirect()->to('/');
       }
+  }
+
+  public function save_product() {
+    $this->request->getPost();
+
+    $rules = [
+      'name' => 'required|min_length[3]',
+      'sku' => 'required|min_length[3]',
+      'purl' => 'required|min_length[3]',
+      'qty' => 'required|decimal',
+      'thc_val' => 'required',
+      'cbd_val' => 'required',
+    ];
+
+    if($this->validate($rules)) {
+      $data['validation'] = $this->validator;
+    }
   }
 
   public function strains() {
