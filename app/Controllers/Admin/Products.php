@@ -8,6 +8,7 @@ class Products extends BaseController {
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
+    $this->guid = session()->get('guid');
     $this->product_model = model('productModel');
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
@@ -42,6 +43,7 @@ class Products extends BaseController {
       if($this->isLoggedIn == 1 && $this->role == 1) {
         $page_title = 'Add Product';
 
+        $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         $this->data['page_body_id'] = "products_list";
         $this->data['breadcrumbs'] = [
           'parent' => [

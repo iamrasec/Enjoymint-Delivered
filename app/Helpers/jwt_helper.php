@@ -21,17 +21,19 @@ function validateJWTFromRequest(string $encodedToken)
     $userModel->findUserByEmailAddress($decodedToken->email);
 }
 
-function getSignedJWTForUser(string $email)
+// function getSignedJWTForUser(string $email)
+function getSignedJWTForUser(string $guid)
 {
     $issuedAtTime = time();
     $tokenTimeToLive = getenv('JWT_TIME_TO_LIVE');
     $tokenExpiration = $issuedAtTime + $tokenTimeToLive;
     $payload = [
-        'email' => $email,
+        // 'email' => $email,
+        'guid' => $guid,
         'iat' => $issuedAtTime,
         'exp' => $tokenExpiration,
     ];
 
-    $jwt = JWT::encode($payload, Services::getSecretKey());
+    $jwt = JWT::encode($payload, Services::getSecretKey(), 'HS256');
     return $jwt;
 }

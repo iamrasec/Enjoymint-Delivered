@@ -11,6 +11,7 @@
   
   <div class="container-fluid py-4">
     <form id="add_product" action="<?php echo base_url('admin/products/save_product');?>" class="enjoymint-form" enctype="multipart/form-data">
+      <input type="hidden" name="user" value="<?php echo $user_jwt; ?>">
       <div class="row">
         <div class="col-lg-6">
           <h4><?php echo $page_title; ?></h4>
