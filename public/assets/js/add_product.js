@@ -52,14 +52,14 @@
 
   $("#add_product").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
-    var form = $(this);
-    var productImages = [];
 
     const formData = new FormData();
-    $('input[name="images[]"]').each(function() {
-      productImages.push(this.files[0]);
+    const photos = document.querySelectorAll('input[type="file"]');
+
+    photos.forEach(function (item, field) {
+      formData.append('productImages[]', item.files[0]);
     });
-    formData.append('productImages', productImages);
+    
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());
@@ -69,7 +69,6 @@
     formData.append('brand', $('#brand').value);
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
-    //formData.append('customers', JSON.stringify(customerData));
 
     fetch('/admin/products/addProduct', {
       method: 'POST',
@@ -80,18 +79,5 @@
     }).catch((error) => {
         console.log('Error:', error);
     });
-
-    // $.ajax({
-    //     type: "POST",
-    //     url: "/admin/products/addProduct",
-    //     data: form.serialize(), // serializes the form's elements.
-    //     success: function(data){
-    //       console.log(data);
-    //       var { message, success }  = data;
-    //       success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
-    //     },
-    //     beforeSend : function (){
-    //     }
-    // });
   });
 })(jQuery);
