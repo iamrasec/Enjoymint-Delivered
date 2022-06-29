@@ -8,6 +8,7 @@ class Products extends BaseController {
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
+    $this->guid = session()->get('guid');
     $this->product_model = model('productModel');
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
@@ -42,6 +43,7 @@ class Products extends BaseController {
       if($this->isLoggedIn == 1 && $this->role == 1) {
         $page_title = 'Add Product';
 
+        $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         $this->data['page_body_id'] = "products_list";
         $this->data['breadcrumbs'] = [
           'parent' => [
@@ -50,36 +52,33 @@ class Products extends BaseController {
           'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
+        $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
-        if($this->request->getPost()) {
-          $rules = [
-            'name' => 'required|min_length[3]',
-            'sku' => 'required|min_length[3]',
-            'purl' => 'required|min_length[3]',
-            'qty' => 'required|decimal',
-            'thc_val' => 'required',
-            'cbd_val' => 'required',
-          ];
 
-          if($this->validate($rules)) {
-            $data['validation'] = $this->validator;
-          }
-          else {
-            
-          }
-        }
-        else {
-          $this->data['brands'] = $this->brand_model->get()->getResult();
-          $this->data['strains'] = $this->strain_model->get()->getResult();
-          $this->data['measurements'] = $this->measurement_model->get()->getResult();
-  
-  
-          echo view('admin/add_product', $this->data);
-        }
+        echo view('admin/add_product', $this->data);
       }
       else {
           return redirect()->to('/');
       }
+  }
+
+  public function save_product() {
+    $this->request->getPost();
+
+    $rules = [
+      'name' => 'required|min_length[3]',
+      'sku' => 'required|min_length[3]',
+      'purl' => 'required|min_length[3]',
+      'qty' => 'required|decimal',
+      'thc_val' => 'required',
+      'cbd_val' => 'required',
+    ];
+
+    if($this->validate($rules)) {
+      $data['validation'] = $this->validator;
+    }
   }
 
   public function strains() {
