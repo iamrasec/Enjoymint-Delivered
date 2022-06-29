@@ -12,6 +12,8 @@
   $(document).on('click', '.add-new-strain', function(e) {
     e.preventDefault();
     let data = {};
+    let jwt = $("[name='atoken']").attr('content');
+    console.log(jwt);
     data.new_strain_name = $("#new_strain_name").val().trim();
     data.new_strain_url = slugify($("#new_strain_name").val().trim());
     console.log(data);
@@ -22,13 +24,13 @@
       data: data,
       dataType: "json",
       success: function(json) {
-
+        console.log(json);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-
+        console.log(textStatus);
       },
       beforeSend: function(xhr) {
-        
+        xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
       }
     });
   });

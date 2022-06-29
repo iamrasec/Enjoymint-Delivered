@@ -4,6 +4,8 @@ namespace App\Controllers\API;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
+use Exception;
+use ReflectionException;
 
 class Strain extends ResourceController
 {
@@ -13,12 +15,17 @@ class Strain extends ResourceController
     public function index()
     {
         // return $this->respond($this->model->findAll());
-        print_r("Strain List");
+        echo "Strain List";
+
+        // return $this->getResponse(
+        //   ResponseInterface::HTTP_OK
+        // );
     }
 
     public function add()
     {
-      print_r("Add Strain");
+      echo json_encode(["message" => "Add Strain"]);
+      exit;
     }
 
     // ...

@@ -37,4 +37,8 @@ class UserModel extends Model {
   public function getUser($data) {
     return $this->where('email', $data['email'])->first();
   }
+
+  public function getUserByGuid($guid) {
+    return $this->where('guid', $guid)->first();
+  }
 }
