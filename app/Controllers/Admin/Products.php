@@ -22,23 +22,16 @@ class Products extends BaseController {
   
   public function index() {
     // $data = [];
+    $page_title = 'Products List';
 
-    if($this->isLoggedIn == 1 && $this->role == 1) {
-      $page_title = 'Products List';
-
-      $this->data['page_body_id'] = "products_list";
-      $this->data['breadcrumbs'] = [
-        'parent' => [],
-        'current' => $page_title,
-      ];
-      $this->data['page_title'] = $page_title;
-      $this->data['products'] = $this->product_model->get()->getResult();
-
-		  echo view('admin/products_list_view', $this->data);
-    }
-    else {
-      return redirect()->to('/');
-    }        
+    $this->data['page_body_id'] = "products_list";
+    $this->data['breadcrumbs'] = [
+      'parent' => [],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $this->data['products'] = $this->product_model->get()->getResult();
+    return view('admin/products_list_view', $this->data);
   }
 
   public function add_product() 
