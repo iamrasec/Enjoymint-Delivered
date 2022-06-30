@@ -10,7 +10,7 @@
   <!-- End Navbar -->
   
   <div class="container-fluid py-4">
-    <form id="add_product" action="<?php echo base_url('admin/products/save_product');?>" class="enjoymint-form" enctype="multipart/form-data">
+    <form id="add_product" class="enjoymint-form" enctype="multipart/form-data">
       <div class="row">
         <div class="col-lg-6">
           <h4><?php echo $page_title; ?></h4>
@@ -28,13 +28,13 @@
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">SKU</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" class="form-control w-100 border px-2" name="sku" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input type="text" class="form-control w-100 border px-2" id="sku" name="sku" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-8 col-md-8 col-xs-8 mb-3 ps-1">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -57,7 +57,7 @@
                     <div class="col-md-12 col-xs-12">
                       <label class="form-label">Stock Quantity</label>
                       <div class="input-group input-group-dynamic">
-                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" name="qty" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" id="qty" name="qty" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -94,7 +94,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" required  onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -112,7 +112,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -133,7 +133,7 @@
                     (optional)
                   </p>
                   <div id="edit-description-edit" class="h-50">
-                    <textarea class="w-100" name="description"></textarea>
+                    <textarea class="w-100" id="description" name="description"></textarea>
                   </div>
                 </div>
                 
@@ -143,7 +143,17 @@
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
           <h6>Images</h6>
-          <input type="file" name="images[]" multiple="" class="form-control">
+          <div class="row" id='image_lists'>
+            <div class="row">
+              <div class="col-lg-10">
+                <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
+              </div>
+              <div class="col-lg-2">
+                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
         </div>
       </div>
     </form>
@@ -205,5 +215,6 @@
 <?php $this->endSection(); ?>
 
 <?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/add_product.js"></script>
 <?php $this->endSection() ?>
