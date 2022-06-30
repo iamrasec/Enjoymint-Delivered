@@ -13,6 +13,7 @@ class Products extends BaseController {
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
+    $this->image_model = model('imageModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
@@ -87,8 +88,18 @@ class Products extends BaseController {
           foreach($file['productImages'] as $img){
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
+                $type = $img->getMimeType();
                 $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
-                array_push($images, $fileName);
+                
+                // json data to be save to image
+                $imageData = [
+                  'filename' => $fileName,
+                  'mime' => $type,
+                  'url' => 'writable/uploads/'. $fileName,
+                ];
+                $this->image_model->save($imageData); // try to save to images table
+                $imageId = $this->image_model->insertID();
+                array_push($images, $imageId);
             }
           }
         }
