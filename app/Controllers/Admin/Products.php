@@ -8,6 +8,7 @@ class Products extends BaseController {
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
+    $this->guid = session()->get('guid');
     $this->product_model = model('productModel');
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
@@ -112,6 +113,23 @@ class Products extends BaseController {
       $data_arr = array("success" => FALSE,"message" => 'No posted data!');
     }
     die(json_encode($data_arr));
+  }
+
+  public function save_product() {
+    $this->request->getPost();
+
+    $rules = [
+      'name' => 'required|min_length[3]',
+      'sku' => 'required|min_length[3]',
+      'purl' => 'required|min_length[3]',
+      'qty' => 'required|decimal',
+      'thc_val' => 'required',
+      'cbd_val' => 'required',
+    ];
+
+    if($this->validate($rules)) {
+      $data['validation'] = $this->validator;
+    }
   }
 
   public function strains() {
