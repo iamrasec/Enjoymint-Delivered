@@ -23,8 +23,8 @@
       <div class="col-lg-12 mt-lg-0 mt-4">
         <div class="card">
           <div class="card-body">
-            <div class="table-responsive">
-              <table class="table align-items-center mb-0">
+            <div class="table-responsives">
+              <table id="products-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
@@ -83,5 +83,13 @@
 <?php $this->endSection(); ?>
 
 <?php $this->section('scripts'); ?>
-<script src="<?php echo base_url(); ?>/assets/js/plugins/datatables.js"></script>
+<!-- Load Data Table JS -->
+<script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
+
+<!-- Product List page js -->
+<script>
+  $(document).ready(function () {
+      $('#products-table').DataTable();
+  });
+</script>
 <?php $this->endSection(); ?>
