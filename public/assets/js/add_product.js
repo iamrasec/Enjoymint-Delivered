@@ -52,6 +52,11 @@
     $(this).parent().parent().remove();
   });
 
+  /** this event will serve as removing of new added file input */
+  $("body").delegate(".remove_variant", "click", function(){
+    $(this).parent().parent().remove();
+  });
+
   $("#add_product").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
