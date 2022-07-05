@@ -47,6 +47,37 @@
     $("#image_lists").append(fileInputForm); 
   });
 
+  /** this event will serve as adding of new variant of product */
+  $("#add_variant").click(function () {
+    var fileInputForm = 
+    "<div class=\"row\">" +
+      "<div class=\"col-lg-10\">"+
+        "<div class=\"row\">"+
+          "<div class=\"col-lg-6\">"+
+            "<label>Unit</label>"+
+            "<input type=\"text\" name=\"unit[]\" class=\"form-control\">"+
+          "</div>"+
+          "<div class=\"col-lg-6\">"+
+            "<label>Unit Value</label>"+
+            "<input type=\"number\" name=\"value[]\" class=\"form-control\">"+
+          "</div>"+
+          "<div class=\"col-lg-6\">"+
+            "<label>Price</label>"+
+            "<input type=\"number\" name=\"price[]\" class=\"form-control\">"+
+          "</div>"+
+          "<div class=\"col-lg-6\">"+
+            "<label>Stocks/Qty</label>"+
+            "<input type=\"number\" name=\"qty[]\" class=\"form-control\">"+
+          "</div>"+
+        "</div>"+
+      "</div>"+
+      "<div class=\"col-lg-2\"><br><br>"+
+        "<button type=\"button\" class=\"btn bg-gradient-danger btn-sm remove_variant\"><span class=\"material-icons\">delete</span></button>"+
+      "</div>"+
+    "</div><hr class=\'breaker\'>";
+    $("#variants").append(fileInputForm); 
+  });
+
   /** this event will serve as removing of new added file input */
   $("body").delegate(".remove_image", "click", function(){
     $(this).parent().parent().remove();
@@ -62,11 +93,27 @@
 
     const formData = new FormData();
     const photos = document.querySelectorAll('input[type="file"]');
-
+  
     photos.forEach(function (item, field) {
       formData.append('productImages[]', item.files[0]);
     });
-    
+
+    $('input[name="unit[]"]').each(function () {
+      formData.append('units[]', $(this).val());
+    });
+
+    $('input[name="value[]"]').each(function () {
+      formData.append('unit_values[]', $(this).val());
+    });
+
+    $('input[name="price[]"]').each(function () {
+      formData.append('prices[]', $(this).val());
+    });
+
+    $('input[name="qty[]"]').each(function () {
+      formData.append('stocks[]', $(this).val());
+    });
+
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());

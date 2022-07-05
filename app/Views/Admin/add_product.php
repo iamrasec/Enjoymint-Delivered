@@ -1,7 +1,11 @@
 <?php $this->extend("templates/base_dashboard"); ?>
 
 <?php $this->section("content") ?>
-
+<style>
+  .breaker {
+    margin-top: 10px;
+  }
+</style>
 <?php echo $this->include('templates/__dash_navigation.php'); ?>
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -23,7 +27,7 @@
         <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Product Information</h5>
+              <h5 class="font-weight-bolder">Product Informations</h5>
               <div class="row mt-4">
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>
@@ -169,9 +173,9 @@
                 <br><br>
                 <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
               </div>
-            </div>
+            </div><hr class='breaker'>
           </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
 
           <br><br><br>
           <h6>Images</h6>
@@ -245,7 +249,6 @@
 </div>
 
 <?php $this->endSection(); ?>
-
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/add_product.js"></script>

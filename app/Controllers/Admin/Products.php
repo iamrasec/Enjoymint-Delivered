@@ -14,6 +14,7 @@ class Products extends BaseController {
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
     $this->image_model = model('imageModel');
+    $this->product_variant_model = model('productVariantModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
@@ -109,6 +110,19 @@ class Products extends BaseController {
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
+        $productId = $this->product_model->insertID();
+
+        $variantCount = count($this->request->getVar('prices[]'));
+        for($x=0;$x<$variantCount;$x++){
+          $variantData = [
+            'pid' => $productId,
+            'unit	' => $_POST['units'][$x],
+            'unit_value' => $_POST['unit_values'][$x],
+            'price' => $_POST['prices'][$x],
+            'stock' => $_POST['stocks'][$x]
+          ];
+          $this->product_variant_model->save($variantData); // try to save product variant
+        }
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {
         $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
