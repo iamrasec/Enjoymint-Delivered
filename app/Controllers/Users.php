@@ -46,7 +46,7 @@ class Users extends BaseController
 
 			$this->setUserSession($user);
 
-			return redirect()->to('dashboard');
+			return redirect()->to('admin/dashboard');
 		}
 
 		$this->data['page_body_id'] = "user_login";

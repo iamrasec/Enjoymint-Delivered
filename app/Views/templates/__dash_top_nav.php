@@ -19,10 +19,11 @@
             </svg>
           </a>
         </li>
-        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Sales</li>
+        <?php foreach($breadcrumbs['parent'] as $breadcrumb_parent): ?>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="<?php echo $breadcrumb_parent['parent_url']; ?>"><?php echo $breadcrumb_parent['page_title']; ?></a></li>
+        <?php endforeach; ?>        
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><?php echo $breadcrumbs['current']; ?></li>
       </ol>
-      <h6 class="font-weight-bolder mb-0">Sales</h6>
     </nav>
     <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
       <a href="javascript:;" class="nav-link text-body p-0">
