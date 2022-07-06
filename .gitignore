@@ -16,3 +16,4 @@ writable/session
 writable/session/*
 writable/uploads
 writable/uploads/*
+uploads/*

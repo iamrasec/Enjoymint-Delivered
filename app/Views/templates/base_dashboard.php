@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="atoken" content="<?php echo $user_jwt; ?>">
+  <meta name="atoken" content="<?php //echo $user_jwt; ?>">
   <link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="<?php echo base_url(); ?>/assets/img/favicon.png">
   <title>
@@ -22,7 +22,17 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/material-dashboard.css?v=3.0.1" rel="stylesheet" />
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
+
+  <!-- initialize uri service -->
+  <?php $uri = service('uri'); ?>
+
+  <!-- load datatable css on specific pages -->
+  <?php if($uri->getSegment(2) == 'products'): ?>
+    <link href="<?= base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet" />
+  <?php endif; ?>
+
   <?php echo $this->renderSection("styles"); ?>
+  
 </head>
 
 <body class="g-sidenav-show  bg-gray-200" <?php echo ( isset($page_body_id)) ? 'id="'.$page_body_id.'"' : ''; ?>>
@@ -128,6 +138,30 @@
   <script src="<?php echo base_url(); ?>/assets/js/material-dashboard.min.js?v=3.0.1"></script>
 
   <?php echo $this->renderSection("scripts"); ?>
+
+  <script>
+    function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
+    {
+      swal({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: false,
+        confirmButtonColor: '#32243d',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+          if(is_reload === 1){
+            window.location.reload();
+          }
+          if(redirect){
+            window.location.href = redirect;
+          }
+
+      });
+    }
+
+  </script>
 
 </body>
 
