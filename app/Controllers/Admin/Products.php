@@ -51,9 +51,7 @@ class Products extends BaseController {
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
       echo view('admin/add_product', $this->data);
   }
-
-
-
+  
   public function save_product() {
     $this->request->getPost();
 
