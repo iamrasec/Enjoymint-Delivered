@@ -124,7 +124,7 @@
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
 
-    fetch('/admin/products/addProduct', {
+    fetch('/api/products/add', {
       method: 'POST',
       body: formData,
     }) .then(response => response.json() ).then(response => {
