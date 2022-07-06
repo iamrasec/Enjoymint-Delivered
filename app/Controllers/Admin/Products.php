@@ -5,6 +5,8 @@ use App\Controllers\BaseController;
 class Products extends BaseController {
 
   public function __construct() {
+    helper(['jwt']);
+
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
@@ -13,6 +15,8 @@ class Products extends BaseController {
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
+
+    $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('imageModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
@@ -119,22 +123,22 @@ class Products extends BaseController {
     die(json_encode($data_arr));
   }
 
-  public function save_product() {
-    $this->request->getPost();
+  // public function save_product() {
+  //   $this->request->getPost();
 
-    $rules = [
-      'name' => 'required|min_length[3]',
-      'sku' => 'required|min_length[3]',
-      'purl' => 'required|min_length[3]',
-      'qty' => 'required|decimal',
-      'thc_val' => 'required',
-      'cbd_val' => 'required',
-    ];
+  //   $rules = [
+  //     'name' => 'required|min_length[3]',
+  //     'sku' => 'required|min_length[3]',
+  //     'purl' => 'required|min_length[3]',
+  //     'qty' => 'required|decimal',
+  //     'thc_val' => 'required',
+  //     'cbd_val' => 'required',
+  //   ];
 
-    if($this->validate($rules)) {
-      $data['validation'] = $this->validator;
-    }
-  }
+  //   if($this->validate($rules)) {
+  //     $data['validation'] = $this->validator;
+  //   }
+  // }
 
   public function strains() {
     if($this->isLoggedIn == 1 && $this->role == 1) {

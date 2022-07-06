@@ -67,7 +67,7 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="strain" class="form-control">
+                    <select name="strain" id="select_strain" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($strains as $strain): ?>
                       <option value="<?php echo $strain->id; ?>"><?php echo $strain->name; ?></option>
@@ -78,7 +78,7 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Brand <button id="new_brand" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newBrandModal">Add New Brand</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="brand" class="form-control">
+                    <select name="brand" id="select_brand" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($brands as $brand): ?>
                       <option value="<?php echo $brand->id; ?>"><?php echo $brand->name; ?></option>
@@ -199,14 +199,14 @@
       <div class="modal-body">
         <form>
           <div class="input-group input-group-outline my-3">
-          <label class="form-label">Brand Name</label>
-              <input type="text" class="form-control" name="brand_name" value="">
+              <label class="form-label">Brand Name</label>
+              <input type="text" class="form-control" name="new_brand_name" value="" id="new_brand_name">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="cancel-btn btn bg-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="save-btn btn bg-gradient-primary">Save</button>
+        <button type="button" class="add-new-brand save-btn btn bg-gradient-primary">Save</button>
       </div>
     </div>
   </div>
