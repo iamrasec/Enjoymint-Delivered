@@ -6,5 +6,5 @@ use CodeIgniter\Model;
 
 class StrainModel extends Model {
   protected $table = 'strains';
-  protected $allowedFields = ['name', 'url'];
+  protected $allowedFields = ['name', 'url_slug'];
 }

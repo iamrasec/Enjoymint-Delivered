@@ -5,6 +5,8 @@ use App\Controllers\BaseController;
 class Products extends BaseController {
 
   public function __construct() {
+    helper(['jwt']);
+
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
@@ -13,6 +15,8 @@ class Products extends BaseController {
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
     $this->measurement_model = model('measurementModel');
+
+    $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
   }
   
   public function index() {
@@ -43,7 +47,6 @@ class Products extends BaseController {
       if($this->isLoggedIn == 1 && $this->role == 1) {
         $page_title = 'Add Product';
 
-        $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         $this->data['page_body_id'] = "products_list";
         $this->data['breadcrumbs'] = [
           'parent' => [
