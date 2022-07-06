@@ -47,7 +47,7 @@
     let jwt = $("[name='atoken']").attr('content');
     console.log(jwt);
     data.name = $("#new_brand_name").val().trim();
-    data.url_slug = slugify($("#new_brand_name").val().trim());
+    data.url = slugify($("#new_brand_name").val().trim());
     console.log(data);
 
     $.ajax({
