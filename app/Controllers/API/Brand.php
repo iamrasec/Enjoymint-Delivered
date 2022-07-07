@@ -7,11 +7,11 @@ use CodeIgniter\API\ResponseTrait;
 use Exception;
 use ReflectionException;
 
-class Strain extends ResourceController
+class Brand extends ResourceController
 {
   public function __construct() {
     $this->data = [];
-    $this->strain_model = model('strainModel');
+    $this->brand_model = model('brandModel');
   }
 
   public function index()
@@ -27,7 +27,7 @@ class Strain extends ResourceController
   public function add()
   {
     $data = $this->request->getPost();
-    $return = $this->strain_model->insert($data);
+    $return = $this->brand_model->insert($data);
 
     if(is_numeric($return)) {
       echo json_encode(["message" => true, "data" => $return]);
