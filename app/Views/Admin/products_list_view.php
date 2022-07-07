@@ -27,22 +27,18 @@
               <table id="products-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <?php foreach($products as $product): ?>
-                  <tr class="text-xs font-weight-bold mb-0">
-                    <td><?php echo $product->id; ?></td>
-                    <td><?php echo $product->name; ?></td>
-                    <td><?php echo $product->url; ?></td>
-                    <td><a href="<?php echo base_url('admin/products') . "/edit_product/" .$product->id; ?>">edit</a></td>
-                  </tr>
-                  <?php endforeach; ?>
-                </tbody>
+                <tfoot>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Action</th>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -89,7 +85,24 @@
 <!-- Product List page js -->
 <script>
   $(document).ready(function () {
-      $('#products-table').DataTable();
+      $('#products-table').DataTable({
+        // Processing indicator
+        "processing": true,
+        // DataTables server-side processing mode
+        "serverSide": true,
+        // Initial no order.
+        "order": [],
+        // Load data from an Ajax source
+        "ajax": {
+            "url": "<?= base_url('admin/products/getProductLists'); ?>",
+            "type": "POST"
+        },
+        //Set column definition initialisation properties
+        "columnDefs": [{ 
+            "targets": [0],
+            "orderable": false
+        }]
+    });
   });
 </script>
 <?php $this->endSection(); ?>

@@ -25,7 +25,8 @@ class Products extends BaseController {
     }
   }
   
-  public function index() {
+  public function index() 
+  {
     // $data = [];
     $page_title = 'Products List';
 
@@ -217,5 +218,42 @@ class Products extends BaseController {
     else {
       return redirect()->to('/');
     }
+  }
+
+  /**
+   * This function will fetch product list from post request of datatable server side processing
+   * 
+   * @return json product list json format
+  */
+  public function getProductLists()
+  {
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+
+    $products = $this->product_model->select('id,name,url')
+      ->like('name',$_POST['search']['value'])
+      ->orLike('url',$_POST['search']['value'])
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+   
+    foreach($products as $product){
+      $start++;
+      $data[] = array(
+        $product->id, 
+        $product->name, 
+        $product->url,
+        "<a href=".base_url('admin/products/edit_product/').$product->id.">edit</a>",
+      );
+    }
+
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->product_model->countAll(),
+      "recordsFiltered" => $this->product_model->countAll(),
+      "data" => $data,
+    );
+    echo json_encode($output);
   }
 }
