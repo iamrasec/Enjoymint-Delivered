@@ -82,6 +82,7 @@ class Products extends ResourceController
           'strain' => $this->request->getVar('strain'),
           'stocks' => $this->request->getVar('qty'),
           'brands' => $this->request->getVar('brand'),
+          'price' => $this->request->getVar('price'),
           'sku' => $this->request->getVar('sku'),
           'images' => implode(',', $images),
         ];

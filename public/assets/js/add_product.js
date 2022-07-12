@@ -157,6 +157,7 @@
     formData.append('purl', $('#purl').val());
     formData.append('description', $('#description').val());
     formData.append('qty', $('#qty').val());
+    formData.append('price', $('#price').val());
     formData.append('strain', $('#strain').value);
     formData.append('brand', $('#brand').value);
     formData.append('thc_val', $('#thc_val').val());
