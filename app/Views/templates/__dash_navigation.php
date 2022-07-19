@@ -183,7 +183,7 @@
                 <div class="collapse " id="ordersExample">
                   <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/orders/list.html">
+                      <a class="nav-link text-white " href="<?= base_url('admin/order') ?>">
                         <span class="sidenav-mini-icon"> O </span>
                         <span class="sidenav-normal  ms-2  ps-1"> Order List </span>
                       </a>
