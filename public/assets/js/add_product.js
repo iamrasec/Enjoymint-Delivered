@@ -163,9 +163,12 @@
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
 
-    fetch('/api/products/add', {
+    fetch('/api/products/add',  {
       method: 'POST',
       body: formData,
+      headers : {
+        'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
+      }
     }) .then(response => response.json() ).then(response => {
         var { message, success }  = response;
         success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
