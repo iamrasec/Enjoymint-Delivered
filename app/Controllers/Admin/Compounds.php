@@ -5,10 +5,14 @@ use App\Controllers\BaseController;
 class Compounds extends BaseController {
 
     public function __construct() {
+        helper(['jwt']);
 		$this->data = [];
 		$this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
+        $this->guid = session()->get('guid');
         $this->compound_model = model('CompoundModel');
+
+        $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     }
 
     public function index() {

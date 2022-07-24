@@ -5,10 +5,14 @@ use App\Controllers\BaseController;
 class Categories extends BaseController {
 
     public function __construct() {
+        helper(['jwt']);
 		$this->data = [];
 		$this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
+        $this->guid = session()->get('guid');
         $this->category_model = model('CategoryModel');
+
+        $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     }
 
     public function index() {
