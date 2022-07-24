@@ -27,7 +27,7 @@
         <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Product Informations</h5>
+              <h5 class="font-weight-bolder">Product Information</h5>
               <div class="row mt-4">
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>

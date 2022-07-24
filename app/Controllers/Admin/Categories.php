@@ -25,7 +25,8 @@ class Categories extends BaseController {
               'current' => $page_title,
             ];
             $this->data['page_title'] = $page_title;
-            $this->data['categories'] = $this->category_model->where('parent', 0)->get()->getResult();
+            // $this->data['categories'] = $this->category_model->where('parent', 0)->get()->getResult();
+            $this->data['categories'] = $this->category_model->get()->getResult();
       
                 echo view('admin/manage_categories', $this->data);
         }
@@ -50,21 +51,27 @@ class Categories extends BaseController {
             $this->data['page_title'] = $page_title;
             $this->data['submit_url'] = base_url('/admin/categories/add_category');
 
+
+            // NOTE: For now can only add child category to top level categories (parent = 0)
+            $this->data['categories'] = $this->category_model->where('parent', 0)->get()->getResult();
+
             // Check if there are posted form data.
             $this->data['post_data'] = $this->request->getPost();
 
             if($this->request->getPost()) {
                 $to_save = [
-					'name' => $this->request->getVar('name'),
-					'url' => $this->request->getVar('url'),
-					'parent' => $this->request->getVar('parent'),
-					'weight' => $this->request->getVar('weight'),
+					'name' => $this->request->getVar('cat_name'),
+					'url' => $this->request->getVar('cat_url'),
+					'parent' => $this->request->getVar('parent_cat'),
+					'weight' => $this->request->getVar('cat_weight'),
 				];
 
                 $this->save_category($to_save); 
+                return redirect()->to('/admin/categories');
             }
-
-            echo view('admin/add_category', $this->data);
+            else {
+                echo view('admin/add_category', $this->data);
+            }
         }
         else {
             return redirect()->to('/');
@@ -75,6 +82,6 @@ class Categories extends BaseController {
         $this->category_model->save($to_save);
         $session = session();
         $session->setFlashdata('success', 'Category Added Successfully');
-        return redirect()->to('/admin/categories');
+        // return redirect()->to('/admin/categories');
     }
 }
