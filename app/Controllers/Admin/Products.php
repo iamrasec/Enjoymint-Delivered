@@ -18,8 +18,8 @@ class Products extends BaseController {
     $this->measurement_model = model('MeasurementModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
-    $this->image_model = model('imageModel');
-    $this->product_variant_model = model('productVariantModel');
+    $this->image_model = model('ImageModel');
+    $this->product_variant_model = model('ProductVariantModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
