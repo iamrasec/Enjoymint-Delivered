@@ -71,7 +71,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Category</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="product=category" name="category[]" id="category" multiple="multiple">
+                  <select class="product=category" name="category" id="category">
                     <?php foreach($categories as $category): ?>
                     <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                     <?php endforeach; ?>
