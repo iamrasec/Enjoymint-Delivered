@@ -68,6 +68,35 @@
                 </div>
               </div>
               <div class="row mt-4">
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Category</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="product=category" name="category[]" id="category" multiple="multiple">
+                    <?php foreach($categories as $category): ?>
+                    <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Price</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
+                <div class="col-sm-12">
+                  <label class="mt-4">Description</label>
+                  <p class="form-text text-muted text-xs ms-1 d-inline">
+                    (optional)
+                  </p>
+                  <div id="edit-description-edit" class="h-50">
+                    <textarea class="w-100" id="description" name="description"></textarea>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="row mt-4">
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
                   <div class="input-group input-group-dynamic">
@@ -129,25 +158,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Price</label>
-                  <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
-                  </div>
-                </div>
-                <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
-                <div class="col-sm-12">
-                  <label class="mt-4">Description</label>
-                  <p class="form-text text-muted text-xs ms-1 d-inline">
-                    (optional)
-                  </p>
-                  <div id="edit-description-edit" class="h-50">
-                    <textarea class="w-100" id="description" name="description"></textarea>
-                  </div>
-                </div>
-                
               </div>
             </div>
           </div>

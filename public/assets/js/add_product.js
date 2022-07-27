@@ -1,4 +1,8 @@
 (function($) {
+  $(document).ready(function() {
+    $('.product=category').select2();
+  });
+
   $(document).on('keyup', '#product_name', function() {
     $('#purl').val(slugify($(this).val()));
   });

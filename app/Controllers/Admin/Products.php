@@ -14,6 +14,7 @@ class Products extends BaseController {
     $this->product_model = model('productModel');
     $this->strain_model = model('strainModel');
     $this->brand_model = model('brandModel');
+    $this->category_model = model('CategoryModel');
     $this->measurement_model = model('measurementModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
@@ -53,6 +54,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
       $this->data['strains'] = $this->strain_model->get()->getResult();
+      $this->data['categories'] = $this->category_model->get()->getResult();
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
       echo view('admin/add_product', $this->data);
   }
