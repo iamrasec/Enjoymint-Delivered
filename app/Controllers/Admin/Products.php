@@ -38,7 +38,7 @@ class Products extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['products'] = $this->product_model->get()->getResult();
-    return view('admin/products_list_view', $this->data);
+    return view('Admin/products_list_view', $this->data);
   }
 
   public function add_product() 
@@ -56,7 +56,7 @@ class Products extends BaseController {
       $this->data['strains'] = $this->strain_model->get()->getResult();
       $this->data['categories'] = $this->category_model->get()->getResult();
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
-      echo view('admin/add_product', $this->data);
+      echo view('Admin/add_product', $this->data);
   }
   
   public function save_product() {
@@ -90,7 +90,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['strains'] = $this->strain_model->get()->getResult();
 
-		  echo view('admin/manage_strains', $this->data);
+		  echo view('Admin/manage_strains', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -127,7 +127,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -155,7 +155,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
 
-		  echo view('admin/manage_brands', $this->data);
+		  echo view('Admin/manage_brands', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -194,7 +194,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -215,7 +215,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
-		  echo view('admin/product_measurements', $this->data);
+		  echo view('Admin/product_measurements', $this->data);
     }
     else {
       return redirect()->to('/');
