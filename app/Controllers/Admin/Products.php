@@ -11,11 +11,11 @@ class Products extends BaseController {
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
-    $this->product_model = model('productModel');
-    $this->strain_model = model('strainModel');
-    $this->brand_model = model('brandModel');
+    $this->product_model = model('ProductModel');
+    $this->strain_model = model('StrainModel');
+    $this->brand_model = model('BrandModel');
     $this->category_model = model('CategoryModel');
-    $this->measurement_model = model('measurementModel');
+    $this->measurement_model = model('MeasurementModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('imageModel');
