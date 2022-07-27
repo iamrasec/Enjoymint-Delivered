@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class userModel extends Model {
+class UserModel extends Model {
   protected $table = 'users';
   protected $allowedFields = ['guid', 'first_name', 'last_name', 'email', 'role', 'password', 'updated_at'];
   protected $beforeInsert = ['beforeInsert'];
