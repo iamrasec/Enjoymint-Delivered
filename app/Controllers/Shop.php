@@ -35,7 +35,8 @@ class Shop extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-        $this->data['products'] = $this->product_model->get()->getResult();
+        // $this->data['products'] = $this->product_model->get()->getResult();
+        $this->data['products'] = $this->product_model->getAllProducts();
         $this->data['categories'] = $this->category_model->get()->getResult();
         return view('shop_view', $this->data);
     }
