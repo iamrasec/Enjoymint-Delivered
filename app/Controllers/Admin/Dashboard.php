@@ -12,7 +12,7 @@ class Dashboard extends BaseController {
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
 
-    $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
+    $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
