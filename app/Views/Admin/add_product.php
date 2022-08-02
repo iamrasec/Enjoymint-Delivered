@@ -137,7 +137,30 @@
                     <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
-                <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
+                <div class="col-8 col-md-8 col-xs-12 mb-3"> 
+                <div class="">
+                    <label>Unit</label>
+                    <input type="text" name="unit[]" class="form-control">
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
+                <div class="">
+                    <label>Unit Value</label>
+                    <input type="number" name="value[]" class="form-control">
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
+                <div class="">
+                    <label>Price</label>
+                    <input type="number" name="price[]" class="form-control">
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
+                <div class="">
+                    <label>Stocks/Qty</label>
+                    <input type="number" name="qty[]" class="form-control">
+                  </div>
+                </div>
                 <div class="col-sm-12">
                   <label class="mt-4">Description</label>
                   <p class="form-text text-muted text-xs ms-1 d-inline">
@@ -153,7 +176,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <h6>Variants</h6>                
+          <!-- <h6>Variants</h6>                
           <div class="row" id='variants'>
             <div class="row">
               <div class="col-lg-10">
@@ -182,7 +205,7 @@
               </div>
             </div><hr class='breaker'>
           </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button> -->
 
           <br><br><br>
           <h6>Images</h6>
