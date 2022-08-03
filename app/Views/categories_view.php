@@ -13,7 +13,7 @@
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1><?= $page_title; ?></h1>
         <div class="row">
-          <?php if($products != null): ?>
+          <?php if($products == null): ?>
           <div class="col-12 col-md-12 pt-4 pb-4">
             <p>No Products available for this Category.</p>
           </div>
