@@ -21,7 +21,7 @@
         <div class="row mt-5">
           <?php foreach($categories as $category): ?>
           <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="<?= base_url($category->url); ?>"><?= $category->name; ?></a>
+            <a href="<?= base_url('categories/'.$category->url); ?>"><?= $category->name; ?></a>
           </div>
           <?php endforeach; ?>
         </div>
