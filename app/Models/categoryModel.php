@@ -8,6 +8,9 @@ class CategoryModel extends Model {
   protected $table = 'categories';
   protected $allowedFields = ['name', 'url', 'parent', 'weight'];
 
+  /** 
+   * Get Products in a Particular Category
+   */
   public function categoryGetProducts($cid) {
     $this->select('products.*, compounds.thc_pct, compounds.thc_pct, compounds.thc_mg, compounds.cbd_pct, compounds.cbd_mg');
     $this->join('product_categories', 'product_categories.cid = categories.id', 'inner');
