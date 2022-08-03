@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 
 $routes->get('categories/(:any)', 'Categories::index/$1');
+$routes->get('products/(:any)', 'Products::index/$1');
 
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 // $routes->get('logout', 'User::logout');
