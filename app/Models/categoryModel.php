@@ -10,6 +10,7 @@ class CategoryModel extends Model {
 
   /** 
    * Get Products in a Particular Category
+   * 
    */
   public function categoryGetProducts($cid) {
     $this->select('products.*, compounds.thc_pct, compounds.thc_pct, compounds.thc_mg, compounds.cbd_pct, compounds.cbd_mg');
