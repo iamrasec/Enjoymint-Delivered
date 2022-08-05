@@ -82,7 +82,7 @@ It's a separate element, as animating opacity is faster than rgba(). -->
                   </div>
                 </div>
                 <div class="col-lg-5 mx-auto">
-                  <h3 class="mt-lg-0 mt-4">Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h3>
+                  <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
