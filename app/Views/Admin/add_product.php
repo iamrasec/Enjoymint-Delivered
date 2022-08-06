@@ -71,7 +71,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Category</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="product=category form-control w-100 border px-2" name="category" id="category" onfocus="focused(this)" onfocusout="defocused(this)">
+                  <select class="product-category form-control w-100 border px-2" name="category" id="category" onfocus="focused(this)" onfocusout="defocused(this)">
                     <?php foreach($categories as $category): ?>
                     <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                     <?php endforeach; ?>
