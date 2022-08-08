@@ -1,6 +1,9 @@
 (function($) {
   $(document).ready(function() {
-    $('.product=category').select2();
+    $('.product-category').select2({
+      placeholder: "Select a Category",
+      // allowClear: true
+    });
   });
 
   $(document).on('keyup', '#product_name', function() {
@@ -166,6 +169,10 @@
     formData.append('brand', $('#brand').value);
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
+    formData.append('categories', $('#category').val());
+
+    console.log(formData);
+    console.log($('#category').val());
 
     fetch('/api/products/add',  {
       method: 'POST',
@@ -175,7 +182,7 @@
       }
     }) .then(response => response.json() ).then(response => {
         var { message, success }  = response;
-        success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
+        // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);
     });
