@@ -28,17 +28,18 @@
           <div class="card">
             <div class="card-body">
               <h5 class="font-weight-bolder">Product Information</h5>
+              <pre><?php print_r($product_data); ?></pre>
               <div class="row mt-4">
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" required onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" value="<?= $product_data->name; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">SKU</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" class="form-control w-100 border px-2" id="sku" name="sku" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="text" class="form-control w-100 border px-2" id="sku" name="sku" value="<?= $product_data->sku; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -51,7 +52,7 @@
                     </div>
                     <div class="col-8 col-md-8 col-xs-8 mb-3 ps-1">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" value="<?= $product_data->url; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -61,7 +62,7 @@
                     <div class="col-md-12 col-xs-12">
                       <label class="form-label">Stock Quantity</label>
                       <div class="input-group input-group-dynamic">
-                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" id="qty" name="qty" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" id="qty" name="qty" value="<?= $product_data->stocks; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -81,7 +82,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Price</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
@@ -91,7 +92,7 @@
                     (optional)
                   </p>
                   <div id="edit-description-edit" class="h-50">
-                    <textarea class="w-100" id="description" name="description"></textarea>
+                    <textarea class="w-100" id="description" name="description"><?= $product_data->description; ?></textarea>
                   </div>
                 </div>
                 
@@ -100,7 +101,7 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="strain" id="select_strain" class="form-control w-100 border px-2">
+                    <select name="strain" id="select_strain" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($strains as $strain): ?>
                       <option value="<?php echo $strain->id; ?>"><?php echo $strain->name; ?></option>
@@ -111,7 +112,7 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Brand <button id="new_brand" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newBrandModal">Add New Brand</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="brand" id="select_brand" class="form-control w-100 border px-2">
+                    <select name="brand" id="select_brand" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($brands as $brand): ?>
                       <option value="<?php echo $brand->id; ?>"><?php echo $brand->name; ?></option>
@@ -132,7 +133,7 @@
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="thc_measure" id="thc_measure" class="form-control w-100 border px-2">
+                        <select name="thc_measure" class="form-control">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
                         </select>
@@ -150,7 +151,7 @@
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="cbd_measure" id="cbd_measure" class="form-control w-100 border px-2">
+                        <select name="cbd_measure" class="form-control">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
                         </select>

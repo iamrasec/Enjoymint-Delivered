@@ -23,6 +23,7 @@ class Products extends ResourceController
       $this->product_variant_model = model('productVariantModel');
       $this->category_model = model('CategoryModel');
       $this->product_category = model('ProductCategory');
+      $this->compound_model = model('CompoundModel');
   
       if($this->isLoggedIn !== 1 && $this->role !== 1) {
         return redirect()->to('/');
@@ -39,6 +40,8 @@ class Products extends ResourceController
   {
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
+
+    print_r($this->request->getPost());
 
     if($this->request->getPost()) {
       $rules = [
@@ -104,6 +107,18 @@ class Products extends ResourceController
           }
         }
 
+        //Save Compounds
+        $saveCompounds = [
+          'pid' => $productId,
+          'thc_unit' => $this->request->getVar('thc_measure'),
+          'thc_value' => ($this->request->getVar('thc_val') ? $this->request->getVar('thc_val') : 0),
+          'cbd_unit' => $this->request->getVar('cbd_measure'),
+          'cbd_value' => ($this->request->getVar('cbd_val') ? $this->request->getVar('cbd_val') : 0),
+        ];
+
+        $this->compound_model->save($saveCompounds);
+
+        // Save Variants
         $variantCount = count($this->request->getVar('prices[]'));
         for($x=0;$x<$variantCount;$x++){
           $variantData = [

@@ -13,8 +13,4 @@ class ProductModel extends Model {
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     return $this->get()->getResult();
   }
-
-  public function getProductCategories($pid) {
-    
-  }
 }

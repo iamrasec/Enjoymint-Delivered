@@ -165,10 +165,12 @@
     formData.append('description', $('#description').val());
     formData.append('qty', $('#qty').val());
     formData.append('price', $('#price').val());
-    formData.append('strain', $('#strain').value);
-    formData.append('brand', $('#brand').value);
+    formData.append('strain', $('#select_strain').val());
+    formData.append('brand', $('#select_brand').val());
     formData.append('thc_val', $('#thc_val').val());
+    formData.append('thc_measure', $('#thc_measure').val());
     formData.append('cbd_val', $('#cbd_val').val());
+    formData.append('cbd_measure', $('#cbd_measure').val());
     formData.append('categories', $('#category').val());
 
     fetch('/api/products/add',  {
@@ -179,7 +181,7 @@
       }
     }) .then(response => response.json() ).then(response => {
         var { message, success }  = response;
-        success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
+        // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);
     });
