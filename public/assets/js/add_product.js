@@ -171,9 +171,6 @@
     formData.append('cbd_val', $('#cbd_val').val());
     formData.append('categories', $('#category').val());
 
-    console.log(formData);
-    console.log($('#category').val());
-
     fetch('/api/products/add',  {
       method: 'POST',
       body: formData,
@@ -182,7 +179,7 @@
       }
     }) .then(response => response.json() ).then(response => {
         var { message, success }  = response;
-        // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
+        success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);
     });

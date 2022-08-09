@@ -22,6 +22,7 @@ class Products extends ResourceController
       $this->image_model = model('imageModel');
       $this->product_variant_model = model('productVariantModel');
       $this->category_model = model('CategoryModel');
+      $this->product_category = model('ProductCategory');
   
       if($this->isLoggedIn !== 1 && $this->role !== 1) {
         return redirect()->to('/');
@@ -38,8 +39,6 @@ class Products extends ResourceController
   {
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
-
-    print_r($this->request->getPost());
 
     if($this->request->getPost()) {
       $rules = [
@@ -95,7 +94,14 @@ class Products extends ResourceController
         // Save Categories
         if($this->request->getVar('categories') != "") {
           $categories = explode(",", $this->request->getVar('categories'));
-          print_r($categories);
+
+          foreach($categories as $category) {
+            $saveCat = [
+              'pid' => $productId,
+              'cid' => $category,
+            ];
+            $this->product_category->save($saveCat);
+          }
         }
 
         $variantCount = count($this->request->getVar('prices[]'));
