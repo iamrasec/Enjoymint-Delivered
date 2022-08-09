@@ -62,7 +62,7 @@
                     <div class="col-md-12 col-xs-12">
                       <label class="form-label">Stock Quantity</label>
                       <div class="input-group input-group-dynamic">
-                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" id="qty" name="qty" value="<?= $product_data->stocks; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" min="0" value="<?= $product_data->stocks; ?>" class="form-control w-100 border px-2" id="qty" name="qty" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -74,7 +74,8 @@
                   <div class="input-group input-group-dynamic">
                   <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
                     <?php foreach($categories as $category): ?>
-                    <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                    <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                    <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
                     <?php endforeach; ?>
                   </select>
                   </div>
@@ -104,7 +105,7 @@
                     <select name="strain" id="select_strain" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($strains as $strain): ?>
-                      <option value="<?php echo $strain->id; ?>"><?php echo $strain->name; ?></option>
+                      <option value="<?php echo $strain->id; ?>" <?php echo ($product_data->strain == $strain->id) ? 'selected' : ''; ?>><?php echo $strain->name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -115,7 +116,7 @@
                     <select name="brand" id="select_brand" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($brands as $brand): ?>
-                      <option value="<?php echo $brand->id; ?>"><?php echo $brand->name; ?></option>
+                      <option value="<?php echo $brand->id; ?>" <?php echo ($product_data->brands == $brand->id) ? 'selected' : ''; ?>><?php echo $brand->name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -128,14 +129,14 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" required  onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="<?= $product_data->thc_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
                         <select name="thc_measure" class="form-control">
-                          <option value="pct">Percent (%)</option>
-                          <option value="mg">Milligrams (mg)</option>
+                          <option value="pct" <?php echo ($product_data->thc_unit == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
+                          <option value="mg" <?php echo ($product_data->thc_unit == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                         </select>
                       </div>
                     </div>
@@ -146,14 +147,14 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="<?= $product_data->cbd_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
                         <select name="cbd_measure" class="form-control">
-                          <option value="pct">Percent (%)</option>
-                          <option value="mg">Milligrams (mg)</option>
+                        <option value="pct" <?php echo ($product_data->cbd_unit == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
+                          <option value="mg" <?php echo ($product_data->cbd_unit == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                         </select>
                       </div>
                     </div>

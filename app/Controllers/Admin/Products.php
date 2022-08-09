@@ -16,6 +16,7 @@ class Products extends BaseController {
     $this->brand_model = model('BrandModel');
     $this->category_model = model('CategoryModel');
     $this->measurement_model = model('MeasurementModel');
+    $this->product_category = model('ProductCategory');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -236,7 +237,20 @@ class Products extends BaseController {
     $this->data['strains'] = $this->strain_model->get()->getResult();
     $this->data['categories'] = $this->category_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
-    $this->data['product_data'] = $this->product_model->where('id', $pid)->get()->getResult()[0];
+    $this->data['product_data'] = $this->product_model->getProductData($pid);
+
+    $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
+    $assignedCat = [];
+    
+    if($categories) {
+      // print_r($categories);die();
+      foreach($categories as $category) {
+        $assignedCat[] = $category->cid;
+      }
+    }
+    
+    $this->data['product_categories'] = $assignedCat;
+
     echo view('Admin/edit_product', $this->data);
   }
 

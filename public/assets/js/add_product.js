@@ -143,21 +143,21 @@
       formData.append('productImages[]', item.files[0]);
     });
 
-    $('input[name="unit[]"]').each(function () {
-      formData.append('units[]', $(this).val());
-    });
+    // $('input[name="unit[]"]').each(function () {
+    //   formData.append('units[]', $(this).val());
+    // });
 
-    $('input[name="value[]"]').each(function () {
-      formData.append('unit_values[]', $(this).val());
-    });
+    // $('input[name="value[]"]').each(function () {
+    //   formData.append('unit_values[]', $(this).val());
+    // });
 
-    $('input[name="price[]"]').each(function () {
-      formData.append('prices[]', $(this).val());
-    });
+    // $('input[name="price[]"]').each(function () {
+    //   formData.append('prices[]', $(this).val());
+    // });
 
-    $('input[name="qty[]"]').each(function () {
-      formData.append('stocks[]', $(this).val());
-    });
+    // $('input[name="qty[]"]').each(function () {
+    //   formData.append('stocks[]', $(this).val());
+    // });
 
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
@@ -172,6 +172,8 @@
     formData.append('cbd_val', $('#cbd_val').val());
     formData.append('cbd_measure', $('#cbd_measure').val());
     formData.append('categories', $('#category').val());
+    formData.append('unit_measure', $('#unit').val());
+    formData.append('unit_value', $('#unit_value').val());
 
     fetch('/api/products/add',  {
       method: 'POST',

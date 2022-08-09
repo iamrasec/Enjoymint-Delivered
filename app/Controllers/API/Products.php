@@ -89,6 +89,8 @@ class Products extends ResourceController
           'brands' => $this->request->getVar('brand'),
           'price' => $this->request->getVar('price'),
           'sku' => $this->request->getVar('sku'),
+          'unit_measure' => $this->request->getVar('unit_measure'),
+          'unit_value' => $this->request->getVar('unit_value'),
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
@@ -119,17 +121,18 @@ class Products extends ResourceController
         $this->compound_model->save($saveCompounds);
 
         // Save Variants
-        $variantCount = count($this->request->getVar('prices[]'));
-        for($x=0;$x<$variantCount;$x++){
-          $variantData = [
-            'pid' => $productId,
-            'unit	' => $_POST['units'][$x],
-            'unit_value' => $_POST['unit_values'][$x],
-            'price' => $_POST['prices'][$x],
-            'stock' => $_POST['stocks'][$x]
-          ];
-          $this->product_variant_model->save($variantData); // try to save product variant
-        }
+        // $variantCount = count($this->request->getVar('prices[]'));
+        // for($x=0;$x<$variantCount;$x++){
+        //   $variantData = [
+        //     'pid' => $productId,
+        //     'unit	' => $_POST['units'][$x],
+        //     'unit_value' => $_POST['unit_values'][$x],
+        //     'price' => $_POST['prices'][$x],
+        //     'stock' => $_POST['stocks'][$x]
+        //   ];
+        //   $this->product_variant_model->save($variantData); // try to save product variant
+        // }
+
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {
         $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
