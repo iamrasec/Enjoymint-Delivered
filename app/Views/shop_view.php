@@ -444,6 +444,15 @@
     counter++;
     document.querySelector('.count_cart').innerHTML = counter;
   });
+  // var count = (function () {
+  //   var counter = 0;
+  //   return function () {return counter +=;}
+  // })();
+
+  // function display(){
+  //   document.getElementById('count_cart').innerHTML = count();
+  // };
+
  </script>  
 <?php $this->endSection() ?>
 
