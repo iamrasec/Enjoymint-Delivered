@@ -16,14 +16,16 @@
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="#"><img class="prod_image" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
               </div>
               <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
+                <input type="text" id="productName" value="Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies" hidden>
+                <a href="#"><h5 class="productName" id="prod_name">Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
                 <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
+                <p><span class="price" value="33.50">$33.50</span></p>
+                <button class="btn bg-gradient-primary " id="btn_pr">Add to cart</button>
               </div>
-            </div>
+            </div>  
           </div>
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
@@ -397,7 +399,6 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -435,4 +436,14 @@
 
 </div>
 
+ <script type="text/javascript">
+  let btnCounter = document.querySelector('#btn_pr');
+  let counter = 0;
+
+  btnCounter.addEventListener('click', function(){
+    counter++;
+    document.querySelector('.count_cart').innerHTML = counter;
+  });
+ </script>  
 <?php $this->endSection() ?>
+
