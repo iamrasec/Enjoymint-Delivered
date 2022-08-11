@@ -30,8 +30,13 @@ class Products extends BaseController
 
     public function index($url = '')
     {
+
         if($url != '') {
-            $product = $this->product_model->where('url', $url)->get()->getResult()[0];
+            $product = $this->product_model->where('url', $url)->get()->getResult();
+
+            if(!empty($product)) {
+                $product = $product[0];
+            }
             
         }
         else {
@@ -39,6 +44,7 @@ class Products extends BaseController
             return $this->view_all_products();
         }
         
+        // print_r($product);die();
 
         $page_title = $product->name;
 
@@ -50,10 +56,33 @@ class Products extends BaseController
         $this->data['page_title'] = $page_title;
         $this->data['product'] = $product;
 
+        // print_r($product->images);die();
+
+        $imageIds = explode(',',$product->images);
+
+        // print_r($imageIds);die();
+
+        $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+
+        // print_r($this->image_model->getLastQuery());
+
+        // print_r($this->data['images']);die();
+
         echo view('product_view', $this->data);
     }
 
     public function view_all_products() {
         echo "view all products";
+    }
+
+    public function images($filename) {
+        $filepath = WRITEPATH . 'uploads/' . $filename;
+
+        $mime = mime_content_type($filepath);
+        header('Content-Length: ' . filesize($filepath));
+        header("Content-Type: $mime");
+        header('Content-Disposition: inline; filename="' . $filepath . '";');
+        readfile($filepath);
+        exit();
     }
 }

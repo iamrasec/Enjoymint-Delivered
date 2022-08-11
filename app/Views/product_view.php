@@ -12,30 +12,20 @@
             <div class="card-body">
               <h5 class="mb-4">Product Details</h5>
               <div class="row">
+
                 <div class="col-xl-5 col-lg-6 text-center">
-                  <img class="w-100 border-radius-lg shadow-lg mx-auto" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" alt="chair">
+                  <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
+
                   <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
-                    <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                      <a href="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="contentUrl" data-size="500x600">
-                        <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" alt="Image description" />
-                      </a>
+                    <?php foreach($images as $image): ?>
+                      <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                        <a href="<?= base_url('products/images/'.$image->filename); ?>" itemprop="contentUrl" data-size="500x600">
+                          <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
+                        </a>
                     </figure>
-                    <figure class="ms-3" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                      <a href="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="contentUrl" data-size="500x600">
-                        <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="thumbnail" alt="Image description" />
-                      </a>
-                    </figure>
-                    <figure class="ms-3" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                      <a href="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="contentUrl" data-size="500x600">
-                        <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="thumbnail" alt="Image description" />
-                      </a>
-                    </figure>
-                    <figure class="ms-3" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                      <a href="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="contentUrl" data-size="500x600">
-                        <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" itemprop="thumbnail" alt="Image description" />
-                      </a>
-                    </figure>
+                    <?php endforeach; ?>
                   </div>
+                  
                   <!-- Root element of PhotoSwipe. Must have class pswp. -->
                   <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
                     <!-- Background of PhotoSwipe.
@@ -81,6 +71,7 @@ It's a separate element, as animating opacity is faster than rgba(). -->
                     </div>
                   </div>
                 </div>
+
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
                   <div class="rating">
