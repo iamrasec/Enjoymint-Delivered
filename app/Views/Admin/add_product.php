@@ -67,6 +67,25 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row mt-4">
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Unit</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <option value="pct">Percent (%)</option>
+                    <option value="mg">Milligrams (mg)</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Unit value</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
+                  </div>
+                </div>
+              </div>
+
               <div class="row mt-4">
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Category</label>
@@ -81,7 +100,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Price</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
@@ -93,9 +112,9 @@
                   <div id="edit-description-edit" class="h-50">
                     <textarea class="w-100" id="description" name="description"></textarea>
                   </div>
-                </div>
-                
+                </div>  
               </div>
+
               <div class="row mt-4">
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
@@ -163,7 +182,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <h6>Variants</h6>                
+          <!-- <h6>Variants</h6>                
           <div class="row" id='variants'>
             <div class="row">
               <div class="col-lg-10">
@@ -192,9 +211,11 @@
               </div>
             </div><hr class='breaker'>
           </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button> 
 
-          <br><br><br>
+          <br><br><br>-->
+
+
           <h6>Images</h6>
           <div class="row" id='image_lists'>
             <div class="row">
@@ -208,6 +229,7 @@
           </div>
           <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
         </div>
+
       </div>
     </form>
   </div>
