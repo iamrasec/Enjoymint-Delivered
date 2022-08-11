@@ -3,7 +3,7 @@
   <div class="row"><div class="col-12">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-absolute bg-transparent shadow-none">
       <div class="container-fluid px-0">
-        <a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+        <a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom">
           <img src="/assets/img/Enjoymint-Logo-Landscape-White-2.png" class="logo" />
         </a>
         <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
