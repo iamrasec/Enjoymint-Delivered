@@ -22,7 +22,7 @@
               </div>
               <div class="product-info">
                 <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
-                <p><?= $product->thc_pct; ?>% THC</p>
+                <p><?= $product->thc_value; ?><?= $product->thc_unit; ?> THC</p>
                 <p class="price">$<span>33.50</span></p>
               </div>
             </div>
