@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Products extends BaseController
+class Categories extends BaseController
 {
     var $view_data = array();
 
@@ -28,32 +28,23 @@ class Products extends BaseController
         }
     }
 
-    public function index($url = '')
+    public function index($url)
     {
-        if($url != '') {
-            $product = $this->product_model->where('url', $url)->get()->getResult()[0];
-            
-        }
-        else {
-            $product = $this->product_model->get()->getResult();
-            return $this->view_all_products();
-        }
-        
+        $categories = $this->category_model->where('url', $url)->get()->getResult()[0];
 
-        $page_title = $product->name;
+        $page_title = $categories->name;
 
-        $this->data['page_body_id'] = "product-".$product->id;
+        // print_r($categories);
+
+        $this->data['page_body_id'] = "shop";
         $this->data['breadcrumbs'] = [
         'parent' => [],
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-        $this->data['product'] = $product;
-
-        echo view('product_view', $this->data);
-    }
-
-    public function view_all_products() {
-        echo "view all products";
+        // $this->data['products'] = $this->product_model->get()->getResult();
+        // $this->data['products'] = $this->product_model->getAllProducts();
+        $this->data['products'] = $this->category_model->categoryGetProducts($categories->id);
+        return view('categories_view', $this->data);
     }
 }

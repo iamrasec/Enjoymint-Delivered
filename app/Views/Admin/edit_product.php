@@ -14,7 +14,8 @@
   <!-- End Navbar -->
   
   <div class="container-fluid py-4">
-    <form id="add_product" class="enjoymint-form" enctype="multipart/form-data">
+    <form id="edit_product" class="enjoymint-form" enctype="multipart/form-data">
+      <input type="hidden" value="<?= $product_data->id; ?>" name="pid" id="pid">
       <div class="row">
         <div class="col-lg-6">
           <h4><?php echo $page_title; ?></h4>
@@ -32,13 +33,13 @@
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" required onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input type="text" id="product_name" class="form-control w-100 border px-2" name="name" value="<?= $product_data->name; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">SKU</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="text" class="form-control w-100 border px-2" id="sku" name="sku" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="text" class="form-control w-100 border px-2" id="sku" name="sku" value="<?= $product_data->sku; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -51,7 +52,7 @@
                     </div>
                     <div class="col-8 col-md-8 col-xs-8 mb-3 ps-1">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" id="purl" class="form-control w-100 border px-2" name="purl" value="<?= $product_data->url; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -61,7 +62,7 @@
                     <div class="col-md-12 col-xs-12">
                       <label class="form-label">Stock Quantity</label>
                       <div class="input-group input-group-dynamic">
-                        <input type="number" min="0" value="0" class="form-control w-100 border px-2" id="qty" name="qty" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" min="0" value="<?= $product_data->stocks; ?>" class="form-control w-100 border px-2" id="qty" name="qty" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                   </div>
@@ -73,15 +74,15 @@
                   <label class="form-label" for="name">Unit</label>
                   <div class="input-group input-group-dynamic">
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="pct">Percent (%)</option>
-                    <option value="mg">Milligrams (mg)</option>
+                    <option value="pct" <?= ($product_data->unit_measure == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
+                    <option value="mg" <?= ($product_data->unit_measure == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                   </select>
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Unit value</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -92,7 +93,8 @@
                   <div class="input-group input-group-dynamic">
                   <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
                     <?php foreach($categories as $category): ?>
-                    <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                    <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                    <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
                     <?php endforeach; ?>
                   </select>
                   </div>
@@ -100,7 +102,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Price</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
@@ -110,19 +112,19 @@
                     (optional)
                   </p>
                   <div id="edit-description-edit" class="h-50">
-                    <textarea class="w-100" id="description" name="description"></textarea>
+                    <textarea class="w-100" id="description" name="description"><?= $product_data->description; ?></textarea>
                   </div>
-                </div>  
+                </div>
+                
               </div>
-
               <div class="row mt-4">
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="strain" id="select_strain" class="form-control w-100 border px-2">
+                    <select name="strain" id="select_strain" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($strains as $strain): ?>
-                      <option value="<?php echo $strain->id; ?>"><?php echo $strain->name; ?></option>
+                      <option value="<?php echo $strain->id; ?>" <?php echo ($product_data->strain == $strain->id) ? 'selected' : ''; ?>><?php echo $strain->name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -130,10 +132,10 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Brand <button id="new_brand" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newBrandModal">Add New Brand</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="brand" id="select_brand" class="form-control w-100 border px-2">
+                    <select name="brand" id="select_brand" class="form-control">
                       <option value="0">None</option>
                       <?php foreach($brands as $brand): ?>
-                      <option value="<?php echo $brand->id; ?>"><?php echo $brand->name; ?></option>
+                      <option value="<?php echo $brand->id; ?>" <?php echo ($product_data->brands == $brand->id) ? 'selected' : ''; ?>><?php echo $brand->name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -146,14 +148,15 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" required  onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="<?= $product_data->thc_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="thc_measure" id="thc_measure" class="form-control w-100 border px-2">
-                          <option value="pct">Percent (%)</option>
-                          <option value="mg">Milligrams (mg)</option>
+                        <select name="thc_measure" id="thc_measure" class="form-control">
+                          <option>Please select THC Unit of Measure</option>
+                          <option value="pct" <?php echo ($product_data->thc_unit == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
+                          <option value="mg" <?php echo ($product_data->thc_unit == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                         </select>
                       </div>
                     </div>
@@ -164,14 +167,15 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="<?= $product_data->cbd_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="cbd_measure" id="cbd_measure" class="form-control w-100 border px-2">
-                          <option value="pct">Percent (%)</option>
-                          <option value="mg">Milligrams (mg)</option>
+                        <select name="cbd_measure" id="cbd_measure" class="form-control">
+                          <option>Please select CBD Unit of Measure</option>
+                          <option value="pct" <?php echo ($product_data->cbd_unit == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
+                          <option value="mg" <?php echo ($product_data->cbd_unit == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                         </select>
                       </div>
                     </div>
@@ -211,10 +215,9 @@
               </div>
             </div><hr class='breaker'>
           </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button> 
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
 
-          <br><br><br>-->
-
+          <br><br><br> -->
 
           <h6>Images</h6>
           <div class="row" id='image_lists'>
@@ -229,7 +232,6 @@
           </div>
           <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
         </div>
-
       </div>
     </form>
   </div>
@@ -290,5 +292,5 @@
 <?php $this->endSection(); ?>
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="<?php echo base_url(); ?>/assets/js/add_product.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
 <?php $this->endSection() ?>

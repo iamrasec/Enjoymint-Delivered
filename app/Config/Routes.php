@@ -33,6 +33,9 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->get('categories/(:any)', 'Categories::index/$1');
+$routes->get('products/(:any)', 'Products::index/$1');
+
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 // $routes->get('logout', 'User::logout');
 // $routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);

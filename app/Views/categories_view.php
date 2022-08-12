@@ -11,23 +11,28 @@
     <div class="row">
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
-        <h1>All Products</h1>
-        <!-- <pre><?php print_r($products); ?></pre> -->
+        <h1><?= $page_title; ?></h1>
         <div class="row">
+          <?php if($products == null): ?>
+          <div class="col-12 col-md-12 pt-4 pb-4">
+            <p>No Products available for this Category.</p>
+          </div>
+          <?php else: ?>
           <?php foreach($products as $product): ?>
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="<?= base_url('products/'. $product->url); ?>"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
               </div>
               <div class="product-info">
                 <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
                 <p><?= $product->thc_pct; ?>% THC</p>
-                <p class="price">$<span>33.50</span></p>
+                <p class="price">$<span><?= $product->price; ?></span></p>
               </div>
             </div>
           </div>
           <?php endforeach; ?>
+          <?php endif; ?>
         </div>
       </div>
     </div>

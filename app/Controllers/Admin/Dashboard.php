@@ -3,6 +3,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 
 class Dashboard extends BaseController {
+
   public function __construct() {
     helper(['jwt']);
 
@@ -17,7 +18,7 @@ class Dashboard extends BaseController {
       return redirect()->to('/');
     }
   }
-    
+  
   public function index() {
     $data = [];
 

@@ -133,7 +133,7 @@
     $(this).parent().parent().remove();
   });
 
-  $("#add_product").submit(function(e) {
+  $("#edit_product").submit(function(e) {
     e.preventDefault(); // avoid to execute the actual submit of the form.
 
     const formData = new FormData();
@@ -142,22 +142,6 @@
     photos.forEach(function (item, field) {
       formData.append('productImages[]', item.files[0]);
     });
-
-    // $('input[name="unit[]"]').each(function () {
-    //   formData.append('units[]', $(this).val());
-    // });
-
-    // $('input[name="value[]"]').each(function () {
-    //   formData.append('unit_values[]', $(this).val());
-    // });
-
-    // $('input[name="price[]"]').each(function () {
-    //   formData.append('prices[]', $(this).val());
-    // });
-
-    // $('input[name="qty[]"]').each(function () {
-    //   formData.append('stocks[]', $(this).val());
-    // });
 
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
@@ -175,7 +159,7 @@
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
 
-    fetch('/api/products/add',  {
+    fetch('/api/products/edit_product/' + $('#pid').val(),  {
       method: 'POST',
       body: formData,
       headers : {
@@ -183,7 +167,7 @@
       }
     }) .then(response => response.json() ).then(response => {
         var { message, success }  = response;
-        // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
+        success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);
     });

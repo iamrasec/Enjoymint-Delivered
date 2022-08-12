@@ -6,5 +6,5 @@ use CodeIgniter\Model;
 
 class CompoundModel extends Model {
   protected $table = 'compounds';
-  protected $allowedFields = ['pid', 'thc_pct', 'thc_mg', 'cbd_pct', 'cbd_mg'];
+  protected $allowedFields = ['pid', 'thc_unit', 'thc_value', 'cbd_unit', 'cbd_value'];
 }
