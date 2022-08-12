@@ -178,11 +178,12 @@
                   </div>
                 </div>
               </div>
+>>>>>>> whisula-branch
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <!-- <h6>Variants</h6>                
+          <!-- <!-- <h6>Variants</h6>                
           <div class="row" id='variants'>
             <div class="row">
               <div class="col-lg-10">

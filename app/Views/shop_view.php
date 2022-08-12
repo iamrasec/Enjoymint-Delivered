@@ -18,14 +18,14 @@
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="#"><img class="prod_image" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
               </div>
               <div class="product-info">
                 <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
                 <p><?= $product->thc_pct; ?>% THC</p>
                 <p class="price">$<span>33.50</span></p>
               </div>
-            </div>
+            </div>  
           </div>
           <?php endforeach; ?>
         </div>
@@ -62,4 +62,23 @@
 
 </div>
 
+ <script type="text/javascript">
+  let btnCounter = document.querySelector('#btn_pr');
+  let counter = 0;
+
+  btnCounter.addEventListener('click', function(){
+    counter++;
+    document.querySelector('.count_cart').innerHTML = counter;
+  });
+  // var count = (function () {
+  //   var counter = 0;
+  //   return function () {return counter +=;}
+  // })();
+
+  // function display(){
+  //   document.getElementById('count_cart').innerHTML = count();
+  // };
+
+ </script>  
 <?php $this->endSection() ?>
+
