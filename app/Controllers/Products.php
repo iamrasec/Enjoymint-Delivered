@@ -7,9 +7,6 @@ use App\Models\out;
 class Products extends BaseController
 {
     var $view_data = array();
-    public function __construct() {
-        $this->order_model = model('checkoutModel');
-    }
 
     public function __construct() {
         helper(['jwt']);
@@ -27,6 +24,7 @@ class Products extends BaseController
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
+        $this->order_model = model('checkoutModel');
     
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
           return redirect()->to('/');
