@@ -4,7 +4,7 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
-<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-6">
 
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
