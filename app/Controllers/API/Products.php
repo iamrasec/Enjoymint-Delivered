@@ -171,6 +171,7 @@ class Products extends ResourceController
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
                 $type = $img->getMimeType();
+                // $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
                 $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
                 
                 // json data to be save to image

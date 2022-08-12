@@ -3,7 +3,7 @@
   <div class="row"><div class="col-12">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-absolute bg-transparent shadow-none">
       <div class="container-fluid px-0">
-        <a class="navbar-brand font-weight-bolder ms-sm-3" href="/" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+        <a class="navbar-brand font-weight-bolder ms-sm-3" href="<?= base_url(); ?>" rel="tooltip" title="Enjoymint Delivered" data-placement="bottom">
           <img src="/assets/img/Enjoymint-Logo-Landscape-White-2.png" class="logo" />
         </a>
         <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,25 +16,25 @@
         <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
           <ul class="navbar-nav navbar-nav-hover ms-auto">
             <li class="nav-item dropdown dropdown-hover mx-2">
-              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false" href="/">
+              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="<?= base_url(); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">home</i> Home
               </a>
             </li>
 
             <li class="nav-item dropdown dropdown-hover mx-2">
-              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false" href="/shop">
+              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="<?= base_url('shop'); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">shop</i> Shop
               </a>
             </li>
 
             <li class="nav-item dropdown dropdown-hover mx-2">
               <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false" href="/about">
-                About Us
+              <i class="material-icons opacity-6 me-2 text-md">eco</i> About Us
               </a>
             </li>
             <li class="nav-item ms-lg-auto">
               <a class="nav-link nav-link-icon me-2" href="https://github.com/creativetimofficial/material-kit" target="_blank" href="/blog">
-                Blog
+              <i class="material-icons opacity-6 me-2 text-md">rss_feed</i> Blog
               </a>
             </li>
   
