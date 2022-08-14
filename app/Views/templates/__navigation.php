@@ -14,7 +14,7 @@
           </span>
         </button>
         <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
-          <ul class="navbar-nav navbar-nav-hover ms-auto">
+          <ul class="navbar-nav navbar-nav-hover ms-auto d-flex">
             <li class="nav-item dropdown dropdown-hover mx-2">
               <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="<?= base_url(); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">home</i> Home
@@ -41,25 +41,24 @@
 
             <li class="nav-item my-auto ms-3 ms-lg-0">
               
-              <a href="tel:+14084844644" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
+              <a href="tel:+14084844644" class="btn btn-sm bg-primary-green mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
             </li>
-           <div class="counter">
-            <p class="count_cart" id="count_cart">0</p>
-            </div>
             <li class="nav-item my-auto ms-3 ms-lg-0 ">
-            <div class="cart-box" >
-           <div class="cart-icon" style="margin-bottom:100px;"><a href="./checkout"><i class="material-icons opacity-6 me-2 text-md" id="cart_icon" style="color:red;">shopping_cart</i></a>
-          </div> 
-             </div>
-            </div>
-            </li>
-            <li class="nav-item my-auto ms-3 ms-lg-0">
-              <div class="cart">
-                <span class="count">1</span>
-                <!--   <span class="count">1</span> -->
-                <i class="material-icons opacity-6 me-2" style="font-size: 30px !important;">shopping_cart</i>
+              <div class="cart-box" >
+                <div class="cart-icon">
+                  <a href="./checkout"><i class="material-icons opacity-6 me-2 text-md" id="cart_icon" style="color:red;">shopping_cart</i></a>
+                </div> 
+              </div>
+              <div class="counter">
+                <p class="count_cart count" id="count_cart">0</p>
               </div>
             </li>
+            <!-- <li class="nav-item my-auto ms-3 ms-lg-0">
+              <div class="cart">
+                <span class="count">1</span>
+                <i class="material-icons opacity-6 me-2" style="font-size: 30px !important;">shopping_cart</i>
+              </div>
+            </li> -->
           </ul>
         </div>
       </div>

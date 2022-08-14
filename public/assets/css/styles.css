@@ -14,11 +14,21 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.bg-primary-green {
+  background-color: #489989;
+  color: #ffffff;
+}
+
+.btn.bg-primary-green:hover {
+  background-color: #64c5b2;
+  color: #ffffff;
+}
+
 .logo {
   height: 80px;
 }
 
-nav.navbar.sticky_header {
+nav.navbar.sticky_header, body.inner-page nav.navbar {
   background-color: rgba(38,50,48,0.95) !important;
   border-radius: 15px;
 }
@@ -84,7 +94,7 @@ footer.footer {
 }
 .cart-box {
   width: 25% !important;
-  position: absolute;
+  position: relative;
   left: 74.5%;
   top: 44%;
   
