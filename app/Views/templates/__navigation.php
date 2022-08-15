@@ -43,10 +43,10 @@
               
               <a href="tel:+14084844644" class="btn btn-sm bg-primary-green mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
             </li>
-            <li class="nav-item my-auto ms-3 ms-lg-0 ">
+            <li class="nav-item my-auto ms-3 ms-lg-0 d-flex flex-row">
               <div class="cart-box" >
                 <div class="cart-icon">
-                  <a href="./checkout"><i class="material-icons opacity-6 me-2 text-md" id="cart_icon" style="color:red;">shopping_cart</i></a>
+                  <a href="<?= base_url('checkout'); ?>"><i class="material-icons opacity-6 text-xl" id="cart_icon">shopping_cart</i></a>
                 </div> 
               </div>
               <div class="counter">
@@ -67,36 +67,11 @@
     </div>
   </div>
 </div>
-<style>
-.cart {
-  position: relative;
-  display: block;
-  width: 28px;
-  height: 28px;
-  height: auto;
-  overflow: hidden;
-}
+<!-- <style>
 .material-icons {
   position: relative;
   top: 4px;
   z-index: 1;
   font-size: 24px;
 }
-.count {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 2;
-  font-size: 11px;
-  border-radius: 50%;
-  background: #d60b28;
-  width: 16px;
-  height: 16px;
-  line-height:16px;
-  display: block;
-  text-align: center;
-  color: white;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-}
-</style>
+</style> -->
