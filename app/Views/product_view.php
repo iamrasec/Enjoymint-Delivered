@@ -14,9 +14,12 @@
               <div class="row">
 
                 <div class="col-xl-5 col-lg-6 text-center">
+                  <?php if($images): ?>
                   <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
+                  <?php endif; ?>
 
                   <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
+                    <?php if($images): ?>
                     <?php foreach($images as $image): ?>
                       <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
                         <a href="<?= base_url('products/images/'.$image->filename); ?>" itemprop="contentUrl" data-size="500x600">
@@ -24,6 +27,7 @@
                         </a>
                     </figure>
                     <?php endforeach; ?>
+                    <?php endif; ?>
                   </div>
                 </div>
 

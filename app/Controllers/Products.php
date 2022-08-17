@@ -58,14 +58,17 @@ class Products extends BaseController
         ];
         $this->data['page_title'] = $page_title;
         $this->data['product'] = $product;
+        $this->data['images'] = [];
 
         // print_r($product->images);die();
 
-        $imageIds = explode(',',$product->images);
-
+        $imageIds = [];
+        if($product->images) {
+            $imageIds = explode(',',$product->images);
+            $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        }
+        
         // print_r($imageIds);die();
-
-        $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
 
         // print_r($this->image_model->getLastQuery());
 
