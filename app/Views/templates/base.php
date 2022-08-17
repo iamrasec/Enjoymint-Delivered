@@ -29,7 +29,11 @@
 <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
 </head>
 
-<body class="<?php echo ( isset($page_body_id) && $page_body_id == 'home') ? $page_body_id : $page_body_id . ' inner-page'; ?> bg-gray-200" <?php echo ( isset($page_body_id)) ? 'id="'.$page_body_id.'"' : ''; ?>>
+<?php if(isset($page_body_id)): ?>
+<body class="<?php echo ($page_body_id == 'home') ? $page_body_id : $page_body_id . ' inner-page'; ?> bg-gray-200" <?php echo ( isset($page_body_id)) ? 'id="'.$page_body_id.'"' : ''; ?>>
+<?php else: ?>
+  <body class="inner-page bg-gray-200">
+<?php endif; ?>
 
 <?php echo $this->renderSection("content"); ?>
 

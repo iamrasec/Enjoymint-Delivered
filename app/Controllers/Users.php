@@ -192,6 +192,7 @@ class Users extends BaseController
 	}
 	public function checkout()
 	{
+				$this->data['page_body_id'] = "checkout";
         echo view('checkout');
 	}
 }
