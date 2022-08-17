@@ -267,7 +267,7 @@
             Thank you and welcome to Enjoymint Delivered!</p>
         </div>
         <div class="col-12 col-md-6">
-          <form id="contact_form" method="post" action="<?php base_url('api/contact/save'); ?>">
+          <form id="contact_form" method="post" action="<?php echo base_url('api/contact/save'); ?>">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">

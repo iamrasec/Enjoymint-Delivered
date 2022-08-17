@@ -24,7 +24,9 @@ class Contact extends ResourceController
 
     // print_r($data);
 
-    echo json_encode(["message" => true, "data" => $data]);
+    $return = $this->contact_model->insert($data);
+
+    echo json_encode(["message" => true, "data" => $data, "return" => $return]);
 
     // $return = $this->contact_model->insert($data);
 
