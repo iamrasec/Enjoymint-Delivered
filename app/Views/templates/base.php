@@ -4,6 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="atoken" content="<?php echo $user_jwt; ?>">
 <meta name="robots" content="<?= getenv('CRAWL_META'); ?>">
 
 <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
@@ -240,6 +241,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/main.js" type="text/javascript"></script>
 
+<?php echo $this->renderSection("scripts"); ?>
 
 <script type="text/javascript">
 
