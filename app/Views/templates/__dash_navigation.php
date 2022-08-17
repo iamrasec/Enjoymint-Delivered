@@ -96,7 +96,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'reviews' ? 'active' : '' ?>"  href="<?php echo base_url('/admin/products/reviews'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Reviews </span>
                 </a>
