@@ -8,7 +8,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div class="card">
+          <div class="card mt-8">
             <div class="card-body">
               <h5 class="mb-4">Product Details</h5>
               <div class="row">
