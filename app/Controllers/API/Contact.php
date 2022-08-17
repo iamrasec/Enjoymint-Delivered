@@ -22,20 +22,17 @@ class Contact extends ResourceController
   public function save() {
     $data = $this->request->getPost();
 
-    // print_r($data);
-
     $return = $this->contact_model->insert($data);
 
-    echo json_encode(["message" => true, "data" => $data, "return" => $return]);
+    // echo json_encode(["message" => true, "data" => $data, "return" => $return]);
 
-    // $return = $this->contact_model->insert($data);
 
-    // if(is_numeric($return)) {
-    //   echo json_encode(["message" => true, "data" => $return]);
-    // }
-    // else {
-    //   echo json_encode(["message" => "error"]);
-    // }
+    if(is_numeric($return)) {
+      echo json_encode(["message" => true, "data" => $return]);
+    }
+    else {
+      echo json_encode(["message" => "error"]);
+    }
     exit;
   }
   // ...
