@@ -267,37 +267,37 @@
             Thank you and welcome to Enjoymint Delivered!</p>
         </div>
         <div class="col-12 col-md-6">
-          <form id="contact_form" method="post" action="/home/submit_contact">
+          <form id="contact_form" method="post" action="<?php echo base_url('api/contact/save'); ?>">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-group input-group-dynamic mb-4">
                     <label class="form-label">First Name</label>
-                    <input class="form-control" aria-label="First Name" type="text" >
+                    <input class="form-control" aria-label="First Name" name="first_name" type="text" >
                   </div>
                 </div>
                 <div class="col-md-6 ps-2">
                   <div class="input-group input-group-dynamic">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control" placeholder="" aria-label="Last Name" >
+                    <input type="text" class="form-control" placeholder="" name="last_name" aria-label="Last Name" >
                   </div>
                 </div>
               </div>
               <div class="mb-4">
                 <div class="input-group input-group-dynamic">
                   <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Phone Number" >
+                  <input type="text" class="form-control" placeholder="" name="phone_number" aria-label="Phone Number" >
                 </div>
               </div>
               <div class="mb-4">
                 <div class="input-group input-group-dynamic">
                   <label class="form-label">Email Address</label>
-                  <input type="email" class="form-control">
+                  <input type="email" class="form-control" name="email">
                 </div>
               </div>
               <div class="input-group mb-4 input-group-static">
                 <label>Your message</label>
-                <textarea name="message" class="form-control" id="message" rows="4"></textarea>
+                <textarea name="message" class="form-control" id="message" name="message" rows="4"></textarea>
               </div>
               <div class="row">
                 <div class="col-md-12">
@@ -312,4 +312,9 @@
   </div>
 </div>
 
+<?php $this->endSection() ?>
+
+<?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?php echo base_url(); ?>/assets/js/contact.js"></script>
 <?php $this->endSection() ?>
