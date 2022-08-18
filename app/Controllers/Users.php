@@ -8,9 +8,13 @@ class Users extends BaseController
 {
 
 	public function __construct() {
-		$data = [];
+		helper(['jwt']);
+
+		$this->data = [];
+		$this->guid = session()->get('guid');
 		$this->user_model = model('UserModel');
-		
+
+		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
 	}
 
 	public function index()
@@ -39,15 +43,23 @@ class Users extends BaseController
 			// $user = $model->where('username', $this->request->getVar('username'))->first();
 			$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
 
-			/* $user = [
-				'id' => 1,
-				'email' => $this->data['post_data']['email'],
-				'role' => 'admin',
-			]; */
-
-			$this->setUserSession($user);
-
-			return redirect()->to('admin/dashboard');
+			if($user) {
+				if(password_verify($this->request->getPost('password'), $user['password'])) {
+					$this->setUserSession($user);
+	
+					return redirect()->to('admin/dashboard');
+				}
+				else {
+					$session = session();
+					$session->setFlashdata('message', 'Incorrect Email or Password.');
+					return redirect()->to('/users');
+				}
+			}
+			else {
+				$session = session();
+				$session->setFlashdata('message', 'Incorrect Email or Password.');
+				return redirect()->to('/users');
+			}
 		}
 
 		$this->data['page_body_id'] = "user_login";

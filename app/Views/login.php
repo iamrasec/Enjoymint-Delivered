@@ -20,6 +20,11 @@
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
                 <div class="card-body mt-2">
+                  <?php if (session()->getFlashdata('message') !== NULL) : ?>
+                    <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+                        <?php echo session()->getFlashdata('message'); ?>
+                    </div>
+                  <?php endif; ?>
                   <form role="form" method="post" action="/users">
                     <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Email</label>
