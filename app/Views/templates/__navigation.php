@@ -43,21 +43,21 @@
               
               <a href="tel:+14084844644" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
             </li>
-           <div class="counter">
+           <!-- <div class="counter">
             <p class="count_cart" id="count_cart">0</p>
-            </div>
-            <li class="nav-item my-auto ms-3 ms-lg-0 ">
+            </div> -->
+            <!-- <li class="nav-item my-auto ms-3 ms-lg-0 ">
             <div class="cart-box" >
            <div class="cart-icon" style="margin-bottom:100px;"><a href="./checkout"><i class="material-icons opacity-6 me-2 text-md" id="cart_icon" style="color:red;">shopping_cart</i></a>
           </div> 
              </div>
             </div>
-            </li>
+            </li> -->
             <li class="nav-item my-auto ms-3 ms-lg-0">
               <div class="cart">
-                <span class="count">1</span>
+                <span class="count_cart" id="count_cart">0</span>
                 <!--   <span class="count">1</span> -->
-                <i class="material-icons opacity-6 me-2" style="font-size: 30px !important;">shopping_cart</i>
+                <a href="./checkout"><i class="material-icons opacity-6 me-2" style="font-size: 30px !important;">shopping_cart</i></a>
               </div>
             </li>
           </ul>
@@ -73,9 +73,9 @@
   position: relative;
   display: block;
   width: 28px;
-  height: 28px;
+  height: 25px;
   height: auto;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .material-icons {
   position: relative;
@@ -83,9 +83,9 @@
   z-index: 1;
   font-size: 24px;
 }
-.count {
+.count_cart {
   position: absolute;
-  top: 0;
+  top: 2; 
   right: 0;
   z-index: 2;
   font-size: 11px;
