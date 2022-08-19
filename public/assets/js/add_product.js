@@ -136,30 +136,16 @@
       formData.append('productImages[]', item.files[0]);
     });
 
-    $('input[name="unit[]"]').each(function () {
-      formData.append('units[]', $(this).val());
-    });
-
-    $('input[name="value[]"]').each(function () {
-      formData.append('unit_values[]', $(this).val());
-    });
-
-    $('input[name="price[]"]').each(function () {
-      formData.append('prices[]', $(this).val());
-    });
-
-    $('input[name="qty[]"]').each(function () {
-      formData.append('stocks[]', $(this).val());
-    });
-
+    formData.append('unit', $('#unit').val());
+    formData.append('value', $('#value').val());
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());
     formData.append('description', $('#description').val());
     formData.append('qty', $('#qty').val());
     formData.append('price', $('#price').val());
-    formData.append('strain', $('#strain').value);
-    formData.append('brand', $('#brand').value);
+    formData.append('strain', $('#select_strain').val());
+    formData.append('brand', $('#select_brand').val());
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
 
@@ -169,7 +155,7 @@
       headers : {
         'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
       }
-    }) .then(response => response.json() ).then(response => {
+    }) .then(response => response.json()).then(response => {
         var { message, success }  = response;
         success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {

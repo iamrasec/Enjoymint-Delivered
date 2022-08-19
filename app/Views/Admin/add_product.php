@@ -140,25 +140,25 @@
                 <div class="col-8 col-md-8 col-xs-12 mb-3"> 
                 <div class="">
                     <label>Unit</label>
-                    <input type="text" name="unit[]" class="form-control">
+                    <input type="text" id="unit" name="unit" class="form-control">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3"> 
                 <div class="">
                     <label>Unit Value</label>
-                    <input type="number" name="value[]" class="form-control">
+                    <input type="number" id="value" name="value" class="form-control">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3"> 
                 <div class="">
                     <label>Price</label>
-                    <input type="number" name="price[]" class="form-control">
+                    <input type="number" name="price" class="form-control">
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3"> 
                 <div class="">
                     <label>Stocks/Qty</label>
-                    <input type="number" name="qty[]" class="form-control">
+                    <input type="number" name="qty" class="form-control">
                   </div>
                 </div>
                 <div class="col-sm-12">

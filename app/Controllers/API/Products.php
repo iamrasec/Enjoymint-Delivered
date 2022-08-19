@@ -9,6 +9,7 @@ use ReflectionException;
 
 class Products extends ResourceController
 {
+  use ResponseTrait;
     public function __construct() 
     {
       $this->data = [];
@@ -37,24 +38,40 @@ class Products extends ResourceController
   {
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
-
+    
     if($this->request->getPost()) {
+      $validation =  \Config\Services::validation();
+      
       $rules = [
-        'name' => 'required|min_length[3]',
-        'sku' => 'required|min_length[3]',
-        'purl' => 'required|min_length[3]',
-        'qty' => 'required|decimal',
+        'name' => 'required|min_length[1]',
+        'sku' => 'required|min_length[1]',
+        'description' => 'required|min_length[1]',
+        'strain' => 'required|min_length[1]',
+        'brand' => 'required|min_length[1]',
+        'purl' => 'required|min_length[1]',
+        'qty' => 'required',
+        'price' => 'required',
         'thc_val' => 'required',
         'cbd_val' => 'required',
       ];
 
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
+        
+        $checkNameExist = $this->product_model->where('name', $this->request->getVar('name'))->first();
+        if($checkNameExist){
+          die(json_encode(array("success" => FALSE,"message" => 'Product Name Already Exist')));
+        }
+
+        $checkUrlExist = $this->product_model->where('url', $this->request->getVar('purl'))->first();
+        if($checkUrlExist){
+          die(json_encode(array("success" => FALSE,"message" => 'Url Already Exist')));
+        }
 
         $images = array(); // initialize image array
         if ($this->request->getFiles()) {
-          $file = $this->request->getFiles(); // get all files from post request
-          // loop through all files uploaded
+         $file = $this->request->getFiles(); // get all files from post request
+          //loop through all files uploaded
           foreach($file['productImages'] as $img){
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
@@ -77,32 +94,33 @@ class Products extends ResourceController
         // data mapping for PRODUCTS table save
         $to_save = [
           'name' => $this->request->getVar('name'),
-          'url' => $this->request->getVar('purl'),
+          'sku' => $this->request->getVar('sku'),
           'description' => $this->request->getVar('description'),
           'strain' => $this->request->getVar('strain'),
-          'stocks' => $this->request->getVar('qty'),
           'brands' => $this->request->getVar('brand'),
+          'url' => $this->request->getVar('purl'),
+          'stocks' => $this->request->getVar('qty'),
           'price' => $this->request->getVar('price'),
-          'sku' => $this->request->getVar('sku'),
-          'images' => implode(',', $images),
+          //'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
-        $productId = $this->product_model->insertID();
+        // $productId = $this->product_model->insertID();
 
-        $variantCount = count($this->request->getVar('prices[]'));
-        for($x=0;$x<$variantCount;$x++){
-          $variantData = [
-            'pid' => $productId,
-            'unit	' => $_POST['units'][$x],
-            'unit_value' => $_POST['unit_values'][$x],
-            'price' => $_POST['prices'][$x],
-            'stock' => $_POST['stocks'][$x]
-          ];
-          $this->product_variant_model->save($variantData); // try to save product variant
-        }
+        // $variantCount = count($this->request->getVar('prices[]'));
+        // for($x=0;$x<$variantCount;$x++){
+        //   $variantData = [
+        //     'pid' => $productId,
+        //     'unit	' => $_POST['units'][$x],
+        //     'unit_value' => $_POST['unit_values'][$x],
+        //     'price' => $_POST['prices'][$x],
+        //     'stock' => $_POST['stocks'][$x]
+        //   ];
+        //   $this->product_variant_model->save($variantData); // try to save product variant
+        // }
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {
-        $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
+        $validationError = json_encode($validation->getErrors());
+        $data_arr = array("success" => FALSE,"message" => 'Validation Error!'.$validationError);
       }
     } else {
       $data_arr = array("success" => FALSE,"message" => 'No posted data!');
