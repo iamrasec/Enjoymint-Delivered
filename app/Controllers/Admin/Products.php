@@ -220,6 +220,28 @@ class Products extends BaseController {
     }
   }
 
+  public function reviews() {
+    if($this->isLoggedIn == 1 && $this->role == 1) {
+      $ratings_model = model('ratingModel');
+      $page_title = 'Manage Reviews';
+
+      $this->data['page_body_id'] = "manage_review";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+      $this->data['ratings'] = $ratings_model->get()->getResult();
+
+		  echo view('admin/manage_reviews', $this->data);
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
   /**
    * This function will fetch product list from post request of datatable server side processing
    * 
