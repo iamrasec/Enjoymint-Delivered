@@ -135,7 +135,7 @@ class Users extends BaseController
 			}
 		}
 
-		echo view('register');
+		echo view('register', $this->data);
 	}
 
 	public function profile() {
