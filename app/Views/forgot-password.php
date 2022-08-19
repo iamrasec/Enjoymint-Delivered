@@ -16,36 +16,35 @@
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header text-center">
-                  <h4 class="font-weight-bolder">Sign In</h4>
-                  <p class="mb-0">Enter your email and password to sign in</p>
+                  <h4 class="font-weight-bolder">Forgot Password</h4>
+                  <p class="mb-0">Enter your email to reset password</p>
                 </div>
+
+                <?php 
+                if(isset($validation)): ?>
+                <div class="alert alert-danger">
+                  <?= $validation->listErrors()?>
+                </div>
+                <?php endif; ?>
+
+                <?php if(session()->getTempdata('error')):?>
+                  <div class='alert alert-danger'><?= session()->getTempdata('error');?></div>
+                  <?php endif; ?>
+
+                  <?php if(session()->getTempdata('success')):?>
+                  <div class='alert alert-success'><?= session()->getTempdata('success');?></div>
+                  <?php endif; ?>
+                  
                 <div class="card-body mt-2">
-                  <form role="form" method="post" action="/users">
+                  <form role="form" method="post" action="/users/forgot_password">
                     <div class="input-group input-group-outline mb-3">
                       <label class="form-label">Email</label>
                       <input type="email" name="email" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline mb-3">
-                      <label class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control">
-                    </div>
-                    <div class="form-check form-switch d-flex align-items-center mb-3">
-                      <input class="form-check-input" type="checkbox" id="rememberMe">
-                      <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                    </div>
-                    <div class="">
-                      <a href="<?=base_url()?>/Users/forgot_password">Forgot Password?</a>
-                    </div>
                     <div class="text-center">
-                      <button type="submit" class="login-btn btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                      <button type="submit" class="login-btn btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Submit</button>
                     </div>
                   </form>
-                </div>
-                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                  <p class="mb-4 text-sm mx-auto">
-                    Don't have an account?
-                    <a href="<?php echo base_url(); ?>/users/register" class="text-primary text-gradient font-weight-bold">Sign up</a>
-                  </p>
                 </div>
               </div>
             </div>
