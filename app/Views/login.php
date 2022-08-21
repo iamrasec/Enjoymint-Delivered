@@ -16,7 +16,7 @@
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header text-center">
-                  <img src="<?= base_url('assets/img/logo-dark.png'); ?>" style="width: 300px;">
+                  <img src="<?= base_url('assets/img/logo-oval-2.png'); ?>" style="width: 300px;">
                   <h4 class="font-weight-bolder mt-5">Sign In</h4>
                   <p class="mb-0">Enter your email and password to sign in</p>
                 </div>
