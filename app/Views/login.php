@@ -1,4 +1,4 @@
-<?php $this->extend("templates/base"); ?>
+<?php $this->extend("templates/base_no_footer"); ?>
 
 <?php $this->section("content") ?>
 
