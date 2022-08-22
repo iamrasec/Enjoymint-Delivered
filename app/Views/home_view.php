@@ -42,10 +42,10 @@
           <div class="col-md-3 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="<?= base_url($products[$countp]->url); ?>"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
               </div>
               <div class="product-info">
-                <a href="<?= base_url($products[$countp]->url); ?>"><h5><?= $products[$countp]->name; ?></h5></a>
+                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><h5><?= $products[$countp]->name; ?></h5></a>
                 <!-- <p>20.037%~21.401% THC</p>
                 <p class="price">$<span>33.50</span></p> -->
               </div>
