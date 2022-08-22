@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\API\Products;
+namespace App\Controllers\API;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
