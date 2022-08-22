@@ -18,10 +18,10 @@
     <div class="row">
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
         <h2>Shop by Category</h2>
-        <div class="row mt-5">
+        <div class="row mt-5 d-flex justify-content-center">
           <?php foreach($categories as $category): ?>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="<?= base_url('categories/'.$category->url); ?>"><?= $category->name; ?></a>
+          <div class="col-md-3 col-sm-6 pt-2 pb-2">
+            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $category->name; ?></a>
           </div>
           <?php endforeach; ?>
         </div>

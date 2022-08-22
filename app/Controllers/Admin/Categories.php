@@ -70,7 +70,7 @@ class Categories extends BaseController {
                 return redirect()->to('/admin/categories');
             }
             else {
-                echo view('admin/add_category', $this->data);
+                echo view('Admin/add_category', $this->data);
             }
         }
         else {

@@ -234,3 +234,8 @@ padding: 5%;
   /* background: url('/assets/img/age-check/cannabis.jpg') center center no-repeat;
   background-size: cover; */
 }
+
+.home-category-link:hover {
+  color: #ffffff !important;
+  background: #525252 !important;
+}
