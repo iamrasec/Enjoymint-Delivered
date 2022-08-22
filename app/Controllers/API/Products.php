@@ -13,7 +13,6 @@ class Products extends ResourceController
     public function __construct() 
     {
       $this->data = [];
-      $this->role = session()->get('role');
       $this->isLoggedIn = session()->get('isLoggedIn');
       $this->guid = session()->get('guid');
       $this->product_model = model('productModel');
@@ -21,11 +20,12 @@ class Products extends ResourceController
       $this->brand_model = model('brandModel');
       $this->measurement_model = model('measurementModel');
       $this->image_model = model('imageModel');
+      $this->order_model = model('orderModel');
       $this->product_variant_model = model('productVariantModel');
-  
-      if($this->isLoggedIn !== 1 && $this->role !== 1) {
-        return redirect()->to('/');
-      }
+
+      helper(['form', 'functions']); // load helpers
+      addJSONResponseHeader(); // set response header to json
+      
     }
 
 
@@ -36,9 +36,6 @@ class Products extends ResourceController
   */
   public function add()
   {
-    helper(['form', 'functions']); // load helpers
-    addJSONResponseHeader(); // set response header to json
-    
     if($this->request->getPost()) {
       $validation =  \Config\Services::validation();
       
@@ -128,5 +125,27 @@ class Products extends ResourceController
     die(json_encode($data_arr));
   }
 
+
+  /**
+   * This function will update order status completed
+   * @param  int    id  The id of order
+   * @return object A json object response with status and message
+   */
+  public function orderFullfill($id = null)
+  {
+    
+    $success = true;
+    if($this->request->getMethod(true) == 'POST') { 
+            // prepare to save
+            $save = [
+                'status' => 1
+            ];
+            $this->order_model->update($id, $save); // update product status
+        } else {
+            $success = false;
+        }    
+        $success ? $data_arr = array("status" => 201, "success" => TRUE,"message" => 'Order completed.') : $data_arr = array("success" => FALSE,"message" => 'Invalid request.');
+        die(json_encode($data_arr)); 
+  }
     // ...
 }
