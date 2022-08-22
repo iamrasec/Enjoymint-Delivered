@@ -15,19 +15,19 @@
         </button>
         <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
           <ul class="navbar-nav navbar-nav-hover ms-auto d-flex">
-            <li class="nav-item dropdown dropdown-hover mx-2">
+            <li class="nav-item mx-2">
               <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="<?= base_url(); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">home</i> Home
               </a>
             </li>
 
-            <li class="nav-item dropdown dropdown-hover mx-2">
+            <li class="nav-item mx-2">
               <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="<?= base_url('shop'); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">shop</i> Shop
               </a>
             </li>
 
-            <li class="nav-item dropdown dropdown-hover mx-2">
+            <li class="nav-item mx-2">
               <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false" href="/about">
               <i class="material-icons opacity-6 me-2 text-md">eco</i> About Us
               </a>
@@ -38,11 +38,14 @@
               </a>
             </li>
   
-
             <li class="nav-item my-auto ms-3 ms-lg-0">
-              
               <a href="tel:+14084844644" class="btn btn-sm bg-primary-green mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
             </li>
+
+            <li class="nav-item mx-2">
+              <a class="nav-link nav-link-icon me-2" href="<?= base_url('users'); ?>"><i class="material-icons opacity-6 me-2 text-md" id="user_login">person</i></a>
+            </li>
+            
             <li class="nav-item my-auto ms-3 ms-lg-0 d-flex flex-row">
               <div class="cart-box" >
                 <div class="cart-icon">
