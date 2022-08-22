@@ -172,6 +172,8 @@
                         <select name="cbd_measure" id="cbd_measure" class="form-control w-100 border px-2">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
+                          <option value="g">Grams (g)</option>
+                          <option value="oz">Ounces (oz)</option>
                         </select>
                       </div>
                     </div>
