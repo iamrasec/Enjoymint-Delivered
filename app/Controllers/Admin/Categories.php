@@ -28,7 +28,7 @@ class Categories extends BaseController {
             // $this->data['categories'] = $this->category_model->where('parent', 0)->get()->getResult();
             $this->data['categories'] = $this->category_model->get()->getResult();
       
-                echo view('admin/manage_categories', $this->data);
+                echo view('Admin/manage_categories', $this->data);
         }
         else {
             return redirect()->to('/');
