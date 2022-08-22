@@ -75,6 +75,8 @@
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
                     <option value="pct">Percent (%)</option>
                     <option value="mg">Milligrams (mg)</option>
+                    <option value="g">Grams (g)</option>
+                    <option value="oz">Ounces (oz)</option>
                   </select>
                   </div>
                 </div>
@@ -172,20 +174,17 @@
                         <select name="cbd_measure" id="cbd_measure" class="form-control w-100 border px-2">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
-                          <option value="g">Grams (g)</option>
-                          <option value="oz">Ounces (oz)</option>
                         </select>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
->>>>>>> whisula-branch
             </div>
           </div>
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <!-- <!-- <h6>Variants</h6>                
+          <!-- <h6>Variants</h6>                
           <div class="row" id='variants'>
             <div class="row">
               <div class="col-lg-10">
