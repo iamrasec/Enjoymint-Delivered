@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\API;
+namespace App\Controllers\Api;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
@@ -27,6 +27,8 @@ class Brand extends ResourceController
   public function add()
   {
     $data = $this->request->getPost();
+    print_r($data);
+
     $return = $this->brand_model->insert($data);
 
     if(is_numeric($return)) {
