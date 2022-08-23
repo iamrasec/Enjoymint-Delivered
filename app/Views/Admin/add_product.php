@@ -73,11 +73,11 @@
                   <label class="form-label" for="name">Unit</label>
                   <div class="input-group input-group-dynamic">
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="pct">Percent (%)</option>
                     <option value="mg">Milligrams (mg)</option>
                     <option value="g">Grams (g)</option>
                     <option value="oz">Ounces (oz)</option>
                     <option value="each">Per Piece</option>
+                    <option value="pct">Percent (%)</option>
                   </select>
                   </div>
                 </div>
