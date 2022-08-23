@@ -38,7 +38,26 @@ class Home extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-        $this->data['products'] = $this->product_model->get()->getResult();
+
+        $all_products = $this->product_model->get()->getResult();
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product->images) {
+                $imageIds = [];
+                $imageIds = explode(',',$product->images);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]->images = $images;
+            }
+
+            $count++;
+        }
+
+        // print_r($product_arr);
+
+        $this->data['products'] = $product_arr;
         $this->data['categories'] = $this->category_model->get()->getResult();
         return view('home_view', $this->data);
     }

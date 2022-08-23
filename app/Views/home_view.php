@@ -36,7 +36,7 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
-        <!-- <pre><?php print_r($products); ?></pre> -->
+        <pre><?php print_r($products); ?></pre>
         <div class="row">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
           <div class="col-md-3 col-sm-6 pt-4 pb-4">
