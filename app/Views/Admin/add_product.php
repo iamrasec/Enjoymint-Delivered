@@ -77,6 +77,7 @@
                     <option value="mg">Milligrams (mg)</option>
                     <option value="g">Grams (g)</option>
                     <option value="oz">Ounces (oz)</option>
+                    <option value="each">Per Piece</option>
                   </select>
                   </div>
                 </div>
