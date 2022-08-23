@@ -11,7 +11,7 @@ class Brand extends ResourceController
 {
   public function __construct() {
     $this->data = [];
-    $this->brand_model = model('brandModel');
+    $this->brand_model = model('BrandModel');
   }
 
   public function index()
@@ -27,7 +27,6 @@ class Brand extends ResourceController
   public function add()
   {
     $data = $this->request->getPost();
-    print_r($data);
 
     $return = $this->brand_model->insert($data);
 
