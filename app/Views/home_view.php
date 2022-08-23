@@ -36,13 +36,13 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
-        <pre><?php print_r($products); ?></pre>
+        <!-- <pre><?php print_r($products); ?></pre> -->
         <div class="row">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
           <div class="col-md-3 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><img src="<?= base_url('products/images/'.$products[$countp]->images[0]->filename); ?>" /></a>
               </div>
               <div class="product-info">
                 <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><h5><?= $products[$countp]->name; ?></h5></a>
