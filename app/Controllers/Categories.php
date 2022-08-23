@@ -44,7 +44,24 @@ class Categories extends BaseController
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
         // $this->data['products'] = $this->product_model->getAllProducts();
-        $this->data['products'] = $this->category_model->categoryGetProducts($categories->id);
+
+        $all_products = $this->category_model->categoryGetProducts($categories->id);
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product->images) {
+                $imageIds = [];
+                $imageIds = explode(',',$product->images);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]->images = $images;
+            }
+
+            $count++;
+        }
+
+        $this->data['products'] = $product_arr;
         return view('categories_view', $this->data);
     }
 }

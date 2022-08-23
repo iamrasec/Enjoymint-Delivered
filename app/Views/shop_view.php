@@ -19,9 +19,9 @@
             <div class="product-featured">
               <div class="img-wrap">
                 <?php if(isset($product->images[0])): ?>
-                  <a href="#"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
                 <?php else: ?>
-                <a href="#"><img class="prod_image" src="" /></a>
+                <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
               </div>
               <div class="product-info">
