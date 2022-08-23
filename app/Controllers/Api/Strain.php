@@ -11,7 +11,7 @@ class Strain extends ResourceController
 {
   public function __construct() {
     $this->data = [];
-    $this->strain_model = model('strainModel');
+    $this->strain_model = model('StrainModel');
   }
 
   public function index()
