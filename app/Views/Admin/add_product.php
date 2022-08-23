@@ -83,7 +83,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Unit value</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -102,7 +102,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Price</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="0" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
@@ -148,7 +148,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" required  onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -166,7 +166,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">

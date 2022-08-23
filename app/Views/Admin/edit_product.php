@@ -76,13 +76,15 @@
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
                     <option value="pct" <?= ($product_data->unit_measure == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
                     <option value="mg" <?= ($product_data->unit_measure == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
+                    <option value="g <?= ($product_data->unit_measure == 'g') ? 'selected' : ''; ?>">Grams (g)</option>
+                    <option value="oz <?= ($product_data->unit_measure == 'oz') ? 'selected' : ''; ?>">Ounces (oz)</option>
                   </select>
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Unit value</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
               </div>
@@ -102,7 +104,7 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Price</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
                   </div>
                 </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
@@ -148,7 +150,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="<?= $product_data->thc_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="<?= $product_data->thc_value; ?>" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -167,7 +169,7 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="<?= $product_data->cbd_value; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="<?= $product_data->cbd_value; ?>" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
