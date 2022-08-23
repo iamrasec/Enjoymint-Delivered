@@ -15,12 +15,12 @@ class Products extends ResourceController
       $this->role = session()->get('role');
       $this->isLoggedIn = session()->get('isLoggedIn');
       $this->guid = session()->get('guid');
-      $this->product_model = model('productModel');
-      $this->strain_model = model('strainModel');
-      $this->brand_model = model('brandModel');
-      $this->measurement_model = model('measurementModel');
-      $this->image_model = model('imageModel');
-      $this->product_variant_model = model('productVariantModel');
+      $this->product_model = model('ProductModel');
+      $this->strain_model = model('StrainModel');
+      $this->brand_model = model('BrandModel');
+      $this->measurement_model = model('MeasurementModel');
+      $this->image_model = model('ImageModel');
+      $this->product_variant_model = model('ProductVariantModel');
       $this->category_model = model('CategoryModel');
       $this->product_category = model('ProductCategory');
       $this->compound_model = model('CompoundModel');
@@ -41,7 +41,7 @@ class Products extends ResourceController
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
 
-    print_r($this->request->getPost());
+    // print_r($this->request->getPost());
 
     if($this->request->getPost()) {
       $rules = [
