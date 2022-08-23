@@ -18,7 +18,11 @@
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                <?php if(isset($product->images[0])): ?>
+                  <a href="#"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                <?php else: ?>
+                <a href="#"><img class="prod_image" src="" /></a>
+                <?php endif; ?>
               </div>
               <div class="product-info">
                 <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
