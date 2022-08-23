@@ -148,7 +148,7 @@ class Products extends ResourceController
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
 
-    print_r($this->request->getPost());
+    // print_r($this->request->getPost());
 
     if($this->request->getPost()) {
       $rules = [
