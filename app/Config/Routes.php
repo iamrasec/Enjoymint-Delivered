@@ -21,7 +21,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+//$routes->setAutoRoute(true);
 
 /*
  * --------------------------------------------------------------------
@@ -40,7 +40,10 @@ $routes->get('products/(:any)', 'Products::index/$1');
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 $routes->post('save_data', 'Products::save');
 $routes->get('checkout', 'Users::checkout');
-$routes->get('cart', 'Users::cart');
+$routes->get('password-reset/(:any)', 'Users::reset_password/$1');
+$routes->post('counter', 'Products::index');
+  
+
 // $routes->get('logout', 'User::logout');
 // $routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);
 // $routes->match(['get', 'post'], 'profile', 'User::profile', ['filter' => 'auth']);

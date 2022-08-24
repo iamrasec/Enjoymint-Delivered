@@ -40,7 +40,12 @@
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">star_outline</i>
                   </div>
-                  <br>
+                  <i class="material-icons opacity-6 me-2 text-md">visibility</i>
+                 <?= $ip_views ?><br>
+                 <?php foreach($stock as $st) : ?>
+                <p style="display: inline-block;">Stocks:</p>
+                 <?= $st ?>
+                 <?php endforeach; ?>
                   <h6 class="mb-0 mt-3">Price</h6>
                   <h5>$<span class="price">33.50</span></h5>
                   <span class="badge badge-success">In Stock</span>

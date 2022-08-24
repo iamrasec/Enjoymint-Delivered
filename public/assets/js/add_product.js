@@ -181,7 +181,7 @@
       headers : {
         'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
       }
-    }) .then(response => response.json() ).then(response => {
+    }) .then(response => response.json()).then(response => {
         var { message, success }  = response;
         success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {

@@ -25,6 +25,9 @@ class Products extends BaseController
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
         $this->order_model = model('checkoutModel');
+        $this->pagecounter_model = model('pagecounterModel');
+        $this->product_model = model('productModel');
+        $this->db = db_connect();
     
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
           return redirect()->to('/');
@@ -95,7 +98,7 @@ class Products extends BaseController
 	
     public function save() 
     {
-     $data = [
+     $user_data = [
         'full_name' => $this->request->getPost('full_name'),
         'c_number' => $this->request->getPost('c_number'),
         'address' => $this->request->getPost('address'),
@@ -104,7 +107,17 @@ class Products extends BaseController
         'qty' => $this->request->getPost('qty'),
         'total' => $this->request->getPost('total'),
      ];
-     $this->order_model->save($data); 
+
+     $data = $this->product_model->where('id', 2)->select('stocks')->first();
+     foreach($data as $datas):
+      $stock = $datas -1;
+     endforeach;
+     $newData = ['stocks' => $stock]; 
+   
+     $this->product_model->update($id, $newData);
+     $this->order_model->save($user_data); 
      return redirect()->to('/Shop');
+
+      
     }
 }

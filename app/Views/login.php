@@ -38,7 +38,10 @@
                     <!-- <div class="form-check form-switch d-flex align-items-center mb-3">
                       <input class="form-check-input" type="checkbox" id="rememberMe">
                       <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                    </div> -->
+                    </div>
+                    <div class="">
+                      <a href="<?=base_url()?>/Users/forgot_password">Forgot Password?</a>
+                    </div>
                     <div class="text-center">
                       <button type="submit" class="login-btn btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
                     </div>
