@@ -11,7 +11,8 @@ class Products extends BaseController
         $this->order_model = model('checkoutModel');
         $this->pagecounter_model = model('pagecounterModel');
         $this->product_model = model('productModel');
-        $this->db = db_connect();
+        $this->rating_model = model('ratingModel');
+        // $this->db = db_connect();
     }
 
     
@@ -36,6 +37,8 @@ class Products extends BaseController
         // }
             $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
             $page_data['ip_views'] = $this->pagecounter_model->countAll();
+            $page_data ['rate'] = $this->rating_model->where('id', 12)->select( 'star')->first();
+            $page_data ['message'] = $this->rating_model->where('id', 12)->select( 'message')->first();
         //     $page_data['views'] = $this->pagecounter_model->countAll();
         //      // echo "Sample";
         }
@@ -44,6 +47,8 @@ class Products extends BaseController
             $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
             $page_data['ip_views'] = $this->pagecounter_model->countAll();
             $this->pagecounter_model->save($newData);
+            $page_data ['rate'] = $this->rating_model->where('id', 12)->select( 'star')->first();
+            $page_data ['message'] = $this->rating_model->where('id', 12)->select( 'message')->first();
             
             
           }
@@ -73,5 +78,21 @@ class Products extends BaseController
      return redirect()->to('/Shop');
 
       
+    }
+    public function rating(){
+      
+      $ratings = [
+        'message' => $this->request->getPost('message'),  
+        'star' => $this->request->getPost('ratings'),  
+     ];
+
+     $this->rating_model->save($ratings); 
+     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+     $page_data['ip_views'] = $this->pagecounter_model->countAll();
+     $page_data ['rate'] = $this->rating_model->where('id', 12)->select( 'star')->first();
+     $page_data ['message'] = $this->rating_model->where('id', 12)->select( 'message')->first();
+     echo view('product_view', $page_data); 
+
+
     }
 }
