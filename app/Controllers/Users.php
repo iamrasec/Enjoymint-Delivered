@@ -292,7 +292,7 @@ class Users extends BaseController
 					$data['validation']= $this->validator;	
 				}
 		 }
-		return view('forgot-password');
+		return view('forgot-password', $this->data);
 	}
 
 public function reset_password($unique_id){
@@ -303,7 +303,7 @@ public function reset_password($unique_id){
 		//  $_SESSION['forgor-password-id'] = $checkUniqueId;
 		 //print_r($_SESSION['forgor-password-id']); 
 		 //$data['id']= 
-		 echo view('reset_password');
+		 echo view('reset_password', $this->data);
 	}else{
 		echo 'Invalid';
 	}

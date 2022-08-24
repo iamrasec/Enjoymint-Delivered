@@ -38,7 +38,7 @@
                     <!-- <div class="form-check form-switch d-flex align-items-center mb-3">
                       <input class="form-check-input" type="checkbox" id="rememberMe">
                       <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                    </div>
+                    </div> -->
                     <div class="">
                       <a href="<?=base_url()?>/Users/forgot_password">Forgot Password?</a>
                     </div>
