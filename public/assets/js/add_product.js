@@ -148,6 +148,7 @@
     formData.append('brand', $('#select_brand').val());
     formData.append('thc_val', $('#thc_val').val());
     formData.append('cbd_val', $('#cbd_val').val());
+    formData.append('tags', $('#tags').val());
 
     fetch('/api/products/add',  {
       method: 'POST',

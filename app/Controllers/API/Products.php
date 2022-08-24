@@ -52,6 +52,8 @@ class Products extends ResourceController
         'cbd_val' => 'required',
       ];
 
+  
+      
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
         
@@ -98,6 +100,7 @@ class Products extends ResourceController
           'url' => $this->request->getVar('purl'),
           'stocks' => $this->request->getVar('qty'),
           'price' => $this->request->getVar('price'),
+          'tags' => $this->request->getVar('tags'),
           //'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
