@@ -35,56 +35,14 @@
 <footer class="footer pt-5 mt-5">
   <div class="container">
     <div class=" row">
-      <div class="col-md-3 mb-4 ms-auto">
+      <!-- <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
+      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
+      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
+      <div class="col-md-2 col-sm-6 col-6 mb-4"></div> -->
+
+      <div class="col-md-2 col-sm-6 col-6 mb-4">
         <div>
-          <img src="/assets/img/Enjoymint-Logo-Landscape-White-2.png" class="logo" />
-        </div>
-        <div>
-          <ul class="d-flex flex-row ms-n3 nav">
-            <li class="nav-item">
-              <a class="nav-link pe-1" href="#" target="_blank">
-                <i class="fab fa-facebook text-lg opacity-8"></i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link pe-1" href="#" target="_blank">
-                <i class="fab fa-twitter text-lg opacity-8"></i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link pe-1" href="#" target="_blank">
-                <i class="fab fa-dribbble text-lg opacity-8"></i>
-              </a>
-            </li>
-
-
-            <li class="nav-item">
-              <a class="nav-link pe-1" href="#" target="_blank">
-                <i class="fab fa-github text-lg opacity-8"></i>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link pe-1" href="#" target="_blank">
-                <i class="fab fa-youtube text-lg opacity-8"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
-      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
-      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
-      <div class="col-md-2 col-sm-6 col-6 mb-4"></div>
-
-
-
-      <!-- <div class="col-md-2 col-sm-6 col-6 mb-4">
-        <div>
-          <h6 class="text-sm">Company</h6>
+          <h6 class="text-sm" style="color: #e91e63;">Company</h6>
           <ul class="flex-column ms-n3 nav">
             <li class="nav-item">
               <a class="nav-link" href="https://www.creative-tim.com/presentation" target="_blank">
@@ -111,11 +69,11 @@
             </li>
           </ul>
         </div>
-      </div> -->
+      </div> 
 
-      <!-- <div class="col-md-2 col-sm-6 col-6 mb-4">
+       <div class="col-md-2 col-sm-6 col-6 mb-4">
         <div>
-          <h6 class="text-sm">Resources</h6>
+          <h6 class="text-sm" style="color: #e91e63;">Resources</h6>
           <ul class="flex-column ms-n3 nav">
             <li class="nav-item">
               <a class="nav-link" href="https://iradesign.io/" target="_blank">
@@ -136,11 +94,11 @@
             </li>
           </ul>
         </div>
-      </div> -->
+      </div> 
 
-      <!-- <div class="col-md-2 col-sm-6 col-6 mb-4">
+      <div class="col-md-2 col-sm-6 col-6 mb-4">
         <div>
-          <h6 class="text-sm">Help & Support</h6>
+          <h6 class="text-sm" style="color: #e91e63;">Help & Support</h6>
           <ul class="flex-column ms-n3 nav">
             <li class="nav-item">
               <a class="nav-link" href="https://www.creative-tim.com/contact-us" target="_blank">
@@ -168,11 +126,11 @@
 
           </ul>
         </div>
-      </div> -->
+      </div> 
 
-      <!-- <div class="col-md-2 col-sm-6 col-6 mb-4 me-auto">
+       <div class="col-md-2 col-sm-6 col-6 mb-4 ">
         <div>
-          <h6 class="text-sm">Legal</h6>
+          <h6 class="text-sm" style="color: #e91e63;">Legal</h6>
           <ul class="flex-column ms-n3 nav">
             <li class="nav-item">
               <a class="nav-link" href="https://www.creative-tim.com/knowledge-center/terms-of-service" target="_blank">
@@ -193,7 +151,47 @@
             </li>
           </ul>
         </div>
-      </div> -->
+      </div>
+
+      <div class="col-md-2 col-sm-6 col-6 mb-4">
+        <div>
+          <img src="/assets/img/Enjoymint-Logo-Landscape-White-2.png" class="logo" />
+        </div>
+        <div style="margin-right:-100px;">
+          <ul class="d-flex flex-row ms-n3 nav" style="margin-right: -100px;">
+            <li class="nav-item">
+              <a class="nav-link pe-1" href="#" target="_blank">
+                <i class="fab fa-facebook text-lg opacity-8"></i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link pe-1" href="#" target="_blank">
+                <i class="fab fa-twitter text-lg opacity-8"></i>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link pe-1" href="#" target="_blank">
+                <i class="fab fa-dribbble text-lg opacity-8"></i>
+              </a>
+            </li>
+
+
+            <li class="nav-item">
+              <a class="nav-link pe-1" href="#" target="_blank">
+                <i class="fab fa-github text-lg opacity-8"></i>
+              </a>
+            </li>
+
+            <li class="nav-item" style="margin-right:-100px;">
+              <a class="nav-link pe-1" href="#" target="_blank">
+                <i class="fab fa-youtube text-lg opacity-8"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <div class="col-12">
         <div class="text-center">
@@ -267,7 +265,7 @@
     console.log("clicked");
   });
 </script>
-
+<?php echo $this->renderSection("script"); ?>
 </body>
 
 </html>

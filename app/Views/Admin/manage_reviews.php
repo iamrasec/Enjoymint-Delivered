@@ -14,9 +14,6 @@
       <div class="col-lg-6">
         <h4><?php echo $page_title; ?></h4>
       </div>
-      <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/brands/add_brand'); ?>">Add Brands</a>
-      </div>
     </div>
 
     <div class="row mt-4">
@@ -24,21 +21,27 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsives">
-              <table id="products-table" class="table align-items-center mb-0">
+              <table id="reviews-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Name</th>
-                    <th>URL</th>
+                    <th>Message</th>
+                    <th>Rating</th>
+                    <th>Product</th>
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tfoot>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>URL</th>
-                    <th>Action</th>
-                </tfoot>
+                <tbody>
+                  <?php foreach($ratings as $rating): ?>
+                  <tr class="text-xs font-weight-bold mb-0">
+                    <td><?= $rating->name; ?></td>
+                    <td><?= $rating->message; ?></td>
+                    <td><?= $rating->rating; ?></td>
+                    <td><?= $rating->product_id; ?></td>
+                    <td><a href="<?= base_url('admin/products/strains') . "/edit_strain/" .$rating->id; ?>">edit</a></td>
+                  </tr>
+                  <?php endforeach; ?>
+                </tbody>
               </table>
             </div>
           </div>
@@ -85,23 +88,8 @@
 <!-- Product List page js -->
 <script>
   $(document).ready(function () {
-      $('#products-table').DataTable({
-        // Processing indicator
-        "processing": true,
-        // DataTables server-side processing mode
-        "serverSide": true,
-        // Initial no order.
-        "order": [],
-        // Load data from an Ajax source
-        "ajax": {
-            "url": "<?= base_url('admin/products/getProductLists'); ?>",
-            "type": "POST"
-        },
-        //Set column definition initialisation properties
-        "columnDefs": [{ 
-            "targets": [0],
-            "orderable": false
-        }]
+      $('#reviews-table').DataTable({
+        
     });
   });
 </script>

@@ -6,5 +6,8 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model {
   protected $table = 'products';
-  protected $allowedFields = ['name', 'url', 'description', 'stocks', 'strain', 'brands', 'sku', 'images'];
+  protected $primarykey = 'id';
+  protected $returnType = 'array';
+  protected $allowedFields = ['name', 'url', 'description', 'stocks', 'strain', 'brands', 'sku', 'images', 'tags'];
+  
 }

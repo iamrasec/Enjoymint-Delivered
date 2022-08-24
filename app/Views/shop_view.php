@@ -14,14 +14,20 @@
         <h1>All Products</h1>
         <div class="row">
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
+            <form method="post" action="<?= base_url('counter')?>"">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="./product_view" type="submit"><img class="prod_image" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
               </div>
               <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
+              <input type="text" id="productName" value="Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies" name ="product_name" hidden>
+              <input type="text" id="productName" value="1" name ="views" hidden>  
+                <a href="#"><h5 class="productName" id="prod_name">Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
                 <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
+                <p><span class="price" value="33.50">$33.50</span></p>
+                <button class="btn bg-gradient-success " id="btn">View Product</button>
+                </form>  
+                <button class="btn bg-gradient-primary " id="btn_pr">Add to cart</button>
               </div>
             </div>
           </div>
@@ -397,7 +403,6 @@
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -435,4 +440,23 @@
 
 </div>
 
+ <script type="text/javascript">
+  let btnCounter = document.querySelector('#btn_pr');
+  let counter = 0;
+
+  btnCounter.addEventListener('click', function(){
+    counter++;
+    document.querySelector('.count_cart').innerHTML = counter;
+  });
+  // var count = (function () {
+  //   var counter = 0;
+  //   return function () {return counter +=;}
+  // })();
+
+  // function display(){
+  //   document.getElementById('count_cart').innerHTML = count();
+  // };
+
+ </script>  
 <?php $this->endSection() ?>
+

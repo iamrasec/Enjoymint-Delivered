@@ -18,13 +18,15 @@ class Products extends BaseController {
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('imageModel');
+    $this->product_variant_model = model('productVariantModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
     }
   }
   
-  public function index() {
+  public function index() 
+  {
     // $data = [];
     $page_title = 'Products List';
 
@@ -54,91 +56,23 @@ class Products extends BaseController {
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
       echo view('admin/add_product', $this->data);
   }
+  
+  public function save_product() {
+    $this->request->getPost();
 
-   /**
-     * This function will save a product into the server
-     * 
-     * @return object a success indicator and the message
-    */
-  public function addProduct()
-  {
-    helper(['form', 'functions']); // load helpers
-    addJSONResponseHeader(); // set response header to json
+    $rules = [
+      'name' => 'required|min_length[3]',
+      'sku' => 'required|min_length[3]',
+      'purl' => 'required|min_length[3]',
+      'qty' => 'required|decimal',
+      'thc_val' => 'required',
+      'cbd_val' => 'required',
+    ];
 
-    if($this->request->getPost()) {
-      $rules = [
-        'name' => 'required|min_length[3]',
-        'sku' => 'required|min_length[3]',
-        'purl' => 'required|min_length[3]',
-        'qty' => 'required|decimal',
-        'thc_val' => 'required',
-        'cbd_val' => 'required',
-      ];
-
-      if($this->validate($rules)) {
-        $data['validation'] = $this->validator;
-
-        $images = array(); // initialize image array
-        if ($this->request->getFiles()) {
-          $file = $this->request->getFiles(); // get all files from post request
-          // loop through all files uploaded
-          foreach($file['productImages'] as $img){
-            if (!$img->hasMoved()) {
-                $fileName = $img->getRandomName(); // generate a new random name
-                $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
-                
-                // json data to be save to image
-                $imageData = [
-                  'filename' => $fileName,
-                  'mime' => $type,
-                  'url' => 'writable/uploads/'. $fileName,
-                ];
-                $this->image_model->save($imageData); // try to save to images table
-                $imageId = $this->image_model->insertID();
-                array_push($images, $imageId);
-            }
-          }
-        }
-        
-        // data mapping for PRODUCTS table save
-        $to_save = [
-          'name' => $this->request->getVar('name'),
-          'url' => $this->request->getVar('purl'),
-          'description' => $this->request->getVar('description'),
-          'strain' => $this->request->getVar('strain'),
-          'stocks' => $this->request->getVar('qty'),
-          'brands' => $this->request->getVar('brand'),
-          'sku' => $this->request->getVar('sku'),
-          'images' => implode(',', $images),
-        ];
-        $this->product_model->save($to_save); // trying to save product to database
-        $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
-      } else {
-        $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
-      }
-    } else {
-      $data_arr = array("success" => FALSE,"message" => 'No posted data!');
+    if($this->validate($rules)) {
+      $data['validation'] = $this->validator;
     }
-    die(json_encode($data_arr));
   }
-
-  // public function save_product() {
-  //   $this->request->getPost();
-
-  //   $rules = [
-  //     'name' => 'required|min_length[3]',
-  //     'sku' => 'required|min_length[3]',
-  //     'purl' => 'required|min_length[3]',
-  //     'qty' => 'required|decimal',
-  //     'thc_val' => 'required',
-  //     'cbd_val' => 'required',
-  //   ];
-
-  //   if($this->validate($rules)) {
-  //     $data['validation'] = $this->validator;
-  //   }
-  // }
 
   public function strains() {
     if($this->isLoggedIn == 1 && $this->role == 1) {
@@ -284,5 +218,64 @@ class Products extends BaseController {
     else {
       return redirect()->to('/');
     }
+  }
+
+  public function reviews() {
+    if($this->isLoggedIn == 1 && $this->role == 1) {
+      $ratings_model = model('ratingModel');
+      $page_title = 'Manage Reviews';
+
+      $this->data['page_body_id'] = "manage_review";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+      $this->data['ratings'] = $ratings_model->get()->getResult();
+
+		  echo view('admin/manage_reviews', $this->data);
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
+  /**
+   * This function will fetch product list from post request of datatable server side processing
+   * 
+   * @return json product list json format
+  */
+  public function getProductLists()
+  {
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+
+    $products = $this->product_model->select('id,name,url')
+      ->like('name',$_POST['search']['value'])
+      ->orLike('url',$_POST['search']['value'])
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+   
+    foreach($products as $product){
+      $start++;
+      $data[] = array(
+        $product->id, 
+        $product->name, 
+        $product->url,
+        "<a href=".base_url('admin/products/edit_product/').$product->id.">edit</a>",
+      );
+    }
+
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->product_model->countAll(),
+      "recordsFiltered" => $this->product_model->countAll(),
+      "data" => $data,
+    );
+    echo json_encode($output);
   }
 }
