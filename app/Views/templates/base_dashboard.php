@@ -35,6 +35,8 @@
   <?php endif; ?>
 
   <?php echo $this->renderSection("styles"); ?>
+  <link href="<?php echo base_url(); ?>/assets/css/bootstrap-tagsinput.css" rel="stylesheet" type="text/css">
+
   
 </head>
 

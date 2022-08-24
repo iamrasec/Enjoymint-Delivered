@@ -174,6 +174,7 @@
     formData.append('categories', $('#category').val());
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
+    formData.append('tags', $('#tags').val());
 
     fetch('/api/products/add',  {
       method: 'POST',

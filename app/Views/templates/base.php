@@ -162,7 +162,7 @@
     console.log("clicked");
   });
 </script>
-
+<?php echo $this->renderSection("script"); ?>
 </body>
 
 </html>
