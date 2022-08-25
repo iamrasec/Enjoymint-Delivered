@@ -20,8 +20,13 @@
                   <h4 class="font-weight-bolder mt-5">Sign Up</h4>
                   <p class="mb-0">Enter your email and password to register</p>
                 </div>
+                <?php if (session()->getFlashdata('email_sent') !== NULL) : ?>
+                  <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+                      <?php echo session()->getFlashdata('email_sent'); ?>
+                  </div>
+                <?php endif; ?>
                 <div class="card-body">
-                  <form role="form" method="post" action="/users/register">
+                  <form role="form" method="post" action="<?= base_url('/users/register'); ?>">
                     <div class="input-group input-group-outline mb-3">
                       <label class="form-label">First Name</label>
                       <input type="text" name="first_name" class="form-control">

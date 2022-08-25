@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '47e67fe82ca97709a7293fce6c0cd65e8694bd42',
+        'reference' => '7bb53682313bfad55df455d1f87ec0f5cddbe10d',
         'name' => 'codeigniter4/codeigniter4',
         'dev' => true,
     ),
@@ -61,7 +61,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '47e67fe82ca97709a7293fce6c0cd65e8694bd42',
+            'reference' => '7bb53682313bfad55df455d1f87ec0f5cddbe10d',
             'dev_requirement' => false,
         ),
         'composer/pcre' => array(

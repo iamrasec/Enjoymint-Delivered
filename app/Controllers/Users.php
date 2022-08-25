@@ -96,6 +96,7 @@ class Users extends BaseController
 
 		// if($this->request->getMethod() == 'post') {
 		if($this->request->getPost()) {
+			// print_r($this->request->getPost());die();
 			// Form validation here
 			$rules = [
 				// 'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
@@ -119,21 +120,31 @@ class Users extends BaseController
 					'last_name' => $this->request->getVar('last_name'),
 					'email' => $this->request->getVar('email'),
 					'password' => $this->request->getVar('password'),
-					'role' => 2,
+					'role' => 3,  // Customer User Role
 				];
 
 				// print_r($newData);
 
 				// $model->save($newData);
-				$this->user_model->save($newData);
+				// $this->user_model->save($newData);
 
-				$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
-				$this->setUserSession($user);
+				// $user = $this->user_model->where('email', $this->request->getVar('email'))->first();
+
+				// Preparation for email.
 				
-				$session = session();
-				$session->setFlashdata('success', 'Successful Registration');
-				return redirect()->to('/dashboard');
+				// $this->setUserSession($user);
+				
+				// $session = session();
+				// $session->setFlashdata('success', 'Successful Registration');
+				// return redirect()->to('/dashboard');
 			}
+
+			$name = $this->request->getVar('first_name') .' '. $this->request->getVar('last_name');
+			$email = $this->request->getVar('email');
+			$message = "This the body of the message";
+
+
+			$this->send($name, $email, 'cesar@fuegonetworx.com', $message);
 		}
 
 		echo view('register', $this->data);
@@ -295,77 +306,139 @@ class Users extends BaseController
 		return view('forgot-password', $this->data);
 	}
 
-public function reset_password($unique_id){
-	$session = session();	
-	$checkUniqueId = $this->forgotpassword_model->where('unique_id', $unique_id)->first();
-	if($checkUniqueId){
-		$session->forgot_password_id = $checkUniqueId;
-		//  $_SESSION['forgor-password-id'] = $checkUniqueId;
-		 //print_r($_SESSION['forgor-password-id']); 
-		 //$data['id']= 
-		 echo view('reset_password', $this->data);
-	}else{
-		echo 'Invalid';
+	public function reset_password($unique_id){
+		$session = session();	
+		$checkUniqueId = $this->forgotpassword_model->where('unique_id', $unique_id)->first();
+		if($checkUniqueId){
+			$session->forgot_password_id = $checkUniqueId;
+			//  $_SESSION['forgor-password-id'] = $checkUniqueId;
+			//print_r($_SESSION['forgor-password-id']); 
+			//$data['id']= 
+			echo view('reset_password', $this->data);
+		}else{
+			echo 'Invalid';
+		}
 	}
-}
 
 
-public function updatePassword()
-{
-	$session = session();
-	// $data = [];
-	// $data['userdata'] = $this->user_model->getLoggedInUserData(session()->get('logged_user'));
-	
-	if($this->request->getMethod() == 'post'){
-		// $rules = [
-		// 		'old_password' => 'required',
-		// 		'new_password' => 'required|min_length[8]|max_length[255]',
-		// 		'confirm_password' => 'matches[password]',
-		// 	];
-	//    if($this->validate($rules)){
-			// $old_password = $this->request->getVar('old_password');
-			$new_password = [
-				'password' => password_hash($this->request->getVar('new_password'), PASSWORD_DEFAULT)
-			];
-			$data = $session->get('forgot_password_id');
-			$this->user_model->update($data, $new_password);
-			return redirect()->to('users');
-			
-			//    $checkId = $this->user_model->where('id', $id)->first();
-		//    $password =  [
-		// 	'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
-		//    ];
-		// if($this->user_model->passwordVerify($old_password, $data['userdata']->password))
-		// {
-		// 	if($this->user_model->update($new_password, session()->get('logged_user')))
-		// 	{
-		// 		session()->setTempdata('success','Password Updated successfully', 3);
-		// 		return redirect()->to('Users');
-		// 	}
-		// 	else
-		// 	{
-		// 		session()->setTempdata('error','Unabled to update', 3);
-		// 		return redirect()->to(current_url());
-		// 	}
-		// }else{
-		// 	session()->setTempdata('error','Old password does not matched with db password', 3);
-		// 	return redirect()->to('Users');
-		// }
-		   
-
-		//    $this->user_model->update($checkId, $password);
+	public function updatePassword()
+	{
+		$session = session();
+		// $data = [];
+		// $data['userdata'] = $this->user_model->getLoggedInUserData(session()->get('logged_user'));
 		
-		//    session()->setTempdata('success','Password updated', 3);
-		// 	return redirect()->to('Users');
-		   
-	   }
-	   else
-	   {
-		$data['validation'] = $this->validator;
-	   }
+		if($this->request->getMethod() == 'post'){
+			// $rules = [
+			// 		'old_password' => 'required',
+			// 		'new_password' => 'required|min_length[8]|max_length[255]',
+			// 		'confirm_password' => 'matches[password]',
+			// 	];
+		//    if($this->validate($rules)){
+				// $old_password = $this->request->getVar('old_password');
+				$new_password = [
+					'password' => password_hash($this->request->getVar('new_password'), PASSWORD_DEFAULT)
+				];
+				$data = $session->get('forgot_password_id');
+				$this->user_model->update($data, $new_password);
+				return redirect()->to('users');
+				
+				//    $checkId = $this->user_model->where('id', $id)->first();
+			//    $password =  [
+			// 	'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
+			//    ];
+			// if($this->user_model->passwordVerify($old_password, $data['userdata']->password))
+			// {
+			// 	if($this->user_model->update($new_password, session()->get('logged_user')))
+			// 	{
+			// 		session()->setTempdata('success','Password Updated successfully', 3);
+			// 		return redirect()->to('Users');
+			// 	}
+			// 	else
+			// 	{
+			// 		session()->setTempdata('error','Unabled to update', 3);
+			// 		return redirect()->to(current_url());
+			// 	}
+			// }else{
+			// 	session()->setTempdata('error','Old password does not matched with db password', 3);
+			// 	return redirect()->to('Users');
+			// }
+				
+
+			//    $this->user_model->update($checkId, $password);
+			
+			//    session()->setTempdata('success','Password updated', 3);
+			// 	return redirect()->to('Users');
+				
+			}
+			else
+			{
+			$data['validation'] = $this->validator;
+			}
 	}
-//    else{
-// 	   return redirect()->to(current_url());
-//    }
-// }
+
+	//Expecting $_POST['Name', 'Email', 'Phone', 'Message']
+	public function send($rname, $rmail, $sender_email, $message) 
+	{
+		// print_r("test");die();
+
+		// $this->load->library('email');
+
+		// $config = array();
+    // $config['protocol']     = "smtp"; // you can use 'mail' instead of 'sendmail or smtp'
+    // $config['smtp_host']    = "smtppro.zoho.com";// you can use 'smtp.googlemail.com' or 'smtp.gmail.com' instead of 'ssl://smtp.googlemail.com'
+    // $config['smtp_user']    = "cesar@fuegonetworx.com"; // client email gmail id
+    // $config['smtp_pass']    = "Newyear2022!!"; // client password
+    // $config['smtp_port']    =  587;
+    // $config['smtp_crypto']  = 'TLS';
+    // $config['smtp_timeout'] = "";
+    // $config['mailtype']     = "html";
+    // $config['charset']      = "iso-8859-1";
+    // $config['newline']      = "\r\n";
+    // $config['wordwrap']     = TRUE;
+    // $config['validate']     = FALSE;
+    // $this->load->library('email', $config); // intializing email library, whitch is defiend in system
+
+		// $this->email->set_newline("\r\n"); // comuplsory line attechment because codeIgniter interacts with the SMTP server with regards to line break
+
+    // $from_email = $sender_email; // sender email, coming from my view page 
+    // $to_email = $rmail; // reciever email, coming from my view page
+    // //Load email library
+
+    // $this->email->from($from_email);
+    // $this->email->to($to_email);
+    // $this->email->subject('Send Email Codeigniter'); 
+    // $this->email->message('The email send using codeigniter library');  // we can use html tag also beacause use $config['mailtype'] = 'HTML'
+    // //Send mail
+    // if($this->email->send()){
+    //     $this->session->set_flashdata("email_sent","Congragulation Email Send Successfully.");
+    //     echo "email_sent";
+    // }
+    // else{
+    //     echo "email_not_sent";
+    //     echo $this->email->print_debugger();  // If any error come, its run
+    // }
+
+		// helper('form');
+
+		// //Send mail form data
+		$email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($rmail);
+		$email->setSubject('Confirm Registration');
+
+		$body  = 'Name: ' . $rname . "\n";
+		$body .= 'E-Mail: ' . $rmail . "\n";
+		$body .= 'Message: ' . $message . "\n";
+		$email->setMessage($body);
+
+		if($email->send()) {
+				print_r("email sent");
+		} 
+
+		// Output errors for debugging if necessary
+		echo $email->printDebugger();
+		exit;
+
+		//Handle any errors here...
+	} 
 }
