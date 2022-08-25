@@ -8,13 +8,14 @@ class Users extends BaseController
 {
 
 	public function __construct() {
-		$data = [];
-		$this->user_model = model('userModel');
-		$this->forgotpassword_model = model('forgotpasswordModel');
-		
-		// $this->load->helper('functions_helper');
-	
-		
+		helper(['jwt']);
+
+		$this->data = [];
+		$this->guid = session()->get('guid');
+		$this->user_model = model('UserModel');
+		$this->forgotpassword_model = model('ForgotpasswordModel');
+
+		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
 	}
 
 	public function index()
@@ -43,15 +44,23 @@ class Users extends BaseController
 			// $user = $model->where('username', $this->request->getVar('username'))->first();
 			$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
 
-			/* $user = [
-				'id' => 1,
-				'email' => $this->data['post_data']['email'],
-				'role' => 'admin',
-			]; */
-
-			$this->setUserSession($user);
-
-			return redirect()->to('admin/dashboard');
+			if($user) {
+				if(password_verify($this->request->getPost('password'), $user['password'])) {
+					$this->setUserSession($user);
+	
+					return redirect()->to('admin/dashboard');
+				}
+				else {
+					$session = session();
+					$session->setFlashdata('message', 'Incorrect Email or Password.');
+					return redirect()->to('/users');
+				}
+			}
+			else {
+				$session = session();
+				$session->setFlashdata('message', 'Incorrect Email or Password.');
+				return redirect()->to('/users');
+			}
 		}
 
 		$this->data['page_body_id'] = "user_login";
@@ -127,7 +136,7 @@ class Users extends BaseController
 			}
 		}
 
-		echo view('register');
+		echo view('register', $this->data);
 	}
 
 	public function profile() {
@@ -195,7 +204,7 @@ class Users extends BaseController
 		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
 	public function checkout()
-	{ 
+	{
         echo view('checkout');
 	}
 
@@ -283,7 +292,7 @@ class Users extends BaseController
 					$data['validation']= $this->validator;	
 				}
 		 }
-		return view('forgot-password');
+		return view('forgot-password', $this->data);
 	}
 
 public function reset_password($unique_id){
@@ -294,7 +303,7 @@ public function reset_password($unique_id){
 		//  $_SESSION['forgor-password-id'] = $checkUniqueId;
 		 //print_r($_SESSION['forgor-password-id']); 
 		 //$data['id']= 
-		 echo view('reset_password');
+		 echo view('reset_password', $this->data);
 	}else{
 		echo 'Invalid';
 	}

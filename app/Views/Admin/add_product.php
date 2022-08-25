@@ -27,7 +27,7 @@
         <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
           <div class="card">
             <div class="card-body">
-              <h5 class="font-weight-bolder">Product Informations</h5>
+              <h5 class="font-weight-bolder">Product Information</h5>
               <div class="row mt-4">
                 <div class="col-8 col-md-8 col-xs-12 mb-3">
                   <label class="form-label" for="name">Name</label>
@@ -67,11 +67,62 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row mt-4">
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Unit</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <option value="mg">Milligrams (mg)</option>
+                    <option value="g">Grams (g)</option>
+                    <option value="oz">Ounces (oz)</option>
+                    <option value="piece">Per Piece</option>
+                    <option value="pct">Percent (%)</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Unit value</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Category</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                    <?php foreach($categories as $category): ?>
+                    <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Price</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
+                <div class="col-sm-12">
+                  <label class="mt-4">Description</label>
+                  <p class="form-text text-muted text-xs ms-1 d-inline">
+                    (optional)
+                  </p>
+                  <div id="edit-description-edit" class="h-50">
+                    <textarea class="w-100" id="description" name="description"></textarea>
+                  </div>
+                </div>  
+              </div>
+
               <div class="row mt-4">
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Strain <button id="new_strain" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newStrainModal">Add New Strain</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="strain" id="select_strain" class="form-control">
+                    <select name="strain" id="select_strain" class="form-control w-100 border px-2">
                       <option value="0">None</option>
                       <?php foreach($strains as $strain): ?>
                       <option value="<?php echo $strain->id; ?>"><?php echo $strain->name; ?></option>
@@ -82,7 +133,7 @@
                 <div class="col-md-6 col-xs-12">
                   <label class="form-label w-100">Brand <button id="new_brand" class="text-xs float-end btn btn-modal bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#newBrandModal">Add New Brand</button></label>
                   <div class="input-group input-group-dynamic">
-                    <select name="brand" id="select_brand" class="form-control">
+                    <select name="brand" id="select_brand" class="form-control w-100 border px-2">
                       <option value="0">None</option>
                       <?php foreach($brands as $brand): ?>
                       <option value="<?php echo $brand->id; ?>"><?php echo $brand->name; ?></option>
@@ -98,12 +149,12 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" required  onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="thc_measure" class="form-control">
+                        <select name="thc_measure" id="thc_measure" class="form-control w-100 border px-2">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
                         </select>
@@ -116,12 +167,12 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" required onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <select name="cbd_measure" class="form-control">
+                        <select name="cbd_measure" id="cbd_measure" class="form-control w-100 border px-2">
                           <option value="pct">Percent (%)</option>
                           <option value="mg">Milligrams (mg)</option>
                         </select>
@@ -130,48 +181,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Price</label>
-                  <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" onfocus="focused(this)" required onfocusout="defocused(this)">
-                  </div>
-                </div>
-                <div class="col-8 col-md-8 col-xs-12 mb-3"> 
-                <div class="">
-                    <label>Unit</label>
-                    <input type="text" id="unit" name="unit" class="form-control">
-                  </div>
-                </div>
-                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
-                <div class="">
-                    <label>Unit Value</label>
-                    <input type="number" id="value" name="value" class="form-control">
-                  </div>
-                </div>
-                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
-                <div class="">
-                    <label>Price</label>
-                    <input type="number" name="price" class="form-control">
-                  </div>
-                </div>
-                <div class="col-4 col-md-4 col-xs-12 mb-3"> 
-                <div class="">
-                    <label>Stocks/Qty</label>
-                    <input type="number" name="qty" class="form-control">
-                  </div>
-                </div>
-                <div class="col-sm-12">
-                  <label class="mt-4">Description</label>
-                  <p class="form-text text-muted text-xs ms-1 d-inline">
-                    (optional)
-                  </p>
-                  <div id="edit-description-edit" class="h-50">
-                    <textarea class="w-100" id="description" name="description"></textarea>
-                  </div>
-                </div>
-                
-              </div>
+>>>>>>> whisula-branch
             </div>
           </div>
         </div>
