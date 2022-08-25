@@ -1,0 +1,33 @@
+.modal-backdrop {
+  opacity: 0.75 !important;
+}
+
+.modal-body {
+  position: relative;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 5rem;
+  border: 1px solid #c8b328;
+  text-align: center;
+}
+
+.btn {
+  border-radius: 0 !important;
+  color: #c8b328;
+  border: 2px solid #c8b328 !important;
+  padding: .5rem 3rem !important;
+}
+
+.btn:hover {
+  background: #c8b328;
+  color:  #022718;
+  border: 2px solid #fff !important;
+  padding: .5rem 3rem !important;
+}
+@media (max-width:768px) {
+  .mobile-margin-bottom{
+    margin-bottom:.5rem;
+  }
+  
+}

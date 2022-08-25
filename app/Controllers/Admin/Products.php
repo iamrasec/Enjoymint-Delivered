@@ -11,14 +11,16 @@ class Products extends BaseController {
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
-    $this->product_model = model('productModel');
-    $this->strain_model = model('strainModel');
-    $this->brand_model = model('brandModel');
-    $this->measurement_model = model('measurementModel');
+    $this->product_model = model('ProductModel');
+    $this->strain_model = model('StrainModel');
+    $this->brand_model = model('BrandModel');
+    $this->category_model = model('CategoryModel');
+    $this->measurement_model = model('MeasurementModel');
+    $this->product_category = model('ProductCategory');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
-    $this->image_model = model('imageModel');
-    $this->product_variant_model = model('productVariantModel');
+    $this->image_model = model('ImageModel');
+    $this->product_variant_model = model('ProductVariantModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
@@ -37,7 +39,7 @@ class Products extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['products'] = $this->product_model->get()->getResult();
-    return view('admin/products_list_view', $this->data);
+    return view('Admin/products_list_view', $this->data);
   }
 
   public function add_product() 
@@ -53,8 +55,9 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
       $this->data['strains'] = $this->strain_model->get()->getResult();
+      $this->data['categories'] = $this->category_model->get()->getResult();
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
-      echo view('admin/add_product', $this->data);
+      echo view('Admin/add_product', $this->data);
   }
   
   public function save_product() {
@@ -88,7 +91,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['strains'] = $this->strain_model->get()->getResult();
 
-		  echo view('admin/manage_strains', $this->data);
+		  echo view('Admin/manage_strains', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -125,7 +128,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -153,7 +156,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
 
-		  echo view('admin/manage_brands', $this->data);
+		  echo view('Admin/manage_brands', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -192,7 +195,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -213,11 +216,42 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
-		  echo view('admin/product_measurements', $this->data);
+		  echo view('Admin/product_measurements', $this->data);
     }
     else {
       return redirect()->to('/');
     }
+  }
+
+  public function edit_product($pid) {
+    $page_title = 'Edit Product';
+    $this->data['page_body_id'] = "products_list";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $this->data['brands'] = $this->brand_model->get()->getResult();
+    $this->data['strains'] = $this->strain_model->get()->getResult();
+    $this->data['categories'] = $this->category_model->get()->getResult();
+    $this->data['measurements'] = $this->measurement_model->get()->getResult();
+    $this->data['product_data'] = $this->product_model->getProductData($pid);
+
+    $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
+    $assignedCat = [];
+    
+    if($categories) {
+      // print_r($categories);die();
+      foreach($categories as $category) {
+        $assignedCat[] = $category->cid;
+      }
+    }
+    
+    $this->data['product_categories'] = $assignedCat;
+
+    echo view('Admin/edit_product', $this->data);
   }
 
   public function reviews() {
@@ -266,7 +300,7 @@ class Products extends BaseController {
         $product->id, 
         $product->name, 
         $product->url,
-        "<a href=".base_url('admin/products/edit_product/').$product->id.">edit</a>",
+        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>",
       );
     }
 

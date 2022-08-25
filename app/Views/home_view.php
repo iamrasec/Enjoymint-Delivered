@@ -18,31 +18,12 @@
     <div class="row">
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
         <h2>Shop by Category</h2>
-        <div class="row mt-5">
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Flower</a>
+        <div class="row mt-5 d-flex justify-content-center">
+          <?php foreach($categories as $category): ?>
+          <div class="col-md-3 col-sm-6 pt-2 pb-2">
+            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $category->name; ?></a>
           </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Pre-Rolls</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Concentrates</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Tinctures</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Capsules</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Edibles</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Cartriges</a>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <a href="#">Strains</a>
-          </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
@@ -55,57 +36,24 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
+        <!-- <pre><?php print_r($products); ?></pre> -->
         <div class="row">
+          <?php for($countp = 0; $countp <= 3; $countp++): ?>
           <div class="col-md-3 col-sm-6 pt-4 pb-4">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><img src="<?= base_url('products/images/'.$products[$countp]->images[0]->filename); ?>" /></a>
               </div>
               <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
+                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><h5><?= $products[$countp]->name; ?></h5></a>
+                <!-- <p>20.037%~21.401% THC</p>
+                <p class="price">$<span>33.50</span></p> -->
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
+          <?php endfor; ?>
         </div>
-        <a class="btn btn-lg btn-primary">View all Products</a>
+        <a class="btn btn-lg btn-primary" href="<?= base_url('/shop'); ?>">View all Products</a>
       </div>
     </div>
   </div>
@@ -319,37 +267,37 @@
             Thank you and welcome to Enjoymint Delivered!</p>
         </div>
         <div class="col-12 col-md-6">
-          <form id="contact_form" method="post" action="/home/submit_contact">
+          <form id="contact_form" method="post" action="<?php echo base_url('api/contact/save'); ?>">
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-group input-group-dynamic mb-4">
                     <label class="form-label">First Name</label>
-                    <input class="form-control" aria-label="First Name" type="text" >
+                    <input class="form-control" aria-label="First Name" name="first_name" type="text" >
                   </div>
                 </div>
                 <div class="col-md-6 ps-2">
                   <div class="input-group input-group-dynamic">
                     <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control" placeholder="" aria-label="Last Name" >
+                    <input type="text" class="form-control" placeholder="" name="last_name" aria-label="Last Name" >
                   </div>
                 </div>
               </div>
               <div class="mb-4">
                 <div class="input-group input-group-dynamic">
                   <label class="form-label">Phone Number</label>
-                  <input type="text" class="form-control" placeholder="" aria-label="Phone Number" >
+                  <input type="text" class="form-control" placeholder="" name="phone_number" aria-label="Phone Number" >
                 </div>
               </div>
               <div class="mb-4">
                 <div class="input-group input-group-dynamic">
                   <label class="form-label">Email Address</label>
-                  <input type="email" class="form-control">
+                  <input type="email" class="form-control" name="email">
                 </div>
               </div>
               <div class="input-group mb-4 input-group-static">
                 <label>Your message</label>
-                <textarea name="message" class="form-control" id="message" rows="4"></textarea>
+                <textarea name="message" class="form-control" id="message" name="message" rows="4"></textarea>
               </div>
               <div class="row">
                 <div class="col-md-12">
@@ -364,4 +312,9 @@
   </div>
 </div>
 
+<?php $this->endSection() ?>
+
+<?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?php echo base_url(); ?>/assets/js/contact.js"></script>
 <?php $this->endSection() ?>

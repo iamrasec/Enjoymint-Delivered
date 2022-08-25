@@ -11,7 +11,7 @@
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto h-auto max-height-vh-100 h-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
-        <li class="nav-item mb-2 mt-0">
+        <!-- <li class="nav-item mb-2 mt-0">
           <a data-bs-toggle="collapse" href="#ProfileNav" class="nav-link text-white" aria-controls="ProfileNav" role="button" aria-expanded="false">
             <img src="../../assets/img/team-3.jpg" class="avatar">
             <span class="nav-link-text ms-2 ps-1">Brooklyn Alice</span>
@@ -38,7 +38,7 @@
               </li>
             </ul>
           </div>
-        </li>
+        </li> -->
         <hr class="horizontal light mt-0">
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="nav-link text-white active" aria-controls="dashboard" role="button" aria-expanded="false">

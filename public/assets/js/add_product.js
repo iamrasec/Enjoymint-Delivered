@@ -1,4 +1,11 @@
 (function($) {
+  $(document).ready(function() {
+    $('.product-category').select2({
+      placeholder: "Select a Category",
+      // allowClear: true
+    });
+  });
+
   $(document).on('keyup', '#product_name', function() {
     $('#purl').val(slugify($(this).val()));
   });
@@ -136,8 +143,22 @@
       formData.append('productImages[]', item.files[0]);
     });
 
-    formData.append('unit', $('#unit').val());
-    formData.append('value', $('#value').val());
+    // $('input[name="unit[]"]').each(function () {
+    //   formData.append('units[]', $(this).val());
+    // });
+
+    // $('input[name="value[]"]').each(function () {
+    //   formData.append('unit_values[]', $(this).val());
+    // });
+
+    // $('input[name="price[]"]').each(function () {
+    //   formData.append('prices[]', $(this).val());
+    // });
+
+    // $('input[name="qty[]"]').each(function () {
+    //   formData.append('stocks[]', $(this).val());
+    // });
+
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());
@@ -147,7 +168,12 @@
     formData.append('strain', $('#select_strain').val());
     formData.append('brand', $('#select_brand').val());
     formData.append('thc_val', $('#thc_val').val());
+    formData.append('thc_measure', $('#thc_measure').val());
     formData.append('cbd_val', $('#cbd_val').val());
+    formData.append('cbd_measure', $('#cbd_measure').val());
+    formData.append('categories', $('#category').val());
+    formData.append('unit_measure', $('#unit').val());
+    formData.append('unit_value', $('#unit_value').val());
     formData.append('tags', $('#tags').val());
 
     fetch('/api/products/add',  {
