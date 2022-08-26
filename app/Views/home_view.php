@@ -63,7 +63,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 col-xs-12 mt-5 text-center">
-        <h2>Discover</h2>
+        <h2>Discover <span class="text-sm">(Coming Soon)</span></h2>
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
           <div class="col-md-3 col-sm-6">
