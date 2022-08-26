@@ -7,7 +7,8 @@ use App\Models\UserModel;
 class Users extends BaseController
 {
 
-	public function __construct() {
+	public function __construct() 
+	{
 		helper(['jwt']);
 
 		$this->data = [];
@@ -16,6 +17,8 @@ class Users extends BaseController
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
+
+		$this->sender_email = 'cesar@fuegonetworx.com';
 	}
 
 	public function index()
@@ -44,20 +47,31 @@ class Users extends BaseController
 			// $user = $model->where('username', $this->request->getVar('username'))->first();
 			$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
 
+			// print_r($user);die();
+
+			$session = session();
 			if($user) {
 				if(password_verify($this->request->getPost('password'), $user['password'])) {
+					if($user['is_active'] == 0) {
+						$session->setFlashdata('message', 'Account Inactive.  Please activate your account.');
+						return redirect()->to('/users');
+					}
+
 					$this->setUserSession($user);
-	
-					return redirect()->to('admin/dashboard');
+					
+					if($user['role'] == 1) {
+						return redirect()->to('admin/dashboard');
+					}
+					else {
+						return redirect()->to('/');
+					}
 				}
 				else {
-					$session = session();
 					$session->setFlashdata('message', 'Incorrect Email or Password.');
 					return redirect()->to('/users');
 				}
 			}
 			else {
-				$session = session();
 				$session->setFlashdata('message', 'Incorrect Email or Password.');
 				return redirect()->to('/users');
 			}
@@ -68,14 +82,16 @@ class Users extends BaseController
 		echo view('login', $this->data);
 	}
 
-	public function login() {
+	public function login() 
+	{
 		// helper(['form']);
 		// print_r($_POST);
 		// die();
 		print_r($this->request->getPost());
 	}
 
-	private function setUserSession($user) {
+	private function setUserSession($user) 
+	{
 		$this->data = [
 			'id' => $user['id'],
 			'guid' => $user['guid'],
@@ -91,7 +107,8 @@ class Users extends BaseController
 		return true;
 	}
 
-	public function register() {
+	public function register() 
+	{
 		helper(['form']);
 		
 		// if($this->request->getMethod() == 'post') {
@@ -173,7 +190,7 @@ class Users extends BaseController
 				// print_r($user);die();
 
 				// Preparation for email.
-				$this->send_validation('cesar@fuegonetworx.com', $user);
+				$this->send_validation($this->sender_email, $user);
 				
 				// $this->setUserSession($user);
 				
@@ -185,15 +202,13 @@ class Users extends BaseController
 
 				return view('register', $success);
 			}
-
-
-			// $this->send($name, $email, 'cesar@fuegonetworx.com', $message);
 		}
 
 		return view('register', $this->data);
 	}
 
-	public function profile() {
+	public function profile() 
+	{
 		$data = [];
 		helper(['form']);
 		// $model = new UserModel();
@@ -249,20 +264,24 @@ class Users extends BaseController
 		echo view('templates/footer');
 	}
 
-	public function logout() {
+	public function logout() 
+	{
 		session()->destroy();
 		return redirect()->to('/');
 	}
 
-	private function _generate_guid() {
+	private function _generate_guid() 
+	{
 		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
+	
 	public function checkout()
 	{
         echo view('checkout');
 	}
 
-	function generateRandomString($length = 10) {
+	function generateRandomString($length = 10) 
+	{
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$charactersLength = strlen($characters);
 		$randomString = '';
@@ -276,7 +295,7 @@ class Users extends BaseController
 	{
 		helper(['form']);
 		 $data = [];
-		  if($this->request->getMethod() == "post"){
+		  if($this->request->getPost()){
 			$rules = [
 				'email' => [ 
 					'label' => 'Email',
@@ -290,51 +309,30 @@ class Users extends BaseController
 				if ($this->validate($rules)){
 					
 					$email = $this->request->getVar('email', FILTER_SANITIZE_EMAIL);
-					if($this->user_model->verifyEmail($email)){
-					// if(!empty($userdata)){
+					$verify_email = $this->user_model->verifyEmail($email);
+
+					if($verify_email) {
 						$unique_id = $this->generateRandomString($length = 10);
-						$newData = ['unique_id' => $unique_id];
-						if($this->forgotpassword_model->save($newData))
-						{
-							echo 'Password reset link sent! <br>';
-							echo base_url('password-reset/').$unique_id;
-						 //echo view('reset_password');
+						$newData = [
+							'unique_id' => $unique_id,
+							'user_id' => $verify_email['id'],
+						];
+
+						if($this->forgotpassword_model->save($newData)) {
+							$verify_email['email'] = $email;
+							$verify_email['token'] = $unique_id;
+							$verify_email['reset_url'] = base_url('users/reset_password/'.$unique_id);
+
+						 $send_mail = $this->send_reset_password($this->sender_email, $verify_email);
+
+						 if($send_mail) {
+							session()->setTempdata('success', 'Reset password link sent to your registered email. Please verify with in 15 minutes', 3);
+							return redirect()->to(current_url());
+						 }
 						}
 						else{
 							return redirect()->to(current_url());
 						}
-						// if($this->user_model->updatedAt($userdata['guid'])){
-						//  	$to = $email;
-						//  	$subject = "Reset Password Link";
-						//  	$token = $userdata['guid'];
-						//  	$message = 'Hi '.$userdata['first_name'].'<br><br>'
-						// 			. 'Your reset password request has been recieved. Please click'
-						// 			. 'the below link to reset your password.<br><br>'
-						// 			. '<a href="'.base_url().'/Users/reset_password/'.$token.'">Click here to Reset password</a><br><br>'
-						// 			. 'Thanks<br>Enjoymint';
-
-						// 	$email = \Config\Services::email();
-						//  	$email->setTo($to);
-						//  	$email->setFrom('Enjoymint@gmail.com','Enjoymint');
-						//  	$email->setSubject($subject);
-						//  	$email->setMessage($message);
-						//  	if($email->send()){
-
-						//  		session()->setTempdata('success', 'Reset password link sent to your registered email. Please verify with in 15 minutes', 3);
-						//  		return redirect()->to(current_url());
-						//  	}
-						//  	else 
-						//  	{
-						//  		$data = $email->printDebugger(['headers']);
-						//  		print_r($data);
-						//  	}
-						// }
-						//  else
-						// {
-						// 	session()->setTempdata('error','Unable to update', 3);
-						// return redirect()->to(current_url());
-						// }
-
 					}
 					else
 					{
@@ -349,14 +347,12 @@ class Users extends BaseController
 		return view('forgot-password', $this->data);
 	}
 
-	public function reset_password($unique_id){
+	public function reset_password($unique_id)
+	{
 		$session = session();	
 		$checkUniqueId = $this->forgotpassword_model->where('unique_id', $unique_id)->first();
 		if($checkUniqueId){
 			$session->forgot_password_id = $checkUniqueId;
-			//  $_SESSION['forgor-password-id'] = $checkUniqueId;
-			//print_r($_SESSION['forgor-password-id']); 
-			//$data['id']= 
 			echo view('reset_password', $this->data);
 		}else{
 			echo 'Invalid';
@@ -366,56 +362,49 @@ class Users extends BaseController
 	public function updatePassword()
 	{
 		$session = session();
-		// $data = [];
-		// $data['userdata'] = $this->user_model->getLoggedInUserData(session()->get('logged_user'));
 		
-		if($this->request->getMethod() == 'post'){
-			// $rules = [
-			// 		'old_password' => 'required',
-			// 		'new_password' => 'required|min_length[8]|max_length[255]',
-			// 		'confirm_password' => 'matches[password]',
-			// 	];
-		//    if($this->validate($rules)){
-				// $old_password = $this->request->getVar('old_password');
+		if($this->request->getPost()){
+
+			$rules = [
+				'new_password' => [
+					'rules' => 'required|min_length[8]|max_length[255]',
+					'errors' => [
+						'min_length' => 'Password should be longer than 8 characters.',
+						'max_length' => 'Password should be no longer than 255 characters.',
+					],
+				],
+				'confirm_password' => [
+					'rules' => 'matches[new_password]',
+					'errors' => [
+						'matches' => 'Your Password does not match.'
+					],
+				],
+			];
+
+			if(!$this->validate($rules)) {
+				$this->data['validation'] = $this->validator;
+
+				return view('reset_password', $this->data);
+			}
+			else {
 				$new_password = [
-					'password' => password_hash($this->request->getVar('new_password'), PASSWORD_DEFAULT)
+					'password' => $this->request->getVar('new_password'),
 				];
 				$data = $session->get('forgot_password_id');
-				$this->user_model->update($data, $new_password);
-				return redirect()->to('users');
-				
-				//    $checkId = $this->user_model->where('id', $id)->first();
-			//    $password =  [
-			// 	'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
-			//    ];
-			// if($this->user_model->passwordVerify($old_password, $data['userdata']->password))
-			// {
-			// 	if($this->user_model->update($new_password, session()->get('logged_user')))
-			// 	{
-			// 		session()->setTempdata('success','Password Updated successfully', 3);
-			// 		return redirect()->to('Users');
-			// 	}
-			// 	else
-			// 	{
-			// 		session()->setTempdata('error','Unabled to update', 3);
-			// 		return redirect()->to(current_url());
-			// 	}
-			// }else{
-			// 	session()->setTempdata('error','Old password does not matched with db password', 3);
-			// 	return redirect()->to('Users');
-			// }
-				
+				$save_update = $this->user_model->update($data['user_id'], $new_password);
 
-			//    $this->user_model->update($checkId, $password);
-			
-			//    session()->setTempdata('success','Password updated', 3);
-			// 	return redirect()->to('Users');
-				
-			}
-			else
-			{
+				if($save_update) {
+					$this->forgotpassword_model->delete($data['id']);
+					$session->remove('forgot_password_id');
+
+					$session->setFlashdata('message', 'Password Updated successfully');
+					return redirect()->to('users');
+				}
+			}				
+		}
+		else {
 			$data['validation'] = $this->validator;
-			}
+		}
 	}
 
 	public function confirm($token) 
@@ -446,8 +435,8 @@ class Users extends BaseController
 
 	public function send_validation($sender_email, $user)
 	{
-		 $confirm_key = getSignedJWTForUser($user['guid']);
-		 $user['confirm_url'] = base_url('users/confirm/'. $confirm_key);
+		$confirm_key = getSignedJWTForUser($user['guid']);
+		$user['confirm_url'] = base_url('users/confirm/'. $confirm_key);
 
 		$email = \Config\Services::email();
 		$email->setFrom($sender_email);
@@ -473,4 +462,25 @@ class Users extends BaseController
 
 		//Handle any errors here...
 	} 
+
+	public function send_reset_password($sender_email, $user)
+	{
+		$email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($user['email']);
+		$email->setSubject('Password Reset');
+		$email->setNewline = "\r\n";
+
+		$template = view('email/reset_password', $user);
+
+		// $body  = 'Name: ' . $recipient_name . "\r\n";
+		// $body .= 'E-Mail: ' . $recipient_email . "\r\n";
+		// $body .= 'Message: ' . $message . "\r\n";
+
+		$email->setMessage($template);
+
+		if($email->send()) {
+				return true;
+		} 
+	}
 }
