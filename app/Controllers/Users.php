@@ -418,6 +418,32 @@ class Users extends BaseController
 			}
 	}
 
+	public function confirm($token) 
+	{
+		helper('jwt');
+		$validate = validateJWTFromRequestOutputUser($token);
+
+		if(is_array($validate) && !empty($validate) && $validate['is_active'] == 0) {
+			$update_data = [
+				'id' => $validate['id'],
+				'is_active' => 1,
+			];
+
+			$this->user_model->save($update_data);
+		}
+		else if($validate['is_active'] == 1){
+			return view('confirm_user', ['status' => 'Activation Failed.  Account already in-use.']);	
+		}
+
+		$validate['is_active'] = 1;
+
+		$this->setUserSession($validate);
+
+		return view('confirm_user', $validate);
+
+		// print_r($validate);die();
+	}
+
 	public function send_validation($sender_email, $user)
 	{
 		 $confirm_key = getSignedJWTForUser($user['guid']);
