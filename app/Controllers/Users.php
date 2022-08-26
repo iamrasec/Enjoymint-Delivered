@@ -144,7 +144,7 @@ class Users extends BaseController
 			$message = "This the body of the message";
 
 
-			$this->send($name, $email, 'cesaryamutajr@gmail.com', $message);
+			$this->send($name, $email, 'cesar@fuegonetworx.com', $message);
 		}
 
 		echo view('register', $this->data);
