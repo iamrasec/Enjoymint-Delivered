@@ -13,17 +13,35 @@
               <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('<?= base_url('assets/img/age-check/cannabis.jpg'); ?>'); background-size: cover;">
               </div>
             </div>
+            <?php if(isset($success)): ?>
+            <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+              <div class="card card-plain">
+                <div class="card-header">
+                  <a href="<?= base_url(); ?>"><img src="<?= base_url('assets/img/logo-oval-300x89.png'); ?>" style="width: 300px;"></a>
+                    <h4 class="font-weight-bolder mt-5">Sign Up</h4>
+                </div>
+                <div class="card-body">
+                  <p><?= $success; ?></p>
+                </div>
+              </div>
+            </div>
+            <?php else: ?>
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header">
                 <a href="<?= base_url(); ?>"><img src="<?= base_url('assets/img/logo-oval-300x89.png'); ?>" style="width: 300px;"></a>
                   <h4 class="font-weight-bolder mt-5">Sign Up</h4>
-                  <p class="mb-0">Enter your email and password to register</p>
+                  <p class="mb-0">Enter your name, email and password to register</p>
                 </div>
+                <?php if(isset($validation)): ?>
+                <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+                  <?= $validation->listErrors(); ?>
+                </div>
+                <?php endif; ?>
                 <?php if (session()->getFlashdata('email_sent') !== NULL) : ?>
-                  <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
-                      <?php echo session()->getFlashdata('email_sent'); ?>
-                  </div>
+                <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+                    <?php echo session()->getFlashdata('email_sent'); ?>
+                </div>
                 <?php endif; ?>
                 <div class="card-body">
                   <form role="form" method="post" action="<?= base_url('/users/register'); ?>">
@@ -48,7 +66,7 @@
                       <input type="password" name="password_confirm" class="form-control">
                     </div>
                     <div class="form-check form-check-info text-left">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                      <input class="form-check-input" type="checkbox" value="1" name="accept_terms" id="flexCheckDefault" checked>
                       <label class="form-check-label" for="flexCheckDefault">
                         I agree the <a href="javascript:;" class="text-dark font-weight-bolder" data-bs-toggle="modal" data-bs-target="#modal-notification">Terms and Conditions</a>
                       </label>
@@ -66,6 +84,7 @@
                 </div>
               </div>
             </div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

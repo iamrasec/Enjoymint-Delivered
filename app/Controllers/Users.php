@@ -93,22 +93,62 @@ class Users extends BaseController
 
 	public function register() {
 		helper(['form']);
-
+		
 		// if($this->request->getMethod() == 'post') {
 		if($this->request->getPost()) {
 			// print_r($this->request->getPost());die();
 			// Form validation here
 			$rules = [
-				// 'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
-				'first_name' => 'required|min_length[3]|max_length[20]',
-				'last_name' => 'required|min_length[3]|max_length[20]',
-				'email' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
-				'password' => 'required|min_length[8]|max_length[255]',
-				'password_confirm' => 'matches[password]',
+				'first_name' => [
+					'rules' => 'required|min_length[3]|max_length[20]',
+					'errors' => [
+						'required' => 'Please input your First Name.',
+						'min_length' => 'First Name should be longer than 3 characters.',
+						'max_length' => 'First Name should be no longer than 20 characters.',
+					],
+				],	
+				'last_name' => [
+					'rules' => 'required|min_length[3]|max_length[20]',
+					'errors' => [
+						'required' => 'Please input your Last Name.',
+						'min_length' => 'Last Name should be longer than 3 characters.',
+						'max_length' => 'Last Name should be no longer than 20 characters.',
+					],
+				],
+				'email' => [
+					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
+					'errors' => [
+						'min_length' => 'Email should be longer than 6 characters.',
+						'max_length' => 'Email should be no longer than 50 characters.',
+						'valid_email' => 'Please input a valid Email.',
+						'is_unique' => 'The Email you provided already has an account. Please try another one or Sign in with that email.',
+					],
+				],
+				'password' => [
+					'rules' => 'required|min_length[8]|max_length[255]',
+					'errors' => [
+						'min_length' => 'Password should be longer than 8 characters.',
+						'max_length' => 'Password should be no longer than 255 characters.',
+					],
+				],
+				'password_confirm' => [
+					'rules' => 'matches[password]',
+					'errors' => [
+						'matches' => 'Your Password does not match.'
+					],
+				],
+				'accept_terms' => [
+					'rules' => 'required',
+					'errors' => [
+						'required' => 'Please read and accept our Terms and Conditions.'
+					],
+				],
 			];
 
 			if(!$this->validate($rules)) {
 				$this->data['validation'] = $this->validator;
+
+				return view('register', $this->data);
 			}
 			else {
 				// $model = new UserModel();
@@ -126,28 +166,31 @@ class Users extends BaseController
 				// print_r($newData);
 
 				// $model->save($newData);
-				// $this->user_model->save($newData);
+				$this->user_model->save($newData);
 
-				// $user = $this->user_model->where('email', $this->request->getVar('email'))->first();
+				$user = $this->user_model->where('email', $this->request->getVar('email'))->first();
+
+				// print_r($user);die();
 
 				// Preparation for email.
+				$this->send_validation('cesar@fuegonetworx.com', $user);
 				
 				// $this->setUserSession($user);
 				
 				// $session = session();
 				// $session->setFlashdata('success', 'Successful Registration');
 				// return redirect()->to('/dashboard');
+
+				$success['success'] = 'Please check your email for account activation.';
+
+				return view('register', $success);
 			}
 
-			$name = $this->request->getVar('first_name') .' '. $this->request->getVar('last_name');
-			$email = $this->request->getVar('email');
-			$message = "This the body of the message";
 
-
-			$this->send($name, $email, 'cesar@fuegonetworx.com', $message);
+			// $this->send($name, $email, 'cesar@fuegonetworx.com', $message);
 		}
 
-		echo view('register', $this->data);
+		return view('register', $this->data);
 	}
 
 	public function profile() {
@@ -320,7 +363,6 @@ class Users extends BaseController
 		}
 	}
 
-
 	public function updatePassword()
 	{
 		$session = session();
@@ -376,69 +418,32 @@ class Users extends BaseController
 			}
 	}
 
-	//Expecting $_POST['Name', 'Email', 'Phone', 'Message']
-	public function send($rname, $rmail, $sender_email, $message) 
+	public function send_validation($sender_email, $user)
 	{
-		// print_r("test");die();
+		 $confirm_key = getSignedJWTForUser($user['guid']);
+		 $user['confirm_url'] = base_url('users/confirm/'. $confirm_key);
 
-		// $this->load->library('email');
-
-		// $config = array();
-    // $config['protocol']     = "smtp"; // you can use 'mail' instead of 'sendmail or smtp'
-    // $config['smtp_host']    = "smtppro.zoho.com";// you can use 'smtp.googlemail.com' or 'smtp.gmail.com' instead of 'ssl://smtp.googlemail.com'
-    // $config['smtp_user']    = "cesar@fuegonetworx.com"; // client email gmail id
-    // $config['smtp_pass']    = "Newyear2022!!"; // client password
-    // $config['smtp_port']    =  587;
-    // $config['smtp_crypto']  = 'TLS';
-    // $config['smtp_timeout'] = "";
-    // $config['mailtype']     = "html";
-    // $config['charset']      = "iso-8859-1";
-    // $config['newline']      = "\r\n";
-    // $config['wordwrap']     = TRUE;
-    // $config['validate']     = FALSE;
-    // $this->load->library('email', $config); // intializing email library, whitch is defiend in system
-
-		// $this->email->set_newline("\r\n"); // comuplsory line attechment because codeIgniter interacts with the SMTP server with regards to line break
-
-    // $from_email = $sender_email; // sender email, coming from my view page 
-    // $to_email = $rmail; // reciever email, coming from my view page
-    // //Load email library
-
-    // $this->email->from($from_email);
-    // $this->email->to($to_email);
-    // $this->email->subject('Send Email Codeigniter'); 
-    // $this->email->message('The email send using codeigniter library');  // we can use html tag also beacause use $config['mailtype'] = 'HTML'
-    // //Send mail
-    // if($this->email->send()){
-    //     $this->session->set_flashdata("email_sent","Congragulation Email Send Successfully.");
-    //     echo "email_sent";
-    // }
-    // else{
-    //     echo "email_not_sent";
-    //     echo $this->email->print_debugger();  // If any error come, its run
-    // }
-
-		// helper('form');
-
-		// //Send mail form data
 		$email = \Config\Services::email();
 		$email->setFrom($sender_email);
-		$email->setTo($rmail);
-		$email->setSubject('Confirm Registration');
+		$email->setTo($user['email']);
+		$email->setSubject('Confirm Your Registration');
 		$email->setNewline = "\r\n";
 
-		$body  = 'Name: ' . $rname . "\r\n";
-		$body .= 'E-Mail: ' . $rmail . "\r\n";
-		$body .= 'Message: ' . $message . "\r\n";
-		$email->setMessage($body);
+		$template = view('email/registration', $user);
+
+		// $body  = 'Name: ' . $recipient_name . "\r\n";
+		// $body .= 'E-Mail: ' . $recipient_email . "\r\n";
+		// $body .= 'Message: ' . $message . "\r\n";
+
+		$email->setMessage($template);
 
 		if($email->send()) {
-				print_r("email sent");
+				return true;
 		} 
 
 		// Output errors for debugging if necessary
-		echo $email->printDebugger();
-		exit;
+		// echo $email->printDebugger();
+		// exit;
 
 		//Handle any errors here...
 	} 
