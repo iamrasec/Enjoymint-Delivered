@@ -225,12 +225,20 @@
           <div class="row" id='image_lists'>
             <div class="row">
               <div class="col-lg-10">
-                <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
+              
+              <?php foreach($product_image as $image): ?>
+                <input type="text" name="images" id="images" class="form-control"  value="<?= $image->id; ?>"  hidden>
+                <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control" >
               </div>
               <div class="col-lg-2">
                 <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
               </div>
             </div>
+
+              <p><?= $image->filename; ?></p>
+              <img src='<?= base_url($image->url); ?>'>
+
+              <?php endforeach; ?>
           </div>
           <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
         </div>

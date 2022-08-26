@@ -238,6 +238,7 @@ class Products extends BaseController {
     $this->data['categories'] = $this->category_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
     $this->data['product_data'] = $this->product_model->getProductData($pid);
+    $this->data['product_image'] = $this->image_model->getFile($pid);
 
     $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
     $assignedCat = [];

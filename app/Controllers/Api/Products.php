@@ -88,9 +88,11 @@ class Products extends ResourceController
           'stocks' => $this->request->getVar('qty'),
           'brands' => $this->request->getVar('brand'),
           'price' => $this->request->getVar('price'),
+          'tags' => $this->request->getVar('tags'),
           'sku' => $this->request->getVar('sku'),
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
+          
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
@@ -165,7 +167,7 @@ class Products extends ResourceController
 
         $images = array(); // initialize image array
         if ($this->request->getFiles()) {
-          $file = $this->request->getFiles(); // get all files from post request
+          $file = $this->request->getFiles() ?? null; // get all files from post request
           // loop through all files uploaded
           foreach($file['productImages'] as $img){
             if (!$img->hasMoved()) {
@@ -188,22 +190,60 @@ class Products extends ResourceController
         }
         
         // data mapping for PRODUCTS table save
-        $to_save = [
-          // 'id' => $this->request->getVar('pid'),
-          'name' => $this->request->getVar('name'),
-          'url' => $this->request->getVar('purl'),
-          'description' => $this->request->getVar('description'),
-          'strain' => $this->request->getVar('strain'),
-          'stocks' => $this->request->getVar('qty'),
-          'brands' => $this->request->getVar('brand'),
-          'price' => $this->request->getVar('price'),
-          'sku' => $this->request->getVar('sku'),
-          'unit_measure' => $this->request->getVar('unit_measure'),
-          'unit_value' => $this->request->getVar('unit_value'),
-          'images' => implode(',', $images),
-        ];
-        $this->product_model->set($to_save)->where('id', $pid)->update();
-        // $this->product_model->where('id', $pid)->update($to_save);
+        // $to_save = [
+        //    'id' => $this->request->getVar('pid'),
+        //   'name' => $this->request->getVar('name'),
+        //   'url' => $this->request->getVar('purl'),
+        //   'description' => $this->request->getVar('description'),
+        //   'strain' => $this->request->getVar('strain'),
+        //   'stocks' => $this->request->getVar('qty'),
+        //   'brands' => $this->request->getVar('brand'),
+        //   'price' => $this->request->getVar('price'),
+        //   'tags' => $this->request->getVar('tags'),
+        //   'sku' => $this->request->getVar('sku'),
+        //   'unit_measure' => $this->request->getVar('unit_measure'),
+        //   'unit_value' => $this->request->getVar('unit_value'),
+        //   // 'images' => implode(',', $images),
+        // ];
+        if(empty($images)){
+          $to_save = [
+            'id' => $this->request->getVar('pid'),
+           'name' => $this->request->getVar('name'),
+           'url' => $this->request->getVar('purl'),
+           'description' => $this->request->getVar('description'),
+           'strain' => $this->request->getVar('strain'),
+           'stocks' => $this->request->getVar('qty'),
+           'brands' => $this->request->getVar('brand'),
+           'price' => $this->request->getVar('price'),
+           'images' => $this->request->getVar('images'),
+           'tags' => $this->request->getVar('tags'),
+           'sku' => $this->request->getVar('sku'),
+           'unit_measure' => $this->request->getVar('unit_measure'),
+           'unit_value' => $this->request->getVar('unit_value'),
+           // 'images' => implode(',', $images),
+         ];
+          $this->product_model->set($to_save)->where('id', $pid)->update();
+        }else{
+          $to_save = [
+            'id' => $this->request->getVar('pid'),
+           'name' => $this->request->getVar('name'),
+           'url' => $this->request->getVar('purl'),
+           'description' => $this->request->getVar('description'),
+           'strain' => $this->request->getVar('strain'),
+           'stocks' => $this->request->getVar('qty'),
+           'brands' => $this->request->getVar('brand'),
+           'price' => $this->request->getVar('price'),
+           'images' => $this->request->getVar('images'),
+           'tags' => $this->request->getVar('tags'),
+           'sku' => $this->request->getVar('sku'),
+           'unit_measure' => $this->request->getVar('unit_measure'),
+           'unit_value' => $this->request->getVar('unit_value'),
+            'images' => implode(',', $images),
+         ];
+          $this->product_model->set($to_save)->where('id', $pid)->update();
+        }
+         
+        //  $this->product_model->where('id', $pid)->update($to_save);
         // $productId = $this->product_model->insertID();
 
         // Save Categories

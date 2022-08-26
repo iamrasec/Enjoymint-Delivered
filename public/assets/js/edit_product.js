@@ -149,6 +149,7 @@
     formData.append('description', $('#description').val());
     formData.append('qty', $('#qty').val());
     formData.append('price', $('#price').val());
+    formData.append('images', $('#images').val());
     formData.append('strain', $('#select_strain').val());
     formData.append('brand', $('#select_brand').val());
     formData.append('thc_val', $('#thc_val').val());
