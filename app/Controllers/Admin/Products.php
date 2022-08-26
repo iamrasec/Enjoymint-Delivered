@@ -5,23 +5,30 @@ use App\Controllers\BaseController;
 class Products extends BaseController {
 
   public function __construct() {
+    helper(['jwt']);
+
 		$this->data = [];
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
-    $this->product_model = model('productModel');
-    $this->strain_model = model('strainModel');
-    $this->brand_model = model('brandModel');
-    $this->measurement_model = model('measurementModel');
-    $this->image_model = model('imageModel');
-    $this->product_variant_model = model('productVariantModel');
+    $this->product_model = model('ProductModel');
+    $this->strain_model = model('StrainModel');
+    $this->brand_model = model('BrandModel');
+    $this->category_model = model('CategoryModel');
+    $this->measurement_model = model('MeasurementModel');
+    $this->product_category = model('ProductCategory');
+
+    $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
+    $this->image_model = model('ImageModel');
+    $this->product_variant_model = model('ProductVariantModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
     }
   }
   
-  public function index() {
+  public function index() 
+  {
     // $data = [];
     $page_title = 'Products List';
 
@@ -32,7 +39,7 @@ class Products extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['products'] = $this->product_model->get()->getResult();
-    return view('admin/products_list_view', $this->data);
+    return view('Admin/products_list_view', $this->data);
   }
 
   public function add_product() 
@@ -48,91 +55,11 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
       $this->data['strains'] = $this->strain_model->get()->getResult();
+      $this->data['categories'] = $this->category_model->get()->getResult();
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
-      echo view('admin/add_product', $this->data);
+      echo view('Admin/add_product', $this->data);
   }
-
-   /**
-     * This function will save a product into the server
-     * 
-     * @return object a success indicator and the message
-    */
-  public function addProduct()
-  {
-    helper(['form', 'functions']); // load helpers
-    addJSONResponseHeader(); // set response header to json
-
-    if($this->request->getPost()) {
-      $rules = [
-        'name' => 'required|min_length[3]',
-        'sku' => 'required|min_length[3]',
-        'purl' => 'required|min_length[3]',
-        'qty' => 'required|decimal',
-        'thc_val' => 'required',
-        'cbd_val' => 'required',
-      ];
-
-      if($this->validate($rules)) {
-        $data['validation'] = $this->validator;
-
-        $images = array(); // initialize image array
-        if ($this->request->getFiles()) {
-          $file = $this->request->getFiles(); // get all files from post request
-          // loop through all files uploaded
-          foreach($file['productImages'] as $img){
-            if (!$img->hasMoved()) {
-                $fileName = $img->getRandomName(); // generate a new random name
-                $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
-                
-                // json data to be save to image
-                $imageData = [
-                  'filename' => $fileName,
-                  'mime' => $type,
-                  'url' => 'writable/uploads/'. $fileName,
-                ];
-                $this->image_model->save($imageData); // try to save to images table
-                $imageId = $this->image_model->insertID();
-                array_push($images, $imageId);
-            }
-          }
-        }
-        
-        // data mapping for PRODUCTS table save
-        $to_save = [
-          'name' => $this->request->getVar('name'),
-          'url' => $this->request->getVar('purl'),
-          'description' => $this->request->getVar('description'),
-          'strain' => $this->request->getVar('strain'),
-          'stocks' => $this->request->getVar('qty'),
-          'brands' => $this->request->getVar('brand'),
-          'sku' => $this->request->getVar('sku'),
-          'images' => implode(',', $images),
-        ];
-        $this->product_model->save($to_save); // trying to save product to database
-        $productId = $this->product_model->insertID();
-
-        $variantCount = count($this->request->getVar('prices[]'));
-        for($x=0;$x<$variantCount;$x++){
-          $variantData = [
-            'pid' => $productId,
-            'unit	' => $_POST['units'][$x],
-            'unit_value' => $_POST['unit_values'][$x],
-            'price' => $_POST['prices'][$x],
-            'stock' => $_POST['stocks'][$x]
-          ];
-          $this->product_variant_model->save($variantData); // try to save product variant
-        }
-        $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
-      } else {
-        $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
-      }
-    } else {
-      $data_arr = array("success" => FALSE,"message" => 'No posted data!');
-    }
-    die(json_encode($data_arr));
-  }
-
+  
   public function save_product() {
     $this->request->getPost();
 
@@ -164,7 +91,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['strains'] = $this->strain_model->get()->getResult();
 
-		  echo view('admin/manage_strains', $this->data);
+		  echo view('Admin/manage_strains', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -201,7 +128,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -229,7 +156,7 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['brands'] = $this->brand_model->get()->getResult();
 
-		  echo view('admin/manage_brands', $this->data);
+		  echo view('Admin/manage_brands', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -268,7 +195,7 @@ class Products extends BaseController {
           return redirect()->to('/admin/products/strains');
       }
 
-		  echo view('admin/add_strain', $this->data);
+		  echo view('Admin/add_strain', $this->data);
     }
     else {
       return redirect()->to('/');
@@ -289,10 +216,101 @@ class Products extends BaseController {
       $this->data['page_title'] = $page_title;
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
-		  echo view('admin/product_measurements', $this->data);
+		  echo view('Admin/product_measurements', $this->data);
     }
     else {
       return redirect()->to('/');
     }
+  }
+
+  public function edit_product($pid) {
+    $page_title = 'Edit Product';
+    $this->data['page_body_id'] = "products_list";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $this->data['brands'] = $this->brand_model->get()->getResult();
+    $this->data['strains'] = $this->strain_model->get()->getResult();
+    $this->data['categories'] = $this->category_model->get()->getResult();
+    $this->data['measurements'] = $this->measurement_model->get()->getResult();
+    $this->data['product_data'] = $this->product_model->getProductData($pid);
+    $this->data['product_image'] = $this->image_model->getFile($pid);
+
+    $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
+    $assignedCat = [];
+    
+    if($categories) {
+      // print_r($categories);die();
+      foreach($categories as $category) {
+        $assignedCat[] = $category->cid;
+      }
+    }
+    
+    $this->data['product_categories'] = $assignedCat;
+
+    echo view('Admin/edit_product', $this->data);
+  }
+
+  public function reviews() {
+    if($this->isLoggedIn == 1 && $this->role == 1) {
+      $ratings_model = model('ratingModel');
+      $page_title = 'Manage Reviews';
+
+      $this->data['page_body_id'] = "manage_review";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+      $this->data['ratings'] = $ratings_model->get()->getResult();
+
+		  echo view('admin/manage_reviews', $this->data);
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
+  /**
+   * This function will fetch product list from post request of datatable server side processing
+   * 
+   * @return json product list json format
+  */
+  public function getProductLists()
+  {
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+
+    $products = $this->product_model->select('id,name,url')
+      ->like('name',$_POST['search']['value'])
+      ->orLike('url',$_POST['search']['value'])
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+   
+    foreach($products as $product){
+      $start++;
+      $data[] = array(
+        $product->id, 
+        $product->name, 
+        $product->url,
+        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>",
+      );
+    }
+
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->product_model->countAll(),
+      "recordsFiltered" => $this->product_model->countAll(),
+      "data" => $data,
+    );
+    echo json_encode($output);
   }
 }

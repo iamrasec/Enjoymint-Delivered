@@ -1,8 +1,8 @@
-<?php $this->extend("templates/base"); ?>
+<?php $this->extend("templates/base_no_footer"); ?>
 
 <?php $this->section("content") ?>
 
-<?php echo $this->include('templates/__navigation.php'); ?>
+<?php // echo $this->include('templates/__navigation.php'); ?>
 
 <main class="main-content  mt-0">
     <section>
@@ -10,13 +10,14 @@
         <div class="container">
           <div class="row">
             <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
-              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('../../../assets/img/illustrations/illustration-signup.jpg'); background-size: cover;">
+              <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url('<?= base_url('assets/img/age-check/cannabis.jpg'); ?>'); background-size: cover;">
               </div>
             </div>
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header">
-                  <h4 class="font-weight-bolder">Sign Up</h4>
+                <a href="<?= base_url(); ?>"><img src="<?= base_url('assets/img/logo-oval-300x89.png'); ?>" style="width: 300px;"></a>
+                  <h4 class="font-weight-bolder mt-5">Sign Up</h4>
                   <p class="mb-0">Enter your email and password to register</p>
                 </div>
                 <div class="card-body">
@@ -44,7 +45,7 @@
                     <div class="form-check form-check-info text-left">
                       <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                       <label class="form-check-label" for="flexCheckDefault">
-                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder" data-bs-toggle="modal" data-bs-target="#modal-notification">Terms and Conditions</a>
                       </label>
                     </div>
                     <div class="text-center">
@@ -55,7 +56,7 @@
                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                   <p class="mb-2 text-sm mx-auto">
                     Already have an account?
-                    <a href="javascript:;" class="text-primary text-gradient font-weight-bold">Sign in</a>
+                    <a href="<?= base_url('users') ?>" class="text-primary text-gradient font-weight-bold">Sign in</a>
                   </p>
                 </div>
               </div>
@@ -65,5 +66,28 @@
       </div>
     </section>
   </main>
+
+  <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+	  <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h6 class="modal-title font-weight-normal" id="modal-title-notification">Terms and Conditions</h6>
+			<button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">×</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<div class="py-3 text-center">
+			  <h4 class="text-gradient text-danger mt-4">EnjoymintDelivered Terms and Conditions</h4>
+			  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie laoreet mauris, vitae sodales elit luctus quis. Suspendisse quis nunc lectus. Vestibulum feugiat malesuada nibh, et elementum lorem tincidunt sed. Quisque tincidunt sagittis velit, at pulvinar dolor. Donec placerat nec dolor in varius. Sed vitae orci aliquam, interdum felis a, auctor ex. Quisque eget lorem sem. Nullam volutpat iaculis dolor ut cursus. Donec ultrices eu nisi at condimentum. Proin non sollicitudin turpis, id cursus est. Aenean posuere lacinia tempus. Suspendisse potenti. Cras ut orci augue. Pellentesque ut finibus ante. Aenean ac nisl mi. Vivamus vehicula sapien at lectus cursus, vel aliquam lorem mattis.</p>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			<!-- <button type="button" class="btn btn-white">Ok, Got it</button> -->
+			<button type="button" class="btn btn-link ml-auto" data-bs-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
 
 <?php $this->endSection() ?>

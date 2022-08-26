@@ -4,7 +4,7 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
-<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-6">
 
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
@@ -12,400 +12,32 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
+        <!-- <pre><?php print_r($products); ?></pre> -->
         <div class="row">
+          <?php foreach($products as $product): ?>
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
+            <form method="post" action="<?= base_url('counter')?>"">
             <div class="product-featured">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
+                <?php if(isset($product->images[0])): ?>
+                  <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                <?php else: ?>
+                <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="" /></a>
+                <?php endif; ?>
               </div>
               <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
+                <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
+                <p><?= $product->thc_value . (($product->thc_unit == 'pct') ? '%' : $product->thc_unit); ?> THC</p>
                 <p class="price">$<span>33.50</span></p>
               </div>
-            </div>
+            </div>  
           </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
-              <div class="img-wrap">
-                <a href="#"><img src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg" /></a>
-              </div>
-              <div class="product-info">
-                <a href="#"><h5>Minntz Indoor Flowers - Big Apple (3.5g Indica) - Cookies</h5></a>
-                <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p>
-              </div>
-            </div>
-          </div>
+          <?php endforeach; ?>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-
-
-
 
 
 
@@ -435,4 +67,23 @@
 
 </div>
 
+ <script type="text/javascript">
+  let btnCounter = document.querySelector('#btn_pr');
+  let counter = 0;
+
+  btnCounter.addEventListener('click', function(){
+    counter++;
+    document.querySelector('.count_cart').innerHTML = counter;
+  });
+  // var count = (function () {
+  //   var counter = 0;
+  //   return function () {return counter +=;}
+  // })();
+
+  // function display(){
+  //   document.getElementById('count_cart').innerHTML = count();
+  // };
+
+ </script>  
 <?php $this->endSection() ?>
+
