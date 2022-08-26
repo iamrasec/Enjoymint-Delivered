@@ -425,10 +425,11 @@ class Users extends BaseController
 		$email->setFrom($sender_email);
 		$email->setTo($rmail);
 		$email->setSubject('Confirm Registration');
+		$email->setNewline = "\r\n";
 
-		$body  = 'Name: ' . $rname . "\n";
-		$body .= 'E-Mail: ' . $rmail . "\n";
-		$body .= 'Message: ' . $message . "\n";
+		$body  = 'Name: ' . $rname . "\r\n";
+		$body .= 'E-Mail: ' . $rmail . "\r\n";
+		$body .= 'Message: ' . $message . "\r\n";
 		$email->setMessage($body);
 
 		if($email->send()) {
