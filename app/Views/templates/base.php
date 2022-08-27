@@ -7,8 +7,8 @@
 <meta name="atoken" content="<?php echo $user_jwt; ?>">
 <meta name="robots" content="<?= getenv('CRAWL_META'); ?>">
 
-<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-<link rel="icon" type="image/png" href="./assets/img/favicon.png">
+<link rel="apple-touch-icon" sizes="76x76" href="<?= base_url('assets/img/apple-icon.png'); ?>">
+<link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png'); ?>">
 
 <title>Enjoymint Delivered</title>
 
