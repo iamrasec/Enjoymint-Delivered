@@ -41,7 +41,7 @@
                     <i class="material-icons text-lg">star_outline</i>
                   </div>
                   <i class="material-icons opacity-6 me-2 text-md">visibility</i>
-                 <?= $ip_views ?><br>
+                 <!-- <?= // $ip_views ?><br> -->
                  <?php foreach($stock as $st) : ?>
                 <p style="display: inline-block;">Stocks:</p>
                  <?= $st ?>
