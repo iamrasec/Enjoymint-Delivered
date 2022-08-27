@@ -65,7 +65,7 @@
                   </div>
                   <div class="row mt-4">
                     <div class="col-lg-5">
-                      <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button">Add to cart</button>
+                      <button class="btn add-to-cart bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">Add to cart</button>
                     </div>
                   </div>
                 </div>
