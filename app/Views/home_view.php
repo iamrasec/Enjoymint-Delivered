@@ -114,7 +114,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-signup.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/calm.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Calm</h5></a>
