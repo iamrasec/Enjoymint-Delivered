@@ -33,6 +33,7 @@
 
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
+                  <div class="text-sm mb-3"><span class="me-3"><?= $product->strain_name; ?></span><span class="ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>

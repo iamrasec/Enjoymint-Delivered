@@ -38,7 +38,7 @@ class Products extends BaseController
     {
 
         if($url != '') {
-            $product = $this->product_model->where('url', $url)->get()->getResult();
+            $product = $this->product_model->getProductFromUrl($url);
 
             if(!empty($product)) {
                 $product = $product[0];
