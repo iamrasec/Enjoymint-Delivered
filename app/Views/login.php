@@ -39,7 +39,7 @@
                       <input class="form-check-input" type="checkbox" id="rememberMe">
                       <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
                     </div> -->
-                    <div class="">
+                    <div class="text-sm">
                       <a href="<?=base_url()?>/Users/forgot_password">Forgot Password?</a>
                     </div>
                     <div class="text-center">
