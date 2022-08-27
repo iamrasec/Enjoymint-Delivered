@@ -277,7 +277,7 @@ class Users extends BaseController
 	
 	public function checkout()
 	{
-        echo view('checkout');
+        echo view('checkout', $this->data);
 	}
 
 	function generateRandomString($length = 10) 
