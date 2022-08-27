@@ -69,7 +69,8 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a>
+                <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
+                <a href="#"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Energy</h5></a>
@@ -80,7 +81,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-lock.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/creative.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Creativity</h5></a>
@@ -91,7 +92,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-reset.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/focus.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Focus</h5></a>
@@ -102,7 +103,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-signin.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/bliss.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Bliss</h5></a>
