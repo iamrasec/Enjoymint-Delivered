@@ -43,33 +43,16 @@
                   <i class="material-icons opacity-6 me-2 text-md">visibility</i>
                  
                   <h6 class="mb-0 mt-3">Price</h6>
-                  <h5>$<span class="price">33.50</span></h5>
+                  <h5>$<span class="price d-inline"><?= $product->price; ?></span></h5>
                   <span class="badge badge-success">In Stock</span>
                   <br>
                   <label class="mt-4">Description</label>
-                  <p>Minntz - Big Apple</p>
-                  <p>Flower | Cookies</p>
-
-                  <p>20.037%~21.401% THC</p>
-
-                  <p>Apple Fritter x Sherb bx1</p>
-
-                  <p>Minntz was born from the partnership of legendary brands seed junkies and cookies. Seed junkies' strains are derived from a lineage of exceptional breeders who are now producing craft flowers; their commitment to craft and quality made them a natural fit for a partnership with cookies.</p>
+                  <br>
+                  <?= $product->description; ?>
                   <div class="row mt-4">
                     <div class="col-lg-2">
                       <label class="ms-0">Quantity</label>
-                      <select class="form-control" name="choices-quantity" id="choices-quantity">
-                        <option value="Choice 1" selected="">1</option>
-                        <option value="Choice 2">2</option>
-                        <option value="Choice 3">3</option>
-                        <option value="Choice 4">4</option>
-                        <option value="Choice 5">5</option>
-                        <option value="Choice 6">6</option>
-                        <option value="Choice 7">7</option>
-                        <option value="Choice 8">8</option>
-                        <option value="Choice 9">9</option>
-                        <option value="Choice 10">10</option>
-                      </select>
+                      <input type="number" min="1" max="100" value="1" name="qty">
                     </div>
                   </div>
                   <div class="row mt-4">
