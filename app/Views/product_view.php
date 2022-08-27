@@ -33,7 +33,7 @@
 
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
-                  <div class="text-sm mb-3"><span class="me-3"><?= $product->strain_name; ?></span><span class="ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
+                  <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain_name; ?></span><span class="badge text-bg-dark ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
@@ -41,15 +41,22 @@
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">star_outline</i>
                   </div>
-                  <i class="material-icons opacity-6 me-2 text-md">visibility</i>
-                 
-                  <h6 class="mb-0 mt-3">Price</h6>
-                  <h5>$<span class="price d-inline"><?= $product->price; ?></span></h5>
-                  <span class="badge badge-success">In Stock</span>
-                  <br>
-                  <label class="mt-4">Description</label>
-                  <br>
-                  <?= $product->description; ?>
+                  
+                  <div class="row mb-5">
+                    <div class="col-12 col-sm-12">
+                      <h6 class="mb-0 mt-3">Price</h6>
+                      <h5>$<span class="price d-inline"><?= $product->price; ?></span></h5>
+                      <span class="badge text-bg-success">In Stock</span>
+                    </div>
+                  </div>
+
+                  <div class="row mb-5">
+                    <div class="col-12 col-sm-12">
+                    <h6 class="mb-2">Description</h6>
+                    <?= $product->description; ?>
+                    </div>
+                  </div>
+                  
                   <div class="row mt-4">
                     <div class="col-lg-2">
                       <label class="ms-0">Quantity</label>
