@@ -73,7 +73,7 @@
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
-                    <i class="material-icons text-lg">star_outline</i>
+                    <i class="material-icons text-lg">grade</i>
                   </div>
                   
                   <div class="row mb-5">
@@ -107,7 +107,8 @@
                   </div>
                 </div>
               </div>
-              <div class="row mt-5">
+
+              <!-- <div class="row mt-5">
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
@@ -195,15 +196,17 @@
                   </div>
                 </div>
                 
-              </div>
-              <div class="row mt-5">
+              </div> -->
+              
+              <!-- <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
                   <div class="table table-responsive">
                     
                   </div>
                 </div>
-              </div>
+              </div> -->
+
             </div>
           </div>
         </div>
@@ -211,10 +214,27 @@
      
 <?php $this->endSection() ?>
 
+<?php 
+  $session = session();
+  $uguid = ($session->get('guid')) ? $session->get('guid') : '';
+?>
+
 <?php $this->section("script") ?>
 <script>
   console.log("scripts section");
-  
+  $(document).on('click', '.add-to-cart', function(e) {
+    e.preventDefault();
+
+    console.log("add to cart clicked");
+
+    let data = {};
+    let jwt = $("[name='atoken']").attr('content');
+
+    data.pid = $this.data('pid');
+    data.qty = $("input[name=qty]").val();
+    data.guid = '<?= $uguid; ?>';
+
+  });
 </script>
 <?php $this->endSection() ?>
 
