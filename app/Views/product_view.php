@@ -4,6 +4,40 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
+<style>
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 10px solid #489989;
+  border-color: #489989 transparent #489989 transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
+</style>
+
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <div class="container">
       <div class="row">
@@ -64,8 +98,11 @@
                     </div>
                   </div>
                   <div class="row mt-4">
-                    <div class="col-lg-5">
-                      <button class="btn add-to-cart bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">Add to cart</button>
+                    <div class="col-lg-5 d-flex flex-row align-items-center">
+                      <button class="btn add-to-cart bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">
+                        Add to cart
+                      </button>
+                      <div class="lds-hourglass d-none"></div>
                     </div>
                   </div>
                 </div>
@@ -173,7 +210,16 @@
       </div>
      
 <?php $this->endSection() ?>
-<style>
+
+<?php $this->section("script") ?>
+<script>
+  console.log("scripts section");
+  
+</script>
+<?php $this->endSection() ?>
+
+
+<!-- <style>
 .rate {
     float: left;
     height: 46px;
@@ -257,4 +303,4 @@
 .review-block-description{
 	font-size:13px;
 }
-</style>
+</style> -->
