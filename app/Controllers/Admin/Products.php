@@ -220,6 +220,46 @@ class Products extends BaseController {
     }
   }
 
+
+  public function edit_product($pid) {
+    $page_title = 'Edit Product';
+    $this->data['page_body_id'] = "products_list";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $this->data['brands'] = $this->brand_model->get()->getResult();
+    $this->data['strains'] = $this->strain_model->get()->getResult();
+    $this->data['categories'] = $this->category_model->get()->getResult();
+    $this->data['measurements'] = $this->measurement_model->get()->getResult();
+    $this->data['product_data'] = $this->product_model->getProductData($pid);
+    $this->data['product_image'] = $this->image_model->getFile($pid);
+
+    $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
+    $assignedCat = [];
+    
+    if($categories) {
+      // print_r($categories);die();
+      foreach($categories as $category) {
+        $assignedCat[] = $category->cid;
+      }
+    }
+    
+    $this->data['product_categories'] = $assignedCat;
+
+    echo view('Admin/edit_product', $this->data);
+  }
+
+  public function delete_product($pid){
+     
+    
+    
+  }
+
+
   public function reviews() {
     if($this->isLoggedIn == 1 && $this->role == 1) {
       $ratings_model = model('ratingModel');
@@ -266,7 +306,12 @@ class Products extends BaseController {
         $product->id, 
         $product->name, 
         $product->url,
+
         "<a href=".base_url('admin/products/edit_product/').$product->id.">edit</a>",
+
+        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>",
+        "<a href=".base_url('admin/products/delete_product/'. $product->id).">delete</a>",
+
       );
     }
 

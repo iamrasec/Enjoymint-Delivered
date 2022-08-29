@@ -104,5 +104,6 @@
         }]
     });
   });
+
 </script>
 <?php $this->endSection(); ?>

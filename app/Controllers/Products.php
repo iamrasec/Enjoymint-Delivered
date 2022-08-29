@@ -39,6 +39,7 @@ class Products extends BaseController
         //     $page_data['views'] = $this->pagecounter_model->countAll();
         //      // echo "Sample";
         }
+
           else 
           {  
             $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
@@ -51,6 +52,61 @@ class Products extends BaseController
     }
 
     public function save($id = 2) 
+
+        else {
+            $product = $this->product_model->get()->getResult();
+            return $this->view_all_products($this->data);
+        }
+        
+        // print_r($product);die();
+
+        $page_title = $product->name;
+
+        $this->data['page_body_id'] = "product-".$product->id;
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['product'] = $product;
+        $this->data['images'] = [];
+
+        // print_r($product->images);die();
+
+        $imageIds = [];
+        if($product->images) {
+            $imageIds = explode(',',$product->images);
+            $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        }
+        
+        // print_r($imageIds);die();
+
+        // print_r($this->image_model->getLastQuery());
+
+        // print_r($this->data['images']);die();
+
+        // echo view('product_view', $this->data);
+        return $this->view_all_products($this->data);
+    }
+
+    public function view_all_products() {
+        echo view('product_view');
+    }
+
+    public function images($filename) {
+        $filepath = WRITEPATH . 'uploads/' . $filename;
+
+        $mime = mime_content_type($filepath);
+        header('Content-Length: ' . filesize($filepath));
+        header("Content-Type: $mime");
+        header('Content-Disposition: inline; filename="' . $filepath . '";');
+        readfile($filepath);
+        exit();
+    }
+
+	
+    public function save($id= 2) 
+
     {
      $user_data = [
         'full_name' => $this->request->getPost('full_name'),
