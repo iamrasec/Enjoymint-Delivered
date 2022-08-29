@@ -25,6 +25,7 @@ class Products extends BaseController {
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
     }
+    
   }
   
   public function index() 
@@ -312,4 +313,27 @@ class Products extends BaseController {
     );
     echo json_encode($output);
   }
+
+  
+  /**
+   * This function will update order status completed
+   * @param  int    id  The id of order
+   * @return object A json object response with status and message
+   */
+  public function orderFullfill($id = null)
+  {
+    $success = true;
+    if($this->request->getMethod(true) == 'POST') { 
+            // prepare to save
+            $save = [
+                'status' => 1
+            ];
+            $this->order_model->update($id, $save); // update product status
+        } else {
+            $success = false;
+        }    
+        $success ? $data_arr = array("status" => 201, "success" => TRUE,"message" => 'Order completed.') : $data_arr = array("success" => FALSE,"message" => 'Invalid request.');
+        die(json_encode($data_arr)); 
+  }
+
 }

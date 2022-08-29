@@ -39,6 +39,7 @@ $routes->get('products/(:any)', 'Products::index/$1');
 
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 $routes->post('save_data', 'Products::save');
+$routes->post('save_data', 'Blogs::save');
 $routes->get('checkout', 'Users::checkout');
 $routes->get('password-reset/(:any)', 'Users::reset_password/$1');
 $routes->post('counter', 'Products::index');
