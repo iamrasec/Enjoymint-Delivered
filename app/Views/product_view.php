@@ -2,7 +2,7 @@
 
 <?php $this->section("content") ?>
 
-<?php echo $this->include('templates/__navigation.php'); ?>
+<?php echo view('templates/__navigation.php'); ?>
 
 <style>
 .lds-hourglass {
@@ -216,7 +216,8 @@
 
 <?php 
   $session = session();
-  $uguid = ($session->get('guid')) ? $session->get('guid') : '';
+  // $uguid = ($session->get('guid')) ? $session->get('guid') : '';
+  $uid = ($session->get('id')) ? $session->get('id') : '';
 ?>
 
 <?php $this->section("script") ?>
@@ -225,14 +226,17 @@
   $(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();
 
+    $(this).prop('disabled', true);
+    $(".lds-hourglass").removeClass('d-none');
+
     console.log("add to cart clicked");
 
     let data = {};
     let jwt = $("[name='atoken']").attr('content');
 
+    data.uid = '<?= $uid; ?>';
     data.pid = $(this).data('pid');
     data.qty = $("input[name=qty]").val();
-    data.guid = '<?= $uguid; ?>';
 
     $.ajax({
       type: "POST",
@@ -240,7 +244,14 @@
       data: data,
       dataType: "json",
       success: function(json) {
-        
+        console.log("successs");
+        $(".add-to-cart").removeAttr('disabled');
+        $(".lds-hourglass").addClass('d-none');
+
+        if(json.newItem > 0) {
+          let currentCount = $("#count_cart").text();
+          $("#count_cart").html(parseInt(currentCount) + json.newItem);
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);

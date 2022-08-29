@@ -28,14 +28,35 @@ class Cart extends ResourceController
   {
     $data = $this->request->getPost();
 
-    $return = $this->cart_model->insert($data);
+    $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid']);
+    $new_item = 0;
 
-    if(is_numeric($return)) {
-      echo json_encode(["message" => true, "data" => $return]);
+    if(!empty($product_in_cart)) {
+      $saveCart = $this->cart_model->updateCartProduct($data['uid'], $data['pid'], $data['qty']);
+
+      // $session_data = session()->get('cart_items');
+
+      // if(empty($session_data)) {
+      //   session()->push('cart_items', $this->cart_model->where('uid', $data['uid'])->get()->getResult());
+      // }
+      // else {
+      //   for($i = 0; $i < count($session_data); $i++) {
+      //     if($session_data[$i]['pid'] == $data['pid']) {
+      //       $session_data[$i]['qty'] += $data['qty'];
+      //     }
+      //   }
+  
+      //   session()->push('cart_items', $session_data);
+      // }
+      
     }
     else {
-      echo json_encode(["message" => "error"]);
+      $saveCart = $this->cart_model->insert($data);
+      $new_item++;
     }
+    
+
+    echo json_encode(["status" => true, "newItem" => $new_item]);
     exit;
   }
 

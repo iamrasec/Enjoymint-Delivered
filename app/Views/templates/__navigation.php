@@ -53,15 +53,9 @@
                 </div> 
               </div>
               <div class="counter">
-                <p class="count_cart count" id="count_cart">0</p>
+                <p class="count_cart count" id="count_cart"><?= count(session()->get('cart_items')); ?></p>
               </div>
             </li>
-            <!-- <li class="nav-item my-auto ms-3 ms-lg-0">
-              <div class="cart">
-                <span class="count">1</span>
-                <i class="material-icons opacity-6 me-2" style="font-size: 30px !important;">shopping_cart</i>
-              </div>
-            </li> -->
           </ul>
         </div>
       </div>

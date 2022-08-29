@@ -20,6 +20,7 @@ class Products extends BaseController
         $this->brand_model = model('BrandModel');
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
+        $this->cart_model = model('CartModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -70,7 +71,21 @@ class Products extends BaseController
             $imageIds = explode(',',$product->images);
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
+
+        $session = session();
+        $session->set('cart_items', []);
         
+        if($this->isLoggedIn) {
+            // $this->data['cart_products'] = $this->cart_model->cartProductsCount(session()->get('id'));
+            $cart_products = $this->cart_model->where('uid', session()->get('id'))->get()->getResult();
+            //print_r($cart_products);
+            $session->push('cart_items', $cart_products);
+        }
+        else {
+            $this->data['cart_products'] = 0;
+        }
+
+
         // print_r($imageIds);die();
 
         // print_r($this->image_model->getLastQuery());
