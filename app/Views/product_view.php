@@ -230,9 +230,25 @@
     let data = {};
     let jwt = $("[name='atoken']").attr('content');
 
-    data.pid = $this.data('pid');
+    data.pid = $(this).data('pid');
     data.qty = $("input[name=qty]").val();
     data.guid = '<?= $uguid; ?>';
+
+    $.ajax({
+      type: "POST",
+      url: "<?= base_url('/api/cart/add'); ?>",
+      data: data,
+      dataType: "json",
+      success: function(json) {
+        
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+      }
+    });
 
   });
 </script>
