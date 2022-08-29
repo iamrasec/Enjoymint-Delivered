@@ -125,7 +125,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/Sleep3.png'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Sleep</h5></a>
@@ -136,7 +136,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-lock.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/arouse.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Arouse</h5></a>
@@ -147,7 +147,7 @@
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit">
               <div class="img-wrap">
-                <a href="#"><img src="/assets/img/illustrations/illustration-reset.jpg" /></a>
+                <a href="#"><img src="<?= base_url('assets/img/experience/Comfort-2.png'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
                 <a href="#"><h5>Comfort</h5></a>
