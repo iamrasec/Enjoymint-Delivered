@@ -32,6 +32,11 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+
+$routes->get('categories/(:any)', 'Categories::index/$1');
+$routes->get('products/images/(:any)', 'Products::images/$1'); // Show uploaded product images
+$routes->get('products/(:any)', 'Products::index/$1');
+
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 $routes->post('save_data', 'Products::save');
 $routes->post('save_data', 'Blogs::save');
