@@ -11,6 +11,7 @@ class Products extends ResourceController
 {
     public function __construct() 
     {
+      
       $this->data = [];
       $this->role = session()->get('role');
       $this->isLoggedIn = session()->get('isLoggedIn');
@@ -24,6 +25,9 @@ class Products extends ResourceController
       $this->category_model = model('CategoryModel');
       $this->product_category = model('ProductCategory');
       $this->compound_model = model('CompoundModel');
+
+
+      $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
   
       if($this->isLoggedIn !== 1 && $this->role !== 1) {
         return redirect()->to('/');
@@ -273,4 +277,13 @@ class Products extends ResourceController
   }
 
     // ...
+    /**
+   * This function will delete a product into the server
+   * @param int pid The pid of the prodcut to be remove 
+   * @return object a success indicator and the message
+  */
+    public function delete_product($pid){
+      $this->product_model->update($pid, ['archived' => 1]);
+      die(json_encode(array("success" => TRUE,"message" => 'Product Delete!')));
+    }
 }
