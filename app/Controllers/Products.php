@@ -78,8 +78,13 @@ class Products extends BaseController
         if($this->isLoggedIn) {
             // $this->data['cart_products'] = $this->cart_model->cartProductsCount(session()->get('id'));
             $cart_products = $this->cart_model->where('uid', session()->get('id'))->get()->getResult();
+
+            foreach($cart_products as $cart_product) {
+                $session->push('cart_items', [['pid' => $cart_product->pid, 'qty' => $cart_product->qty]]);
+            }
+
             //print_r($cart_products);
-            $session->push('cart_items', $cart_products);
+            // $session->push('cart_items', $cart_products);
         }
         else {
             $this->data['cart_products'] = 0;

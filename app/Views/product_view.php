@@ -248,10 +248,52 @@
         $(".add-to-cart").removeAttr('disabled');
         $(".lds-hourglass").addClass('d-none');
 
-        if(json.newItem > 0) {
-          let currentCount = $("#count_cart").text();
-          $("#count_cart").html(parseInt(currentCount) + json.newItem);
+        console.log(json);
+
+        let arr = [];
+
+        var cart_data_cookie = getCookie('cart_data');
+
+        console.log("cart_data cookie: ");
+        console.log(cart_data_cookie);
+
+        if(cart_data_cookie != null) {
+          var cookie_products = JSON.parse(cart_data_cookie);
+
+          console.log(cookie_products);
+
+          var pid_added = false;
+          cookie_products.forEach(function(product) {
+            console.log(product);
+
+            if(product.pid == json.pid) {
+              product.qty = parseInt(product.qty) + parseInt(json.qty);
+              pid_added = true;
+            }
+          });
+
+          if(pid_added == false) {
+            cookie_products.push({'pid': json.pid, 'qty': parseInt(json.qty)});
+          }
+
+          setCookie('cart_data',JSON.stringify(cookie_products),'1');
+
+          console.log(cookie_products);
         }
+        else {
+          cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty)}];
+
+          setCookie('cart_data',JSON.stringify(cookie_products),'1');
+        }
+
+        console.log(cookie_products.length);
+
+        cartCountr = cookie_products.length;
+
+        // if(json.newItem > 0) {
+          // let currentCount = $("#count_cart").text();
+          // $("#count_cart").html(parseInt(currentCount) + json.newItem);
+        // }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);

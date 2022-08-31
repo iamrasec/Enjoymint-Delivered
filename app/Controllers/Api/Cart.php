@@ -29,35 +29,21 @@ class Cart extends ResourceController
     $data = $this->request->getPost();
 
     $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid']);
-    $new_item = 0;
+    $new_item_count = 0;
 
     if(!empty($product_in_cart)) {
       $saveCart = $this->cart_model->updateCartProduct($data['uid'], $data['pid'], $data['qty']);
 
-      // $session_data = session()->get('cart_items');
-
-      // if(empty($session_data)) {
-      //   session()->push('cart_items', $this->cart_model->where('uid', $data['uid'])->get()->getResult());
-      // }
-      // else {
-      //   for($i = 0; $i < count($session_data); $i++) {
-      //     if($session_data[$i]['pid'] == $data['pid']) {
-      //       $session_data[$i]['qty'] += $data['qty'];
-      //     }
-      //   }
-  
-      //   session()->push('cart_items', $session_data);
-      // }
-      
+      echo json_encode(["status" => 'updated', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+      exit;
     }
     else {
       $saveCart = $this->cart_model->insert($data);
-      $new_item++;
-    }
-    
+      $new_item_count++;
 
-    echo json_encode(["status" => true, "newItem" => $new_item]);
-    exit;
+      echo json_encode(["status" => 'added', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+      exit;
+    }
   }
 
   // ...
