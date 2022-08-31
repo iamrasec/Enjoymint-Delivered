@@ -38,7 +38,7 @@ class Products extends BaseController
     {
 
         if($url != '') {
-            $product = $this->product_model->where('url', $url)->get()->getResult();
+            $product = $this->product_model->getProductFromUrl($url);
 
             if(!empty($product)) {
                 $product = $product[0];
@@ -96,7 +96,7 @@ class Products extends BaseController
     }
 
 	
-    public function save() 
+    public function save($id) 
     {
      $user_data = [
         'full_name' => $this->request->getPost('full_name'),
@@ -108,7 +108,7 @@ class Products extends BaseController
         'total' => $this->request->getPost('total'),
      ];
 
-     $data = $this->product_model->where('id', 2)->select('stocks')->first();
+     $data = $this->product_model->where('id', $id)->select('stocks')->first();
      foreach($data as $datas):
       $stock = $datas -1;
      endforeach;

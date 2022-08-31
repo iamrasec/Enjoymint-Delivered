@@ -17,11 +17,6 @@ class Products extends BaseController {
     $this->category_model = model('CategoryModel');
     $this->measurement_model = model('MeasurementModel');
     $this->product_category = model('ProductCategory');
-    $this->product_model = model('productModel');
-    $this->strain_model = model('strainModel');
-    $this->brand_model = model('brandModel');
-    $this->order_model = model('orderModel');
-    $this->measurement_model = model('measurementModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');

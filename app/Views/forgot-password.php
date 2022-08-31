@@ -16,7 +16,8 @@
             <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
               <div class="card card-plain">
                 <div class="card-header text-center">
-                  <h4 class="font-weight-bolder">Forgot Password</h4>
+                  <a href="<?= base_url(); ?>"><img src="<?= base_url('assets/img/logo-oval-300x89.png'); ?>" style="width: 300px;"></a>
+                  <h4 class="font-weight-bolder mt-5">Forgot Password</h4>
                   <p class="mb-0">Enter your email to reset password</p>
                 </div>
 
