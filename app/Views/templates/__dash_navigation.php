@@ -16,7 +16,7 @@
             <img src="../../assets/img/team-3.jpg" class="avatar">
             <span class="nav-link-text ms-2 ps-1">Brooklyn Alice</span>
           </a>
-          <div class="collapse" id="ProfileNav" style="">
+          <div class="collapse" id="ProfileNav">
             <ul class="nav ">
               <li class="nav-item">
                 <a class="nav-link text-white" href="../../pages/pages/profile/overview.html">
@@ -101,6 +101,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Reviews </span>
                 </a>
               </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>" href="<?php echo base_url('/admin/sale'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Product Sale </span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>
@@ -112,22 +118,22 @@
           </a>
           <div class="collapse" id="blog_pages">
             <ul class="nav ">
-              <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/dashboards/analytics.html">
+              <li class="nav-item <?php if( $uri->getSegment(2) === 'blogs' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
+                <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'blogs' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/blogs'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> List Pages </span>
                 </a>
               </li>
-              <li class="nav-item ">
+              <li class="nav-item">
                 <a class="nav-link text-white " href="../../pages/dashboards/discover.html">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Add Page </span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link text-white active" href="../../pages/dashboards/sales.html">
+              <li class="nav-item <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>" href="<?php echo base_url('/admin/blogs/add_blog'); ?>">
                   <span class="sidenav-mini-icon">  </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Add Blog </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Add Blogs </span>
                 </a>
               </li>
             </ul>
