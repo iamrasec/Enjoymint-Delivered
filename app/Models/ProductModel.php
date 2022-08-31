@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model {
   protected $table = 'products';
-  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value', 'images'];
+  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value', 'images', 'tags'];
  
   public function getAllProducts() {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
@@ -15,11 +15,18 @@ class ProductModel extends Model {
   }
 
   public function getProductData($pid) {
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name, strains.url_slug');
     $this->join('strains', 'strains.id = products.strain', 'inner');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->where('products.id', $pid);
     return $this->get()->getResult()[0];
+  }
+  
+  public function deleteProductData($pid){
+    $this->select('products. id');
+    $this->where('id', $pid);
+    $this->delete();
   }
 
   public function getProductFromUrl($url) {

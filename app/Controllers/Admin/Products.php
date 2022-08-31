@@ -17,6 +17,7 @@ class Products extends BaseController {
     $this->category_model = model('CategoryModel');
     $this->measurement_model = model('MeasurementModel');
     $this->product_category = model('ProductCategory');
+    $this->order_model = model('CheckoutModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -284,26 +285,36 @@ class Products extends BaseController {
   */
   public function getProductLists()
   {
+    
     $data  = array();
     $start = $_POST['start'];
     $length = $_POST['length'];
 
-    $products = $this->product_model->select('id,name,url')
-      ->like('name',$_POST['search']['value'])
-      ->orLike('url',$_POST['search']['value'])
-      ->limit($length, $start)
+    
+    $products = $this->product_model->select('id,name,url,archived')
+      ->where('archived', 0)
       ->get()
       ->getResult();
-   
+    if($_POST['search']['value'] && $_POST['search']['value']){
+        $products = $this->product_model->select('id,name,url')
+        ->like('name',$_POST['search']['value'])
+        ->orLike('url',$_POST['search']['value'])
+        ->limit($length, $start)
+        ->get()
+        ->getResult();
+        }
+    
     foreach($products as $product){
       $start++;
       $data[] = array(
         $product->id, 
         $product->name, 
         $product->url,
-        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>",
+        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>
+        <button class=\"btn btn-sm removeBtn\" data-id='".$product->id."'>delete</button>",
       );
     }
+      
 
     $output = array(
       "draw" => $_POST['draw'],
@@ -314,26 +325,5 @@ class Products extends BaseController {
     echo json_encode($output);
   }
 
-  
-  /**
-   * This function will update order status completed
-   * @param  int    id  The id of order
-   * @return object A json object response with status and message
-   */
-  public function orderFullfill($id = null)
-  {
-    $success = true;
-    if($this->request->getMethod(true) == 'POST') { 
-            // prepare to save
-            $save = [
-                'status' => 1
-            ];
-            $this->order_model->update($id, $save); // update product status
-        } else {
-            $success = false;
-        }    
-        $success ? $data_arr = array("status" => 201, "success" => TRUE,"message" => 'Order completed.') : $data_arr = array("success" => FALSE,"message" => 'Invalid request.');
-        die(json_encode($data_arr)); 
-  }
 
 }

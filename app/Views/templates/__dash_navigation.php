@@ -101,6 +101,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Reviews </span>
                 </a>
               </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>" href="<?php echo base_url('/admin/sale'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Product Sale </span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>

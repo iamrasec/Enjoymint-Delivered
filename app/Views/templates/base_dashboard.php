@@ -30,7 +30,7 @@
   <?php $uri = service('uri'); ?>
 
   <!-- load datatable css on specific pages -->
-  <?php if($uri->getSegment(2) == 'products'): ?>
+  <?php if($uri->getSegment(2) == 'products' or $uri->getSegment(2) == 'sale'): ?>
     <link href="<?= base_url('assets/css/jquery.dataTables.min.css') ?>" rel="stylesheet" />
   <?php endif; ?>
 
