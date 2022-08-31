@@ -7,13 +7,13 @@ class Blogs extends BaseController {
   public function __construct() {
     helper(['jwt']);
 
-	$this->data = [];
-	$this->role = session()->get('role');
+    $this->data = [];
+    $this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
     $this->product_model = model('productModel');
     $this->blog_model = model('blogModel');
-
+    
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('imageModel');
 
@@ -28,7 +28,7 @@ class Blogs extends BaseController {
     // $data = [];
     $page_title = 'List Pages';
 
-    $this->data['page_body_id'] = "products_list";
+    $this->data['page_body_id'] = "blog_list";
     $this->data['breadcrumbs'] = [
       'parent' => [],
       'current' => $page_title,
@@ -36,28 +36,25 @@ class Blogs extends BaseController {
     $this->data['page_title'] = $page_title;
     $this->data['blogs'] = $this->blog_model->get()->getResult();
     return view('blogs_article/list_page', $this->data);
-
-
-
   }
-  public function blog() 
-  {
+  
+    public function blog() 
+    {
 
-    $data  ['blog'] = $this->blog_model->where('id', 5)->select('title')->first();
-    $data  ['blog1'] = $this->blog_model->where('id', 5)->select('description')->first();
-    $data  ['blog2'] = $this->blog_model->where('id', 5)->select('author')->first();
-    $data  ['blog3'] = $this->blog_model->where('id', 5)->select('created')->first();
-     echo view('blog', $data);
+      $data['blogs'] = $this->blog_model->select('blogs.*, images.url')
+      ->join('images', 'blogs.images = images.id')
+      ->get()->getResult();
+      echo view('blog', $data);
 
-  }
+    }
 
   public function add_blog() 
   {
       $page_title = 'Add Blog';
-      $this->data['page_body_id'] = "products_list";
+      $this->data['page_body_id'] = "blog_list";
       $this->data['breadcrumbs'] = [
         'parent' => [
-          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+          ['parent_url' => base_url('/admin/blogs'), 'page_title' => 'Blogs'],
         ],
         'current' => $page_title,
       ];
@@ -69,12 +66,9 @@ class Blogs extends BaseController {
     $this->request->getPost();
 
     $rules = [
-      'name' => 'required|min_length[3]',
-      'sku' => 'required|min_length[3]',
-      'purl' => 'required|min_length[3]',
-      'qty' => 'required|decimal',
-      'thc_val' => 'required',
-      'cbd_val' => 'required',
+      'title' => 'required|min_length[3]',
+      'description' => 'required|min_length[3]',
+      'author' => 'required|min_length[3]',
     ];
 
     if($this->validate($rules)) {
@@ -121,7 +115,5 @@ class Blogs extends BaseController {
     echo json_encode($output);
 
   }
-
-
 
 }
