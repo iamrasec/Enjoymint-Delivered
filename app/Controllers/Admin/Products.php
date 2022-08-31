@@ -26,6 +26,7 @@ class Products extends BaseController {
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
     }
+    
   }
   
   public function index() 
@@ -323,8 +324,6 @@ class Products extends BaseController {
     );
     echo json_encode($output);
   }
-
-  
 
 
 }
