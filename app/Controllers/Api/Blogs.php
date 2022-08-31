@@ -15,7 +15,11 @@ class Blogs extends ResourceController
       helper(['jwt']);
 
       $this->data = [];
+      $this->role = session()->get('role');
+      $this->isLoggedIn = session()->get('isLoggedIn');
+      $this->guid = session()->get('guid');
       $this->blog_model = model('blogModel');
+      $this->image_model = model('ImageModel');
 
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
@@ -41,22 +45,21 @@ class Blogs extends ResourceController
 
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
-
         $images = array(); // initialize image array
         if ($this->request->getFiles()) {
-         $file = $this->request->getFiles(); // get all files from post request
-          //loop through all files uploaded
+          $file = $this->request->getFiles(); // get all files from post request
+          // loop through all files uploaded
           foreach($file['productImages'] as $img){
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
                 $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+                $img->move( WRITEPATH . 'uploads/' . $fileName); // move the file to writable/uploads
                 
                 // json data to be save to image
                 $imageData = [
                   'filename' => $fileName,
                   'mime' => $type,
-                  'url' => 'writable/uploads/'. $fileName,
+                  'url' => 'public/uploads/'. $fileName,
                 ];
                 $this->image_model->save($imageData); // try to save to images table
                 $imageId = $this->image_model->insertID();
@@ -70,7 +73,7 @@ class Blogs extends ResourceController
           'title' => $this->request->getVar('title'),
           'description' => $this->request->getVar('description'),
           'author' => $this->request->getVar('author'),
-          //'images' => implode(',', $images),
+          'images' => implode(',', $images),
         ];
         $this->blog_model->save($to_save); // trying to save product to database
         $data_arr = array("success" => TRUE,"message" => 'Blog Saved!');
@@ -82,39 +85,6 @@ class Blogs extends ResourceController
       $data_arr = array("success" => FALSE,"message" => 'No posted data!');
     }
     die(json_encode($data_arr));
-  }
-
-  public function adds()
-  {
-      $success = true;
-      if($this->request->getMethod(true) == 'POST') {
-          if($this->request->getPost()) {
-              // prepare for validation
-              $rules = [
-                  'title' => 'required|min_length[3]',
-                  'description' => 'required|min_length[3]',
-                  'author' => 'required|min_length[3]',
-              ];
-              if($this->validate($rules)) {
-                  // prepare to save
-                  $to_save = [
-                      'title' => ucfirst($this->request->getVar('title')),
-                      'description' => ucfirst($this->request->getVar('description')),
-                      'author' => ucfirst($this->request->getVar('author')),
-                  ];
-                  $this->blog_model->save($to_save); // save meal type
-              } else {
-                  $success = false;
-              }
-          } else {
-              $success = false;
-          }
-      } else{
-          $success = false;
-      }
-
-      $success ? $data_arr = array("status" => 201, "success" => TRUE,"message" => 'Meal type added.') : $data_arr = array("success" => FALSE,"message" => 'Invalid request.');
-      die(json_encode($data_arr));
   }
 
 }
