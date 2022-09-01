@@ -22,6 +22,9 @@ class CartSession {
       $session->set('cart_items', []);
       $session->push('cart_items', $cart_products);
     }
+    else {
+      $cart_items = $session->get('cart_items');
+    }
     
 
 

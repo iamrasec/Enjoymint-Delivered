@@ -45,37 +45,19 @@ class Products extends BaseController
             $product = $this->product_model->get()->getResult();
             return $this->view_all_products();
         }
-    //     $newData = [
-    //         'product_name' => $this->request->getPost('product_name'),
-    //         'views' => $this->request->getPost('views'),
-    //         ];
-    //    $this->pagecounter_model->update($newData); 
+
         $ip_views = $this->request->getIPAddress();
         $newData = ['ip_views' => $ip_views]; 
         $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
-        // $newCheckIp = ['checkIp' => $checkIp]; 
         if($checkIp){
-            
-        //   if (! $this->request->isValidIP($checkIp)) {
-        //     echo 'Not Valid';
-        // } else {
-        //     echo 'Valid';
-        // }
             $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
             $page_data['ip_views'] = $this->pagecounter_model->countAll();
-        //     $page_data['views'] = $this->pagecounter_model->countAll();
-        //      // echo "Sample";
         }
-        else 
-        {  
-        $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-        $page_data['ip_views'] = $this->pagecounter_model->countAll();
-        $this->pagecounter_model->save($newData);
-        
-        
+        else {  
+            $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+            $page_data['ip_views'] = $this->pagecounter_model->countAll();
+            $this->pagecounter_model->save($newData);
         }
-        
-        // print_r($product);die();
 
         $page_title = $product->name;
 
@@ -88,16 +70,14 @@ class Products extends BaseController
         $this->data['product'] = $product;
         $this->data['images'] = [];
 
-        // print_r($product->images);die();
-
         $imageIds = [];
         if($product->images) {
             $imageIds = explode(',',$product->images);
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
 
-        // $session = session();
-        // $session->set('cart_items', []);
+        $session = session();
+        $session->set('cart_items', []);
         $cookie_cart = [];
         
         if($this->isLoggedIn && !isset($_COOKIE["cart_data"])) {
@@ -123,7 +103,7 @@ class Products extends BaseController
         else if(!$this->isLoggedIn && isset($_COOKIE["cart_data"])) {
             $this->data['cookie_cart'] = $_COOKIE["cart_data"];
 
-            print_r($this->data['cookie_cart']);die();
+            // print_r($this->data['cookie_cart']);die();
         }
         else {
             $this->data['cookie_cart'] = [];
