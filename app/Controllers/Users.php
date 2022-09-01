@@ -12,6 +12,8 @@ class Users extends BaseController
 		helper(['jwt']);
 
 		$this->data = [];
+		$this->role = session()->get('role');
+    $this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
 		$this->user_model = model('UserModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
@@ -277,6 +279,9 @@ class Users extends BaseController
 	
 	public function checkout()
 	{
+		if($this->isLoggedIn !== 1) {
+
+		}
         echo view('checkout', $this->data);
 	}
 
