@@ -7,7 +7,6 @@ use App\Models\out;
 class Products extends BaseController
 {
     var $view_data = array();
-
     public function __construct() {
         helper(['jwt']);
     
@@ -29,26 +28,51 @@ class Products extends BaseController
         $this->pagecounter_model = model('pagecounterModel');
         $this->product_model = model('productModel');
         $this->db = db_connect();
-    
-        if($this->isLoggedIn !== 1 && $this->role !== 1) {
-          return redirect()->to('/');
-        }
     }
+
+    
 
     public function index($url = '')
     {
-
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
 
             if(!empty($product)) {
                 $product = $product[0];
             }
-            
         }
         else {
             $product = $this->product_model->get()->getResult();
             return $this->view_all_products();
+        }
+    //     $newData = [
+    //         'product_name' => $this->request->getPost('product_name'),
+    //         'views' => $this->request->getPost('views'),
+    //         ];
+    //    $this->pagecounter_model->update($newData); 
+        $ip_views = $this->request->getIPAddress();
+        $newData = ['ip_views' => $ip_views]; 
+        $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
+        // $newCheckIp = ['checkIp' => $checkIp]; 
+        if($checkIp){
+            
+        //   if (! $this->request->isValidIP($checkIp)) {
+        //     echo 'Not Valid';
+        // } else {
+        //     echo 'Valid';
+        // }
+            $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+            $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        //     $page_data['views'] = $this->pagecounter_model->countAll();
+        //      // echo "Sample";
+        }
+        else 
+        {  
+        $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+        $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        $this->pagecounter_model->save($newData);
+        
+        
         }
         
         // print_r($product);die();
@@ -131,7 +155,6 @@ class Products extends BaseController
         exit();
     }
 
-	
     public function save($id) 
     {
      $user_data = [
@@ -144,7 +167,7 @@ class Products extends BaseController
         'total' => $this->request->getPost('total'),
      ];
 
-     $data = $this->product_model->where('id', $id)->select('stocks')->first();
+     $data = $this->product_model->where('id', 2)->select('stocks')->first();
      foreach($data as $datas):
       $stock = $datas -1;
      endforeach;

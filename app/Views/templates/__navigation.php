@@ -33,7 +33,7 @@
               </a>
             </li>
             <li class="nav-item ms-lg-auto">
-              <a class="nav-link nav-link-icon me-2" href="https://github.com/creativetimofficial/material-kit" target="_blank" href="/blog">
+              <a class="nav-link nav-link-icon me-2" href="/admin/blogs/blog" target="_blank" href="/blog">
               <i class="material-icons opacity-6 me-2 text-md">rss_feed</i> Blog
               </a>
             </li>

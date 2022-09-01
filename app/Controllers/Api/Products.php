@@ -11,6 +11,7 @@ class Products extends ResourceController
 {
     public function __construct() 
     {
+      
       $this->data = [];
       $this->role = session()->get('role');
       $this->isLoggedIn = session()->get('isLoggedIn');
@@ -24,6 +25,9 @@ class Products extends ResourceController
       $this->category_model = model('CategoryModel');
       $this->product_category = model('ProductCategory');
       $this->compound_model = model('CompoundModel');
+
+
+      $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
   
       if($this->isLoggedIn !== 1 && $this->role !== 1) {
         return redirect()->to('/');
@@ -251,5 +255,35 @@ class Products extends ResourceController
     die(json_encode($data_arr));
   }
 
+    /**
+   * This function will update order status completed
+   * @param  int    id  The id of order
+   * @return object A json object response with status and message
+   */
+  public function orderFullfill($id = null)
+  {
+    $success = true;
+    if($this->request->getMethod(true) == 'POST') { 
+            // prepare to save
+            $save = [
+                'status' => 1
+            ];
+            $this->order_model->update($id, $save); // update product status
+        } else {
+            $success = false;
+        }    
+        $success ? $data_arr = array("status" => 201, "success" => TRUE,"message" => 'Order completed.') : $data_arr = array("success" => FALSE,"message" => 'Invalid request.');
+        die(json_encode($data_arr)); 
+  }
+
     // ...
+    /**
+   * This function will delete a product into the server
+   * @param int pid The pid of the prodcut to be remove 
+   * @return object a success indicator and the message
+  */
+    public function delete_product($pid){
+      $this->product_model->update($pid, ['archived' => 1]);
+      die(json_encode(array("success" => TRUE,"message" => 'Product Delete!')));
+    }
 }

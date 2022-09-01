@@ -15,7 +15,7 @@
         <h4><?php echo $page_title; ?></h4>
       </div>
       <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/products/add_product'); ?>">Add Product</a>
+        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/page/add_page'); ?>">Add Page</a>
       </div>
     </div>
 
@@ -24,19 +24,21 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsives">
-              <table id="products-table" class="table align-items-center mb-0">
+              <table id="blog-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>URL</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Author</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tfoot>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>URL</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Author</th>
                     <th>Action</th>
                 </tfoot>
               </table>
@@ -85,7 +87,7 @@
 <!-- Product List page js -->
 <script>
   $(document).ready(function () {
-      $('#products-table').DataTable({
+      $('#blog-table').DataTable({
         // Processing indicator
         "processing": true,
         // DataTables server-side processing mode
@@ -94,7 +96,7 @@
         "order": [],
         // Load data from an Ajax source
         "ajax": {
-            "url": "<?= base_url('admin/products/getProductLists'); ?>",
+            "url": "<?= base_url('admin/blogs/getBlogLists'); ?>",
             "type": "POST"
         },
         //Set column definition initialisation properties
@@ -103,24 +105,6 @@
             "orderable": false
         }]
     });
-
-    $("body").delegate(".removeBtn", "click", function(){
-      var prodId = $(this).data('id');
-      console.log(prodId);
-      
-      fetch('/api/products/delete_product/'+prodId,  {
-        method: 'POST',
-        headers : {
-          'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
-        }
-      }) .then(response => response.json()).then(response => {
-          var { message, success }  = response;
-          success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/products') : enjoymintAlert('Sorry!', message, 'error', 0);
-      }).catch((error) => {
-          console.log('Error:', error);
-      });
-    }); 
   });
-
 </script>
 <?php $this->endSection(); ?>
