@@ -53,7 +53,7 @@
                 </div> 
               </div>
               <div class="counter">
-                <p class="count_cart count" id="count_cart"><?= count(session()->get('cart_items')); ?></p>
+                <p class="count_cart count" id="count_cart">0</p>
               </div>
             </li>
           </ul>

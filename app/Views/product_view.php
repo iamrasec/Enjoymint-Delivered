@@ -220,9 +220,12 @@
   $uid = ($session->get('id')) ? $session->get('id') : '';
 ?>
 
+<pre><?php print_r($cookie_cart); ?></pre>
+
 <?php $this->section("script") ?>
 <script>
   console.log("scripts section");
+
   $(document).on('click', '.add-to-cart', function(e) {
     e.preventDefault();
 
@@ -289,6 +292,8 @@
         console.log(cookie_products.length);
 
         cartCountr = cookie_products.length;
+
+        setCookie('cart_items_count',cartCountr,'1');
 
         // if(json.newItem > 0) {
           // let currentCount = $("#count_cart").text();

@@ -134,13 +134,13 @@
 <?php echo $this->renderSection("scripts"); ?>
 
 <script type="text/javascript">
-  const cartCountr = 0;
-
+  var cartCountr = getCookie('cart_items_count');
+  console.log("cartCountr: " + cartCountr);
+  console.log(getCookie('cart_data'));
+  
   $(document).ready(function() {
-    $("#count_cart").val(cartCountr);
+    $("#count_cart").html(cartCountr);
   });
-
-  console.log(cartCountr);
 
   if (document.getElementById('state1')) {
     const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));

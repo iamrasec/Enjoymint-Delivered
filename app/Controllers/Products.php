@@ -72,21 +72,37 @@ class Products extends BaseController
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
 
-        $session = session();
-        $session->set('cart_items', []);
+        // $session = session();
+        // $session->set('cart_items', []);
+        $cookie_cart = [];
         
-        if($this->isLoggedIn) {
+        if($this->isLoggedIn && !isset($_COOKIE["cart_data"])) {
             // $this->data['cart_products'] = $this->cart_model->cartProductsCount(session()->get('id'));
             $cart_products = $this->cart_model->where('uid', session()->get('id'))->get()->getResult();
 
             foreach($cart_products as $cart_product) {
-                $session->push('cart_items', [['pid' => $cart_product->pid, 'qty' => $cart_product->qty]]);
+                // $session->push('cart_items', [['pid' => $cart_product->pid, 'qty' => $cart_product->qty]]);
+                $cookie_cart[] = (array)['pid' => $cart_product->pid, 'qty' => (int)$cart_product->qty];
             }
+
+            // print_r(json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE));die();
+
+            $json_encoded = json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+
+            // setcookie("cart_data", $json_encoded, time() + (86400 * 30), "/"); // 86400 = 1 day
+
+            $this->data['cookie_cart'] = $json_encoded;
 
             //print_r($cart_products);
             // $session->push('cart_items', $cart_products);
         }
+        else if(!$this->isLoggedIn && isset($_COOKIE["cart_data"])) {
+            $this->data['cookie_cart'] = $_COOKIE["cart_data"];
+
+            print_r($this->data['cookie_cart']);die();
+        }
         else {
+            $this->data['cookie_cart'] = [];
             $this->data['cart_products'] = 0;
         }
 
