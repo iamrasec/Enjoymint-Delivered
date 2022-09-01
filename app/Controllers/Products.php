@@ -46,18 +46,18 @@ class Products extends BaseController
             return $this->view_all_products();
         }
 
-        $ip_views = $this->request->getIPAddress();
-        $newData = ['ip_views' => $ip_views]; 
-        $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
-        if($checkIp){
-            $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-            $page_data['ip_views'] = $this->pagecounter_model->countAll();
-        }
-        else {  
-            $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-            $page_data['ip_views'] = $this->pagecounter_model->countAll();
-            $this->pagecounter_model->save($newData);
-        }
+        // $ip_views = $this->request->getIPAddress();
+        // $newData = ['ip_views' => $ip_views]; 
+        // $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
+        // if($checkIp){
+        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        // }
+        // else {  
+        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        //     $this->pagecounter_model->save($newData);
+        // }
 
         $page_title = $product->name;
 
