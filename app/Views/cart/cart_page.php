@@ -4,7 +4,7 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-9">
+<main class="main-content position-relative border-radius-lg mt-9">
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -19,6 +19,7 @@
           <div class="row">
             <div class="col-12">
               <form name="update-cart-form">
+                <input type="hidden" name="guid" value="<?= $guid; ?>">
                 <h4>Products</h4>
                 <table id="cart_products" class="w-100">
                   <tbody>
@@ -40,11 +41,12 @@
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
                             <div class="product-qty">
-                              <span>QTY: </span><input type="number" min="1" max="100" value="<?= $product['qty']; ?>" name="qty">
+                              <span>QTY: </span><input type="number" class="product-qty" min="1" max="100" value="<?= $product['qty']; ?>">
                             </div>
                           </div>
-                          <div class="col-12 col-md-2 col-xs-12 price">
-                            <strong>$<?= $product['product_data']->price; ?></strong>
+                          <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                            <input type="hidden" class="product-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
+                            <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
                           </div>
                         </div>
                       </td>
@@ -58,14 +60,76 @@
           <!-- <pre><?php print_r($cart_products); ?></pre> -->
         </div>
       </div>
-      <div class="col-12 col-md-4 col-xs-12 ">
-        <div class="cart-summary px-3 py-3">
-          <h4>Cart Summary</h4>
-          <div><?= count($cart_products); ?> Items</div>
+      <div class="col-12 col-md-4 col-xs-12">
+        <div class="cart-summary px-3 py-3 px-4 rounded-5">
+          <h4 class="text-white">Cart Summary</h4>
+          <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
+          <div class="row mt-4">
+            <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-8 col-md-8 col-xs-8">Total</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="total-cost">0</span></div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12 col-md-12 col-xs-12 d-grid">
+              <button class="btn bg-primary-green btn-lg checkout-btn" type="button">Proceed to Checkout</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </main>
 
-<?php $this->endSection() ?>
+<?php echo $this->include('cart/_login_register_modal.php'); ?>
+
+<?php $this->endSection(); ?>
+
+<?php $this->section("script"); ?>
+<script>
+  var tax_rate = 1.35;  // 35%
+
+  // Create our number formatter.
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+  
+  $(document).ready(function() {
+    // Compute for subtotal cost
+    var subtotal = 0;
+    $(".product-total-price").each(function() {
+      subtotal += parseFloat($(this).val());
+    });
+
+    $(".subtotal-cost").html(formatter.format(subtotal));
+
+    // Subtotal + tax
+    var with_tax = subtotal.toFixed(2) * (tax_rate - 1);
+    $(".tax-cost").html(formatter.format(with_tax));
+
+    // Calculate Total
+    var total_cost = 0;
+    total_cost = subtotal.toFixed(2) * tax_rate;
+    $(".total-cost").html(formatter.format(total_cost));
+  });
+  
+  $(document).on("click", ".checkout-btn", function() {
+    console.log($("input[name=guid]").val());
+
+    if($("input[name=guid]").val() == '') {
+      $("#loginRegisterModal").modal('show');
+    }
+  });
+</script>
+<?php $this->endSection(); ?>

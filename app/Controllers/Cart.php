@@ -62,7 +62,15 @@ class Cart extends BaseController
     }
 
     $this->data['cart_products'] = $cart_products;
+    $this->data['guid'] = $this->guid;
 
     return view('cart/cart_page', $this->data);
+  }
+
+  public function checkout()
+  {
+    if($this->isLoggedIn != 1) {
+
+		}
   }
 }

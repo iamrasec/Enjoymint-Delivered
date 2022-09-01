@@ -49,7 +49,7 @@
             <li class="nav-item my-auto ms-3 ms-lg-0 d-flex flex-row">
               <div class="cart-box" >
                 <div class="cart-icon">
-                  <a href="<?= base_url('checkout'); ?>"><i class="material-icons opacity-6 text-xl" id="cart_icon">shopping_cart</i></a>
+                  <a href="<?= base_url('cart'); ?>"><i class="material-icons opacity-6 text-xl" id="cart_icon">shopping_cart</i></a>
                 </div> 
               </div>
               <div class="counter">
