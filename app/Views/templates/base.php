@@ -137,10 +137,6 @@
   var cartCountr = getCookie('cart_items_count');
   console.log("cartCountr: " + cartCountr);
   console.log(getCookie('cart_data'));
-  
-  $(document).ready(function() {
-    $("#count_cart").html(cartCountr);
-  });
 
   if (document.getElementById('state1')) {
     const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
@@ -172,6 +168,12 @@
   });
 </script>
 <?php echo $this->renderSection("script"); ?>
+
+<script>
+$(document).ready(function() {
+  update_cart_count();
+});
+</script>
 </body>
 
 </html>

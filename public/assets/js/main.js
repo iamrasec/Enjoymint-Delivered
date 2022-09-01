@@ -88,11 +88,6 @@ function add_to_cart(uid, pid, qty)
       cartCountr = cookie_products.length;
 
       setCookie('cart_items_count',cartCountr,'1');
-
-      // if(json.newItem > 0) {
-        // let currentCount = $("#count_cart").text();
-        // $("#count_cart").html(parseInt(currentCount) + json.newItem);
-      // }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.log(textStatus);
@@ -108,12 +103,23 @@ function update_cart_count()
   // Initialize
   let get_cookie = '';
   let cookie_products = [];
+  let new_count = 0;
+  let cookie_cart = 'cart_data';
     
   // Check if cookie exists
   get_cookie = getCookie(cookie_cart);
 
   // If cookie exists.  Check products
   if(get_cookie) {
-    
+    // Parse JSON data into readable array
+    cookie_products = JSON.parse(get_cookie);
+
+    // Count the number of products in the cookie
+    new_count = cookie_products.length;
+
+    console.log("New Cart Count: " + new_count);
+
+    // Update the cart counter
+    $("#count_cart").html(new_count);
   }
 }

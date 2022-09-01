@@ -302,6 +302,8 @@
       $(".lds-hourglass").addClass('d-none');
     }
 
+    // Update the cart counter
+    update_cart_count();
   });
 
 </script>
