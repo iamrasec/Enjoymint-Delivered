@@ -32,32 +32,34 @@ class Cart extends BaseController
 		}
     else {
       // Check if cart cookie is set
-      $user_cart = $_COOKIE['cart_data'];
+      if(isset($_COOKIE['cart_data'])) {
+        $user_cart = $_COOKIE['cart_data'];
 
-      $cart_raw = json_decode($user_cart);
+        $cart_raw = json_decode($user_cart);
 
-      foreach($cart_raw as $product) {
+        foreach($cart_raw as $product) {
 
-        // Get products from the database using pid
-        $product_data = $this->product_model->getProductData($product->pid);
-        
-        // initialize images
-        $images = [];
-        $imageIds = [];
+          // Get products from the database using pid
+          $product_data = $this->product_model->getProductData($product->pid);
+          
+          // initialize images
+          $images = [];
+          $imageIds = [];
 
-        // Fetch product images
-        if($product_data->images) {
-          $imageIds = explode(',',$product_data->images);
-          $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-      }
+          // Fetch product images
+          if($product_data->images) {
+            $imageIds = explode(',',$product_data->images);
+            $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        }
 
-        // Output array
-        $cart_products[] = [
-          'pid' => $product->pid,
-          'qty' => $product->qty,
-          'product_data' => $product_data,
-          'images' => $images,
-        ];
+          // Output array
+          $cart_products[] = [
+            'pid' => $product->pid,
+            'qty' => $product->qty,
+            'product_data' => $product_data,
+            'images' => $images,
+          ];
+        }
       }
     }
 

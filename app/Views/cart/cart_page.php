@@ -16,6 +16,9 @@
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
 
+          <?php if(empty($cart_products)): ?>
+          <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
+          <?php else: ?>
           <div class="row">
             <div class="col-12">
               <form name="update-cart-form">
@@ -57,9 +60,11 @@
               </form>
             </div>
           </div>
+          <?php endif; ?>
           <!-- <pre><?php print_r($cart_products); ?></pre> -->
         </div>
       </div>
+      <?php if(!empty($cart_products)): ?>
       <div class="col-12 col-md-4 col-xs-12">
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
@@ -83,6 +88,7 @@
           </div>
         </div>
       </div>
+      <?php endif; ?>
     </div>
   </div>
 </main>
