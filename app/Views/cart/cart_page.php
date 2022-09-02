@@ -130,7 +130,8 @@
     $(".total-cost").html(formatter.format(total_cost));
   });
   
-  $(document).on("click", ".checkout-btn", function() {
+  $(document).on("click", ".checkout-btn", function(e) {
+    e.preventDefault();
     console.log($("input[name=guid]").val());
 
     if($("input[name=guid]").val() == '') {

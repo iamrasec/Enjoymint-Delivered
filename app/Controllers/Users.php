@@ -60,6 +60,10 @@ class Users extends BaseController
 					}
 
 					$this->setUserSession($user);
+
+					if(isset($_GET['algt'])) {
+						return redirect()->to($_GET['algt']);
+					}
 					
 					if($user['role'] == 1) {
 						return redirect()->to('admin/dashboard');
@@ -80,7 +84,7 @@ class Users extends BaseController
 		}
 
 		$this->data['page_body_id'] = "user_login";
-
+		
 		echo view('login', $this->data);
 	}
 

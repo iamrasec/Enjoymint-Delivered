@@ -134,6 +134,7 @@
 <?php echo $this->renderSection("scripts"); ?>
 
 <script type="text/javascript">
+  const baseUrl = "<?= base_url(); ?>";
   var cartCountr = getCookie('cart_items_count');
   console.log("cartCountr: " + cartCountr);
   console.log(getCookie('cart_data'));
@@ -163,9 +164,9 @@
     };
   }
 
-  jQuery(document).on('click', '.login-btn', function() {
-    console.log("clicked");
-  });
+  // jQuery(document).on('click', '.login-btn', function() {
+  //   console.log("clicked");
+  // });
 </script>
 <?php echo $this->renderSection("script"); ?>
 

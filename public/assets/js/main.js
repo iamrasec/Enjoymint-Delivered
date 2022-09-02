@@ -7,6 +7,25 @@
       $('nav.navbar').removeClass("sticky_header");
     }
   });
+
+  // $(document).on("click", "#modal-login-btn", function() {
+  //   let data = {};
+  //   data.email = $("input[name=email]").val();
+  //   data.password = $("input[name=password]").val();
+
+  //   $.ajax({
+  //     type: "POST",
+  //     url: baseUrl + "/api/users/login",
+  //     data: data,
+  //     dataType: "json",
+  //     success: function(json) {
+  //       console.log(json);
+  //     },
+  //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //       console.log(textStatus);
+  //     },
+  //   });
+  // });
 })(jQuery);
 
 function setCookie(key, value, expiry) {
@@ -41,27 +60,27 @@ function add_to_cart(uid, pid, qty)
     data: data,
     dataType: "json",
     success: function(json) {
-      console.log("successs");
+      // console.log("successs");
       $(".add-to-cart").removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
 
-      console.log(json);
+      // console.log(json);
 
       let arr = [];
 
       var cart_data_cookie = getCookie('cart_data');
 
-      console.log("cart_data cookie: ");
-      console.log(cart_data_cookie);
+      // console.log("cart_data cookie: ");
+      // console.log(cart_data_cookie);
 
       if(cart_data_cookie != null) {
         var cookie_products = JSON.parse(cart_data_cookie);
 
-        console.log(cookie_products);
+        // console.log(cookie_products);
 
         var pid_added = false;
         cookie_products.forEach(function(product) {
-          console.log(product);
+          // console.log(product);
 
           if(product.pid == json.pid) {
             product.qty = parseInt(product.qty) + parseInt(json.qty);
@@ -75,7 +94,7 @@ function add_to_cart(uid, pid, qty)
 
         setCookie('cart_data',JSON.stringify(cookie_products),'1');
 
-        console.log(cookie_products);
+        // console.log(cookie_products);
       }
       else {
         cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty)}];
@@ -83,7 +102,7 @@ function add_to_cart(uid, pid, qty)
         setCookie('cart_data',JSON.stringify(cookie_products),'1');
       }
 
-      console.log(cookie_products.length);
+      // console.log(cookie_products.length);
 
       cartCountr = cookie_products.length;
 
