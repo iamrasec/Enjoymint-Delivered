@@ -14,6 +14,7 @@
               <div class="row">
 
                 <div class="col-xl-5 col-lg-6 text-center">
+                  
                   <?php if($images): ?>
                   <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
                   <?php endif; ?>
@@ -33,7 +34,7 @@
 
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
-                  <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain_name; ?></span><span class="badge text-bg-dark ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
+                  <div class="text-sm mb-3"><?= $product->strain ?><span class="badge text-bg-warning me-3"></span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
@@ -70,15 +71,22 @@
                   </div>
                 </div>
               </div>
-              <div class="row mt-5">
+              <div class="row mt-5" style="display: <?= $isRating ?>;">
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
-                    <form role="form" method="post" action="/users">
+                    <form role="form" method="post" action="/products/rating">
                       <div class="input-group input-group-outline mb-3">
-                        <?php for($y=5;$y>0;$y--): ?>
+                        <!-- <?php for($y=5;$y>0;$y--): ?>
                           <i class="material-icons text-lg">star_outline</i>
-                          <?php endfor; ?>
+                          <input type="text" name="result" hidden>
+                          <?php endfor; ?> -->
+                          <i class="material-icons text-lg stars" data-id="1" id="star_1">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="2" id="star_2">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="3" id="star_3">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="4" id="star_4">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="5" id="star_5">star_outline</i>
+                          <input type="hidden" name="ratings" id="ratings" value="">
                       </div>
                       <div class="input-group input-group-outline mb-3">
                         <label class="form-label">Comment</label>
@@ -107,7 +115,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-5">
+                  <div class="col-sm-6">
                     <div class="card">
                       <div class="card-body">
                         <?php for($x=5;$x>0;$x--): ?>
@@ -157,6 +165,37 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-sm-7">
+                    <hr/>
+                    <div class="review-block">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
+                          <div class="review-block-name"><a href="#">Unknown</a></div>
+                          <div class="review-block-date">23 Aug 2022<br/><small><i>1 day ago</i></small></div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div class="review-block-rate">
+                          <?php for($y=0;$y<5 ;$y++): ?>
+                            <?php if(($y+1)<=$rate_data['star']): ?>
+                               <?= '<i class="material-icons text-lg">grade</i>' ?>
+                            <?php else: ?>
+                              <?= '<i class="material-icons text-lg">star_outline</i>' ?>
+                            <?php endif; ?>
+                          <?php endfor; ?>
+                            
+                          <div class="review-block-description"> 
+                          <?= $rate_data['message']?>
+                          </div>
+                      </div>
+                        </div>
+                      </div>
+                      <hr/>
+                    </div>
+                  </div>
+                </div>
                 
               </div>
               <div class="row mt-5">
@@ -171,7 +210,22 @@
           </div>
         </div>
       </div>
+
      
+<?php $this->endSection() ?>
+<?php $this->section('script') ?>
+<script>
+  $("body").delegate(".stars", "click", function(){
+    let count = $(this).data('id');
+    for(var x=1;x<=5;x++){
+      count >= x ?  $('#star_'+x).html('grade') : $('#star_'+x).html('star_outline');
+      
+    }
+    document.getElementById('ratings').value= count;
+  });
+
+ 
+</script>
 <?php $this->endSection() ?>
 <style>
 .rate {
