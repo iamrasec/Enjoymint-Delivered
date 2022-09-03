@@ -17,7 +17,9 @@ class Products extends BaseController {
     $this->category_model = model('CategoryModel');
     $this->measurement_model = model('MeasurementModel');
     $this->product_category = model('ProductCategory');
+    $this->product_experience = model('productExperience');
     $this->order_model = model('CheckoutModel');
+    $this->experience_model = model('experienceModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -58,6 +60,7 @@ class Products extends BaseController {
       $this->data['brands'] = $this->brand_model->get()->getResult();
       $this->data['strains'] = $this->strain_model->get()->getResult();
       $this->data['categories'] = $this->category_model->get()->getResult();
+      $this->data['experience'] = $this->experience_model->get()->getResult();
       $this->data['measurements'] = $this->measurement_model->get()->getResult();
       echo view('Admin/add_product', $this->data);
   }
@@ -238,11 +241,14 @@ class Products extends BaseController {
     $this->data['brands'] = $this->brand_model->get()->getResult();
     $this->data['strains'] = $this->strain_model->get()->getResult();
     $this->data['categories'] = $this->category_model->get()->getResult();
+    $this->data['experience'] = $this->experience_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
     $this->data['product_data'] = $this->product_model->getProductData($pid);
 
     $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
+    $experience = $this->product_experience->select('exp_id')->where('pid', $pid)->get()->getResult();
     $assignedCat = [];
+    $assignedExp = [];
     
     if($categories) {
       // print_r($categories);die();
@@ -250,8 +256,16 @@ class Products extends BaseController {
         $assignedCat[] = $category->cid;
       }
     }
+
+    if($experience) {
+      // print_r($categories);die();
+      foreach($experience as $exps) {
+        $assignedExp[] = $exps->exp_id;
+      }
+    }
     
     $this->data['product_categories'] = $assignedCat;
+    $this->data['product_experience'] = $assignedExp;
 
     echo view('Admin/edit_product', $this->data);
   }
