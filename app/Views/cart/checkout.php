@@ -4,6 +4,138 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
+<style>
+:root {
+	--white: #ffffff;
+	--light: #f0eff3;
+	--black: #000000;
+	--dark-blue: #1f2029;
+	--dark-light: #353746;
+  --green: #489989;
+  --dark-green: #266b5d;
+	--red: #da2c4d;
+	--yellow: #f8ab37;
+	--grey: #ecedf3;
+}
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked),
+[type="radio"]:checked,
+[type="radio"]:not(:checked){
+	position: absolute;
+	left: -9999px;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+.checkbox:checked + label,
+.checkbox:not(:checked) + label{
+	position: relative;
+	width: 70px;
+	display: inline-block;
+	padding: 0;
+	margin: 0 auto;
+	text-align: center;
+	margin: 17px 0;
+	margin-top: 100px;
+	height: 6px;
+	border-radius: 4px;
+	background-image: linear-gradient(298deg, var(--dark-green), var(--green));
+	z-index: 100 !important;
+}
+.checkbox:checked + label:before,
+.checkbox:not(:checked) + label:before {
+	position: absolute;
+	font-family: 'unicons';
+	cursor: pointer;
+	top: -17px;
+	z-index: 2;
+	font-size: 20px;
+	line-height: 40px;
+	text-align: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	-webkit-transition: all 300ms linear;
+	transition: all 300ms linear; 
+}
+.checkbox:not(:checked) + label:before {
+	content: '\eac1';
+	left: 0;
+	color: var(--grey);
+	background-color: var(--dark-light);
+	box-shadow: 0 4px 4px rgba(0,0,0,0.15), 0 0 0 1px rgba(26,53,71,0.07);
+}
+.checkbox:checked + label:before {
+	content: '\eb8f';
+	left: 30px;
+	color: var(--yellow);
+	background-color: var(--dark-blue);
+	box-shadow: 0 4px 4px rgba(26,53,71,0.25), 0 0 0 1px rgba(26,53,71,0.07);
+}
+
+.checkbox:checked ~ .section .container .row .col-12 p{
+	color: var(--dark-blue);
+}
+.checkbox-tools:checked + label,
+.checkbox-tools:not(:checked) + label{
+	position: relative;
+	display: inline-block;
+	padding: 20px;
+	width: 150px;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 1px;
+	margin: 0 auto;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+	text-align: center;
+	border-radius: 4px;
+	overflow: hidden;
+	cursor: pointer;
+	text-transform: uppercase;
+	color: var(--white);
+	-webkit-transition: all 300ms linear;
+	transition: all 300ms linear; 
+}
+.checkbox-tools:not(:checked) + label{
+	background-color: var(--dark-light);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+.checkbox-tools:checked + label{
+	background-color: transparent;
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.checkbox-tools:not(:checked) + label:hover{
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.checkbox-tools:checked + label::before,
+.checkbox-tools:not(:checked) + label::before{
+	position: absolute;
+	content: '';
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	background-image: linear-gradient(298deg, var(--dark-green), var(--green));
+	z-index: -1;
+}
+.checkbox-tools:checked + label .uil,
+.checkbox-tools:not(:checked) + label .uil{
+	font-size: 24px;
+	line-height: 24px;
+	display: block;
+	padding-bottom: 10px;
+}
+
+.checkbox:checked ~ .section .container .row .col-12 .checkbox-tools:not(:checked) + label{
+	background-color: var(--light);
+	color: var(--dark-blue);
+	box-shadow: 0 1x 4px 0 rgba(0, 0, 0, 0.05);
+}
+</style>
+
 <main class="main-content position-relative border-radius-lg mt-9">
   <div class="container">
     <div class="row">
@@ -17,11 +149,37 @@
           <h1 class="pagetitle">Checkout</h1>
           <form id="checkout">
             <div class="row">
-              <div class="col-12 col-md-12 col-xs-12">
+              <div class="col-12 col-md-12 col-xs-12 mt-3">
                 <h5>Payment Method</h5>
-                
+
+                <div class="row justify-content-center pb-5">
+                  <div class="col-12 pb-1">
+                    <input class="checkbox-tools" type="radio" name="tools" id="tool-1" checked>
+                    <label class="for-checkbox-tools" for="tool-1">Zelle</label>
+                    
+                    <input class="checkbox-tools" type="radio" name="tools" id="tool-2">
+                    <label class="for-checkbox-tools" for="tool-2">PayTender</label>
+                    
+                    <input class="checkbox-tools" type="radio" name="tools" id="tool-3">
+                    <label class="for-checkbox-tools" for="tool-3">Cash</label>
+                    
+                    <input class="checkbox-tools" type="radio" name="tools" id="tool-4">
+                    <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
+                  </div>
+									<span class="text-sm">Payments will be collected upon delivery.</span>
+                </div>
+
               </div>
             </div>
+						
+						<div class="row">
+							<div class="col-12 col-md-12 col-xs-12 mt-3">
+								<h5>Delivery Address</h5>
+								<div class="row">
+									<div class="col-4"></div>
+								</div>
+							</div>
+						</div>
           </form>
         </div>
       </div>
