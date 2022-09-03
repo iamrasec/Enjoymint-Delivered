@@ -106,6 +106,16 @@
                     <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Experience</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="product-exps form-control w-100 border px-2" name="exps[]" id="exps" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                    <?php foreach($experience as $exp): ?>
+                    <option value="<?php echo $exp->id; ?>"><?php echo $exp->name; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                  </div>
+                </div>
                 <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
                 <div class="col-sm-12">
                   <label class="mt-4">Description</label>
