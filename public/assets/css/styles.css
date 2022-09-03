@@ -28,6 +28,11 @@
   background: #489989;
 }
 
+h1.page-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 #add_product input.form-control {
     display: block;
     width: 100%;
