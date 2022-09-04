@@ -175,9 +175,46 @@
 						<div class="row">
 							<div class="col-12 col-md-12 col-xs-12 mt-3">
 								<h5>Delivery Address</h5>
-								<div class="row">
-									<div class="col-4"></div>
+								<div class="row mb-4">
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">Apartment/Suite Number</label>
+											<input type="text" name="apt_no" class="form-control">
+										</div>
+									</div>
+									<div class="col-8 col-md-8 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">Street Address</label>
+											<input type="text" name="street" class="form-control">
+										</div>
+									</div>
 								</div>
+								<div class="row mb-4">
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">City</label>
+											<input type="text" name="city" class="form-control">
+										</div>
+									</div>
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">State</label>
+											<input type="text" name="state" class="form-control">
+										</div>
+									</div>
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">Zipcode</label>
+											<input type="text" name="zipcode" class="form-control">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12 col-md-12 col-xs-12 mt-3">
+								<h5>Order Notes</h5>
 							</div>
 						</div>
           </form>
