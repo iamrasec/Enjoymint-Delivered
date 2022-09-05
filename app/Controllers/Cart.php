@@ -168,8 +168,23 @@ class Cart extends BaseController
     $user = $this->user_model->getUserByGuid($data['guid']);
     $token = $data['cart_key'];
 
+    // Initialize order record to be saved in the database
+    $order_data = [
+      'order_key' => $data['cart_key'],
+      'customer_id' => $user['id'],
+      'first_name' => $user['first_name'],
+      'last_name' => $user['last_name'],
+      'address' => $data['apt_no'] ." ". $data['street'] .", ". $data['city'] .", ". $data['state'] ." ". $data['zipcode'],
+      'payment_method' => $data['payment_method'],
+    ];
+
+    // Insert initial order record and grab the order id
+    $order_id = $this->checkout_model->insert($order_data); 
+
+    // Fetch products in cart
     $db_cart = $this->_fetch_cart_items();
 
+    // Initialize subtotal cost
     $subtotal = 0;
 
     // Loop through all the products and fetch all the product info
@@ -178,11 +193,12 @@ class Cart extends BaseController
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
 
+      // Compute for subtotal cost
       $subtotal += $product_data->price * $product->qty;
 
       // Order products array
       $cart_products[] = [
-        'order_id' => 0, // initialized only here.  This will be updated below after creating the order.
+        'order_id' => $order_id,
         'product_id' => $product->pid,
         'product_name' => $product_data->name,
         'qty' => $product->qty,
@@ -193,26 +209,30 @@ class Cart extends BaseController
       ];
     }
 
+    $save_products = $this->checkout_model->save_order_products($data);
+
     // print_r($cart_products); die();
 
     $tax_cost = $subtotal * ($this->data['tax_rate'] - 1);
     $total_cost = $subtotal * $this->data['tax_rate'];
 
-    $order_data = [
-      'order_key' => $data['cart_key'],
-      'customer_id' => $user['id'],
-      'first_name' => $user['first_name'],
-      'last_name' => $user['last_name'],
-      'address' => $data['apt_no'] ." ". $data['street'] .", ". $data['city'] .", ". $data['state'] ." ". $data['zipcode'],
+    $order_costs = [
       'subtotal' => $subtotal,
       'tax' => $tax_cost,
       'total' => $total_cost,
-      'payment_method' => $data['payment_method'],
     ];
 
-    $order = $this->checkout_model->insert($order_data);
+    $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
 
-    print_r($order); die();
+    // print_r($order); die();
+
+    $this->session->set_flashdata('order_completed',1);
+    return redirect()->to('/cart/success');
+  }
+
+  public function success()
+  {
+    
   }
 
   private function _fetch_cart_items()

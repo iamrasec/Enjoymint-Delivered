@@ -26,7 +26,9 @@ class CheckoutModel extends Model {
         $db = \Config\Database::connect();
         $builder = $db->table('order_products');
 
-        
+        $builder->insertBatch($data);
+
+        return true;
     }
 }
 ?>
