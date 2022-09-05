@@ -242,7 +242,7 @@
     let cookie_products = [];
 
     if($("[name='atoken']").attr('content') != "") {
-      add_to_cart(<?= $uid; ?>, pid);
+      add_to_cart(<?= $uid; ?>, pid, qty);
     }
     else {
       // Current user is not logged in

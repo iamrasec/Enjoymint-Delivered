@@ -23,6 +23,7 @@
             <div class="col-12">
               <form name="update-cart-form">
                 <input type="hidden" name="guid" value="<?= $guid; ?>">
+                <input type="hidden" name="cart_token" value="<?= $cart_token; ?>">
                 <h4>Products</h4>
                 <table id="cart_products" class="w-100">
                   <tbody>
@@ -136,6 +137,9 @@
 
     if($("input[name=guid]").val() == '') {
       $("#loginRegisterModal").modal('show');
+    }
+    else {
+      window.location.replace("<?= base_url('cart/checkout'); ?>");
     }
   });
 </script>

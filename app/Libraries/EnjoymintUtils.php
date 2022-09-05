@@ -3,7 +3,8 @@ namespace App\Libraries;
 
 class EnjoymintUtils {
   
-  public static function slugify($text, string $divider = '-') {
+  public static function slugify($text, string $divider = '-') 
+  {
     // replace non letter or digits by divider
     $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
 
@@ -28,5 +29,16 @@ class EnjoymintUtils {
 
     return $text;
   }
+
+  public function generateRandomString($length = 10) 
+	{
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+	}
   
 }

@@ -66,5 +66,29 @@ class Cart extends ResourceController
     }
   }
 
+  public function fetch()
+  {
+    $data = $this->request->getPost();
+
+    $user = validateJWTFromRequestOutputUser($data['token']);
+
+    $db_cart = $this->cart_model->where('uid', $user['id'])->get()->getResult();
+
+    echo json_encode(["status" => 'updated', "cartProducts" => $db_cart]);
+    exit;
+  }
+
+  public function checkout()
+  {
+    $data = $this->request->getPost();
+
+    $user = $this->user_model->getUserByGuid($data['guid']);
+
+    // Initialize order record in the database
+    
+
+    $db_cart = $this->cart_model->where('uid', $user['id'])->get()->getResult();
+  }
+
   // ...
 }

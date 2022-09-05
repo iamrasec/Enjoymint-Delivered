@@ -9,14 +9,24 @@ class CheckoutModel extends Model {
     protected $table = 'orders';
     protected $primarykey = 'id';
     protected $allowedFields = [
-        'full_name',
-        'c_number',
+        'customer_id',
+        'first_name',
+        'last_name',
         'address',
-        'product',
-        'price',
-        'qty',
+        'subtotal',
+        'tax',
         'total',
+        'payment_method',
+        'created',
+        'modified',
     ];
-  
+    
+    public function save_order_products($data)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('order_products');
+
+        
+    }
 }
 ?>

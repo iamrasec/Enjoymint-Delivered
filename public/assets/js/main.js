@@ -47,7 +47,7 @@ function eraseCookie(key) {
 
 function add_to_cart(uid, pid, qty)
 {
-  let jwt = $("[name='atoken']").attr('content');
+  // let jwt = $("[name='atoken']").attr('content');
 
   let data = {};
   data.uid = uid;
@@ -56,7 +56,7 @@ function add_to_cart(uid, pid, qty)
 
   $.ajax({
     type: "POST",
-    url: "<?= base_url('/api/cart/add'); ?>",
+    url: baseUrl + '/api/cart/add',
     data: data,
     dataType: "json",
     success: function(json) {
@@ -141,4 +141,58 @@ function update_cart_count()
     // Update the cart counter
     $("#count_cart").html(new_count);
   }
+  else {
+    update_cart();
+  }
 }
+
+function update_cart()
+{
+  console.log("user is logged in.  ajax request count.");
+  // let jwt = $("[name='atoken']").attr('content');
+
+  let data = {};
+  data.token = jwt;
+  
+  $.ajax({
+    type: "POST",
+    url: baseUrl + '/api/cart/fetch',
+    data: data,
+    dataType: "json",
+    success: function(json) {
+      // console.log(json);
+      setCookie('cart_data',JSON.stringify(json.cartProducts),'1');
+      update_cart_count();
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
+  });
+}
+
+// function prep_checkout()
+// {
+//   let data = {};
+//   data.guid = $("input[name=guid]").val();
+//   data.token = $("input[name=cart_token]").val();
+
+//   $.ajax({
+//     type: "POST",
+//     url: baseUrl + '/api/cart/checkout',
+//     data: data,
+//     dataType: "json",
+//     success: function(json) {
+//       // console.log(json);
+//       // window.location.replace(baseUrl + 'cart/checkout');
+//     },
+//     error: function(XMLHttpRequest, textStatus, errorThrown) {
+//       console.log(textStatus);
+//     },
+//     beforeSend: function(xhr) {
+//       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+//     }
+//   });
+// }

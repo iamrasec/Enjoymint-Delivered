@@ -147,23 +147,25 @@
       <div class="col-12 col-md-8 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Checkout</h1>
-          <form id="checkout">
+          <form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
+						<input type="hidden" name="guid" value="<?= $guid; ?>">
+						<input type="hidden" name="cart_key" value="<?= $checkout_token; ?>">
             <div class="row">
               <div class="col-12 col-md-12 col-xs-12 mt-3">
                 <h5>Payment Method</h5>
 
                 <div class="row justify-content-center pb-5">
                   <div class="col-12 pb-1">
-                    <input class="checkbox-tools" type="radio" name="tools" id="tool-1" checked>
+                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-1" value="zelle" checked>
                     <label class="for-checkbox-tools" for="tool-1">Zelle</label>
                     
-                    <input class="checkbox-tools" type="radio" name="tools" id="tool-2">
+                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-2" value="paytender">
                     <label class="for-checkbox-tools" for="tool-2">PayTender</label>
                     
-                    <input class="checkbox-tools" type="radio" name="tools" id="tool-3">
+                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-3" value="cash">
                     <label class="for-checkbox-tools" for="tool-3">Cash</label>
                     
-                    <input class="checkbox-tools" type="radio" name="tools" id="tool-4">
+                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-4" value="debit_card">
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
                   </div>
 									<span class="text-sm">Payments will be collected upon delivery.</span>
@@ -172,7 +174,7 @@
               </div>
             </div>
 						
-						<div class="row">
+						<div class="row mb-4">
 							<div class="col-12 col-md-12 col-xs-12 mt-3">
 								<h5>Delivery Address</h5>
 								<div class="row mb-4">
@@ -215,11 +217,50 @@
 						<div class="row">
 							<div class="col-12 col-md-12 col-xs-12 mt-3">
 								<h5>Order Notes</h5>
+								<div class="input-group input-group-outline">
+									<textarea name="order_notes" class="form-control w-100" style="height: 100px;"></textarea>
+								</div>
 							</div>
 						</div>
           </form>
         </div>
       </div>
+
+			<?php if(!empty($cart_products)): ?>
+			<?php
+				$subtotal = 0;
+				foreach($cart_products as $product) {
+					// echo "<pre>".print_r($product, 1)."</pre>";
+					$subtotal += ($product['product_data']->price * $product['qty']);
+				}
+				$tax_cost = $subtotal * ($tax_rate - 1);
+				$total_cost = $subtotal * $tax_rate;
+			?>
+			<div class="col-12 col-md-4 col-xs-12">
+        <div class="cart-summary px-3 py-3 px-4 rounded-5">
+          <h4 class="text-white">Cart Summary</h4>
+          <div class="cart-item-count"><?= count($cart_products); ?> items</div>
+          <div class="row mt-4">
+            <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">$<?= number_format($subtotal, 2, '.', ','); ?></span></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">$<?= number_format($tax_cost, 2, '.', ','); ?></span></div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-8 col-md-8 col-xs-8">Total</div>
+            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="total-cost">$<?= number_format($total_cost, 2, '.', ','); ?></span></div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12 col-md-12 col-xs-12 d-grid">
+              <button class="btn bg-primary-green btn-lg place-order" type="button">Place Order</button>
+							<a href="#" class="text-center text-gradient text-primary">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </div>
+			<?php endif; ?>
     </div>
   </div>
 </main>
@@ -230,6 +271,8 @@
 
 <?php $this->section("script"); ?>
 <script>
-  
+  $(document).on("click", ".place-order", function() {
+		$("#checkout").submit();
+	})
 </script>
 <?php $this->endSection(); ?>

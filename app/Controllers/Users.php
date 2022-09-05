@@ -273,6 +273,7 @@ class Users extends BaseController
 	public function logout() 
 	{
 		session()->destroy();
+		delete_cookie('cart_data');
 		return redirect()->to('/');
 	}
 

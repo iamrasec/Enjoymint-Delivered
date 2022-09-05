@@ -135,6 +135,7 @@
 
 <script type="text/javascript">
   const baseUrl = "<?= base_url(); ?>";
+  const jwt = $("[name='atoken']").attr('content');
   var cartCountr = getCookie('cart_items_count');
   console.log("cartCountr: " + cartCountr);
   console.log(getCookie('cart_data'));
