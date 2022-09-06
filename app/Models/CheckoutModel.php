@@ -22,9 +22,15 @@ class CheckoutModel extends Model {
         'modified',
     ];
     
-    public function fetchOrderDetails()
+    public function fetchOrderDetails($key)
     {
-        
+        $this->select('order_products.*, products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
+        $this->join('order_products', 'orders.id = order_products.order_id', 'inner');
+        $this->join('products', 'order_products.product_id = products.id', 'inner');
+        $this->join('strains', 'strains.id = products.strain', 'left');
+        $this->join('compounds', 'compounds.pid = products.id', 'left');
+        $this->where('orders.order_key', $key);
+        return $this->get()->getResult();
     }
 }
 ?>

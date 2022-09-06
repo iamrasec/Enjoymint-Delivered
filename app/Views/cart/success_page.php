@@ -12,11 +12,84 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-md-8 col-xs-12">
+      <div class="col-12 col-md-12 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
+          <?php if(isset($order_completed) && $order_completed == 1): ?>
           <h1 class="pagetitle">Order Summary</h1>
+          <p>Order ID: <strong><?= $order_data[0]->id; ?></strong></p>
+          <p>Payment Method: <strong><?= ucfirst($order_data[0]->payment_method); ?></strong></p>
+          <table id="order_products">
+            <tbody>
+              <?php foreach($order_products as $product): ?>
+              <tr class="pid-<?= $product['pid']; ?> border">
+                <td>
+                  <div class="row product-wrap d-flex py-3">
+                    <div class="col-12 col-md-1 col-xs-12 product-img">
+                      <?php if(!empty($product['images'])): ?>
+                      <img src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" style="width: 100px;">
+                      <?php endif; ?>
+                    </div>
+                    <div class="col-12 col-md-9 col-xs-12 product-details">
+                      <h6 class="product-title">
+                        <a href="<?= base_url('products/'. $product['product_data']->url); ?>"><?= $product['product_data']->name; ?></a>
+                      </h6>
+                      <div class="text-sm mb-3">
+                        <span class="badge text-bg-warning me-3"><?= $product['product_data']->strain_name; ?></span>
+                        <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
+                      </div>
+                      <div class="product-qty">
+                        <span>QTY: <?= $product['qty']; ?></span>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                      <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+              <tr>
+                <td>
+                  <div class="row my-2">
+                    <div class="col-12 col-md-10 col-xs-10 text-right">
+                      Subtotal
+                    </div>
+                    <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                      <strong>$<?= $order_data[0]->subtotal; ?></strong>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="row my-2">
+                    <div class="col-12 col-md-10 col-xs-10 text-right">
+                      Taxes
+                    </div>
+                    <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                      <strong>$<?= $order_data[0]->tax; ?></strong>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="row my-2">
+                    <div class="col-12 col-md-10 col-xs-10 text-right">
+                      <strong>TOTAL</strong>
+                    </div>
+                    <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                      <strong>$<?= $order_data[0]->total; ?></strong>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-          <p>Success Page</p>
+          <?php else: ?>
+          <p>Forbidden</p>
+          <?php endif; ?>
         </div>
       </div>
       

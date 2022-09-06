@@ -62,9 +62,6 @@ class Cart extends BaseController
 
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
-
-      // print_r($product);
-
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
       
@@ -78,12 +75,6 @@ class Cart extends BaseController
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
 
-      // For new cookie array
-      // $new_cookie_cart[] = [
-      //   'pid' => $product->pid,
-      //   'qty' => $product->qty,
-      // ];
-
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
@@ -92,11 +83,6 @@ class Cart extends BaseController
         'images' => $images,
       ];
     }
-
-    // create a new cookie
-    // setrawcookie('cart_data', '[{"pid":"85","qty":"8"},{"pid":"88","qty":"2"},{"pid":"87","qty":"1"}]', 1);
-
-    // print_r(json_encode($new_cookie_cart));die();
 
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
@@ -164,8 +150,6 @@ class Cart extends BaseController
   {
     $data = $this->request->getPost();
 
-    // print_r($data); die();
-
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
 
@@ -212,8 +196,6 @@ class Cart extends BaseController
 
     $save_products = $this->order_products_model->insertBatch($cart_products);
 
-    // print_r($cart_products); die();
-
     $tax_cost = $subtotal * ($this->data['tax_rate'] - 1);
     $total_cost = $subtotal * $this->data['tax_rate'];
 
@@ -226,9 +208,8 @@ class Cart extends BaseController
     // $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
     $update_order = $this->checkout_model->update($order_id, $order_costs);
 
-    // print_r($update_order); die();
-
     if($update_order > 0) {
+      // Delete user's cart items
       $this->_clear_cart($user['id']);
       session()->setFlashdata('order_completed', $data['cart_key']);
       return redirect()->to('/cart/success');
@@ -242,7 +223,35 @@ class Cart extends BaseController
   {
     $success = session()->getFlashdata('order_completed');
     if($success) {
-      $order = $this->checkout_model->fetchOrderDetails();
+      // Fetch Order Details
+      $order = $this->checkout_model->where('order_key', $success)->get()->getResult();
+
+      // Fetch Order Products
+      $order_products = $this->checkout_model->fetchOrderDetails($success);
+
+      foreach($order_products as $product) {
+        // initialize images
+        $images = [];
+        $imageIds = [];
+
+        // Fetch product images
+        if($product->images) {
+          $imageIds = explode(',',$product->images);
+          $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        }
+
+        // Output array
+        $cart_products[] = [
+          'pid' => $product->product_id,
+          'qty' => $product->qty,
+          'product_data' => $product,
+          'images' => $images,
+        ];
+      }
+
+      $this->data['order_data'] = $order;
+      $this->data['order_products'] = $cart_products;
+      $this->data['order_completed'] = 1;
       return view('cart/success_page', $this->data);
     }
     else {
