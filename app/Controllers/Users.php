@@ -272,8 +272,12 @@ class Users extends BaseController
 
 	public function logout() 
 	{
+		helper('cookie');
+		if(!delete_cookie('cart_data')) {
+			unset($_COOKIE['cart_data']);
+			setcookie('cart_data', '', time() - 3600, "/");
+		}
 		session()->destroy();
-		delete_cookie('cart_data');
 		return redirect()->to('/');
 	}
 

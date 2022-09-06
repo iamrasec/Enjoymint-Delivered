@@ -137,8 +137,8 @@
   const baseUrl = "<?= base_url(); ?>";
   const jwt = $("[name='atoken']").attr('content');
   var cartCountr = getCookie('cart_items_count');
-  console.log("cartCountr: " + cartCountr);
-  console.log(getCookie('cart_data'));
+  // console.log("cartCountr: " + cartCountr);
+  // console.log(getCookie('cart_data'));
 
   if (document.getElementById('state1')) {
     const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));

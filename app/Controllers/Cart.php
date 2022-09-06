@@ -9,7 +9,7 @@ class Cart extends BaseController
 {
   public function __construct() 
 	{
-		helper(['jwt']);
+		helper(['jwt', 'cookie']);
 
 		$this->data = [];
 		$this->role = session()->get('role');
@@ -273,7 +273,11 @@ class Cart extends BaseController
 
   private function _clear_cart($user_id)
   {
-    delete_cookie('cart_data');
+    if(!delete_cookie('cart_data')) {
+			unset($_COOKIE['cart_data']);
+      setcookie('cart_data', '', time() - 3600, "/");
+		}
+    
     $this->cart_model->where('uid', $user_id)->delete();
 
     return true;
