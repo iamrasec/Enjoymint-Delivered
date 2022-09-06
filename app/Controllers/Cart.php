@@ -19,6 +19,7 @@ class Cart extends BaseController
     $this->image_model = model('ImageModel');
     $this->cart_model = model('CartModel');
     $this->checkout_model = model('CheckoutModel');
+    $this->order_products_model = model('OrderProductsModel');
     $this->user_model = model('UserModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
@@ -166,7 +167,7 @@ class Cart extends BaseController
     // print_r($data); die();
 
     $user = $this->user_model->getUserByGuid($data['guid']);
-    $token = $data['cart_key'];
+    // $token = $data['cart_key'];
 
     // Initialize order record to be saved in the database
     $order_data = [
@@ -179,7 +180,7 @@ class Cart extends BaseController
     ];
 
     // Insert initial order record and grab the order id
-    $order_id = $this->checkout_model->insert($order_data); 
+    $order_id = $this->checkout_model->insert($order_data);
 
     // Fetch products in cart
     $db_cart = $this->_fetch_cart_items();
@@ -209,7 +210,7 @@ class Cart extends BaseController
       ];
     }
 
-    $save_products = $this->checkout_model->save_order_products($data);
+    $save_products = $this->order_products_model->insertBatch($cart_products);
 
     // print_r($cart_products); die();
 
@@ -222,16 +223,24 @@ class Cart extends BaseController
       'total' => $total_cost,
     ];
 
-    $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
+    // $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
+    $update_order = $this->checkout_model->update($order_id, $order_costs);
 
     // print_r($order); die();
 
-    $this->session->set_flashdata('order_completed',1);
+    session()->setFlashdata('order_completed',1);
     return redirect()->to('/cart/success');
   }
 
   public function success()
   {
+    $success = session()->getFlashdata('order_completed');
+    if($success == 1) {
+      return view('cart/success_page', $this->data);
+    }
+    else {
+      return redirect()->to('/cart');
+    }
     
   }
 
@@ -244,5 +253,10 @@ class Cart extends BaseController
 
     // Fetch cart items from db
     return $this->cart_model->where('uid', $user_data['id'])->get()->getResult();
+  }
+
+  private function _clear_cart()
+  {
+
   }
 }

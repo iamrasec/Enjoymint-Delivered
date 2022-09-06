@@ -23,7 +23,6 @@
             <div class="col-12">
               <form name="update-cart-form">
                 <input type="hidden" name="guid" value="<?= $guid; ?>">
-                <input type="hidden" name="cart_token" value="<?= $cart_token; ?>">
                 <h4>Products</h4>
                 <table id="cart_products" class="w-100">
                   <tbody>
@@ -62,7 +61,6 @@
             </div>
           </div>
           <?php endif; ?>
-          <!-- <pre><?php print_r($cart_products); ?></pre> -->
         </div>
       </div>
       <?php if(!empty($cart_products)): ?>
