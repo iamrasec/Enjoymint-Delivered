@@ -22,14 +22,9 @@ class CheckoutModel extends Model {
         'modified',
     ];
     
-    // public function save_order_products($data)
-    // {
-    //     $db = \Config\Database::connect();
-    //     $builder = $db->table('order_products');
-
-    //     $builder->insertBatch($data);
-
-    //     return true;
-    // }
+    public function fetchOrderDetails()
+    {
+        
+    }
 }
 ?>

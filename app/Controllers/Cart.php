@@ -226,16 +226,23 @@ class Cart extends BaseController
     // $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
     $update_order = $this->checkout_model->update($order_id, $order_costs);
 
-    // print_r($order); die();
+    // print_r($update_order); die();
 
-    session()->setFlashdata('order_completed',1);
-    return redirect()->to('/cart/success');
+    if($update_order > 0) {
+      $this->_clear_cart($user['id']);
+      session()->setFlashdata('order_completed', $data['cart_key']);
+      return redirect()->to('/cart/success');
+    }
+    else {
+      return redirect()->to('/cart');
+    }
   }
 
   public function success()
   {
     $success = session()->getFlashdata('order_completed');
-    if($success == 1) {
+    if($success) {
+      $order = $this->checkout_model->fetchOrderDetails();
       return view('cart/success_page', $this->data);
     }
     else {
@@ -255,8 +262,11 @@ class Cart extends BaseController
     return $this->cart_model->where('uid', $user_data['id'])->get()->getResult();
   }
 
-  private function _clear_cart()
+  private function _clear_cart($user_id)
   {
+    delete_cookie('cart_data');
+    $this->cart_model->where('uid', $user_id)->delete();
 
+    return true;
   }
 }
