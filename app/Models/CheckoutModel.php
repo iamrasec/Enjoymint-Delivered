@@ -9,6 +9,7 @@ class CheckoutModel extends Model {
     protected $table = 'orders';
     protected $primarykey = 'id';
     protected $allowedFields = [
+        'user_id',
         'full_name',
         'c_number',
         'address',
@@ -16,6 +17,7 @@ class CheckoutModel extends Model {
         'price',
         'qty',
         'total',
+        'status',
     ];
   
 }
