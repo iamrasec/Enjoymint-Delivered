@@ -44,12 +44,12 @@
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
                             <div class="product-qty">
-                              <span>QTY: </span><input type="number" class="product-qty" min="1" max="100" value="<?= $product['qty']; ?>">
+                              <span>QTY: </span><input type="number" name="product-qty" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
                             </div>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                            <input type="hidden" class="product-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
-                            <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
+                            <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
                             <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
                         </div>
@@ -71,6 +71,15 @@
       </div>
       <?php if(!empty($cart_products)): ?>
       <div class="col-12 col-md-4 col-xs-12">
+        <div class="spinner-wrap position-absolute w-25 h-30 px-2 py-2 rounded-5 d-none">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div>
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
@@ -149,7 +158,32 @@
 
   $(document).on("click", ".remove-item", function() {
     let toRemove = $(this).data('pid');
-    delete_cart_item(toRemove);
+    let guid = $("input[name=guid]").val();
+    delete_cart_item(guid, toRemove);
+  });
+
+  $(document).on("input", "input[name=product-qty]", function() {
+    let pid = $(this).data('pid');
+    let unitPrice = $(this).data('unit-price');
+    let newQty = $(this).val();
+    let newProdTotal = unitPrice * newQty;
+
+    let currSubTotalRaw = $(".subtotal-cost").html();
+    let currSubTotal = currSubTotalRaw.substring(1, currSubTotalRaw.length);
+
+    console.log("Current SubTotal: "+currSubTotal);
+
+    console.log("New Quantity: "+newQty);
+    console.log("New Product Total: "+newProdTotal.toFixed(2));
+
+    $(".product-"+pid+"-total-price").val(newProdTotal.toFixed(2));
+    $("tr.pid-"+pid+" .total-price-display").html(formatter.format(newProdTotal));
+
+    // $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
+    // $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
+    // $(".cart-summary .tax-cost").html(json.order_costs.tax);
+    // $(".cart-summary .total-cost").html(json.order_costs.total);
+
   });
 </script>
 <?php $this->endSection(); ?>

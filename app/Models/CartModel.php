@@ -32,4 +32,11 @@ class CartModel extends Model {
     $this->where('uid', $uid);
     return $this->get()->getResult();
   }
+
+  public function delete_cart_item($uid, $pid)
+  {
+    $this->where('uid', $uid);
+    $this->where('pid', $pid);
+    return $this->delete();
+  }
 }
