@@ -173,6 +173,11 @@ function update_cart()
   });
 }
 
+function delete_cart_item(toRemove)
+{
+
+}
+
 // function prep_checkout()
 // {
 //   let data = {};

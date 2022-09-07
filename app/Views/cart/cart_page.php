@@ -50,6 +50,7 @@
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
                             <input type="hidden" class="product-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
                             <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                            <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
                         </div>
                       </td>
@@ -58,6 +59,11 @@
                   </tbody>
                 </table>
               </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-12 col-xs-12 mt-2 text-right">
+              <button id="update-cart" class="btn border ms-auto">Update Cart</button>
             </div>
           </div>
           <?php endif; ?>
@@ -139,6 +145,11 @@
     else {
       window.location.replace("<?= base_url('cart/checkout'); ?>");
     }
+  });
+
+  $(document).on("click", ".remove-item", function() {
+    let toRemove = $(this).data('pid');
+    delete_cart_item(toRemove);
   });
 </script>
 <?php $this->endSection(); ?>

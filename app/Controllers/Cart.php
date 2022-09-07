@@ -55,6 +55,9 @@ class Cart extends BaseController
       if(!empty($db_cart)) {
         $cart_raw = $db_cart;
       }
+      else {
+        
+      }
 		}
     else {
       $cart_raw = $cookie_cart;

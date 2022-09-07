@@ -255,7 +255,7 @@
           <div class="row mt-5">
             <div class="col-12 col-md-12 col-xs-12 d-grid">
               <button class="btn bg-primary-green btn-lg place-order" type="button">Place Order</button>
-							<a href="#" class="text-center text-gradient text-primary">Cancel</a>
+						<a href="<?= base_url('cart'); ?>" class="text-center text-gradient text-primary">Cancel</a>
             </div>
           </div>
         </div>
