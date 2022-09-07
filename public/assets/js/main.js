@@ -175,7 +175,26 @@ function update_cart()
 
 function delete_cart_item(toRemove)
 {
+  let data = {};
+  data.pid = toRemove;
 
+  $.ajax({
+    type: "POST",
+    url: baseUrl + '/api/cart/delete_cart_item',
+    data: data,
+    dataType: "json",
+    success: function(json) {
+      // console.log(json);
+      setCookie('cart_data',JSON.stringify(json.cartProducts),'1');
+      update_cart_count();
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
+  });
 }
 
 // function prep_checkout()

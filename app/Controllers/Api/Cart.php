@@ -90,5 +90,13 @@ class Cart extends ResourceController
     $db_cart = $this->cart_model->where('uid', $user['id'])->get()->getResult();
   }
 
+  public function delete_cart_item()
+  {
+    $data = $this->request->getPost();
+
+    echo json_encode(["status" => 'updated', "deleted" => $data]);
+    exit;
+  }
+
   // ...
 }

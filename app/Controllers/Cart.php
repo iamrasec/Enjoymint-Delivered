@@ -15,6 +15,7 @@ class Cart extends BaseController
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
+    $this->uid = session()->get('id');
     $this->product_model = model('ProductModel');
     $this->image_model = model('ImageModel');
     $this->cart_model = model('CartModel');
@@ -26,9 +27,19 @@ class Cart extends BaseController
     $this->data['tax_rate'] = 1.35;  // 35%
 	}
 
-  private function _cookie_to_session($data)
+  private function _cookie_to_db($cookie_cart)
   {
+    foreach($cookie_cart as $cart_product) {
+      $toSave = [
+        'uid' => $this->uid,
+        'pid' => $cart_product->pid,
+        'qty' => $cart_product->qty,
+      ];
 
+      $this->cart_model->insert($toSave);
+    }
+
+    return true;
   }
 
   public function index()
@@ -56,7 +67,10 @@ class Cart extends BaseController
         $cart_raw = $db_cart;
       }
       else {
-        
+        if(!empty($cookie_cart)) {
+          $this->_cookie_to_db($cookie_cart);
+          $cart_raw = $this->_fetch_cart_items();
+        }
       }
 		}
     else {
