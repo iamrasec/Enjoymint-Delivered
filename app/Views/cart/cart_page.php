@@ -113,7 +113,7 @@
 
 <?php $this->section("script"); ?>
 <script>
-  var tax_rate = 1.35;  // 35%
+  var tax_rate = <?= $tax_rate; ?>;  // 35%
 
   // Create our number formatter.
   var formatter = new Intl.NumberFormat('en-US', {
@@ -166,24 +166,39 @@
     let pid = $(this).data('pid');
     let unitPrice = $(this).data('unit-price');
     let newQty = $(this).val();
+    let oldQty = $(this).prop("defaultValue");
     let newProdTotal = unitPrice * newQty;
 
     let currSubTotalRaw = $(".subtotal-cost").html();
     let currSubTotal = currSubTotalRaw.substring(1, currSubTotalRaw.length);
+    let newSubTotal = 0;
 
-    console.log("Current SubTotal: "+currSubTotal);
+    if(newQty > oldQty) {
+      newSubTotal = parseFloat(currSubTotal) + unitPrice;
+    }
+    else if(newQty < oldQty) {
+      newSubTotal = parseFloat(currSubTotal) - unitPrice;
+    }
+    
+    let newTaxCost = newSubTotal.toFixed(2) * (tax_rate - 1);
 
+    let newTotalCost = newSubTotal.toFixed(2) * tax_rate;
+
+    $(this).prop("defaultValue", newQty);
+
+    $(".cart-summary .subtotal-cost").html("$"+newSubTotal.toFixed(2));
+    $(".cart-summary .tax-cost").html("$"+newTaxCost.toFixed(2));
+    $(".cart-summary .total-cost").html("$"+newTotalCost.toFixed(2));
+
+    console.log("Old Quantity: "+oldQty);
     console.log("New Quantity: "+newQty);
     console.log("New Product Total: "+newProdTotal.toFixed(2));
+    console.log("New SubTotal: ");
+    console.log(parseFloat(currSubTotal));
+    console.log(unitPrice);
 
     $(".product-"+pid+"-total-price").val(newProdTotal.toFixed(2));
     $("tr.pid-"+pid+" .total-price-display").html(formatter.format(newProdTotal));
-
-    // $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
-    // $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
-    // $(".cart-summary .tax-cost").html(json.order_costs.tax);
-    // $(".cart-summary .total-cost").html(json.order_costs.total);
-
   });
 </script>
 <?php $this->endSection(); ?>
