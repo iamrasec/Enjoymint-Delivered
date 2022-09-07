@@ -12,28 +12,28 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
-        <!-- <pre><?php print_r($products); ?></pre> -->
         <div class="row">
-          <?php foreach($products as $product): ?>
+          <?php foreach($this->data['products'] as $product): ?>
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <form method="post" action="<?= base_url('counter')?>"">
             <div class="product-featured">
               <div class="img-wrap">
                 <?php if(isset($product->images[0])): ?>
-                  <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
                 <?php else: ?>
-                <a href="<?= base_url('products/'. $product->url); ?>"><img class="prod_image" src="" /></a>
+                <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
               </div>
               <div class="product-info">
-                <a href="<?= base_url('products/'. $product->url); ?>"><h5><?= $product->name; ?></h5></a>
-                <p><?= $product->thc_value . (($product->thc_unit == 'pct') ? '%' : $product->thc_unit); ?> THC</p>
+                <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?= $product['name']; ?></h5></a>
+  
                 <p class="price">$<span>33.50</span></p>
               </div>
             </div>  
           </div>
           <?php endforeach; ?>
         </div>
+        <?= $pager->links() ?>
       </div>
     </div>
   </div>
@@ -86,4 +86,3 @@
 
  </script>  
 <?php $this->endSection() ?>
-
