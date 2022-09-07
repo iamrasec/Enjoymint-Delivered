@@ -4,21 +4,19 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <div class="card mt-8">
             <div class="card-body">
               <h5 class="mb-4">Product Details</h5>
+            <form  role="form" method="post" action="/products">
               <div class="row">
-
                 <div class="col-xl-5 col-lg-6 text-center">
                   
                   <?php if($images): ?>
                   <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
                   <?php endif; ?>
-
                   <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php if($images): ?>
                     <?php foreach($images as $image): ?>
@@ -35,6 +33,7 @@
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
                   <div class="text-sm mb-3"><?= $product->strain ?><span class="badge text-bg-warning me-3"></span></div>
+                  <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain; ?></span><span class="badge text-bg-dark ms-3">THC </span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
@@ -66,12 +65,14 @@
                   </div>
                   <div class="row mt-4">
                     <div class="col-lg-5">
-                      <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="button">Add to cart</button>
+                      <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="submit" name="button">Add to cart</button>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row mt-5" style="display: <?= $isRating ?>;">
+            </form>
+              <div class="row mt-5">
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
@@ -211,6 +212,8 @@
         </div>
       </div>
 
+    </div>
+  
      
 <?php $this->endSection() ?>
 <?php $this->section('script') ?>

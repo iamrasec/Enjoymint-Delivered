@@ -107,6 +107,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Product Sale </span>
                 </a>
               </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'manage_experience' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'manage_experience' ? 'active' : '' ?>" href="<?php echo base_url('/admin/manage_experience'); ?>">
+                  <span class="sidenav-mini-icon"></span>
+                  <span class="sidenav-normal  ms-2  ps-1">Manage Experience</span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>
