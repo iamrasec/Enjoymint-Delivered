@@ -17,7 +17,7 @@
           <?php if(isset($order_completed) && $order_completed == 1): ?>
           <h1 class="pagetitle">Order Summary</h1>
           <p>Order ID: <strong><?= $order_data[0]->id; ?></strong></p>
-          <p>Payment Method: <strong><?= ucfirst($order_data[0]->payment_method); ?></strong></p>
+          <p>Payment Method: <strong><?= ucfirst(str_replace("_", " ", $order_data[0]->payment_method)); ?></strong></p>
           <table id="order_products">
             <tbody>
               <?php foreach($order_products as $product): ?>

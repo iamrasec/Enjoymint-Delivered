@@ -253,14 +253,14 @@
                           <div class="review-block-rate">
                           <?php // for($y=0;$y<5 ;$y++): ?>
                             <?php // if(($y+1)<=$rate_data['star']): ?>
-                               <?= // '<i class="material-icons text-lg">grade</i>' ?>
+                               <?php // echo '<i class="material-icons text-lg">grade</i>' ?>
                             <?php // else: ?>
-                              <?= // '<i class="material-icons text-lg">star_outline</i>' ?>
+                              <?php // echo '<i class="material-icons text-lg">star_outline</i>' ?>
                             <?php // endif; ?>
                           <?php // endfor; ?>
                             
                           <div class="review-block-description"> 
-                          <?= // $rate_data['message']?>
+                          <?php // echo $rate_data['message']?>
                           </div>
                       </div>
                         </div>
