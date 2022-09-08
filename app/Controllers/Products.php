@@ -7,12 +7,14 @@ use App\Models\out;
 class Products extends BaseController
 {
     var $view_data = array();
+
     public function __construct() {
         helper(['jwt']);
     
         $this->data = [];
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
+        $this->id = session()->get('id');
         $this->guid = session()->get('guid');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
@@ -24,9 +26,12 @@ class Products extends BaseController
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
+        helper(['jwt']);
+
         $this->order_model = model('checkoutModel');
         $this->pagecounter_model = model('pagecounterModel');
         $this->product_model = model('productModel');
+       
         $this->db = db_connect();
     }
 
@@ -138,6 +143,7 @@ class Products extends BaseController
     public function save($id) 
     {
      $user_data = [
+        'user_id' => $this->id = session()->get('id'),
         'full_name' => $this->request->getPost('full_name'),
         'c_number' => $this->request->getPost('c_number'),
         'address' => $this->request->getPost('address'),
@@ -152,11 +158,28 @@ class Products extends BaseController
       $stock = $datas -1;
      endforeach;
      $newData = ['stocks' => $stock]; 
-   
      $this->product_model->update($id, $newData);
+     $session = session();
+     $session->user_data = $user_data;
      $this->order_model->save($user_data); 
      return redirect()->to('/Shop');
 
       
+    }
+
+    public function rating(){
+
+        $ratings = [
+          'message' => $this->request->getPost('message'),  
+          'star' => $this->request->getPost('ratings'),  
+       ];
+  
+       $this->rating_model->save($ratings);
+       return redirect()->to('/Shop'); 
+    //    $page_data ['rate'] = $this->rating_model->where('id', 12)->select( 'star')->first();
+    //    $page_data ['message'] = $this->rating_model->where('id', 12)->select( 'message')->first();
+    //    echo view('product_view', $page_data); 
+       
+  
     }
 }

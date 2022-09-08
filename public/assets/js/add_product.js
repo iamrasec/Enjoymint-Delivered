@@ -6,6 +6,13 @@
     });
   });
 
+  $(document).ready(function() {
+    $('.product-exps').select2({
+      placeholder: "Select a Experience",
+      // allowClear: true
+    });
+  });
+
   $(document).on('keyup', '#product_name', function() {
     $('#purl').val(slugify($(this).val()));
   });
@@ -172,6 +179,7 @@
     formData.append('cbd_val', $('#cbd_val').val());
     formData.append('cbd_measure', $('#cbd_measure').val());
     formData.append('categories', $('#category').val());
+    formData.append('experience', $('#exps').val());
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
     formData.append('tags', $('#tags').val());
