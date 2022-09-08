@@ -200,5 +200,9 @@
     $(".product-"+pid+"-total-price").val(newProdTotal.toFixed(2));
     $("tr.pid-"+pid+" .total-price-display").html(formatter.format(newProdTotal));
   });
+
+  $(document).on("click", "#update-cart", function() {
+    console.log("Clicked on Update Cart Button!");
+  });
 </script>
 <?php $this->endSection(); ?>
