@@ -21,7 +21,7 @@
           <?php else: ?>
           <div class="row">
             <div class="col-12">
-              <form name="update-cart-form">
+              <form id="update-cart-form" method="POST" action="<?= base_url('cart/update_cart'); ?>">
                 <input type="hidden" name="guid" value="<?= $guid; ?>">
                 <h4>Products</h4>
                 <table id="cart_products" class="w-100">
@@ -44,7 +44,7 @@
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
                             <div class="product-qty">
-                              <span>QTY: </span><input type="number" name="product-qty" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
+                              <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
                             </div>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
@@ -162,47 +162,8 @@
     delete_cart_item(guid, toRemove);
   });
 
-  $(document).on("input", "input[name=product-qty]", function() {
-    let pid = $(this).data('pid');
-    let unitPrice = $(this).data('unit-price');
-    let newQty = $(this).val();
-    let oldQty = $(this).prop("defaultValue");
-    let newProdTotal = unitPrice * newQty;
-
-    let currSubTotalRaw = $(".subtotal-cost").html();
-    let currSubTotal = currSubTotalRaw.substring(1, currSubTotalRaw.length);
-    let newSubTotal = 0;
-
-    if(newQty > oldQty) {
-      newSubTotal = parseFloat(currSubTotal) + unitPrice;
-    }
-    else if(newQty < oldQty) {
-      newSubTotal = parseFloat(currSubTotal) - unitPrice;
-    }
-    
-    let newTaxCost = newSubTotal.toFixed(2) * (tax_rate - 1);
-
-    let newTotalCost = newSubTotal.toFixed(2) * tax_rate;
-
-    $(this).prop("defaultValue", newQty);
-
-    $(".cart-summary .subtotal-cost").html("$"+newSubTotal.toFixed(2));
-    $(".cart-summary .tax-cost").html("$"+newTaxCost.toFixed(2));
-    $(".cart-summary .total-cost").html("$"+newTotalCost.toFixed(2));
-
-    console.log("Old Quantity: "+oldQty);
-    console.log("New Quantity: "+newQty);
-    console.log("New Product Total: "+newProdTotal.toFixed(2));
-    console.log("New SubTotal: ");
-    console.log(parseFloat(currSubTotal));
-    console.log(unitPrice);
-
-    $(".product-"+pid+"-total-price").val(newProdTotal.toFixed(2));
-    $("tr.pid-"+pid+" .total-price-display").html(formatter.format(newProdTotal));
-  });
-
   $(document).on("click", "#update-cart", function() {
-    console.log("Clicked on Update Cart Button!");
+    $("#update-cart-form").submit();
   });
 </script>
 <?php $this->endSection(); ?>

@@ -98,24 +98,10 @@ class Cart extends ResourceController
 
     $user = $this->user_model->getUserByGuid($data['guid']);
 
-    // $toDelete = [
-    //   'pid' => $data['pid'],
-    //   'uid' => $user['id']
-    // ];
-
     $delete = $this->cart_model->delete_cart_item($user['id'], $data['pid']);
 
     echo json_encode(["status" => 'deleted', "deleted" => $delete]);
     exit;
-  }
-
-  public function update_item_qty()
-  {
-    $data = $this->request->getPost();
-
-    $user = $this->user_model->getUserByGuid($data['guid']);
-
-
   }
 
   public function update_cart_summary()

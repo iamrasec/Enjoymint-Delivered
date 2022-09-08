@@ -230,32 +230,3 @@ function update_cart_summary(guid)
     }
   });
 }
-
-function update_item_qty(guid)
-{
-
-}
-
-// function prep_checkout()
-// {
-//   let data = {};
-//   data.guid = $("input[name=guid]").val();
-//   data.token = $("input[name=cart_token]").val();
-
-//   $.ajax({
-//     type: "POST",
-//     url: baseUrl + '/api/cart/checkout',
-//     data: data,
-//     dataType: "json",
-//     success: function(json) {
-//       // console.log(json);
-//       // window.location.replace(baseUrl + 'cart/checkout');
-//     },
-//     error: function(XMLHttpRequest, textStatus, errorThrown) {
-//       console.log(textStatus);
-//     },
-//     beforeSend: function(xhr) {
-//       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
-//     }
-//   });
-// }

@@ -277,6 +277,20 @@ class Cart extends BaseController
     
   }
 
+  public function update_cart()
+  {
+    $data = $this->request->getPost();
+
+    $toUpdate = [];
+
+    foreach($data['cart'] as $cart_pid => $cart_product) {
+
+      $this->cart_model->set('qty', $cart_product['qty'])->where('uid', $this->uid)->where('pid', $cart_pid)->update();
+    }
+
+    return redirect()->to('/cart');
+  }
+
   private function _fetch_cart_items()
   {
     // Fetch user data using guid
