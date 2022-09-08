@@ -21,7 +21,7 @@
           <?php else: ?>
           <div class="row">
             <div class="col-12">
-              <form name="update-cart-form">
+              <form id="update-cart-form" method="POST" action="<?= base_url('cart/update_cart'); ?>">
                 <input type="hidden" name="guid" value="<?= $guid; ?>">
                 <h4>Products</h4>
                 <table id="cart_products" class="w-100">
@@ -44,12 +44,13 @@
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
                             <div class="product-qty">
-                              <span>QTY: </span><input type="number" class="product-qty" min="1" max="100" value="<?= $product['qty']; ?>">
+                              <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
                             </div>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                            <input type="hidden" class="product-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
-                            <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
+                            <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                            <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
                         </div>
                       </td>
@@ -60,12 +61,25 @@
               </form>
             </div>
           </div>
+          <div class="row">
+            <div class="col-12 col-md-12 col-xs-12 mt-2 text-right">
+              <button id="update-cart" class="btn border ms-auto">Update Cart</button>
+            </div>
+          </div>
           <?php endif; ?>
-          <!-- <pre><?php print_r($cart_products); ?></pre> -->
         </div>
       </div>
       <?php if(!empty($cart_products)): ?>
       <div class="col-12 col-md-4 col-xs-12">
+        <div class="spinner-wrap position-absolute w-25 h-30 px-2 py-2 rounded-5 d-none">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div>
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
@@ -99,7 +113,7 @@
 
 <?php $this->section("script"); ?>
 <script>
-  var tax_rate = 1.35;  // 35%
+  var tax_rate = <?= $tax_rate; ?>;  // 35%
 
   // Create our number formatter.
   var formatter = new Intl.NumberFormat('en-US', {
@@ -137,6 +151,19 @@
     if($("input[name=guid]").val() == '') {
       $("#loginRegisterModal").modal('show');
     }
+    else {
+      window.location.replace("<?= base_url('cart/checkout'); ?>");
+    }
+  });
+
+  $(document).on("click", ".remove-item", function() {
+    let toRemove = $(this).data('pid');
+    let guid = $("input[name=guid]").val();
+    delete_cart_item(guid, toRemove);
+  });
+
+  $(document).on("click", "#update-cart", function() {
+    $("#update-cart-form").submit();
   });
 </script>
 <?php $this->endSection(); ?>

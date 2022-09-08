@@ -272,6 +272,11 @@ class Users extends BaseController
 
 	public function logout() 
 	{
+		helper('cookie');
+		if(!delete_cookie('cart_data')) {
+			unset($_COOKIE['cart_data']);
+			setcookie('cart_data', '', time() - 3600, "/");
+		}
 		session()->destroy();
 		return redirect()->to('/');
 	}
@@ -491,5 +496,32 @@ class Users extends BaseController
 		if($email->send()) {
 				return true;
 		} 
+	}
+
+	public function dashboard($tab = "_orders_tab")
+	{
+		$page_title = "Dashboard";
+
+		// print_r($categories);
+
+		$this->data['page_body_id'] = "shop";
+		$this->data['breadcrumbs'] = [
+		'parent' => [],
+		'current' => $page_title,
+		];
+		$this->data['page_title'] = $page_title;
+
+		// Identify the tabs that goes with the Dashboard
+		$dashboard_tabs = ['_orders_tab', '_personal_info_tab', '_address_tab'];
+
+		// Added security to only allow tabs that are specified in the array
+		if(in_array($tab, $dashboard_tabs)) {
+			$this->data['active_tab'] = $tab;		// If tab specified is found, return tab
+		}
+		else {
+			$this->data['active_tab'] = '_orders_tab';  // If tab specified is not found, default back to order tab
+		}
+		
+		return view('customer_dashboard/index', $this->data);
 	}
 }

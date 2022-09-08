@@ -47,7 +47,7 @@ function eraseCookie(key) {
 
 function add_to_cart(uid, pid, qty)
 {
-  let jwt = $("[name='atoken']").attr('content');
+  // let jwt = $("[name='atoken']").attr('content');
 
   let data = {};
   data.uid = uid;
@@ -56,7 +56,7 @@ function add_to_cart(uid, pid, qty)
 
   $.ajax({
     type: "POST",
-    url: "<?= base_url('/api/cart/add'); ?>",
+    url: baseUrl + '/api/cart/add',
     data: data,
     dataType: "json",
     success: function(json) {
@@ -141,4 +141,92 @@ function update_cart_count()
     // Update the cart counter
     $("#count_cart").html(new_count);
   }
+  else {
+    update_cart();
+  }
+}
+
+function update_cart()
+{
+  console.log("user is logged in.  ajax request count.");
+  // let jwt = $("[name='atoken']").attr('content');
+
+  let data = {};
+  data.token = jwt;
+  
+  $.ajax({
+    type: "POST",
+    url: baseUrl + '/api/cart/fetch',
+    data: data,
+    dataType: "json",
+    success: function(json) {
+      // console.log(json);
+      setCookie('cart_data',JSON.stringify(json.cartProducts),'1');
+      update_cart_count();
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
+  });
+}
+
+function delete_cart_item(guid, toRemove)
+{
+  let data = {};
+  data.pid = toRemove;
+  data.guid = guid;
+
+  $.ajax({
+    type: "POST",
+    url: baseUrl + '/api/cart/delete_cart_item',
+    data: data,
+    dataType: "json",
+    success: function(json) {
+      // console.log(json);
+      $("tr.pid-"+toRemove).fadeOut(300, function() { 
+        $(this).remove();
+        update_cart_summary(guid);
+      });
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
+  });
+}
+
+function update_cart_summary(guid)
+{
+  let data = {};
+  data.guid = guid;
+
+  $(".cart-summary").hide();
+  $(".spinner-wrap").removeClass('d-none').show();
+
+  $.ajax({
+    type: "POST",
+    url: baseUrl + '/api/cart/update_cart_summary',
+    data: data,
+    dataType: "json",
+    success: function(json) {
+      console.log(json);
+      $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
+      $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
+      $(".cart-summary .tax-cost").html(json.order_costs.tax);
+      $(".cart-summary .total-cost").html(json.order_costs.total);
+      $(".cart-summary").show();
+      $(".spinner-wrap").hide().addClass('d-none');
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(textStatus);
+    },
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
+  });
 }
