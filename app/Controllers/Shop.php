@@ -36,9 +36,21 @@ class Shop extends BaseController
         ];
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
+        $searchData = $this->request->getGet();
+        $search = "";
+        if(isset($searchData) && isset($searchData['search'])){
+        $search = $searchData['search'];
+        }
 
-           $all_products = $this->product_model->paginate(30);
         //  $all_products = $this->product_model->getAllProducts();
+        if($search == ''){
+            $all_products = $this->product_model->paginate(30);
+        }else{
+            $all_products = $this->product_model->select('*')
+            ->like('name',$search)
+            ->orLike('price',$search)
+            ->paginate(30);
+        }
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
