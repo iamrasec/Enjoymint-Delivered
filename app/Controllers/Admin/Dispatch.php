@@ -25,12 +25,25 @@ class Dispatch extends BaseController
 
   public function index()
   {
+    // $worker_team_id = [
+    //   "id" => "QZQ~HNND6XFfiR66nlfRB6rd",
+    // ];
+    
+    $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
 
+    $teams = $onfleet->teams->get("QZQ~HNND6XFfiR66nlfRB6rd");
+
+    echo "<pre>".print_r($teams, 1)."</pre>";
   }
 
   public function test()
   {
     $this->onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
-    $this->onfleet->verifyKey();
+    if($this->onfleet->verifyKey() == 1) {
+      echo "Key is Valid";
+    }
+    else {
+      echo "Key is Invalid";
+    }
   }
 }
