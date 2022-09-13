@@ -15,6 +15,12 @@
       <div class="col-lg-9 col-xs-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
+        <form method='get' action="<?= base_url('/shop/index')?>" id="searchForm">
+        <div class="row">
+        <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here">
+        <button type="submit" class="btn btn-primary w-20">Search</button> 
+        </div>
+      </form>
         <div class="row">
           <?php foreach($products as $product): ?>
           <div class="col-md-3 col-xs-6 pt-4 pb-4">

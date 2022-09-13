@@ -159,7 +159,9 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <!-- <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)"> -->
+                        <input type="range" name="rangeInput" min="0" max="1000" value="0" onchange="updateTextInput(this.value);">
+                        <input type="text" name="thc_val" id="thc_val" value="0" readonly class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -177,7 +179,9 @@
                   <div class="row">
                     <div class="col-md-6 col-xs-6">
                       <div class="input-group input-group-dynamic">
-                        <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <!-- <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)"> -->
+                        <input type="range" name="rangeInput" min="0" max="1000" value="0" onchange="updateTextInput2(this.value);">
+                        <input type="text" name="cbd_val" id="cbd_val" value="0" readonly class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -313,6 +317,19 @@
 <script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/add_product.js?8898"></script>
+
+  <script>
+
+    function updateTextInput(val) {
+          document.getElementById('thc_val').value=val; 
+        }
+
+        function updateTextInput2(val) {
+          document.getElementById('cbd_val').value=val; 
+        }
+
+  </script>
+
 <?php $this->endSection() ?>
 <style>
 .bootstrap-tagsinput {
