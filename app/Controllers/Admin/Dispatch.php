@@ -28,10 +28,11 @@ class Dispatch extends BaseController
     // $worker_team_id = [
     //   "id" => "QZQ~HNND6XFfiR66nlfRB6rd",
     // ];
-    
+
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
 
-    $teams = $onfleet->teams->get("QZQ~HNND6XFfiR66nlfRB6rd");
+    $teams = $onfleet->teams->get();  // List all teams
+    // $teams = $onfleet->teams->get("QZQ~HNND6XFfiR66nlfRB6rd");  // List single team - Worker Phones
 
     echo "<pre>".print_r($teams, 1)."</pre>";
   }
