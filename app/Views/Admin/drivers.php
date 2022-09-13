@@ -35,7 +35,7 @@
                 <tbody>
                   <tr class="text-xs font-weight-bold mb-0">
                     <td>1</td>
-                    <td>Jhon Cena</td>
+                    <td>Jhon Cenamon</td>
                     <td>Sample Address</td>
                   </tr>
                   <tr class="text-xs font-weight-bold mb-0">
