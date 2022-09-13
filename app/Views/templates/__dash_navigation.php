@@ -59,6 +59,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Add Product </span>
                 </a>
               </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>" href="<?php echo base_url('/admin/orders'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Orders </span>
+                </a>
+              </li>
               <!--<li class="nav-item">
                 <a class="nav-link text-white" href="/products/add_category">
                   <span class="sidenav-mini-icon">  </span>
