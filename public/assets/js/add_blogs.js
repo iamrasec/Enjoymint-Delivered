@@ -1,6 +1,6 @@
 (function($) {
-    $(document).on('keyup', '#product_name', function() {
-      $('#purl').val(slugify($(this).val()));
+    $(document).on('keyup', '#title', function() {
+      $('#burl').val(slugify($(this).val()));
     });
   
     $(document).on('click', '.btn-modal', function(e) {
@@ -36,13 +36,19 @@
   
       const formData = new FormData();
       const photos = document.querySelectorAll('input[type="file"]');
+
+      console.log(photos);
     
       photos.forEach(function (item, field) {
-        formData.append('productImages[]', item.files[0]);
+        console.log(item.files);
+        console.log(field);
+        formData.append('blog_image', item.files[0]);
       });
   
       formData.append('title', $('#title').val());
+      formData.append('url', $('#burl').val());
       formData.append('description', $('#description').val());
+      formData.append('content', $('#quill_content').val());
       formData.append('author', $('#author').val());
   
       fetch('/api/blogs/add',  {
@@ -53,7 +59,7 @@
         }
       }) .then(response => response.json()).then(response => {
           var { message, success }  = response;
-          success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/blogs') : enjoymintAlert('Sorry!', message, 'error', 0);
+          // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/blogs') : enjoymintAlert('Sorry!', message, 'error', 0);
       }).catch((error) => {
           console.log('Error:', error);
       });

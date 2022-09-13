@@ -28,12 +28,12 @@
             </li>
 
             <li class="nav-item mx-2">
-              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false" href="/about">
+              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false" href="<?= base_url('about'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">eco</i> About Us
               </a>
             </li>
             <li class="nav-item ms-lg-auto">
-              <a class="nav-link nav-link-icon me-2" href="/admin/blogs/blog" target="_blank">
+              <a class="nav-link nav-link-icon me-2" href="<?= base_url('blogs'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">rss_feed</i> Blog
               </a>
             </li>
