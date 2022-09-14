@@ -107,7 +107,7 @@ class Dispatch extends BaseController
     ];
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     $onfleet->tasks->create($newTask, null);
-    // $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+    $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
 
     return redirect()->to('admin/dispatch/test');
   }
