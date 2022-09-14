@@ -8,12 +8,19 @@
     <h3>OnFleet Test</h3>
     <div class="row">
       <div class="col-6 col-md-6 px-2">
-        <h5>Existing Tasks</h5>
-        <pre><?php print_r($existing_tasks); ?></pre>
+        <pre><?php print_r($tasks); ?></pre>
+        <h5>Unassigned Tasks</h5>
+        
+        <div class="mt-2">&nbsp;</div>
+        <h5>Assigned Tasks</h5>
+        
+        <div class="mt-2">&nbsp;</div>
+        <h5>Completed Tasks</h5>
+        
       </div>
       <div class="col-6 col-md-6 px-2">
         <h5>New Task</h5>
-        <form id="test-dispatch" method="POST">
+        <form id="test-dispatch" method="POST" action="<?= base_url('admin/dispatch/save'); ?>">
           <div class="row mb-4">
             <div class="col-12 col-md-12 col-xs-12">
               <label class="form-label" for="task_details">Task/Order Details (Task Notes)</label>
@@ -36,10 +43,22 @@
                 <input type="text" name="recipient_phone" class="form-control w-100 border px-2">
               </div>
             </div>
+            <!-- <div class="col-12 col-md-12 col-xs-12 mt-2">
+              <div class="form-check">
+                <input type="checkbox" name="skip_validation" value="1" class="form-check-input border">
+                <label class="form-label" for="recipient_phone">Skip Phone Validation?</label>
+              </div>
+            </div> -->
             <div class="col-12 col-md-12 col-xs-12 mt-2">
-              <label class="form-label" for="recipient_notes">Recipient Notes</label>
+              <label class="form-label" for="recipient_phone">Address</label>
               <div class="input-group input-group-dynamic">
-                <textarea name="recipient_notes" class="form-control w-100 border px-2" style="min-height: 200px;"></textarea>
+                <input type="text" name="recipient_address" class="form-control w-100 border px-2">
+              </div>
+            </div>
+            <div class="col-12 col-md-12 col-xs-12 mt-2">
+              <label class="form-label" for="order_notes">Order Notes</label>
+              <div class="input-group input-group-dynamic">
+                <textarea name="order_notes" class="form-control w-100 border px-2" style="min-height: 200px;" placeholder="ex: Call on arrival, dog is friendly, etc."></textarea>
               </div>
             </div>
           </div>

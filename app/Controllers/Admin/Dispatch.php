@@ -34,26 +34,80 @@ class Dispatch extends BaseController
   {
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
-    $queryTasks = [[
-      "from" => 1640995200000,
-    ]];
+    $queryTasks = [
+      "from" => "1640995200000",
+      // "to" => "1663120518000",
+      // "state" => 0
+    ];
 
-    print_r(json_encode($queryTasks));die();
+    $this->data["existing_tasks"] = $onfleet->tasks->get($queryTasks, null);
+    // $this->data["existing_tasks"] = $onfleet->tasks->get();
 
-    $this->data["existing_tasks"] = $onfleet->tasks->get(json_encode($queryTasks));
+    echo "<pre>".print_r($this->data["existing_tasks"], 1)."</pre>";
+
+    // $teams = $onfleet->teams->get("QZQ~HNND6XFfiR66nlfRB6rd", null);  // List single team - Worker Phones
+
+    // echo "<pre>".print_r($teams, 1)."</pre>";
   }
 
   public function test()
   {
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
-    // $queryTasks = [
-    //   "from" => 1640995200000,
-    // ];
+    $queryTasks = [
+      "from" => "1640995200000",
+      // "to" => "1663120518000",
+      // "state" => 0
+    ];
 
-    $this->data["existing_tasks"] = $onfleet->tasks->get(["from" => "1640995200000", "to" => "1663120518000"]);
+    // $unassigned = $queryTasks;
+    // $unassigned['state'] = 0;
+
+    // $assigned = $queryTasks;
+    // $assigned['state'] = "1,2";
+
+    // $completed = $queryTasks;
+    // $completed['state'] = 3;
+
+    $this->data["tasks"] = $onfleet->tasks->get($queryTasks, null);
 
     return view('Dispatch/test', $this->data);
+  }
+
+  public function save()
+  {
+    $data = $this->request->getPost();
+
+    // echo "<pre>".print_r($data, 1)."</pre>";die();
+
+    $team_id = "QZQ~HNND6XFfiR66nlfRB6rd";  // Work Phones team
+
+    $newTask = [
+      "destination" =>  [
+        "address" =>  [
+          "unparsed" => $data['recipient_address']
+        ],
+        "notes" =>  $data['order_notes']
+      ],
+      "recipients" =>  [
+        [
+          "name" => $data['recipient_name'],
+          "phone" => $data['recipient_phone'],
+          "skipPhoneNumberValidation" => true,
+        ] 
+      ],
+      // "completeAfter" =>  1455151071727,
+      "notes" =>  $data['task_details'],
+      "autoAssign" => [
+        "mode" => "distance",
+        "team" => $team_id
+      ] 
+    ];
+    $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
+    $onfleet->tasks->create($newTask, null);
+    // $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+
+    return redirect()->to('admin/dispatch/test');
   }
 
   public function test_endpoints()
