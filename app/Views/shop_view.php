@@ -9,17 +9,20 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 col-sm-12 mt-5 text-center">
+      <div class="col-lg-3 col-xs-0 mt-5">
+        <?php echo $this->include('templates/_product_filter.php'); ?>
+      </div>
+      <div class="col-lg-9 col-xs-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
         <div class="row">
-          <?php foreach($this->data['products'] as $product): ?>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
+          <?php foreach($products as $product): ?>
+          <div class="col-md-3 col-xs-6 pt-4 pb-4">
             <form method="post" action="<?= base_url('counter')?>">
             <div class="product-featured">
               <div class="img-wrap">
-                <?php if(isset($product->images[0])): ?>
-                  <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                <?php if(isset($product['images'][0])): ?>
+                  <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
                 <?php else: ?>
                 <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
@@ -27,7 +30,7 @@
               <div class="product-info">
                 <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?= $product['name']; ?></h5></a>
   
-                <p class="price">$<span>33.50</span></p>
+                <p class="price">$<span><?= $product['price']; ?></span></p>
               </div>
             </div>  
           </div>
