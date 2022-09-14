@@ -35,7 +35,7 @@ class Dispatch extends BaseController
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     $queryTasks = [[
-      "from" => 1455072025000,
+      "from" => 1640995200000,
     ]];
 
     print_r(json_encode($queryTasks));die();
@@ -48,10 +48,10 @@ class Dispatch extends BaseController
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     // $queryTasks = [
-    //   "from" => 1455072025000,
+    //   "from" => 1640995200000,
     // ];
 
-    $this->data["existing_tasks"] = $onfleet->tasks->get(["from": 1640995200000]);
+    $this->data["existing_tasks"] = $onfleet->tasks->get(["from" => "1640995200000", "to" => "1663120518000"]);
 
     return view('Dispatch/test', $this->data);
   }
