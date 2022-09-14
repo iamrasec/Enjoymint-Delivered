@@ -35,7 +35,8 @@ class Dispatch extends BaseController
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     $queryTasks = [
-      "from" => "1640995200000",
+      "from" => "1663120518000",
+      // "from" => "1640995200000",
       // "to" => "1663120518000",
       // "state" => 0
     ];
@@ -55,7 +56,8 @@ class Dispatch extends BaseController
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     $queryTasks = [
-      "from" => "1640995200000",
+      "from" => "1663120518000",
+      // "from" => "1640995200000",
       // "to" => "1663120518000",
       // "state" => 0
     ];
