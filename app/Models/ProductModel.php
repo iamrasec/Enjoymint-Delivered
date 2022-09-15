@@ -9,9 +9,10 @@ class ProductModel extends Model {
   protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags'];
  
   public function getAllProducts() {
-    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, product_categories. pid');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
-     return $this->get()->getResult();
+    $this->join('product_categories', 'product_categories.pid = products.id', 'inner');
+    $this->paginate(30);
    
   }
 
@@ -30,4 +31,30 @@ class ProductModel extends Model {
     return $this->get()->getResult();
   }
 
+  public function getDataWithParam($category = 0, $price = 0, $strain = 0, $brands = 0, $thc_value = 0, $cbd_value = 0){
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
+    $this->join('compounds', 'compounds.pid = products.id', 'left');
+    if($category != 0){
+      $this->like('category', $category);
+    }
+    if($price != 0){
+      $this->orlike('price', $price);
+    }
+    if($strain != 0){
+      $this->orlike('strain', $strain);
+    }
+    if($brands != 0){
+      $this->orlike('brands', $brands);
+    }
+    if($thc_value != 0){
+      $this->orlike('thc_value', $thc_value);
+    }
+    if($cbd_value != 0){
+      $this->orlike('cbd_value', $cbd_value);
+    } 
+    // $result = $this->get();
+    // return $result->getResult();
+    return $this->paginate(30);
+
+  }
 }
