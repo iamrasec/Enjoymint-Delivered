@@ -135,7 +135,7 @@ class Dispatch extends BaseController
 
     if($if_online == true) {
       // print_r("There are workers online");
-      $auto_dispatch = $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+      $auto_dispatch = $onfleet->teams->autoDispatch($team_id,["routeEnd"=> "null"]);
 
       print_r($auto_dispatch);
     }
