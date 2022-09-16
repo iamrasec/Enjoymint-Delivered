@@ -37,6 +37,8 @@ class Dispatch extends BaseController
 
   public function auto_dispatch()
   {
+    echo "forbidden"; die();
+    
     $team_id = "QZQ~HNND6XFfiR66nlfRB6rd";  // Work Phones team
 
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
