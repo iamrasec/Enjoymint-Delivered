@@ -32,13 +32,19 @@ class Dispatch extends BaseController
 
   public function index()
   {
+    // $milliseconds = floor(microtime(true) * 1000);
+    $milliseconds = strtotime(date('F j, Y')) * 1000;
+
+    // $this->data['milliseconds'] = $milliseconds;
+    // $this->data['now'] = strtotime(date('F j, Y')) * 1000;
+
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     $queryTasks = [
-      "from" => "1663120518000",
+      "from" => $milliseconds,  // 1663293262409
       // "from" => "1640995200000",
       // "to" => "1663120518000",
-      // "state" => 0
+      "state" => 0
     ];
 
     $this->data["existing_tasks"] = $onfleet->tasks->get($queryTasks, null);
@@ -106,16 +112,65 @@ class Dispatch extends BaseController
       ],
       // "completeAfter" =>  1455151071727,
       "notes" =>  $data['task_details'],
-      "autoAssign" => [
-        // "mode" => "distance",
-        "team" => $team_id
-      ]
+      "container" => [
+        "type" => "TEAM",
+        "team" => "QZQ~HNND6XFfiR66nlfRB6rd",
+      ],
     ];
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     $onfleet->tasks->create($newTask, null);
-    $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
 
     return redirect()->to('admin/dispatch/test');
+  }
+
+  public function auto_dispatch()
+  {
+    $team_id = "QZQ~HNND6XFfiR66nlfRB6rd";  // Work Phones team
+
+    $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
+
+    $if_online = $this->check_team_online_workers($team_id = "QZQ~HNND6XFfiR66nlfRB6rd", $states = "1,2");  // 0: off-duty, 1: is idle, 2: is active
+
+    // print_r($if_online);
+
+    if($if_online == true) {
+      // print_r("There are workers online");
+      $auto_dispatch = $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+
+      print_r($auto_dispatch);
+    }
+    else {
+      // print_r("All workers offline");
+      echo "No workers available.  Nothing to Dispatch.";
+    }
+
+    // $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+  }
+
+  public function check_team_online_workers($team_id = "QZQ~HNND6XFfiR66nlfRB6rd", $states = "")
+  {
+    // $team_id = "QZQ~HNND6XFfiR66nlfRB6rd";  // Work Phones team
+
+    $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
+
+    $query["teams"] = $team_id;
+
+    if($states != "") {
+      $query["states"] = $states;
+    }
+
+    $workers = $onfleet->workers->get($query, null);
+
+    // echo "<pre>".print_r($workers, 1)."</pre>";
+
+    if(!empty($workers)) {
+      // print_r("There are workers online");
+      return true;
+    }
+    else {
+      // print_r("All workers offline");
+      return false;
+    }
   }
 
   public function test_endpoints()
@@ -153,9 +208,6 @@ class Dispatch extends BaseController
           ],
           "completeAfter" =>  1455151071727,
           "notes" =>  "Order 332: 24oz Stumptown Finca El Puente, 10 x Aji de Gallina Empanadas, 13-inch Lelenitas Tres Leches",
-          "autoAssign" => [
-            "mode" => "distance",
-          ] 
     ];
 
     $tasks = $onfleet->task->create($newTask);
