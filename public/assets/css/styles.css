@@ -1,6 +1,38 @@
 :root{
   --after-content: '1';
 }
+
+.text-right {
+  text-align: right;
+}
+
+.text-gradient.text-primary {
+  background-image: linear-gradient(195deg, #489989, #266b5d);
+}
+
+.btn-primary,
+.btn.bg-gradient-primary {
+  box-shadow: 0 3px 3px 0 rgba(72, 155, 137, 0.15), 0 3px 1px -2px rgba(72, 155, 137, 0.2), 0 1px 5px 0 rgba(72, 155, 137, 0.15);
+}
+
+.bg-gradient-primary {
+  background-image: linear-gradient(195deg, #489989 0%, #266b5d 100%);
+}
+
+.form-check:not(.form-switch) .form-check-input[type="checkbox"]:checked,
+.form-check:not(.form-switch) .form-check-input[type="radio"]:checked {
+  border-color: #489989;
+}
+
+.form-check:not(.form-switch) .form-check-input[type="checkbox"]:checked {
+  background: #489989;
+}
+
+h1.page-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
 #add_product input.form-control {
     display: block;
     width: 100%;
@@ -295,3 +327,65 @@ padding: 5%;
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
+.cart-summary {
+  background-color: rgba(38,50,48,0.95) !important;
+  color: #ffffff;
+}
+
+/* Spinner Animation */
+.spinner-wrap {
+  background: rgba(38,50,48,0.95) !important;
+}
+
+.spinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #ffffff;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}

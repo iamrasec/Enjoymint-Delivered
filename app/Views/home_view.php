@@ -21,7 +21,50 @@
         <div class="row mt-5 d-flex justify-content-center">
           <?php foreach($categories as $category): ?>
           <div class="col-md-3 col-sm-6 pt-2 pb-2">
-            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $category->name; ?></a>
+            <?php 
+            switch(strtolower($category->name)) {
+              case 'flowers':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">filter_vintage</i>';
+                break;
+              case 'pre-rolls':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">vaping_rooms</i>';
+                break;
+              case 'edibles':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">cake</i>';
+                break;
+              case 'concentrates':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">local_drink</i>';
+                break;
+              case 'tinctures':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">vaccines</i>';
+                break;
+              case 'topical':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">spa</i>';
+                break;
+              case 'beverages':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">liquor</i>';
+                break;
+              case 'extracts':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">water_drop</i>';
+                break;
+              case 'pre-orders':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">payments</i>';
+                break;
+              case 'accessories':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">devices_other</i>';
+                break;
+              case 'cartridges':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">hive</i>';
+                break;
+              case 'capsules':
+                $cat_icon = '<i class="material-icons opacity-6 me-2" style="font-size: 30px;">cookie</i>';
+                break;
+              default:
+                $cat_icon = '';
+                break;
+            } 
+            ?>
+            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $cat_icon . $category->name; ?></a>
           </div>
           <?php endforeach; ?>
         </div>

@@ -2,7 +2,7 @@
 
 <?php $this->section("content") ?>
 
-<?php echo $this->include('templates/__navigation.php'); ?>
+<?php echo view('templates/__navigation.php'); ?>
 
     <div class="container">
       <div class="row">
@@ -39,7 +39,7 @@
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
-                    <i class="material-icons text-lg">star_outline</i>
+                    <i class="material-icons text-lg">grade</i>
                   </div>
                   
                   <div class="row mb-5">
@@ -70,9 +70,14 @@
                   </div>
                 </div>
               </div>
+<<<<<<< HEAD
               <div class="row mt-5" style="display: <?= $isRating ?>;">
             </form>
               <div class="row mt-5">
+=======
+
+              <!-- <div class="row mt-5">
+>>>>>>> onfleet
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
@@ -198,8 +203,9 @@
                   </div>
                 </div>
                 
-              </div>
-              <div class="row mt-5">
+              </div> -->
+              
+              <!-- <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
                   <div class="table table-responsive">

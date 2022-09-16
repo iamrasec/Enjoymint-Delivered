@@ -27,10 +27,10 @@
     e.preventDefault();
     let data = {};
     let jwt = $("[name='atoken']").attr('content');
-    console.log(jwt);
+    // console.log(jwt);
     data.name = $("#new_strain_name").val().trim();
     data.url_slug = slugify($("#new_strain_name").val().trim());
-    console.log(data);
+    // console.log(data);
 
     $.ajax({
       type: "POST",
@@ -38,7 +38,7 @@
       data: data,
       dataType: "json",
       success: function(json) {
-        console.log(json);
+        // console.log(json);
         if(json.message == true) {
           $("#newStrainModal .cancel-btn").click();
           $("new_strain_name").val("");
@@ -59,10 +59,10 @@
     e.preventDefault();
     let data = {};
     let jwt = $("[name='atoken']").attr('content');
-    console.log(jwt);
+    // console.log(jwt);
     data.name = $("#new_brand_name").val().trim();
     data.url = slugify($("#new_brand_name").val().trim());
-    console.log(data);
+    // console.log(data);
 
     $.ajax({
       type: "POST",
@@ -70,7 +70,7 @@
       data: data,
       dataType: "json",
       success: function(json) {
-        console.log(json);
+        // console.log(json);
         if(json.message == true) {
           $("#newBrandModal .cancel-btn").click();
           $("new_brand_name").val("");

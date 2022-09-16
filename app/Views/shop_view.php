@@ -112,13 +112,13 @@
 </div>
 
  <script type="text/javascript">
-  let btnCounter = document.querySelector('#btn_pr');
-  let counter = 0;
+  // let btnCounter = document.querySelector('#btn_pr');
+  // let counter = 0;
 
-  btnCounter.addEventListener('click', function(){
-    counter++;
-    document.querySelector('.count_cart').innerHTML = counter;
-  });
+  // btnCounter.addEventListener('click', function(){
+  //   counter++;
+  //   document.querySelector('.count_cart').innerHTML = counter;
+  // });
   // var count = (function () {
   //   var counter = 0;
   //   return function () {return counter +=;}

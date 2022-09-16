@@ -134,6 +134,11 @@
 <?php echo $this->renderSection("scripts"); ?>
 
 <script type="text/javascript">
+  const baseUrl = "<?= base_url(); ?>";
+  const jwt = $("[name='atoken']").attr('content');
+  var cartCountr = getCookie('cart_items_count');
+  // console.log("cartCountr: " + cartCountr);
+  // console.log(getCookie('cart_data'));
 
   if (document.getElementById('state1')) {
     const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
@@ -160,11 +165,17 @@
     };
   }
 
-  jQuery(document).on('click', '.login-btn', function() {
-    console.log("clicked");
-  });
+  // jQuery(document).on('click', '.login-btn', function() {
+  //   console.log("clicked");
+  // });
 </script>
 <?php echo $this->renderSection("script"); ?>
+
+<script>
+$(document).ready(function() {
+  update_cart_count();
+});
+</script>
 </body>
 
 </html>

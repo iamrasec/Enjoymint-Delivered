@@ -19,6 +19,7 @@
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid #000000;
   border-radius: 10px;
+  width: auto;
 }
 
 #ageModal .form-control {
@@ -55,7 +56,7 @@
     <div class="modal-content">
       <div class="modal-body d-flex justify-content-center align-content-center w-100">
         <div class="row d-flex justify-content-center align-content-center align-self-center w-100">
-          <div class="col-4 col-sm-12 col-lg-4 age-check-container d-flex align-items-center px-5 py-5">
+          <div class="col-4 col-sm-12 col-lg-4 age-check-container d-flex align-items-center px-5 py-5 w-auto">
             <div class="row ">
               <div class="col-xs-12 col-sm-12 mx-auto" id="modal-age-limit" style="margin-bottom: 2.5rem; color: #fff;">
                 <h3 class="hidden-xs"><strong>MUST BE 21 TO ENTER</strong></h3>
