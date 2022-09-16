@@ -53,13 +53,19 @@ class Dispatch extends BaseController
 
   public function test()
   {
+    // $milliseconds = floor(microtime(true) * 1000);
+    $milliseconds = strtotime(date('F j, Y')) * 1000;
+
+    // $this->data['milliseconds'] = $milliseconds;
+    // $this->data['now'] = strtotime(date('F j, Y')) * 1000;
+
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     
     $queryTasks = [
-      "from" => "1663120518000",
+      "from" => $milliseconds,  // 1663293262409
       // "from" => "1640995200000",
       // "to" => "1663120518000",
-      // "state" => 0
+      "state" => 0
     ];
 
     // $unassigned = $queryTasks;
@@ -101,9 +107,9 @@ class Dispatch extends BaseController
       // "completeAfter" =>  1455151071727,
       "notes" =>  $data['task_details'],
       "autoAssign" => [
-        "mode" => "distance",
+        // "mode" => "distance",
         "team" => $team_id
-      ] 
+      ]
     ];
     $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
     $onfleet->tasks->create($newTask, null);
