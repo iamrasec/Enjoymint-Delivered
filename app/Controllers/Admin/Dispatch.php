@@ -22,6 +22,7 @@ class Dispatch extends BaseController
     $this->measurement_model = model('MeasurementModel');
     $this->product_category = model('ProductCategory');
     $this->order_model = model('CheckoutModel');
+    $this->dispatch_model = model('DispatchModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
 
@@ -135,9 +136,11 @@ class Dispatch extends BaseController
 
     if($if_online == true) {
       // print_r("There are workers online");
-      $auto_dispatch = $onfleet->teams->autoDispatch($team_id,["routeEnd"=> "null"]);
+      $auto_dispatch = $onfleet->teams->autoDispatch($team_id, ["routeEnd" => null]);
 
       print_r($auto_dispatch);
+
+      $this->dispatch_model->set("dispatch_id", $auto_dispatch['dispatchId'])->insert();
     }
     else {
       // print_r("All workers offline");
