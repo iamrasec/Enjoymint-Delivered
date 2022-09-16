@@ -32,7 +32,7 @@ class Dispatch extends BaseController
 
   public function index()
   {
-
+    echo "Forbidden";
   }
 
   public function auto_dispatch()
@@ -46,8 +46,16 @@ class Dispatch extends BaseController
     // print_r($if_online);
 
     if($if_online == true) {
+      $this->check_unassigned_tasks();
+
       // print_r("There are workers online");
-      $auto_dispatch = $onfleet->teams->autoDispatch($team_id, ["routeEnd" => null]);
+      try{
+        $auto_dispatch = $onfleet->teams->autoDispatch($team_id, ["routeEnd" => null]);
+      }
+      catch(Exception $error){
+        echo "<pre>".print_r($error, 1)."</pre>";
+      }
+      
 
       print_r($auto_dispatch);
 
@@ -59,6 +67,43 @@ class Dispatch extends BaseController
     }
 
     // $onfleet->teams->autoDispatch($team_id,["routeEnd"=> null]);
+  }
+
+  public function check_unassigned_tasks()
+  {
+    $milliseconds = strtotime(date('F j, Y')) * 1000;
+
+    $workphones_team_id = "QZQ~HNND6XFfiR66nlfRB6rd";
+
+    // $this->data['milliseconds'] = $milliseconds;
+    // $this->data['now'] = strtotime(date('F j, Y')) * 1000;
+
+    $onfleet = new OnFleet("625fb8f0cfeadde86f7dd6bd28feaf38");
+    
+    $queryTasks = [
+      "from" => $milliseconds,
+      "state" => 0
+    ];
+
+    $tasks = $onfleet->tasks->get($queryTasks, null);
+
+    // echo "<pre>".print_r($tasks, 1)."</pre>";
+
+    foreach($tasks['tasks'] as $task) {     
+      if($task['container']['type'] == "ORGANIZATION") {
+        // echo "<pre>".print_r($task['container']['type'], 1)."</pre>";
+
+        if(strpos(strtolower($task['notes']), "preorder") !== true) {
+          // echo "<pre>".print_r($task['notes'], 1)."</pre>";
+  
+          $onfleet->tasks->update($task['id'], ["container" => ["type" => "TEAM", "team" => $workphones_team_id]]);
+
+          echo "<pre>Order ID: ".$task['id']." Assigned to Work Phones Team.</pre>";
+        }
+      }       
+    }
+
+    return true;
   }
 
   public function check_team_online_workers($team_id = "QZQ~HNND6XFfiR66nlfRB6rd", $states = "")
