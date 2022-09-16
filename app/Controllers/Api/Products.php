@@ -89,6 +89,7 @@ class Products extends ResourceController
           'name' => $this->request->getVar('name'),
           'url' => $this->request->getVar('purl'),
           'description' => $this->request->getVar('description'),
+          'category' => $this->request->getVar('category'),
           'strain' => $this->request->getVar('strain'),
           'stocks' => $this->request->getVar('qty'),
           'brands' => $this->request->getVar('brand'),
