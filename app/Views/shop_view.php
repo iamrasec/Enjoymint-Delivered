@@ -15,26 +15,64 @@
       <div class="col-lg-9 col-xs-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
-        <form method='get' action="<?= base_url('/shop/index')?>" id="searchForm">
+        <form method='post' action="<?= base_url('/shop/index')?>" id="searchForm">
         <div class="row">
-        <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here">
-        <button type="submit" class="btn btn-primary w-20">Search</button> 
-        </div>
+          
+        <select name="category" style="width:180px ;">
+        <option value="0">Select Category:</option>
+        <?php foreach($categories as $category): ?>
+          <?php  echo '<option value="'.$category->id.'">'.$category->name.'</option>' ?>
+        <?php endforeach; ?>
+        </select>
+        <select name="price" style="width:180px ;" >
+                    <option value="0">Select Price Range:</option>
+                    <option value="15-20">$15 - $20</option>
+                    <option value="20-25">$20 - $25</option>
+                    <option value="25-30">$25 - $30</option>
+                    <option value="30-35">$30 - $35</option>
+        </select>
+        <select id="strain" name="strain" style="width:140px ;">
+                    <option value="0">Select Strain:</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+        </select>
+        <select name="brands" style="width:140px ;">
+          <option value="0">Select Brand:</option>
+        <?php foreach($brands as $brand): ?>
+          <?php  echo '<option value="'.$brand->id.'">'.$brand->name.'</option>' ?>
+        <?php endforeach; ?>
+        </select>
+        <input type="range" name="thc_value" min="0" max="10" value="0" onchange="updateTextInput(this.value);" style="width:160px ;">
+        <input type="text" id="textInput" value="0" style="width:60px ;">
+        <input type="range" name="cbd_value" min="0" max="10" value="0" onchange="updateTextInput1(this.value);" style="width:160px ;">
+        <input type="text" id="textInput1" value="0" style="width:60px ;">
+        <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
+        <button type="submit" class="btn btn-primary w-10">Search</button> 
+        
+      </div>
       </form>
         <div class="row">
           <?php foreach($products as $product): ?>
-          <div class="col-md-3 col-xs-6 pt-4 pb-4">
+          <div class="col-md-2 col-sm-6 pt-4 pb-4">
             <form method="post" action="<?= base_url('counter')?>">
             <div class="product-featured">
               <div class="img-wrap">
-                <?php if(isset($product['images'][0])): ?>
-                  <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
+                <?php 
+                  $url = !empty($searchData) ? $product['url'] : $product['url'];
+                
+                if(isset($product['images'][0])):
+                  ?>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
                 <?php else: ?>
-                <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="" /></a>
+                <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
               </div>
               <div class="product-info">
-                <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?= $product['name']; ?></h5></a>
+                <a href="<?= base_url('products/'. $url); ?>"><h5><?= !empty($searchData) ? $product['name'] : $product['name']; ?></h5></a>
   
                 <p class="price">$<span><?= $product['price']; ?></span></p>
               </div>
@@ -92,6 +130,12 @@
   // function display(){
   //   document.getElementById('count_cart').innerHTML = count();
   // };
-
- </script>  
+  function updateTextInput(val) {
+          document.getElementById('textInput').value=val; 
+        }
+  function updateTextInput1(val) {
+          document.getElementById('textInput1').value=val; 
+        }
+ </script> 
+ 
 <?php $this->endSection() ?>

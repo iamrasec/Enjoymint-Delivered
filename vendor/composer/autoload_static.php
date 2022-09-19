@@ -16,6 +16,9 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
+        '72142d7b40a3a0b14e91825290b5ad82' => __DIR__ . '/..' . '/cakephp/core/functions.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '948ad5488880985ff1c06721a4e447fe' => __DIR__ . '/..' . '/cakephp/utility/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '948ad5488880985ff1c06721a4e447fe' => __DIR__ . '/..' . '/cakephp/utility/bootstrap.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
@@ -28,6 +31,14 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
+        ),
+        'm' => 
+        array (
+            'malkusch\\lock\\' => 14,
+        ),
+        'b' => 
+        array (
+            'bandwidthThrottle\\tokenBucket\\' => 30,
         ),
         'W' => 
         array (
@@ -70,6 +81,10 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
             'PhpCsFixer\\' => 11,
             'Phinx\\' => 6,
             'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'O' => 
+        array (
+            'Onfleet\\' => 8,
         ),
         'N' => 
         array (
@@ -116,6 +131,14 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'malkusch\\lock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/malkusch/lock/classes',
+        ),
+        'bandwidthThrottle\\tokenBucket\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes',
         ),
         'Webmozart\\Assert\\' => 
         array (
@@ -236,6 +259,10 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
         'PHPMailer\\PHPMailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Onfleet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onfleet/php-onfleet/src',
         ),
         'Nexus\\PHPUnit\\Extension\\' => 
         array (
@@ -1503,6 +1530,25 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
         'Nexus\\PHPUnit\\Extension\\Util\\TestCase' => __DIR__ . '/..' . '/nexusphp/tachycardia/src/Util/TestCase.php',
         'Nexus\\PHPUnit\\Extension\\Util\\TimeState' => __DIR__ . '/..' . '/nexusphp/tachycardia/src/Util/TimeState.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
+        'Onfleet\\CurlClient' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/CurlClient.php',
+        'Onfleet\\Methods' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/Methods.php',
+        'Onfleet\\Onfleet' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/Onfleet.php',
+        'Onfleet\\errors\\HttpError' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/errors/HttpError.php',
+        'Onfleet\\errors\\PermissionError' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/errors/PermissionError.php',
+        'Onfleet\\errors\\RateLimitError' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/errors/RateLimitError.php',
+        'Onfleet\\errors\\ServiceError' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/errors/ServiceError.php',
+        'Onfleet\\errors\\ValidationError' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/errors/ValidationError.php',
+        'Onfleet\\resources\\Administrators' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Administrators.php',
+        'Onfleet\\resources\\Containers' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Containers.php',
+        'Onfleet\\resources\\Destinations' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Destinations.php',
+        'Onfleet\\resources\\Hubs' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Hubs.php',
+        'Onfleet\\resources\\Organizations' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Organizations.php',
+        'Onfleet\\resources\\Recipients' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Recipients.php',
+        'Onfleet\\resources\\Resources' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Resources.php',
+        'Onfleet\\resources\\Tasks' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Tasks.php',
+        'Onfleet\\resources\\Teams' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Teams.php',
+        'Onfleet\\resources\\Webhooks' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Webhooks.php',
+        'Onfleet\\resources\\Workers' => __DIR__ . '/..' . '/onfleet/php-onfleet/src/resources/Workers.php',
         'PHPMailer\\PHPMailer\\Exception' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/Exception.php',
         'PHPMailer\\PHPMailer\\OAuth' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuth.php',
         'PHPMailer\\PHPMailer\\OAuthTokenProvider' => __DIR__ . '/..' . '/phpmailer/phpmailer/src/OAuthTokenProvider.php',
@@ -3638,6 +3684,51 @@ class ComposerStaticInit033df5976d4f37a8ab0f40d0c59fc7f4
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
         'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',
+        'bandwidthThrottle\\tokenBucket\\BlockingConsumer' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/BlockingConsumer.php',
+        'bandwidthThrottle\\tokenBucket\\Rate' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/Rate.php',
+        'bandwidthThrottle\\tokenBucket\\TimeoutException' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/TimeoutException.php',
+        'bandwidthThrottle\\tokenBucket\\TokenBucket' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/TokenBucket.php',
+        'bandwidthThrottle\\tokenBucket\\TokenBucketException' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/TokenBucketException.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\FileStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/FileStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\IPCStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/IPCStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\MemcacheStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/MemcacheStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\MemcachedStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/MemcachedStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\PDOStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/PDOStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\PHPRedisStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/PHPRedisStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\PredisStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/PredisStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\SessionStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/SessionStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\SingleProcessStorage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/SingleProcessStorage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\Storage' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/Storage.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\StorageException' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/StorageException.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\scope\\GlobalScope' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/scope/GlobalScope.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\scope\\RequestScope' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/scope/RequestScope.php',
+        'bandwidthThrottle\\tokenBucket\\storage\\scope\\SessionScope' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/storage/scope/SessionScope.php',
+        'bandwidthThrottle\\tokenBucket\\util\\DoublePacker' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/util/DoublePacker.php',
+        'bandwidthThrottle\\tokenBucket\\util\\TokenConverter' => __DIR__ . '/..' . '/bandwidth-throttle/token-bucket/classes/util/TokenConverter.php',
+        'malkusch\\lock\\exception\\DeadlineException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/DeadlineException.php',
+        'malkusch\\lock\\exception\\ExecutionOutsideLockException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/ExecutionOutsideLockException.php',
+        'malkusch\\lock\\exception\\LockAcquireException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/LockAcquireException.php',
+        'malkusch\\lock\\exception\\LockReleaseException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/LockReleaseException.php',
+        'malkusch\\lock\\exception\\MutexException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/MutexException.php',
+        'malkusch\\lock\\exception\\TimeoutException' => __DIR__ . '/..' . '/malkusch/lock/classes/exception/TimeoutException.php',
+        'malkusch\\lock\\mutex\\CASMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/CASMutex.php',
+        'malkusch\\lock\\mutex\\FlockMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/FlockMutex.php',
+        'malkusch\\lock\\mutex\\LockMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/LockMutex.php',
+        'malkusch\\lock\\mutex\\MemcacheMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/MemcacheMutex.php',
+        'malkusch\\lock\\mutex\\MemcachedMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/MemcachedMutex.php',
+        'malkusch\\lock\\mutex\\Mutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/Mutex.php',
+        'malkusch\\lock\\mutex\\MySQLMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/MySQLMutex.php',
+        'malkusch\\lock\\mutex\\NoMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/NoMutex.php',
+        'malkusch\\lock\\mutex\\PHPRedisMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/PHPRedisMutex.php',
+        'malkusch\\lock\\mutex\\PgAdvisoryLockMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/PgAdvisoryLockMutex.php',
+        'malkusch\\lock\\mutex\\PredisMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/PredisMutex.php',
+        'malkusch\\lock\\mutex\\RedisMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/RedisMutex.php',
+        'malkusch\\lock\\mutex\\SemaphoreMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/SemaphoreMutex.php',
+        'malkusch\\lock\\mutex\\SpinlockMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/SpinlockMutex.php',
+        'malkusch\\lock\\mutex\\TransactionalMutex' => __DIR__ . '/..' . '/malkusch/lock/classes/mutex/TransactionalMutex.php',
+        'malkusch\\lock\\util\\DoubleCheckedLocking' => __DIR__ . '/..' . '/malkusch/lock/classes/util/DoubleCheckedLocking.php',
+        'malkusch\\lock\\util\\Loop' => __DIR__ . '/..' . '/malkusch/lock/classes/util/Loop.php',
+        'malkusch\\lock\\util\\PcntlTimeout' => __DIR__ . '/..' . '/malkusch/lock/classes/util/PcntlTimeout.php',
         'org\\bovigo\\vfs\\DotDirectory' => __DIR__ . '/..' . '/mikey179/vfsstream/src/main/php/org/bovigo/vfs/DotDirectory.php',
         'org\\bovigo\\vfs\\Quota' => __DIR__ . '/..' . '/mikey179/vfsstream/src/main/php/org/bovigo/vfs/Quota.php',
         'org\\bovigo\\vfs\\content\\FileContent' => __DIR__ . '/..' . '/mikey179/vfsstream/src/main/php/org/bovigo/vfs/content/FileContent.php',

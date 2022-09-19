@@ -22,6 +22,7 @@ class Products extends BaseController
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
         $this->cart_model = model('CartModel');
+        $this->rating_model = model('RatingModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -80,6 +81,8 @@ class Products extends BaseController
             $imageIds = explode(',',$product->images);
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
+
+        $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
 
         $session = session();
         $session->set('cart_items', []);

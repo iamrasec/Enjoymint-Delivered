@@ -18,3 +18,4 @@ writable/session/*
 writable/uploads
 writable/uploads/*
 uploads/*
+vendor/onfleet/php-onfleet/src/onfleet-api.bucket

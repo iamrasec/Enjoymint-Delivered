@@ -41,6 +41,9 @@
         </li> -->
         <hr class="horizontal light mt-0">
         <li class="nav-item">
+          <a class="nav-link text-white" href="<?= base_url('admin/dispatch/test'); ?>">Dispatch Test</a>
+        </li>
+        <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="nav-link text-white active" aria-controls="dashboard" role="button" aria-expanded="false">
             <i class="material-icons-round opacity-10">dashboard</i>
             <span class="nav-link-text ms-2 ps-1">Products</span>
@@ -57,6 +60,12 @@
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'add_product' ? 'active' : '' ?>" href="<?php echo base_url('/admin/products/add_product'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Add Product </span>
+                </a>
+              </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>" href="<?php echo base_url('/admin/orders'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Orders </span>
                 </a>
               </li>
               <!--<li class="nav-item">
