@@ -45,7 +45,7 @@ class Shop extends BaseController
         //$all_products = $this->product_model->paginate(30);
 
         if($searchData == null){
-            $all_products = $this->product_model->paginate(30);
+            $all_products = $this->product_model->paginate(28);
         }else{
          $category = $searchData['category'];
          $price = $searchData['price'];

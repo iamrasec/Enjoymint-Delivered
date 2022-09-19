@@ -57,7 +57,7 @@
       </form>
         <div class="row">
           <?php foreach($products as $product): ?>
-          <div class="col-md-2 col-sm-6 pt-4 pb-4">
+          <div class="col-md-3 col-sm-6 pt-4 pb-4">
             <form method="post" action="<?= base_url('counter')?>">
             <div class="product-featured">
               <div class="img-wrap">
