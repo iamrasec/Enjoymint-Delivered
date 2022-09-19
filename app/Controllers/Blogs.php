@@ -19,26 +19,35 @@ class Blogs extends BaseController
     $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
   }
 
-  public function index($url = '')
+  public function view_all_blogs() {
+
+    $blog = $this->blog_model->get()->getResult(); 
+
+    $this->data['blogs'] = $blog;
+    // print_r($this->data['blogs']);
+
+    return view('Blogs/index', $this->data);
+}
+
+  public function get_blogs($id)
   {
-    if($url != '') {
-      $blog = $this->blog_model->where('url', $url)->get()->getResult();
+    $blog = $this->blog_model->getBlogbyID($id); 
+    $this->data['blogs'] = $blog;
 
-      if(!empty($blog)) {
-          $blog = $blog[0];
-      }
+  print_r($this->data['blogs']);
 
-      $this->data['blogs'] = $blog;
+  return view('Blogs/view_blog', $this->data);
 
-      return view('Blogs/view_blog', $this->data);
-    }
-    else {
-      $blog = $this->blog_model->get()->getResult();
-      // return $this->view_all_products();
-
-      $this->data['blogs'] = $blog;
-
-      return view('Blogs/index', $this->data);
-    }
   }
+
+  public function images($filename) {
+    $filepath = WRITEPATH . 'uploads/' . $filename;
+
+    $mime = mime_content_type($filepath);
+    header('Content-Length: ' . filesize($filepath));
+    header("Content-Type: $mime");
+    header('Content-Disposition: inline; filename="' . $filepath . '";');
+    readfile($filepath);
+    exit();
+}
 }

@@ -8,18 +8,36 @@
 
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
+  <div class="col-lg-12 col-sm-12 mt-5 text-center">
+  <h1>Blogs</h1>
+  </div>
     <div class="row">
-      <div class="col-lg-12 col-xs-12 mt-5 text-center">
-      <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
-        <h1>Blogs</h1>
-        <div class="row">
-          <?php foreach($blogs as $blog): ?>
-          <div class="col-md-12 col-xs-12 pt-4 pb-4">
-            <pre><?php print_r($blog); ?></pre>
-          </div>
-          <?php endforeach; ?>
-        </div>
-        <?php // echo $pager->links() ?>
+      <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->     
+        <?php foreach($blogs as $blog): ?>
+          <div class="col-md-6 col-sm-6 pt-4 pb-4">
+            <div class="product-featured">
+            <div class="img-wrap">
+              <a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>">
+                <img src="<?= base_url('blogs/get_blogs/').$blog->url; ?>" alt="No image" style="width:290px;" />
+              </a>
+                <!-- <img class="shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg"
+               itemprop="thumbnail" alt="Image description" style="width:290px;" />   -->
+              </div>   
+            </div>
+          </div>            
+          <div class="col-md-6 col-sm-6 pt-4 pb-4">
+            <div class="product-featured">
+            <div class="img-wrap">
+                <a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>"><h5><?= $blog->title; ?></h5></a>
+                <p id="p2"><?= $blog->content; ?></p>
+                <p id="p3"><?= $blog->author; ?></p>
+                <b class="news_feed_text">
+                <a href="news/" class="anchor"><a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>">Read More</a></i></a>
+                </b>
+              </div>
+            </div>
+          </div> 
+          <?php endforeach; ?>     
       </div>
     </div>
   </div>

@@ -38,16 +38,6 @@ class Blogs extends BaseController {
     return view('Blogs/list_page', $this->data);
   }
   
-    public function blog() 
-    {
-
-      $data['blogs'] = $this->blog_model->select('blogs.*, images.url')
-      ->join('images', 'blogs.images = images.id')
-      ->get()->getResult();
-      echo view('blog', $data);
-
-    }
-
   public function add_blog() 
   {
       $page_title = 'Add Blog';
