@@ -70,23 +70,18 @@
                   </div>
                 </div>
               </div>
-<<<<<<< HEAD
-              <div class="row mt-5" style="display: <?= $isRating ?>;">
+              <div class="row mt-5" style="display: <?php // echo $isRating ?>;">
             </form>
-              <div class="row mt-5">
-=======
-
-              <!-- <div class="row mt-5">
->>>>>>> onfleet
+              <!--<div class="row mt-5">
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
                     <form role="form" method="post" action="/products/rating">
                       <div class="input-group input-group-outline mb-3">
-                        <!-- <?php for($y=5;$y>0;$y--): ?>
+                        <?php for($y=5;$y>0;$y--): ?>
                           <i class="material-icons text-lg">star_outline</i>
                           <input type="text" name="result" hidden>
-                          <?php endfor; ?> -->
+                        <?php endfor; ?>
                           <i class="material-icons text-lg stars" data-id="1" id="star_1">star_outline</i>
                           <i class="material-icons text-lg stars" data-id="2" id="star_2">star_outline</i>
                           <i class="material-icons text-lg stars" data-id="3" id="star_3">star_outline</i>
@@ -184,16 +179,16 @@
                         </div>
                         <div class="col-sm-9">
                           <div class="review-block-rate">
-                          <?php for($y=0;$y<5 ;$y++): ?>
-                            <?php if(($y+1)<=$rate_data['star']): ?>
+                          <?php // for($y=0;$y<5 ;$y++): ?>
+                            <?php // if(($y+1) <= $rate_data['star']): ?>
                                <?= '<i class="material-icons text-lg">grade</i>' ?>
-                            <?php else: ?>
+                            <?php // else: ?>
                               <?= '<i class="material-icons text-lg">star_outline</i>' ?>
-                            <?php endif; ?>
-                          <?php endfor; ?>
+                            <?php // endif; ?>
+                          <?php // endfor; ?>
                             
                           <div class="review-block-description"> 
-                          <?= $rate_data['message']?>
+                          <?php // echo $rate_data['message']?>
                           </div>
                       </div>
                         </div>
@@ -212,7 +207,7 @@
                     
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

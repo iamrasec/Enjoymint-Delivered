@@ -39,20 +39,21 @@ class Products extends BaseController
 
     public function index($url = ''){
         $session = session();
-      $status = $this->order_model->where('user_id', $this->id )->select('status')->first();
-      if($this->isLoggedIn == 1 && $status['status'] == 2){
-        $this->data['isRating'] = 'inline';
-    }else{
-        $this->data['isRating'] = 'none';
-    }
-      if($url != '') {
-        $product = $this->product_model->where('url', $url)->get()->getResult();
+
+        // temporarily removed rating status for now as it crashes the product page.
+        // $status = $this->order_model->where('user_id', $this->id )->select('status')->first();
+        // if($this->isLoggedIn == 1 && $status['status'] == 2){
+        //     $this->data['isRating'] = 'inline';
+        // }else{
+        //     $this->data['isRating'] = 'none';
+        // }
+
+        if($url != '') {
+            $product = $this->product_model->where('url', $url)->get()->getResult();
 
         if(!empty($product)) {
             $product = $product[0];
-        }
-        
-        
+        }        
     }
     else {
          $product = $this->product_model->get()->getResult();
@@ -79,7 +80,8 @@ class Products extends BaseController
         $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
     }
     
-    $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
+    // Temporarily removed rating query as it crashed product page (no db rating table yet on my local).
+    // $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
 
     // print_r($imageIds);die();
 
@@ -115,9 +117,6 @@ class Products extends BaseController
            
             // print_r($product);
         }
-      
-      
-    
 }
 
     

@@ -53,17 +53,17 @@
       </div>
       </form>
         <div class="row">
-          <?php foreach($this->data['products'] as $product): ?>
+          <?php foreach($products as $product): ?>
           <div class="col-md-2 col-sm-6 pt-4 pb-4">
-            <form method="post" action="<?= base_url('counter')?>"">
+            <form method="post" action="<?= base_url('counter')?>">
             <div class="product-featured">
               <div class="img-wrap">
                 <?php 
                   $url = !empty($searchData) ? $product['url'] : $product['url'];
                 
-                if(isset($product->images[0])):
+                if(isset($product['images'][0])):
                   ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
                 <?php else: ?>
                 <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
