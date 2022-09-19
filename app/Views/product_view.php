@@ -4,6 +4,74 @@
 
 <?php echo view('templates/__navigation.php'); ?>
 
+<style>
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 10px solid #489989;
+  border-color: #489989 transparent #489989 transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
+</style>
+
+<style>
+.lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 10px solid #489989;
+  border-color: #489989 transparent #489989 transparent;
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
+</style>
+
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -32,8 +100,7 @@
 
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
-                  <div class="text-sm mb-3"><?= $product->strain ?><span class="badge text-bg-warning me-3"></span></div>
-                  <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain; ?></span><span class="badge text-bg-dark ms-3">THC </span></div>
+                  <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain_name; ?></span><span class="badge text-bg-dark ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
                     <i class="material-icons text-lg">grade</i>
@@ -166,8 +233,11 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="row">
+                
+              </div> -->
+              
+              <!-- 
+              <div class="row">
                   <div class="col-sm-7">
                     <hr/>
                     <div class="review-block">
@@ -180,6 +250,10 @@
                         <div class="col-sm-9">
                           <div class="review-block-rate">
                           <?php // for($y=0;$y<5 ;$y++): ?>
+                            <?php // if(($y+1)<=$rate_data['star']): ?>
+                               <?= // '<i class="material-icons text-lg">grade</i>' ?>
+                            <?php // else: ?>
+                              <?= // '<i class="material-icons text-lg">star_outline</i>' ?>
                             <?php // if(($y+1) <= $rate_data['star']): ?>
                                <?= '<i class="material-icons text-lg">grade</i>' ?>
                             <?php // else: ?>
@@ -188,6 +262,7 @@
                           <?php // endfor; ?>
                             
                           <div class="review-block-description"> 
+                          <?= // $rate_data['message']?>
                           <?php // echo $rate_data['message']?>
                           </div>
                       </div>
@@ -198,9 +273,8 @@
                   </div>
                 </div>
                 
-              </div> -->
-              
-              <!-- <div class="row mt-5">
+              </div>  
+              <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
                   <div class="table table-responsive">
@@ -212,9 +286,6 @@
           </div>
         </div>
       </div>
-
-    </div>
-  
      
 <?php $this->endSection() ?>
 <?php $this->section('script') ?>

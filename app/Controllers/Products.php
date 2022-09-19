@@ -20,110 +20,117 @@ class Products extends BaseController
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
         $this->category_model = model('CategoryModel');
-        $this->rating_model = model('ratingModel');
         $this->measurement_model = model('MeasurementModel');
+        $this->cart_model = model('CartModel');
+        $this->rating_model = model('RatingModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
+        helper(['jwt']);
+
         $this->order_model = model('checkoutModel');
         $this->pagecounter_model = model('pagecounterModel');
         $this->product_model = model('productModel');
        
         $this->db = db_connect();
-    
-        if($this->isLoggedIn !== 1 && $this->role !== 1) {
-          return redirect()->to('/');
-        }
     }
 
-    public function index($url = ''){
-        $session = session();
+    
 
-        // temporarily removed rating status for now as it crashes the product page.
-        // $status = $this->order_model->where('user_id', $this->id )->select('status')->first();
-        // if($this->isLoggedIn == 1 && $status['status'] == 2){
-        //     $this->data['isRating'] = 'inline';
-        // }else{
-        //     $this->data['isRating'] = 'none';
-        // }
-
+    public function index($url = '')
+    {
         if($url != '') {
-            $product = $this->product_model->where('url', $url)->get()->getResult();
+            $product = $this->product_model->getProductFromUrl($url);
 
-        if(!empty($product)) {
-            $product = $product[0];
-        }        
-    }
-    else {
-         $product = $this->product_model->get()->getResult();
-       
-    }
-
-    
-
-    $page_title = $product->name;
-    $this->data['page_body_id'] = "product-".$product->id;
-    $this->data['breadcrumbs'] = [
-    'parent' => [],
-    'current' => $page_title,
-    ];
-    $this->data['page_title'] = $page_title;
-    $this->data['product'] = $product;
-    $this->data['images'] = [];
-
-    // print_r($product->images);die();
-
-    $imageIds = [];
-    if($product->images) {
-        $imageIds = explode(',',$product->images);
-        $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-    }
-    
-    // Temporarily removed rating query as it crashed product page (no db rating table yet on my local).
-    // $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
-
-    // print_r($imageIds);die();
-
-    // print_r($this->image_model->getLastQuery());
-
-    // print_r($this->data['images']);die();
-    // return $this->view_all_products();
-    echo view('product_view', $this->data);
-
-    //     $newData = [
-    //         'product_name' => $this->request->getPost('product_name'),
-    //         'views' => $this->request->getPost('views'),
-    //         ];
-    //    $this->pagecounter_model->update($newData); 
-        $ip_views = $this->request->getIPAddress();
-        $newData = ['ip_views' => $ip_views]; 
-        $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
-        // $newCheckIp = ['checkIp' => $checkIp]; 
-        if($checkIp){
-
-           // }
-           $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-           $page_data['ip_views'] = $this->pagecounter_model->countAll();
-          
-       //     $page_data['views'] = $this->pagecounter_model->countAll();
-       //      // echo "Sample"; 
+            if(!empty($product)) {
+                $product = $product[0];
+            }
         }
         else {
-            $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-            $page_data['ip_views'] = $this->pagecounter_model->countAll();
-            $this->pagecounter_model->save($newData);
-
-           
-            // print_r($product);
+            $product = $this->product_model->get()->getResult();
+            return $this->view_all_products();
         }
-}
 
-    
+        // $ip_views = $this->request->getIPAddress();
+        // $newData = ['ip_views' => $ip_views]; 
+        // $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
+        // if($checkIp){
+        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        // }
+        // else {  
+        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
+        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
+        //     $this->pagecounter_model->save($newData);
+        // }
 
-// public function view_all_products(){
-//          echo view('product_view', $this->data);
-//      }
+        $page_title = $product->name;
+
+        $this->data['page_body_id'] = "product-".$product->id;
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['product'] = $product;
+        $this->data['images'] = [];
+
+        $imageIds = [];
+        if($product->images) {
+            $imageIds = explode(',',$product->images);
+            $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        }
+
+        $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
+
+        $session = session();
+        $session->set('cart_items', []);
+        $cookie_cart = [];
+        
+        if($this->isLoggedIn && !isset($_COOKIE["cart_data"])) {
+            // $this->data['cart_products'] = $this->cart_model->cartProductsCount(session()->get('id'));
+            $cart_products = $this->cart_model->where('uid', session()->get('id'))->get()->getResult();
+
+            foreach($cart_products as $cart_product) {
+                // $session->push('cart_items', [['pid' => $cart_product->pid, 'qty' => $cart_product->qty]]);
+                $cookie_cart[] = (array)['pid' => $cart_product->pid, 'qty' => (int)$cart_product->qty];
+            }
+
+            // print_r(json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE));die();
+
+            $json_encoded = json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+
+            // setcookie("cart_data", $json_encoded, time() + (86400 * 30), "/"); // 86400 = 1 day
+
+            $this->data['cookie_cart'] = $json_encoded;
+
+            //print_r($cart_products);
+            // $session->push('cart_items', $cart_products);
+        }
+        else if(!$this->isLoggedIn && isset($_COOKIE["cart_data"])) {
+            $this->data['cookie_cart'] = $_COOKIE["cart_data"];
+
+            // print_r($this->data['cookie_cart']);die();
+        }
+        else {
+            $this->data['cookie_cart'] = [];
+            $this->data['cart_products'] = 0;
+        }
+
+
+        // print_r($imageIds);die();
+
+        // print_r($this->image_model->getLastQuery());
+
+        // print_r($this->data['images']);die();
+
+        echo view('product_view', $this->data);
+    }
+
+    public function view_all_products() {
+        echo "view all products";
+    }
 
     public function images($filename) {
         $filepath = WRITEPATH . 'uploads/' . $filename;
@@ -136,8 +143,7 @@ class Products extends BaseController
         exit();
     }
 
-	
-    public function save($id = 2) 
+    public function save($id) 
     {
      $user_data = [
         'user_id' => $this->id = session()->get('id'),

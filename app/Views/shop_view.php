@@ -9,7 +9,10 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 col-sm-12 mt-5 text-center">
+      <div class="col-lg-3 col-xs-0 mt-5">
+        <?php echo $this->include('templates/_product_filter.php'); ?>
+      </div>
+      <div class="col-lg-9 col-xs-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1>All Products</h1>
         <form method='post' action="<?= base_url('/shop/index')?>" id="searchForm">
@@ -71,7 +74,7 @@
               <div class="product-info">
                 <a href="<?= base_url('products/'. $url); ?>"><h5><?= !empty($searchData) ? $product['name'] : $product['name']; ?></h5></a>
   
-                <p class="price">$<span>33.50</span></p>
+                <p class="price">$<span><?= $product['price']; ?></span></p>
               </div>
             </div>  
           </div>
