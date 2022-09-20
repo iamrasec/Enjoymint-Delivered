@@ -36,7 +36,7 @@
         <h7>Active/Pending Orders:</h6>
         <select name="order">
         <?php foreach($active_orders as $order): ?>
-          <?php  echo '<option value="$order->id">'.$order->id.$order->product.'</option>' ?>
+          <?php  // echo '<option value="$order->id">'.$order->id.$order->product.'</option>' ?>
         <?php endforeach; ?>
         </select>
         <button type="submit" class="btn bg-gradient-danger mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Assign</button>
@@ -53,33 +53,17 @@
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Assigned Delivery</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Products in Order</th>
+                    <th>Total</th>
+                    <th>Order Date</th>
+                    <th>Order Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                <form role="form" method="post" action="/api/orders/complete">
-                <?php foreach($active_orders as $order): ?>
-                  <tr class="text-xs font-weight-bold mb-0">
-                    <td><?php echo $order->id; ?></td>
-                    <td><?php echo $order->product; ?></td>
-                    <td>Active Orders/Pending</td>
-                    <td><?php echo $order->qty; ?></td>
-                    <td><?php echo $order->price; ?></td>
-                 <td><select name="drivers" id="driver">
-                    <option value="0">Select Driver:</option>
-                    <option value="Jhon Cena">Jhon Cenamon</option>
-                    <option value="Mr. Toge">Mr. Toge</option>
-                    <option value="Alucard Doe">Alucard Doe</option>
-                    <option value="Zilong Reyes">Zilong Reyes</option>
-                    
-              </select><button type="submit" class="btn remove"  data-id="<?= $order->id; ?>">Assign</button></td>
-                  </tr>
-                <?php endforeach; ?>
-                </form>
+                
                 </tbody>
                 <tfoot>
                 </tfoot>
@@ -91,34 +75,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <footer class="footer py-4  ">
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-lg-between">
-        <div class="col-lg-6 mb-lg-0 mb-4">
-          <div class="copyright text-center text-sm text-muted text-lg-start">
-            
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-            <li class="nav-item">
-              <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer> -->
 </main>
 
 <?php $this->endSection(); ?>
@@ -130,7 +86,34 @@
 <script>
 
 $(document).ready(function () {
-    $('#sales-table').DataTable({
+    var table = $('#sales-table').DataTable({
+      ajax: '<?= base_url('api/orders/list_pending'); ?>',
+      columns: [
+        {
+          className: 'dt-control',
+          orderable: false,
+          data: null,
+          defaultContent: '',
+        },
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'address' },
+        { data: 'product_count' },
+        { data: 'total' },
+        { data: 'order_date' },
+        { data: 'order_status' },
+        { 
+          data: 'actions',
+          render: function (data, type, row) {
+            let actions = '';
+            actions += '<a href="javascript;;">Edit</a>';
+            actions += '<a href="javascript;;">Delete</a>';
+            actions += '<a href="javascript;;">Close</a>';
+
+            return actions;
+          }
+        },
+      ],
       'searching' :  true
 });
 

@@ -43,12 +43,17 @@ class Orders extends ResourceController
           $this->drivers_model->save($drivers);
     }
     
-}
+  }
 
-public function complete($id) {
-  // $this->drivers_model->save($id, ['name' => $this->request->getVar('driver')]);
-  $this->order_model->update($id, ['status' => 1]);
-  die(json_encode(array("success" => TRUE,"message" => 'Product Delete!', "id" => $id)));
-}
+  public function complete($id) {
+    // $this->drivers_model->save($id, ['name' => $this->request->getVar('driver')]);
+    $this->order_model->update($id, ['status' => 1]);
+    die(json_encode(array("success" => TRUE,"message" => 'Product Delete!', "id" => $id)));
+  }
+
+  public function list_pending()
+  {
+    
+  }
 
 }
