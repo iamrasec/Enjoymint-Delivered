@@ -53,7 +53,48 @@ class Orders extends ResourceController
 
   public function list_pending()
   {
-    
+    $post = $this->request->getPost();
+
+    // 1st query for counting data
+    $this->order_model->select("id");
+
+    if(isset($post['search']['value']) && !empty($post['search']['value'])) {
+      $search_value = strtolower($post['search']['value']);
+      $this->order_model->like("LOWER(CONCAT(first_name, ' ', last_name))", $search_value);
+      $this->order_model->orLike("LOWER(address)", $search_value);
+    }
+
+    $count_all = $this->order_model->countAllResults();
+
+    // print_r($count_all);
+
+    // 2nd Query that gets all the data
+    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
+
+    if(isset($post['search']['value']) && !empty($post['search']['value'])) {
+      $search_value = strtolower($post['search']['value']);
+      $this->order_model->like("LOWER(CONCAT(first_name, ' ', last_name))", $search_value);
+      $this->order_model->orLike("LOWER(address)", $search_value);
+    }
+
+    if(isset($post['start']) && isset($post['length'])) {
+      $orders = $this->order_model->get($post['start'], $post['length'])->getResult();
+    }
+    else {
+      $orders = $this->order_model->get()->getResult();
+    }
+
+    // print_r($orders);
+
+    $output = array(
+      "draw" => $post['draw'],
+      "recordsTotal" => $this->order_model->countAll(),
+      "recordsFiltered" => $count_all,
+      "data" => $orders,
+    );
+
+    echo json_encode($output);
+    exit();
   }
 
 }

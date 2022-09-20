@@ -52,6 +52,7 @@
               <table id="sales-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Customer Name</th>
                     <th>Address</th>
@@ -85,9 +86,24 @@
 <!-- Product List page js -->
 <script>
 
+var jwt = $("[name='atoken']").attr('content');
+
 $(document).ready(function () {
-    var table = $('#sales-table').DataTable({
-      ajax: '<?= base_url('api/orders/list_pending'); ?>',
+    $('#sales-table').DataTable({
+      processing: true,
+      serverSide: true,
+      order: [],
+      ajax: {
+        url: '<?= base_url('api/orders/list_pending'); ?>',
+        type: 'POST',
+        headers: {
+          "Authorization": "Bearer "+ jwt,
+        }
+      },
+      "columnDefs": [{ 
+          "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+          "orderable": false
+      }],
       columns: [
         {
           className: 'dt-control',
@@ -96,28 +112,27 @@ $(document).ready(function () {
           defaultContent: '',
         },
         { data: 'id' },
-        { data: 'name' },
+        { data: 'customer_name' },
         { data: 'address' },
         { data: 'product_count' },
         { data: 'total' },
-        { data: 'order_date' },
-        { data: 'order_status' },
+        { data: 'created' },
+        { data: 'status' },
         { 
           data: 'actions',
           render: function (data, type, row) {
             let actions = '';
-            actions += '<a href="javascript;;">Edit</a>';
-            actions += '<a href="javascript;;">Delete</a>';
+            actions += '<a href="javascript;;">Edit</a> | ';
+            actions += '<a href="javascript;;">Delete</a> | ';
             actions += '<a href="javascript;;">Close</a>';
 
             return actions;
           }
         },
       ],
-      'searching' :  true
-});
+    });
 
-$("body").delegate(".remove", "click", function(){
+    $("body").delegate(".remove", "click", function(){
       var prodId = $(this).data('id');
       // var id = $('#driver').val();
       console.log(prodId);

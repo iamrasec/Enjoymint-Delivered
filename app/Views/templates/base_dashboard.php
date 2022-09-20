@@ -23,6 +23,7 @@
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
+  <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/material-dashboard.css?v=3.0.1" rel="stylesheet" />
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
