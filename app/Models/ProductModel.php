@@ -32,14 +32,11 @@ class ProductModel extends Model {
     return $this->get()->getResult();
   }
 
-  public function getDataWithParam($category = 0, $price = 0, $strain = 0, $brands = 0, $thc_value = 0, $cbd_value = 0){
+  public function getDataWithParam($category = 0, $min_price = 0, $max_price = 300, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 30, $min_cbd = 0, $max_cbd = 30){
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     if($category != 0){
       $this->like('category', $category);
-    }
-    if($price != 0){
-      $this->orlike('price', $price);
     }
     if($strain != 0){
       $this->orlike('strain', $strain);
@@ -47,14 +44,18 @@ class ProductModel extends Model {
     if($brands != 0){
       $this->orlike('brands', $brands);
     }
-    if($thc_value != 0){
-      $this->orlike('thc_value', $thc_value);
+    if($min_cbd != 0 && $max_cbd != 300){
+      $this->where('price >=', $min_price);
+      $this->where('price <=', $max_price);
     }
-    if($cbd_value != 0){
-      $this->orlike('cbd_value', $cbd_value);
-    } 
-    // $result = $this->get();
-    // return $result->getResult();
+    if($min_thc != 0 && $max_thc != 30){
+      $this->where('thc_value >=', $min_thc);
+      $this->where('thc_value <=', $max_thc);
+    }
+    if($min_cbd != 0 && $max_cbd != 30){
+      $this->where('cbd_value >=', $min_cbd);
+      $this->where('cbd_value <=', $max_cbd);
+  } 
     return $this->paginate(30);
 
   }
