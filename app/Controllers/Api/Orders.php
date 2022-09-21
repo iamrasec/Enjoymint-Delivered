@@ -20,6 +20,7 @@ class Orders extends ResourceController
       $this->guid = session()->get('guid');
       $this->drivers_model = model('Drivers');
       $this->order_model = model('CheckoutModel');
+      $this->order_products = model('OrderProductsModel');
 
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
@@ -83,6 +84,17 @@ class Orders extends ResourceController
     else {
       $orders = $this->order_model->get()->getResult();
     }
+
+    // foreach($orders as $order) {
+    //   print_r($order);
+    //   $products = $this->order_products->where('order_id', $order->id);
+    // }
+
+    for($i = 0; $i < count($orders); $i++) {
+      $products = $this->order_products->where('order_id', $orders[$i]->id)->get()->getResult();
+      $orders[$i]->products = $products;
+    }
+
 
     // print_r($orders);
 

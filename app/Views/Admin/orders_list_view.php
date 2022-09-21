@@ -78,11 +78,37 @@
   </div>
 </main>
 
+<style>
+  table.dataTable td.dt-control:before {
+    height: 1em;
+    width: 1em;
+    margin-top: -9px;
+    display: inline-block;
+    color: white;
+    border: 0.15em solid white;
+    border-radius: 1em;
+    box-shadow: 0 0 0.2em #444;
+    box-sizing: content-box;
+    text-align: center;
+    text-indent: 0 !important;
+    font-family: "Courier New",Courier,monospace;
+    line-height: 1em;
+    content: "+";
+    background-color: #31b131;
+  }
+  table.dataTable tr.dt-hasChild td.dt-control:before {
+    content: "-";
+    background-color: #d33333;
+  }
+</style>
+
 <?php $this->endSection(); ?>
 
 <?php $this->section('scripts'); ?>
 <!-- Load Data Table JS -->
-<script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
+<!-- <script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script> -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
 <!-- Product List page js -->
 <script>
 
@@ -130,6 +156,28 @@ $(document).ready(function () {
           }
         },
       ],
+    });
+
+    function product_area(d)
+    {
+      console.log(d);
+      
+    }
+
+    // Add event listener for opening and closing details
+    $('#sales-table tbody').on('click', 'td.dt-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+ 
+        if (row.child.isShown()) {         
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+            row.child(product_area(row.data())).show();
+            tr.addClass('shown');
+        }
     });
 
     $("body").delegate(".remove", "click", function(){
