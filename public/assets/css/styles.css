@@ -389,3 +389,26 @@ padding: 5%;
     -webkit-transform: scaleY(1.0);
   }
 }
+
+/* Pagination */
+nav ul.pagination {
+  justify-content: center !important;
+}
+nav ul.pagination li a {
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+nav ul.pagination li.active a {
+  background: #266b5d;
+  color: #ffffff;
+}
+
+/* WYSIWYG */
+#quill_editor {
+  min-height: 500px;
+}
+
+.ql-toolbar {
+  width: 100%;
+}

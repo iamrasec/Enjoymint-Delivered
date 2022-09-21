@@ -1,0 +1,3 @@
+<div id="product_filter">
+  Product Filter goes here....
+</div>

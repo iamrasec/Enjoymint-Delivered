@@ -13,6 +13,13 @@
         <h3>All Categories</h3>
         <h5>Filter By:</h5>
     <form method='get' action="<?= base_url('/shop/productFilter')?>" id="searchForm">
+      <div class="col-lg-3 col-xs-0 mt-5">
+        <?php echo $this->include('templates/_product_filter.php'); ?>
+      </div>
+      <div class="col-lg-9 col-xs-12 mt-5 text-center">
+      <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
+        <h1>All Products</h1>
+        <form method='post' action="<?= base_url('/shop/index')?>" id="searchForm">
         <div class="row">
 
         <div class="select-box" >
@@ -169,9 +176,9 @@
                 <?php 
                   $url = !empty($searchData) ? $product['url'] : $product['url'];
                 
-                if(isset($product->images[0])):
+                if(isset($product['images'][0])):
                   ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
                 <?php else: ?>
                 <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
@@ -179,7 +186,7 @@
               <div class="product-info">
                 <a href="<?= base_url('products/'. $url); ?>"><h5><?= !empty($searchData) ? $product['name'] : $product['name']; ?></h5></a>
   
-                <p class="price">$<span>33.50</span></p>
+                <p class="price">$<span><?= $product['price']; ?></span></p>
               </div>
             </div>  
           </div>

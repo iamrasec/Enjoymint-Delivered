@@ -35,19 +35,9 @@ class Blogs extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['blogs'] = $this->blog_model->get()->getResult();
-    return view('blogs_article/list_page', $this->data);
+    return view('Blogs/list_page', $this->data);
   }
   
-    public function blog() 
-    {
-
-      $data['blogs'] = $this->blog_model->select('blogs.*, images.url')
-      ->join('images', 'blogs.images = images.id')
-      ->get()->getResult();
-      echo view('blog', $data);
-
-    }
-
   public function add_blog() 
   {
       $page_title = 'Add Blog';
@@ -59,7 +49,24 @@ class Blogs extends BaseController {
         'current' => $page_title,
       ];
       $this->data['page_title'] = $page_title;
-      echo view('blogs_article/add_blog', $this->data);
+      echo view('Blogs/add_blog', $this->data);
+  }
+
+  public function edit($id)
+  {
+      $page_title = 'Edit Blog';
+      $this->data['page_body_id'] = "edit_blog";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/blogs'), 'page_title' => 'Blogs'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+
+      $this->data['blog'] = $this->blog_model->where('id', $id)->get()->getResult();
+
+      return view('Blogs/add_blog', $this->data);
   }
   
   public function save_product() {
@@ -87,7 +94,7 @@ class Blogs extends BaseController {
     $start = $_POST['start'];
     $length = $_POST['length'];
 
-    $blogs = $this->blog_model->select('id,title,description,author')
+    $blogs = $this->blog_model->select('*')
       ->like('title',$_POST['search']['value'])
       ->orLike('author',$_POST['search']['value'])
       ->limit($length, $start)
@@ -101,7 +108,7 @@ class Blogs extends BaseController {
         $blog->title, 
         $blog->description,
         $blog->author,
-        "<a href=".base_url('admin/products/edit_product/').$blog->id.">edit</a>",
+        "<a href=".base_url('blogs/'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit/'.$blog->id).">edit</a>",
       );
     }
 

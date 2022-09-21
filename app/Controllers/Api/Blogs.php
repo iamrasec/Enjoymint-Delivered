@@ -23,9 +23,7 @@ class Blogs extends ResourceController
 
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
-      
     }
-
 
   /**
    * This function will save a product into the server
@@ -39,7 +37,8 @@ class Blogs extends ResourceController
       
       $rules = [
         'title' => 'required|min_length[1]',
-        'description' => 'required|min_length[1]',
+        'url' => 'required|min_length[1]',
+        'content' => 'required|min_length[10]',
         'author' => 'required|min_length[1]',
       ];
 
@@ -49,17 +48,17 @@ class Blogs extends ResourceController
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
           // loop through all files uploaded
-          foreach($file['productImages'] as $img){
+          foreach($file['blog_image'] as $img){
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
                 $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads/' . $fileName); // move the file to writable/uploads
+                $img->move( WRITEPATH . 'uploads/blogs/' . $fileName); // move the file to writable/uploads
                 
                 // json data to be save to image
                 $imageData = [
                   'filename' => $fileName,
                   'mime' => $type,
-                  'url' => 'public/uploads/'. $fileName,
+                  'url' => 'writable/uploads/blogs/'. $fileName,
                 ];
                 $this->image_model->save($imageData); // try to save to images table
                 $imageId = $this->image_model->insertID();
@@ -68,10 +67,12 @@ class Blogs extends ResourceController
           }
         }
         
-        // data mapping for PRODUCTS table save
+        // data mapping for BLOGS table save
         $to_save = [
           'title' => $this->request->getVar('title'),
+          'url' => $this->request->getVar('url'),
           'description' => $this->request->getVar('description'),
+          'content' => $this->request->getVar('content'),
           'author' => $this->request->getVar('author'),
           'images' => implode(',', $images),
         ];

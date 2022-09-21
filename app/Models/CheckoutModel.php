@@ -9,14 +9,17 @@ class CheckoutModel extends Model {
     protected $table = 'orders';
     protected $primarykey = 'id';
     protected $allowedFields = [
-        'user_id',
-        'full_name',
-        'c_number',
+        'order_key',
+        'customer_id',
+        'first_name',
+        'last_name',
         'address',
         'subtotal',
         'tax',
         'total',
-        'status',
+        'payment_method',
+        'created',
+        'modified',
     ];
     
     public function fetchOrderDetails($key)
