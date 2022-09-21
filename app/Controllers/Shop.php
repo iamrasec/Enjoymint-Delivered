@@ -38,22 +38,34 @@ class Shop extends BaseController
         ];
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
-        $searchData = $this->request->getPost();
+        $all_products = $this->product_model->paginate(30);
+        $this->data['products'] = $all_products;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->get()->getResult();
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+       return view('shop_view', $this->data);
+    }
+    
+    public function productFilter(){
+        $searchData = $this->request->getGet();
         // $search = "";
        
-        // print_r($searchData);
+        //  print_r($searchData);
         //$all_products = $this->product_model->paginate(30);
 
         if($searchData == null){
             $all_products = $this->product_model->paginate(28);
         }else{
          $category = $searchData['category'];
-         $price = $searchData['price'];
+         $min_price = $searchData['min_price'];
+         $max_price = $searchData['max_price'];
          $strain = $searchData['strain'];
          $brands = $searchData['brands'];
-         $thc_value = $searchData['thc_value'];
-         $cbd_value = $searchData['cbd_value'];
-            $all_products = $this->product_model->getDataWithParam($category, $price, $strain, $brands, $thc_value, $cbd_value);
+         $min_thc = $searchData['min_thc'];
+         $max_thc = $searchData['max_thc'];
+         $min_cbd = $searchData['min_cbd'];
+         $max_cbd = $searchData['max_cbd'];
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
             
         }
         //  $all_products = $this->product_model->getAllProducts();
@@ -82,7 +94,7 @@ class Shop extends BaseController
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
-       return view('shop_view', $this->data);
+        return view('shop_view', $this->data);
     }
 }
  
