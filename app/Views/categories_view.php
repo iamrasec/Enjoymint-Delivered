@@ -25,16 +25,11 @@
               <?php endforeach; ?>
             </select>
             
-
-
             <select class="selected" id="strain" name="strain">
                         <option value="0">Select Strain:</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
+                        <?php foreach($strains as $str): ?>
+                        <?php  echo '<option value="'.$str->id.'">'.$str->url_slug.'</option>' ?>
+                <?php endforeach; ?>
             </select>
 
             <select class="selected" name="brands">

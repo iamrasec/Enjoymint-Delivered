@@ -62,6 +62,9 @@ class Categories extends BaseController
         }
 
         $this->data['products'] = $product_arr;
+        $this->data['categories'] = $this->category_model->get()->getResult();
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
         return view('categories_view', $this->data);
     }
 }
