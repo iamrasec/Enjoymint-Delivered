@@ -12,6 +12,8 @@ class Orders extends BaseController {
         $this->guid = session()->get('guid');
         $this->order_model = model('CheckoutModel');
         $this->order_products = model('OrderProductsModel');
+        $this->image_model = model('ImageModel');
+        $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
@@ -37,6 +39,25 @@ class Orders extends BaseController {
     public function edit($id)
     {
         $order = $this->order_model->where('id', $id)->get()->getRow();
+        $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
+
+        for($i = 0; $i < count($order_products); $i++) {
+            $product_data = $this->product_model->getProductData($order_products[$i]->product_id);
+
+            $images = [];
+            $imageIds = [];
+
+            // Fetch product images
+            if($product_data->images) {
+                $imageIds = explode(',',$product_data->images);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+            }
+
+            $order_products[$i]->product_data = $product_data;
+            $order_products[$i]->images = $images;
+        }
+
+        // echo "<pre>".print_r($order_products, 1)."</pre>"; die();
 
         $page_title = 'Edit Order #'. $order->id;
 
@@ -50,7 +71,7 @@ class Orders extends BaseController {
         $this->data['page_title'] = $page_title;
         $this->data['submit_url'] = base_url('/admin/orders/save_edit');
         $this->data['order_data'] = $order;
-        $this->data['order_products'] = $this->order_products->where('order_id', $id)->get()->getResult();
+        $this->data['order_products'] = $order_products;
         
         echo view('Admin/Orders/edit_order', $this->data);
     }

@@ -33,6 +33,52 @@
               </div>
             </div>
 
+            <div class="row mt-4">
+              <div class="col-12 col-md-8 col-xs-12">
+                <h5>Products</h5>
+                <table id="cart_products" class="w-100">
+                  <tbody>
+                    <?php foreach($order_products as $product): ?>
+                    <tr class="pid-<?= $product->product_id; ?> border">
+                      <td>
+                        <div class="row product-wrap d-flex py-3">
+                          <div class="col-12 col-md-2 col-xs-12 product-img">
+                            <?php if(!empty($product->images)): ?>
+                            <img src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" style="width: 100px;">
+                            <?php endif; ?>
+                          </div>
+                          <div class="col-12 col-md-8 col-xs-12 product-details">
+                            <h6 class="product-title">
+                              <a href="<?= base_url('products/'. $product->product_data->url); ?>"><?= $product->product_data->name; ?></a>
+                            </h6>
+                            <div class="text-sm mb-3">
+                              <span class="badge text-bg-warning me-3"><?= $product->product_data->strain_name; ?></span>
+                              <span class="badge text-bg-dark ms-3">THC <?= $product->product_data->thc_value; ?><?= ($product->product_data->thc_unit == 'pct') ? '%' : $product->product_data->thc_unit;?></span>
+                            </div>
+                            <div class="product-qty">
+                              <span>QTY: </span><input type="number" name="cart[<?= $product->product_id; ?>][qty]" class="product-<?= $product->product_id; ?>-qty" min="1" max="100" value="<?= $product->qty; ?>" data-pid="<?= $product->product_id; ?>" data-unit-price="<?= $product->product_data->price; ?>">
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
+                            <input type="hidden" class="product-total-price product-<?= $product->product_id; ?>-total-price" value="<?= number_format($product->product_data->price * $product->qty, 2, '.', ''); ?>">
+                            <strong class="total-price-display">$<?= number_format($product->product_data->price * $product->qty, 2, '.', ','); ?></strong>
+                            <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product->product_id; ?>"><i class="fas fa-trash"></i></a></div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-12 col-md-4 col-xs-12">
+                <div class="order-user-data px-3 py-3 px-4 rounded-5">
+                  <h5>Payment Method</h5>
+
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -43,6 +89,18 @@
 
   </div>
 </main>
+
+<style>
+  .order-user-data {
+    background-color: rgba(38,50,48,0.95) !important;
+    border-radius: 2rem !important;
+    color: #ffffff;
+  }
+
+  .order-user-data h5 {
+    color: #ffffff;
+  }
+</style>
 
 <?php $this->endSection(); ?>
 
