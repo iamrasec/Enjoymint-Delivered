@@ -21,7 +21,7 @@ class Orders extends BaseController {
 
     public function index() {
        
-            $page_title = 'Orders';
+            $page_title = 'All Orders';
       
             $this->data['page_body_id'] = "orders";
             $this->data['breadcrumbs'] = [
@@ -37,7 +37,47 @@ class Orders extends BaseController {
        
     }
 
-    public function order(){
+    public function edit($id)
+    {
+        $order = $this->order_model->where('id', $id)->get()->getResult();
+
+        $page_title = 'Edit Order';
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/order');
+
+        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        
+        echo view('Admin/pending_orders', $this->data);
+    }
+
+    public function active()
+    {
+        $page_title = 'Active Orders';
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/order');
+
+        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        
+        echo view('Admin/pending_orders', $this->data);
+    }
+
+    public function completed(){
        
              $page_title = 'Completed Orders';
 
@@ -55,6 +95,25 @@ class Orders extends BaseController {
           
                 echo view('Admin/complete_orders', $this->data);
             
+    }
+
+    public function cancelled()
+    {
+        $page_title = 'Cancelled Orders';
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/order');
+
+        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        
+        echo view('Admin/cancelled_orders', $this->data);
     }
 
     public function drivers(){
