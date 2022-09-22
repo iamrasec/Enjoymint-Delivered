@@ -12,8 +12,9 @@
   
         <h3>All Categories</h3>
         <h5>Filter By:</h5>
-    <form method='get' action="<?= base_url('/shop/productFilter')?>" id="searchForm">
-        <div class="row">
+    <form method='get' action="<?= base_url('/shop/')?>" id="searchForm">
+    <div class="row">
+      <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
 
         <div class="select-box" >
         <select class="selected" name="category">
@@ -27,9 +28,9 @@
      
         <select class="selected" id="strain" name="strain">
                     <option value="0">Select Strain:</option>
-                <?php foreach($strains as $str): ?>
-                  <?php  echo '<option value="'.$str->id.'">'.$str->url_slug.'</option>' ?>
-                <?php endforeach; ?>
+                    <?php foreach($strains as $str): ?>
+                    <?php  echo '<option value="'.$str->id.'">'.$str->url_slug.'</option>' ?>
+                    <?php endforeach; ?>
         </select>
       
         <select class="selected" name="brands">
@@ -166,9 +167,9 @@
                 <?php 
                   $url = !empty($searchData) ? $product['url'] : $product['url'];
                 
-                if(isset($product->images[0])):
+                if(isset($product['images'][0])):
                   ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
                 <?php else: ?>
                 <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
@@ -176,7 +177,7 @@
               <div class="product-info">
                 <a href="<?= base_url('products/'. $url); ?>"><h5><?= !empty($searchData) ? $product['name'] : $product['name']; ?></h5></a>
   
-                <p class="price">$<span>33.50</span></p>
+                <p class="price">$<span><?= $product['price']; ?></span></p>
               </div>
             </div>  
           </div>
@@ -185,6 +186,7 @@
         <div style="margin-left: 500px;"><?= $pager->links() ?></div>
       </div>
     </div>
+  </div>
   </div>
 </section>
 
