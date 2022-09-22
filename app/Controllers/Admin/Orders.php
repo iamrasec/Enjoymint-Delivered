@@ -11,6 +11,7 @@ class Orders extends BaseController {
          $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
         $this->order_model = model('CheckoutModel');
+        $this->order_products = model('OrderProductsModel');
         $this->drivers_model = model('Drivers');
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
@@ -21,27 +22,23 @@ class Orders extends BaseController {
 
     public function index() {
        
-            $page_title = 'All Orders';
-      
-            $this->data['page_body_id'] = "orders";
-            $this->data['breadcrumbs'] = [
-              'parent' => [],
-              'current' => $page_title,
-            ];
-            $this->data['page_title'] = $page_title;
-            $this->data['active_orders'] = $this->order_model->where('status', 0)->get()->getResult();
-           
-           
-                echo view('Admin/orders_list_view', $this->data);
-                //
-       
+        $page_title = 'All Orders';
+    
+        $this->data['page_body_id'] = "orders";
+        $this->data['breadcrumbs'] = [
+            'parent' => [],
+            'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        
+        echo view('Admin/Orders/all_orders', $this->data);       
     }
 
     public function edit($id)
     {
-        $order = $this->order_model->where('id', $id)->get()->getResult();
+        $order = $this->order_model->where('id', $id)->get()->getRow();
 
-        $page_title = 'Edit Order';
+        $page_title = 'Edit Order #'. $order->id;
 
         $this->data['page_body_id'] = "c_orders";
         $this->data['breadcrumbs'] = [
@@ -51,11 +48,15 @@ class Orders extends BaseController {
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-        $this->data['submit_url'] = base_url('/admin/orders/order');
-
-        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        $this->data['submit_url'] = base_url('/admin/orders/save_edit');
+        $this->data['order_data'] = $order;
         
-        echo view('Admin/pending_orders', $this->data);
+        echo view('Admin/Orders/edit_order', $this->data);
+    }
+
+    public function save_edit()
+    {
+
     }
 
     public function active()

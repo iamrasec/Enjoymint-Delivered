@@ -91,7 +91,6 @@
 
 <?php $this->section('scripts'); ?>
 <!-- Load Data Table JS -->
-<!-- <script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script> -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 <!-- Product List page js -->
