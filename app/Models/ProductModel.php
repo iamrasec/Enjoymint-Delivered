@@ -33,8 +33,9 @@ class ProductModel extends Model {
   }
 
   public function getDataWithParam($category = 0, $min_price = 0, $max_price = 300, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 30, $min_cbd = 0, $max_cbd = 30){
-    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value');
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
+    $this->join('strains', 'products.strain = strains.id', 'left');
     if($category != 0){
       $this->like('category', $category);
     }
