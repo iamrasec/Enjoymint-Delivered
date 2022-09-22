@@ -20,6 +20,7 @@ class Shop extends BaseController
         $this->measurement_model = model('MeasurementModel');
         $this->image_model = model('ImageModel');
         $this->brand_model = model('BrandModel');
+        $this->strain_model = model('StrainModel');
         $this->productcategory_model = model('ProductCategory');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
@@ -39,10 +40,28 @@ class Shop extends BaseController
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
         $all_products = $this->product_model->paginate(30);
-        $this->data['products'] = $all_products;
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            // echo "<pre>".print_r($product, 1)."</pre>";
+             $product_arr[$count] = $product;
+            if(!empty($product['images'])) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+
+             $count++;
+        }
+   
+
+        $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
        return view('shop_view', $this->data);
     }
     
@@ -94,6 +113,7 @@ class Shop extends BaseController
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
         return view('shop_view', $this->data);
     }
 }
