@@ -39,6 +39,7 @@
     </div>
 
     <pre><?php print_r($order_data); ?></pre>
+    <pre><?php print_r($order_products); ?></pre>
 
   </div>
 </main>

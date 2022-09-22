@@ -50,6 +50,7 @@ class Orders extends BaseController {
         $this->data['page_title'] = $page_title;
         $this->data['submit_url'] = base_url('/admin/orders/save_edit');
         $this->data['order_data'] = $order;
+        $this->data['order_products'] = $this->order_products->where('order_id', $id)->get()->getResult();
         
         echo view('Admin/Orders/edit_order', $this->data);
     }
