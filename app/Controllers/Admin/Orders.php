@@ -41,20 +41,45 @@ class Orders extends BaseController {
         $order = $this->order_model->where('id', $id)->get()->getRow();
         $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
 
-        for($i = 0; $i < count($order_products); $i++) {
-            $product_data = $this->product_model->getProductData($order_products[$i]->product_id);
+        // for($i = 0; $i < count($order_products); $i++) {
+        //     $product_data = $this->product_model->getProductData($order_products[$i]->product_id);
+
+        //     $images = [];
+        //     $imageIds = [];
+
+        //     // Fetch product images
+        //     if($product_data->images) {
+        //         $imageIds = explode(',',$product_data->images);
+        //         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        //     }
+
+        //     $order_products[$i]->product_data = $product_data;
+        //     $order_products[$i]->images = $images;
+        // }
+
+        $all_products = $this->product_model->getAllProductsNoPaginate();
+
+        for($i = 0; $i < count($all_products); $i++) {
 
             $images = [];
             $imageIds = [];
 
             // Fetch product images
-            if($product_data->images) {
-                $imageIds = explode(',',$product_data->images);
+            if($all_products[$i]->images) {
+                $imageIds = explode(',',$all_products[$i]->images);
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
             }
 
-            $order_products[$i]->product_data = $product_data;
-            $order_products[$i]->images = $images;
+            $all_products[$i]->images = $images;
+            
+            for($j = 0; $j < count($order_products); $j++) {
+                if($order_products[$j]->product_id == $all_products[$i]->id) {
+                    $order_products[$j]->product_data = $all_products[$i];
+
+                    unset($all_products[$i]);
+                    break;
+                }
+            }
         }
 
         // echo "<pre>".print_r($order_products, 1)."</pre>"; die();
@@ -72,6 +97,7 @@ class Orders extends BaseController {
         $this->data['submit_url'] = base_url('/admin/orders/save_edit');
         $this->data['order_data'] = $order;
         $this->data['order_products'] = $order_products;
+        $this->data['all_products'] = $all_products;
         
         echo view('Admin/Orders/edit_order', $this->data);
     }
