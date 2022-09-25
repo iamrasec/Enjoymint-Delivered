@@ -45,23 +45,26 @@ class Categories extends BaseController
         // $this->data['products'] = $this->product_model->get()->getResult();
         // $this->data['products'] = $this->product_model->getAllProducts();
 
-        $all_products = $this->category_model->categoryGetProducts($categories->id);
+        $all_products = $this->category_model->categoryGetProductsPaginate($categories->id);
+
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
 
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
             $product_arr[$count] = $product;
-            if($product->images) {
+            if($product['images']) {
                 $imageIds = [];
-                $imageIds = explode(',',$product->images);
+                $imageIds = explode(',',$product['images']);
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-                $product_arr[$count]->images = $images;
+                $product_arr[$count]['images'] = $images;
             }
 
             $count++;
         }
 
         $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->category_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult();
