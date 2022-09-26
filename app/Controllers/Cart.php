@@ -167,6 +167,8 @@ class Cart extends BaseController
   {
     $data = $this->request->getPost();
 
+    // echo "<pre>".print_r($data)."</pre>"; die();
+
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
 
@@ -178,6 +180,7 @@ class Cart extends BaseController
       'last_name' => $user['last_name'],
       'address' => $data['apt_no'] ." ". $data['street'] .", ". $data['city'] .", ". $data['state'] ." ". $data['zipcode'],
       'payment_method' => $data['payment_method'],
+      'order_notes' => $data['order_notes'],
     ];
 
     // Insert initial order record and grab the order id
@@ -194,6 +197,10 @@ class Cart extends BaseController
 
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
+
+      $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
+
+      $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
 
       // Compute for subtotal cost
       $subtotal += $product_data->price * $product->qty;

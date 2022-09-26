@@ -20,6 +20,7 @@ class CheckoutModel extends Model {
         'payment_method',
         'created',
         'modified',
+        'order_notes',
     ];
     
     public function fetchOrderDetails($key)
