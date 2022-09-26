@@ -79,18 +79,30 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
-        <!-- <pre><?php print_r($products); ?></pre> -->
         <div class="row">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
-          <div class="col-md-3 col-sm-6 pt-4 pb-4">
-            <div class="product-featured">
+          <!-- <pre><?php print_r($products[$countp]); ?></pre> -->
+          <div class="col-md-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
+            <div class="card product-featured">
               <div class="img-wrap">
-                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><img src="<?= base_url('products/images/'.$products[$countp]->images[0]->filename); ?>" /></a>
+                <a href="<?= base_url('products/'.$products[$countp]['url']); ?>"><img src="<?= base_url('products/images/'.$products[$countp]['images'][0]->filename); ?>" /></a>
               </div>
-              <div class="product-info">
-                <a href="<?= base_url('products/'.$products[$countp]->url); ?>"><h5><?= $products[$countp]->name; ?></h5></a>
-                <!-- <p>20.037%~21.401% THC</p>
-                <p class="price">$<span>33.50</span></p> -->
+              <div class="product-info d-flex flex-column px-2">
+                <a href="<?= base_url('products/'. $products[$countp]['url']); ?>"><h5><?= $products[$countp]['name']; ?></h5></a>
+                <div class="product-info-bottom d-flex flex-column mt-auto">
+                  <p>
+                    <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $products[$countp]['thc_value'] . (($products[$countp]['thc_unit'] == 'pct') ? '%' : $products[$countp]['thc_unit']); ?></span> 
+                    <?php if($products[$countp]['stocks'] > 0): ?>
+                    <span class="badge text-bg-success">In Stock</span>
+                    <?php else: ?>
+                    <span class="badge text-bg-danger">Out Of Stock</span>
+                    <?php endif; ?>
+                  </p>
+                  <hr id="color" class="mt-0">
+                  <p class="price">$<span><?= $products[$countp]['price']; ?></span></p>
+                  <hr id="color" class="mt-0">
+                  <button class="btn btn-md bg-danger text-white" data-product-id="<?= $products[$countp]['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
+                </div>
               </div>
             </div>
           </div>
@@ -355,6 +367,137 @@
     </div>
   </div>
 </div>
+
+<style>
+@keyframes slideup {
+  0% {
+      transform: translateY(50px);
+      opacity: .5;
+  }
+  50% {
+    opacity: .5;
+    transform: translateY(-40px);
+  }
+  100%{
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.card-new {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 2px solid #e0e0e0;
+  border-radius: 0.75rem;
+}
+
+#color {
+  margin: 1rem 0;
+  color: inherit;
+  background-color: var(--bs-primary);
+  border: 0;
+  opacity: .4;
+}
+
+.sale {
+  border: 1px solid black;
+  background: var(--bs-primary);
+  width: 10%;
+  height: 10%;
+  position: relative;
+  top: 0;
+  z-index: 5;
+}
+
+.reveal-fadein {
+  transition: all 300ms ease;
+  animation-name: slideup;
+  animation-duration: 3s;
+}
+
+.reveal{
+  position: relative;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: 1s all ease;
+}
+
+.reveal.active{
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.sale-badge {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  overflow: hidden;
+}
+
+.sale-badge span {
+  width: 225px;
+  padding: 10px 0px;
+  background: var(--bs-primary);
+  display: block;
+  position: absolute;
+  top: 30px;
+  left: -25px;
+  transform: rotate(45deg);
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.sale-badge:after, .sale-badge:before {
+  content: '';
+  border-top: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--bs-primary-100);
+  border-left: 5px solid var(--bs-primary-100);
+  position: absolute;
+}
+
+.sale-badge:before {
+  bottom: 2px;
+  right: 0;
+}
+
+.sale-badge:after {
+  top: 0;
+  left: 2px;
+}
+
+.zoom {
+  position: relative;
+}
+.zoom:hover {
+  transform: scale(1.1);
+  transition: all 300ms ease;
+  cursor: pointer;
+  z-index: 5;
+}
+.product-featured {
+  box-shadow: 5px 4px 15px 9px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
+  min-height: 550px;
+}
+
+.product-info {
+  min-height: 290px;
+}
+
+.product-info h5 {
+  font-size: 1rem;
+  line-height: 1.625;
+}
+</style>
 
 <?php $this->endSection() ?>
 
