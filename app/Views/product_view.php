@@ -67,6 +67,7 @@
 
                 <div class="col-lg-5 mx-auto">
                   <h3 class="mt-lg-0 mt-4"><?= $product->name; ?></h3>
+                  <hr id="color">
                   <div class="text-sm mb-3"><span class="badge text-bg-warning me-3"><?= $product->strain_name; ?></span><span class="badge text-bg-dark ms-3">THC <?= $product->thc_value; ?><?= ($product->thc_unit == 'pct') ? '%' : $product->thc_unit;?></span></div>
                   <div class="rating">
                     <i class="material-icons text-lg">grade</i>
@@ -83,6 +84,8 @@
                       <span class="badge text-bg-success">In Stock</span>
                     </div>
                   </div>
+
+                  <hr id="color">
 
                   <div class="row mb-5">
                     <div class="col-12 col-sm-12">
