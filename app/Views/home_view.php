@@ -111,7 +111,7 @@
           </div>
           <?php endfor; ?>
         </div>
-        <a class="btn btn-lg btn-primary" href="<?= base_url('/shop'); ?>">View all Products</a>
+        <a class="btn btn-lg bg-primary-green" href="<?= base_url('/shop'); ?>">View all Products</a>
       </div>
     </div>
   </div>
