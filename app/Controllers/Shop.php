@@ -50,10 +50,12 @@ class Shop extends BaseController
         $page = null;
        }
          if(empty($searchData)){
-            $all_products = $this->product_model->paginate(30);
+            // $all_products = $this->product_model->paginate(30);
+            $all_products = $this->product_model->getAllProducts();
         }else{
             if($page != null){
-                $all_products = $this->product_model->paginate(30);
+                // $all_products = $this->product_model->paginate(30);
+                $all_products = $this->product_model->getAllProducts();
             }else{
                 $category = $searchData['category'];
                 $min_price = $searchData['min_price'];
@@ -71,6 +73,8 @@ class Shop extends BaseController
         }
         // $all_products = $this->product_model->paginate(30);
 
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -85,7 +89,8 @@ class Shop extends BaseController
 
              $count++;
         }
-   
+
+        // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
 
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;

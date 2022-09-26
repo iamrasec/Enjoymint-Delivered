@@ -9,11 +9,10 @@ class ProductModel extends Model {
   protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags'];
  
   public function getAllProducts() {
-    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, product_categories. pid');
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
+    $this->join('strains', 'strains.id = products.strain', 'left');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
-    $this->join('product_categories', 'product_categories.pid = products.id', 'inner');
-    $this->paginate(30);
-   
+    return $this->paginate(28);
   }
 
   public function getProductData($pid) {
@@ -58,7 +57,7 @@ class ProductModel extends Model {
       $this->where('cbd_value >=', $min_cbd);
       $this->where('cbd_value <=', $max_cbd);
   } 
-    return $this->paginate(30);
+    return $this->paginate(28);
 
   }
 
