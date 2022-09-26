@@ -148,7 +148,7 @@
                 -->
                 <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
                 
-                <button type="submit" class="btn btn-primary mt-5">Search</button> 
+                <button type="submit" class="btn bg-primary-green mt-5">Search</button> 
               </div>
             </div>
           </form>
@@ -185,7 +185,7 @@
                     <hr id="color" class="mt-0">
                     <p class="price">$<span><?= $product['price']; ?></span></p>
                     <hr id="color" class="mt-0">
-                    <button class="btn btn-md btn-primary" data-product-id="<?= $product['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
+                    <button class="btn btn-md bg-primary-green" data-product-id="<?= $product['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
                   </div>
                 </div>
               </div>  
