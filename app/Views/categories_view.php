@@ -184,7 +184,7 @@
                   <hr id="color" class="mt-0">
                   <p class="price">$<span><?= $product['price']; ?></span></p>
                   <hr id="color" class="mt-0">
-                  <button class="btn btn-md bg-primary-green" data-product-id="<?= $product['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
+                  <button class="btn btn-md bg-danger text-white" data-product-id="<?= $product['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
                 </div>
               </div>
             </div>
