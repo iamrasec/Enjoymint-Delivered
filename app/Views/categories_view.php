@@ -170,9 +170,9 @@
                 <a href="<?= base_url('products/'. $product['url']); ?>"><img class="prod_image" src="" /></a>
                 <?php endif; ?>
               </div>
-              <div class="product-info px-2">
+              <div class="product-info d-flex flex-column px-2">
                 <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?= $product['name']; ?></h5></a>
-                <div class="product-info-bottom">
+                <div class="product-info-bottom d-flex flex-column mt-auto">
                   <p>
                     <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $product['thc_value'] . (($product['thc_unit'] == 'pct') ? '%' : $product['thc_unit']); ?></span> 
                     <?php if($product['stocks'] > 0): ?>
@@ -181,9 +181,9 @@
                     <span class="badge text-bg-danger">Out Of Stock</span>
                     <?php endif; ?>
                   </p>
-                  <hr id="color">
+                  <hr id="color" class="mt-0">
                   <p class="price">$<span><?= $product['price']; ?></span></p>
-                  <hr id="color">
+                  <hr id="color" class="mt-0">
                   <button class="btn btn-md btn-primary" data-product-id="<?= $product['id']; ?>"><span class="material-icons">add_shopping_cart</span> Add to Cart</button>
                 </div>
               </div>
@@ -639,6 +639,10 @@ div[slider] > input[type=range]::-ms-tooltip {
 .product-featured {
   box-shadow: 5px 4px 15px 9px rgb(0 0 0 / 10%), 0 2px 4px -1px rgb(0 0 0 / 6%);
   min-height: 550px;
+}
+
+.product-info {
+  min-height: 290px;
 }
 
 .product-info h5 {
