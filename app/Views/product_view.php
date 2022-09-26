@@ -38,53 +38,20 @@
 }
 </style>
 
-<style>
-.lds-hourglass {
-  display: inline-block;
-  position: relative;
-  width: 30px;
-  height: 30px;
-}
-.lds-hourglass:after {
-  content: " ";
-  display: block;
-  border-radius: 50%;
-  width: 0;
-  height: 0;
-  margin: 8px;
-  box-sizing: border-box;
-  border: 10px solid #489989;
-  border-color: #489989 transparent #489989 transparent;
-  animation: lds-hourglass 1.2s infinite;
-}
-@keyframes lds-hourglass {
-  0% {
-    transform: rotate(0);
-    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  }
-  50% {
-    transform: rotate(900deg);
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-  100% {
-    transform: rotate(1800deg);
-  }
-}
-</style>
-
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <div class="card mt-8">
             <div class="card-body">
               <h5 class="mb-4">Product Details</h5>
-            <form  role="form" method="post" action="/products">
               <div class="row">
+
                 <div class="col-xl-5 col-lg-6 text-center">
-                  
                   <?php if($images): ?>
                   <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
                   <?php endif; ?>
+
                   <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php if($images): ?>
                     <?php foreach($images as $image): ?>
@@ -131,30 +98,25 @@
                     </div>
                   </div>
                   <div class="row mt-4">
-                    <div class="col-lg-5">
-                      <button class="btn bg-gradient-primary mb-0 mt-lg-auto w-100" type="submit" name="button">Add to cart</button>
+                    <div class="col-lg-5 d-flex flex-row align-items-center">
+                      <button class="btn add-to-cart bg-gradient-primary mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">
+                        Add to cart
+                      </button>
+                      <div class="lds-hourglass d-none"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row mt-5" style="display: <?php // echo $isRating ?>;">
-            </form>
-              <!--<div class="row mt-5">
+
+              <!-- <div class="row mt-5">
                 <h6>Ratings</h5>
                 <div class="row">
                   <div class="col-sm-6">
-                    <form role="form" method="post" action="/products/rating">
+                    <form role="form" method="post" action="/users">
                       <div class="input-group input-group-outline mb-3">
                         <?php for($y=5;$y>0;$y--): ?>
                           <i class="material-icons text-lg">star_outline</i>
-                          <input type="text" name="result" hidden>
-                        <?php endfor; ?>
-                          <i class="material-icons text-lg stars" data-id="1" id="star_1">star_outline</i>
-                          <i class="material-icons text-lg stars" data-id="2" id="star_2">star_outline</i>
-                          <i class="material-icons text-lg stars" data-id="3" id="star_3">star_outline</i>
-                          <i class="material-icons text-lg stars" data-id="4" id="star_4">star_outline</i>
-                          <i class="material-icons text-lg stars" data-id="5" id="star_5">star_outline</i>
-                          <input type="hidden" name="ratings" id="ratings" value="">
+                          <?php endfor; ?>
                       </div>
                       <div class="input-group input-group-outline mb-3">
                         <label class="form-label">Comment</label>
@@ -183,7 +145,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-5">
                     <div class="card">
                       <div class="card-body">
                         <?php for($x=5;$x>0;$x--): ?>
@@ -236,45 +198,7 @@
                 
               </div> -->
               
-              <!-- 
-              <div class="row">
-                  <div class="col-sm-7">
-                    <hr/>
-                    <div class="review-block">
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
-                          <div class="review-block-name"><a href="#">Unknown</a></div>
-                          <div class="review-block-date">23 Aug 2022<br/><small><i>1 day ago</i></small></div>
-                        </div>
-                        <div class="col-sm-9">
-                          <div class="review-block-rate">
-                          <?php // for($y=0;$y<5 ;$y++): ?>
-                            <?php // if(($y+1)<=$rate_data['star']): ?>
-                               <?php // echo '<i class="material-icons text-lg">grade</i>' ?>
-                            <?php // else: ?>
-                              <?php // echo '<i class="material-icons text-lg">star_outline</i>' ?>
-                            <?php // if(($y+1) <= $rate_data['star']): ?>
-                               <?php // echo '<i class="material-icons text-lg">grade</i>' ?>
-                            <?php // else: ?>
-                              <?php // echo '<i class="material-icons text-lg">star_outline</i>' ?>
-                            <?php // endif; ?>
-                          <?php // endfor; ?>
-                            
-                          <div class="review-block-description"> 
-                          <?php // echo $rate_data['message']?>
-                          <?php // echo $rate_data['message']?>
-                          </div>
-                      </div>
-                        </div>
-                      </div>
-                      <hr/>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>  
-              <div class="row mt-5">
+              <!-- <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
                   <div class="table table-responsive">
@@ -282,27 +206,111 @@
                   </div>
                 </div>
               </div> -->
+
             </div>
           </div>
         </div>
       </div>
      
 <?php $this->endSection() ?>
-<?php $this->section('script') ?>
+
+<?php 
+  $session = session();
+  // $uguid = ($session->get('guid')) ? $session->get('guid') : '';
+  $uid = ($session->get('id')) ? $session->get('id') : 0;
+?>
+
+<pre><?php print_r($cookie_cart); ?></pre>
+
+<?php $this->section("script") ?>
 <script>
-  $("body").delegate(".stars", "click", function(){
-    let count = $(this).data('id');
-    for(var x=1;x<=5;x++){
-      count >= x ?  $('#star_'+x).html('grade') : $('#star_'+x).html('star_outline');
-      
+  console.log("scripts section");
+
+  var cookie_cart = 'cart_data';
+
+  $(document).on('click', '.add-to-cart', function(e) {
+    e.preventDefault();
+
+    $(this).prop('disabled', true);
+    $(".lds-hourglass").removeClass('d-none');
+
+    console.log("add to cart clicked");
+
+    let pid = $(this).data('pid');
+    let qty = $("input[name=qty]").val();
+    let get_cookie = '';
+    let cookie_products = [];
+
+    if($("[name='atoken']").attr('content') != "") {
+      add_to_cart(<?= $uid; ?>, pid, qty);
     }
-    document.getElementById('ratings').value= count;
+    else {
+      // Current user is not logged in
+      console.log("no JWT");
+
+      //Check if cookie exists.  Get cookie value if any.
+      get_cookie = getCookie(cookie_cart);
+
+      // Cookie doesn't exist.  Create cookie
+      if(!get_cookie) {
+        console.log('cart_data cookie not set.');
+
+        // Set value to add to the cookie
+        cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
+
+        // Create cookie
+        setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+      }
+      // Cookie exists.  Check if data is correct.  Add product data to the cart data.
+      else {
+        console.log('cart_data cookie found.');
+
+        // Parse JSON data into readable array
+        cookie_products = JSON.parse(get_cookie);
+
+        // Check if product is already existing in the cookie
+        let pid_exists = false;
+
+        // Loop through each product in the cookie and match each product ids
+        cookie_products.forEach(function(product) {
+          console.log("products in cookie: ");
+          console.log(product);
+
+          // If a match is found, add the new qty to the existing qty.
+          if(product.pid == pid) {
+            console.log("product "+pid+" found");
+            product.qty = parseInt(product.qty) + parseInt(qty);
+
+            // Update the variable to indicate that the product id exists in the cookie
+            pid_exists = true;
+          }
+        });
+
+        // If product is not found after the loop, append the product
+        if(pid_exists == false) {
+          cookie_products.push({"pid": pid, "qty": parseInt(qty)});
+        }
+
+        console.log("New product array: ");
+        console.log(cookie_products);
+
+        // Save new products array to cookie
+        setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+      }
+
+      $(".add-to-cart").removeAttr('disabled');
+      $(".lds-hourglass").addClass('d-none');
+    }
+
+    // Update the cart counter
+    update_cart_count();
   });
 
- 
 </script>
 <?php $this->endSection() ?>
-<style>
+
+
+<!-- <style>
 .rate {
     float: left;
     height: 46px;
@@ -386,4 +394,4 @@
 .review-block-description{
 	font-size:13px;
 }
-</style>
+</style> -->
