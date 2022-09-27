@@ -52,7 +52,7 @@ class Blogs extends BaseController {
       echo view('Blogs/add_blog', $this->data);
   }
 
-  public function edit($id)
+  public function edit_blog($id)
   {
       $page_title = 'Edit Blog';
       $this->data['page_body_id'] = "edit_blog";
@@ -63,10 +63,10 @@ class Blogs extends BaseController {
         'current' => $page_title,
       ];
       $this->data['page_title'] = $page_title;
+      $this->data['blog_data'] = $this->blog_model->where('id', $id)->get()->getResult();
+   // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
 
-      $this->data['blog'] = $this->blog_model->where('id', $id)->get()->getResult();
-
-      return view('Blogs/add_blog', $this->data);
+      return view('Blogs/edit_blog', $this->data);
   }
   
   public function save_product() {
@@ -108,7 +108,7 @@ class Blogs extends BaseController {
         $blog->title, 
         $blog->description,
         $blog->author,
-        "<a href=".base_url('blogs/'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit/'.$blog->id).">edit</a>",
+        "<a href=".base_url('blogs/view_all_blogs'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit_blog/'. $blog->id).">edit</a>",
       );
     }
 
