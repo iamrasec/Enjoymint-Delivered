@@ -48,7 +48,7 @@ class Blogs extends ResourceController
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
           // loop through all files uploaded
-          foreach($file['productImages'] as $img){
+          foreach($file['blog_image'] as $img){
             if (!$img->hasMoved()) {
                 $fileName = $img->getRandomName(); // generate a new random name
                 $type = $img->getMimeType();

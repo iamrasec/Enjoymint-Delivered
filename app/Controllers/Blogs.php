@@ -34,8 +34,6 @@ class Blogs extends BaseController
     $blog = $this->blog_model->getBlogbyID($id); 
     $this->data['blogs'] = $blog;
 
-  print_r($this->data['blogs']);
-
   return view('Blogs/view_blog', $this->data);
 
   }
