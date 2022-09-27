@@ -18,6 +18,7 @@
             <li><a href="#" class="px-2 py-2 border">Orders</a></li>
             <li><a href="#" class="px-2 py-2 border">Personal Info</a></li>
             <li><a href="#" class="px-2 py-2 border">Address</a></li>
+            <li><a href="<?= base_url('users/logout'); ?>" class="px-2 py-2 border">Log Out</a></li>
           </ul>
       </div>
     </div>

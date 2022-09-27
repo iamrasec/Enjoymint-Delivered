@@ -25,6 +25,10 @@ class Users extends BaseController
 
 	public function index()
 	{
+		if($this->isLoggedIn) {
+			return redirect()->to('users/dashboard');
+		}
+
 		helper(['form']);
 
 		$this->data['post_data'] = $this->request->getPost();
