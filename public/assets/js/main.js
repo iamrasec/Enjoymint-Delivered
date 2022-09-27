@@ -57,6 +57,7 @@ function add_to_cart(uid, pid, qty)
   $.ajax({
     type: "POST",
     url: baseUrl + '/api/cart/add',
+    // url: baseUrl + '/cart/add',
     data: data,
     dataType: "json",
     success: function(json) {
@@ -111,9 +112,9 @@ function add_to_cart(uid, pid, qty)
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.log(textStatus);
     },
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
-    }
+    // beforeSend: function(xhr) {
+    //   xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    // }
   });
 }
 
@@ -148,9 +149,17 @@ function update_cart_count()
 
 function update_cart()
 {
-  console.log("user is logged in.  ajax request count.");
+  console.log("jwt: " + jwt);
+  
+  if(jwt != "") {
+    console.log("user is logged in.  ajax request count.");
+  }
+  else {
+    console.log("user is not logged in.");
+  }
+  
   // let jwt = $("[name='atoken']").attr('content');
-
+  
   let data = {};
   data.token = jwt;
   

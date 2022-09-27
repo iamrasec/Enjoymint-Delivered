@@ -45,10 +45,10 @@
                     <span thumb style="left:0%;"></span>
                     <span thumb style="left:100%;"></span>
                     <div sign style="left:0%;">
-                      <span id="value">$0</span>
+                      <span id="value">0</span>
                     </div>
                     <div sign style="left:100%;">
-                      <span id="value">$300</span>
+                      <span id="value">300</span>
                     </div>
                   </div>
                   <input type="range" value="0" name="min_price" max="300" min="0" step="1" oninput="

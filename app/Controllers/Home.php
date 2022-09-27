@@ -19,7 +19,7 @@ class Home extends BaseController
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
     
-        $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '000-000-000';
+        $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
     

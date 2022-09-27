@@ -298,6 +298,48 @@ class Cart extends BaseController
     return redirect()->to('/cart');
   }
 
+  public function add()
+  {
+    $data = $this->request->getPost();
+
+    // If user is currently logged in
+    if($data['uid'] > 0) {
+      $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid']);
+      $new_item_count = 0;
+
+      if(!empty($product_in_cart)) {
+        $saveCart = $this->cart_model->updateCartProduct($data['uid'], $data['pid'], $data['qty']);
+
+        echo json_encode(["status" => 'updated', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+        exit;
+      }
+      else {
+        $saveCart = $this->cart_model->insert($data);
+        $new_item_count++;
+
+        echo json_encode(["status" => 'added', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+        exit;
+      }
+    }
+    // If user is not logged in (anonymous)
+    else {
+      if(isset($_COOKIE['cart_data'])) {
+        $product_in_cart = $_COOKIE['cart_data'];
+      }
+      else {
+        $product_in_cart = [
+          [
+            "pid" => $data['pid'],
+            "qty" => $data['qty'],
+          ]
+        ];
+      }
+      
+      echo json_encode(["status" => 'updated', "productInCart" => $product_in_cart, "pid" => $data['pid']]);
+      exit;
+    }
+  }
+
   private function _fetch_cart_items()
   {
     // Fetch user data using guid
