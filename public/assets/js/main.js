@@ -184,29 +184,57 @@ function update_cart()
 
 function delete_cart_item(guid, toRemove)
 {
-  let data = {};
-  data.pid = toRemove;
-  data.guid = guid;
+  if(jwt != "") {
+    let data = {};
+    data.pid = toRemove;
+    data.guid = guid;
+  
+    $.ajax({
+      type: "POST",
+      url: baseUrl + '/api/cart/delete_cart_item',
+      data: data,
+      dataType: "json",
+      success: function(json) {
+        // console.log(json);
+        $("tr.pid-"+toRemove).fadeOut(300, function() { 
+          $(this).remove();
+          update_cart_summary(guid);
+        });
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        console.log(textStatus);
+      },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+      }
+    });
+  }
+  else {
+    console.log("User not logged in");
 
-  $.ajax({
-    type: "POST",
-    url: baseUrl + '/api/cart/delete_cart_item',
-    data: data,
-    dataType: "json",
-    success: function(json) {
-      // console.log(json);
-      $("tr.pid-"+toRemove).fadeOut(300, function() { 
-        $(this).remove();
-        update_cart_summary(guid);
-      });
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.log(textStatus);
-    },
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    let get_cookie = getCookie('cart_data');
+
+    console.log(get_cookie);
+
+    if(get_cookie) {
+      // Parse JSON data into readable array
+      cookie_products = JSON.parse(get_cookie);
+  
+      console.log(cookie_products);
+
+      for(var i = 0; i < cookie_products.length; i++) {
+        console.log(cookie_products[i]['pid']);
+        if(cookie_products[i]['pid'] == toRemove) {
+          cookie_products.splice(i, 1);
+          $("tr.pid-"+toRemove).hide('slow', function(){ $("tr.pid-"+toRemove).remove(); });
+        }
+      }
+
+      console.log(cookie_products);
+      setCookie('cart_data',JSON.stringify(cookie_products),'1');
     }
-  });
+  }
+  
 }
 
 function update_cart_summary(guid)

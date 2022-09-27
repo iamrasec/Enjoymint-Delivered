@@ -156,13 +156,15 @@
     }
   });
 
-  $(document).on("click", ".remove-item", function() {
+  $(document).on("click", ".remove-item", function(e) {
+    e.preventDefault();
     let toRemove = $(this).data('pid');
     let guid = $("input[name=guid]").val();
     delete_cart_item(guid, toRemove);
   });
 
-  $(document).on("click", "#update-cart", function() {
+  $(document).on("click", "#update-cart", function(e) {
+    e.preventDefault();
     $("#update-cart-form").submit();
   });
 </script>
