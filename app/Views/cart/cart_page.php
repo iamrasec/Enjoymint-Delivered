@@ -160,7 +160,13 @@
     e.preventDefault();
     let toRemove = $(this).data('pid');
     let guid = $("input[name=guid]").val();
-    delete_cart_item(guid, toRemove);
+    let delete_item = delete_cart_item(guid, toRemove);
+    
+    console.log(delete_item);
+
+    if(delete_item == 0) {
+      window.location.replace("<?= base_url('cart'); ?>");
+    }
   });
 
   $(document).on("click", "#update-cart", function(e) {

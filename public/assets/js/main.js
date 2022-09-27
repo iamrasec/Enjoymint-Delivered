@@ -234,7 +234,10 @@ function delete_cart_item(guid, toRemove)
       setCookie('cart_data',JSON.stringify(cookie_products),'1');
     }
   }
-  
+
+  update_cart_count();
+
+  return cookie_products.length;
 }
 
 function update_cart_summary(guid)
