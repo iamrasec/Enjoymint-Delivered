@@ -112,9 +112,9 @@ function add_to_cart(uid, pid, qty)
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.log(textStatus);
     },
-    // beforeSend: function(xhr) {
-    //   xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
-    // }
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+    }
   });
 }
 
