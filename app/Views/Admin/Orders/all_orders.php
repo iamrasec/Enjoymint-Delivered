@@ -17,9 +17,9 @@
       </div>
       <div class="col-lg-1"></div>
       <div class="col-lg-5 text-right d-flex flex-row justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders'); ?>">View All Orders</a>
         <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/active'); ?>">View Active Orders</a>
         <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/cancelled'); ?>">View Cancelled Orders</a>
+        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/completed'); ?>">View Completed Orders</a>
       </div>
     </div>
     
@@ -39,7 +39,7 @@
                     <th>Total</th>
                     <th>Order Date</th>
                     <th>Order Status</th>
-                    <!-- <th>Actions</th> -->
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -104,7 +104,7 @@ $(document).ready(function () {
       serverSide: true,
       order: [],
       ajax: {
-        url: '<?= base_url('api/orders/list_completed'); ?>',
+        url: '<?= base_url('api/orders/list_all'); ?>',
         type: 'POST',
         headers: {
           "Authorization": "Bearer "+ jwt,
@@ -170,6 +170,20 @@ $(document).ready(function () {
             else {
               return 'Cancelled';
             }
+          }
+        },
+        { 
+          data: 'actions',
+          render: function(data, type, row) {
+            // console.log(row);
+            let actions = '';
+            if(row.status == 0 || row.status == 1) {
+              actions += '<a href="<?= base_url('admin/orders/edit'); ?>/'+row.id+'"><i class="fas fa-edit"></i></a> | ';
+              actions += '<a href="javascript;;"><i class="fas fa-trash"></i></a> | ';
+              actions += '<a href="javascript;;"><i class="fas fa-clipboard-check"></i></a>';
+            }
+
+            return actions;
           }
         },
       ],
