@@ -170,6 +170,8 @@ class Products extends ResourceController
 
     // print_r($this->request->getPost());
 
+    // print_r($this->request->getPost()); die();
+
     if($this->request->getPost()) {
       $rules = [
         'name' => 'required|min_length[3]',
@@ -184,6 +186,15 @@ class Products extends ResourceController
         $data['validation'] = $this->validator;
 
         $images = array(); // initialize image array
+
+        $current_images = $this->request->getVar('current_images');
+
+        // print_r($current_images); die();
+
+        foreach($current_images as $current_image) {
+          array_push($images, $current_image);
+        }
+
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
           // loop through all files uploaded
@@ -222,6 +233,9 @@ class Products extends ResourceController
           'unit_value' => $this->request->getVar('unit_value'),
           'images' => implode(',', $images),
         ];
+
+        // print_r($to_save); die();
+
         $this->product_model->set($to_save)->where('id', $pid)->update();
         // $this->product_model->where('id', $pid)->update($to_save);
         // $productId = $this->product_model->insertID();

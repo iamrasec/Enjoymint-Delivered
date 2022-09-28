@@ -143,6 +143,20 @@
       formData.append('productImages[]', item.files[0]);
     });
 
+    let current_images = document.querySelectorAll('input[name="current_images[]"]');
+
+    // console.log(current_images);
+
+    for(let i = 0; i < current_images.length; i++) {
+      formData.append('current_images[]', current_images[i].value);
+    }
+
+    // current_images.forEach(function(item, field) {
+    //   console.log(item);
+    //   console.log(field);
+    //   formData.append('current_images[]', item.files[0]);
+    // });
+
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());
@@ -158,6 +172,8 @@
     formData.append('categories', $('#category').val());
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
+
+    // console.log(formData);
 
     fetch('/api/products/edit_product/' + $('#pid').val(),  {
       method: 'POST',
