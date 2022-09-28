@@ -40,9 +40,9 @@
           </div>
         </li> -->
         <hr class="horizontal light mt-0">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link text-white" href="<?= base_url('admin/dispatch/test'); ?>">Dispatch Test</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="nav-link text-white active" aria-controls="dashboard" role="button" aria-expanded="false">
             <i class="material-icons-round opacity-10">dashboard</i>
@@ -62,12 +62,12 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Add Product </span>
                 </a>
               </li>
-              <li class="nav-item <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>">
+              <!-- <li class="nav-item <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'orders' ? 'active' : '' ?>" href="<?php echo base_url('/admin/orders'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Orders </span>
                 </a>
-              </li>
+              </li> -->
               <!--<li class="nav-item">
                 <a class="nav-link text-white" href="/products/add_category">
                   <span class="sidenav-mini-icon">  </span>
@@ -158,70 +158,14 @@
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#ecommerce" class="nav-link text-white " aria-controls="ecommerce" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">shopping_basket</i>
-            <span class="nav-link-text ms-2 ps-1">Ecommerce</span>
+            <span class="nav-link-text ms-2 ps-1">Orders</span>
           </a>
           <div class="collapse " id="ecommerce">
             <ul class="nav ">
-              <li class="nav-item ">
-                <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#productsExample">
-                  <span class="sidenav-mini-icon"> P </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Products <b class="caret"></b></span>
-                </a>
-                <div class="collapse " id="productsExample">
-                  <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/new-product.html">
-                        <span class="sidenav-mini-icon"> N </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> New Product </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/edit-product.html">
-                        <span class="sidenav-mini-icon"> E </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Edit Product </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/product-page.html">
-                        <span class="sidenav-mini-icon"> P </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Product Page </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/products-list.html">
-                        <span class="sidenav-mini-icon"> P </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Products List </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#ordersExample">
+              <li class="nav-item">
+                <a class="nav-link text-white " href="<?= base_url('admin/order') ?>">
                   <span class="sidenav-mini-icon"> O </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Orders <b class="caret"></b></span>
-                </a>
-                <div class="collapse " id="ordersExample">
-                  <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="<?= base_url('admin/order') ?>">
-                        <span class="sidenav-mini-icon"> O </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Order List </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/orders/details.html">
-                        <span class="sidenav-mini-icon"> O </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Order Details </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
-                  <span class="sidenav-mini-icon"> R </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Referral </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Order List </span>
                 </a>
               </li>
             </ul>
@@ -235,7 +179,7 @@
           </a>
           <div class="collapse " id="integration">
             <ul class="nav ">
-              <li class="nav-item ">
+              <!-- <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#productsExample">
                   <span class="sidenav-mini-icon"> P </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Products <b class="caret"></b></span>
@@ -296,7 +240,7 @@
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Referral </span>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </li>
