@@ -18,7 +18,7 @@ class Users extends BaseController
 		$this->user_model = model('UserModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 
-		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
+		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
 
 		$this->sender_email = 'cesar@fuegonetworx.com';
 	}
@@ -120,6 +120,9 @@ class Users extends BaseController
 	public function register() 
 	{
 		helper(['form']);
+
+		// Set dummy jwt
+		// $this->data['user_jwt'] = '000-000-000';
 		
 		// if($this->request->getMethod() == 'post') {
 		if($this->request->getPost()) {
@@ -208,9 +211,9 @@ class Users extends BaseController
 				// $session->setFlashdata('success', 'Successful Registration');
 				// return redirect()->to('/dashboard');
 
-				$success['success'] = 'Please check your email for account activation.';
+				$this->data['success'] = 'Please check your email for account activation.';
 
-				return view('register', $success);
+				return view('register', $this->data);
 			}
 		}
 
@@ -436,15 +439,26 @@ class Users extends BaseController
 				'is_active' => 1,
 			];
 
+			// echo "<pre>".print_r($update_data, 1)."</pre>"; die();
+
 			$this->user_model->save($update_data);
 		}
+
 		else if($validate['is_active'] == 1){
-			return view('confirm_user', ['status' => 'Activation Failed.  Account already in-use.']);	
+			$this->data['status'] = 'Account is already activated';
+
+			return view('confirm_user', $this->data);	
 		}
 
 		$validate['is_active'] = 1;
 
 		$this->setUserSession($validate);
+
+		$guid = session()->get('guid');
+
+		$validate['user_jwt'] = getSignedJWTForUser($guid);
+
+		// echo "<pre>".print_r($validate, 1)."</pre>"; die();
 
 		return view('confirm_user', $validate);
 

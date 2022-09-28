@@ -18,7 +18,11 @@
               <div class="card card-plain">
                 <div class="card-header">
                   <a href="<?= base_url(); ?>"><img src="<?= base_url('assets/img/logo-oval-300x89.png'); ?>" style="width: 300px;"></a>
+                    <?php if(isset($status)): ?>
+                      <h4 class="font-weight-bolder mt-5"><?= $status; ?></h4>
+                    <?php else: ?>
                     <h4 class="font-weight-bolder mt-5">Account Activation Successful</h4>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
                   <p>Please <a class="fw-bold text-danger" href="<?= base_url(); ?>">Click Here</a> to go back to the storefront.</p>
