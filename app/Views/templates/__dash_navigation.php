@@ -202,7 +202,7 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Orders <b class="caret"></b></span>
                 </a>
                 <div class="collapse " id="ordersExample">
-                  <ul class="nav nav-sm flex-column">
+                  <ul class="nav nav-sm flex-column"></ul>
                     <li class="nav-item">
                       <a class="nav-link text-white " href="<?= base_url('admin/orders') ?>">
                         <span class="sidenav-mini-icon"> O </span>
