@@ -139,12 +139,6 @@
                   <span class="sidenav-normal  ms-2  ps-1"> List Pages </span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link text-white " href="../../pages/dashboards/discover.html">
-                  <span class="sidenav-mini-icon">  </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Add Page </span>
-                </a>
-              </li>
               <li class="nav-item <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>" href="<?php echo base_url('/admin/blogs/add_blog'); ?>">
                   <span class="sidenav-mini-icon">  </span>
