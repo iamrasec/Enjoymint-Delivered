@@ -11,7 +11,7 @@ class Experience extends BaseController {
 		$this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
-        $this->experience_model = model('experienceModel');
+        $this->experience_model = model('ExperienceModel');
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     }

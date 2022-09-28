@@ -26,6 +26,7 @@ class Products extends ResourceController
       $this->product_category = model('ProductCategory');
       $this->product_experience = model('productExperience');
       $this->compound_model = model('CompoundModel');
+      // $this->experience_model = model('ExperienceModel');
 
 
       $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
@@ -258,23 +259,23 @@ class Products extends ResourceController
           }
         }
 
-           // Save Experience
-           if($this->request->getVar('experience') != "") {
-            $experience = explode(",", $this->request->getVar('experience'));
-  
-            $this->product_experience->where('pid', $pid)->delete();
-  
-            // print_r($this->product_category->getLastQuery());
-  
-            foreach($experience as $exps) {
-              $saveExp = [
-                'pid' => $pid,
-                'exp_id' => $exps,
-              ];
-  
-              $this->product_experience->save($saveExp);
-            }
+        // Save Experience
+        if($this->request->getVar('experiences') != "") {
+          $experience = explode(",", $this->request->getVar('experiences'));
+
+          $this->product_experience->where('pid', $pid)->delete();
+
+          // print_r($this->product_category->getLastQuery());
+
+          foreach($experience as $exps) {
+            $saveExp = [
+              'pid' => $pid,
+              'exp_id' => $exps,
+            ];
+
+            $this->product_experience->save($saveExp);
           }
+        }
 
         //Save Compounds
         $saveCompounds = [
