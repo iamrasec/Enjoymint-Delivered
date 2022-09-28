@@ -82,11 +82,11 @@
                       <span id="value">0</span>
                     </div>
                     <div sign style="left:100%;">
-                      <span id="value">30</span>
+                      <span id="value">100</span>
                     </div>
                   </div>
 
-                  <input type="range" value="0" name="min_thc" max="30" min="0" step="1" oninput="
+                  <input type="range" value="0" name="min_thc" max="100" min="0" step="1" oninput="
                   this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                   let value = (this.value/parseInt(this.max))*100
                   var children = this.parentNode.childNodes[1].childNodes;
@@ -95,7 +95,7 @@
                   children[7].style.left=value+'%';children[11].style.left=value+'%';
                   children[11].childNodes[1].innerHTML=this.value;" />
 
-                  <input type="range" value="100" name="max_thc" max="30" min="0" step="1" oninput="
+                  <input type="range" value="100" name="max_thc" max="100" min="0" step="1" oninput="
                   this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                   let value = (this.value/parseInt(this.max))*100
                   var children = this.parentNode.childNodes[1].childNodes;
@@ -117,11 +117,11 @@
                       <span id="value">0</span>
                     </div>
                     <div sign style="left:100%;">
-                      <span id="value">30</span>
+                      <span id="value">200</span>
                     </div>
                   </div>
 
-                  <input type="range" value="0" name="min_cbd" max="30" min="0" step="1" oninput="
+                  <input type="range" value="0" name="min_cbd" max="200" min="0" step="1" oninput="
                   this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
                   let value = (this.value/parseInt(this.max))*100
                   var children = this.parentNode.childNodes[1].childNodes;
@@ -130,7 +130,7 @@
                   children[7].style.left=value+'%';children[11].style.left=value+'%';
                   children[11].childNodes[1].innerHTML=this.value;" />
 
-                  <input type="range" value="100" name="max_cbd" max="30" min="0" step="1" oninput="
+                  <input type="range" value="100" name="max_cbd" max="200" min="0" step="1" oninput="
                   this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
                   let value = (this.value/parseInt(this.max))*100
                   var children = this.parentNode.childNodes[1].childNodes;
