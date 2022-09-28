@@ -87,6 +87,12 @@
                     <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
                 </div>
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Price</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
               </div>
 
               <div class="row mt-4">
@@ -101,13 +107,22 @@
                   </select>
                   </div>
                 </div>
+
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Price</label>
+                  <label class="form-label" for="name">Experience</label>
                   <div class="input-group input-group-dynamic">
-                    <input type="number" class="form-control w-100 border px-2" id="price" name="price" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->price; ?>" required onfocus="focused(this)" onfocusout="defocused(this)">
+                  <select class="experience-class form-control w-100 border px-2" name="experience[]" id="experience" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                    <?php foreach($experiences as $experience): ?>
+                    <?php $selected = (in_array($experience->id, $product_experience)) ? ' selected' : ''; ?>
+                    <option value="<?php echo $experience->id; ?>"<?= $selected; ?>><?php echo $experience->name; ?></option>
+                    <?php endforeach; ?>
+                  </select>
                   </div>
                 </div>
-                <div class="col-8 col-md-8 col-xs-12 mb-3"></div>
+              </div>
+              
+              <div class="row mt-4">
+                <div class="col-12 col-md-12 col-xs-12 mb-3"></div>
                 <div class="col-sm-12">
                   <label class="mt-4">Description</label>
                   <p class="form-text text-muted text-xs ms-1 d-inline">

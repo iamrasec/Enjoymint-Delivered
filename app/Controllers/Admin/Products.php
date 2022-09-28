@@ -17,9 +17,9 @@ class Products extends BaseController {
     $this->category_model = model('CategoryModel');
     $this->measurement_model = model('MeasurementModel');
     $this->product_category = model('ProductCategory');
-    $this->product_experience = model('productExperience');
+    $this->product_experience = model('ProductExperience');
     $this->order_model = model('CheckoutModel');
-    $this->experience_model = model('experienceModel');
+    $this->experience_model = model('ExperienceModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -241,7 +241,7 @@ class Products extends BaseController {
     $this->data['brands'] = $this->brand_model->get()->getResult();
     $this->data['strains'] = $this->strain_model->get()->getResult();
     $this->data['categories'] = $this->category_model->get()->getResult();
-    $this->data['experience'] = $this->experience_model->get()->getResult();
+    $this->data['experiences'] = $this->experience_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
 
     $product = $this->product_model->getProductData($pid);

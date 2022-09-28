@@ -4,6 +4,11 @@
       placeholder: "Select a Category",
       // allowClear: true
     });
+
+    $('.experience-class').select2({
+      placeholder: "Select an Experience",
+      // allowClear: true
+    });
   });
 
   $(document).on('keyup', '#product_name', function() {
@@ -170,6 +175,7 @@
     formData.append('cbd_val', $('#cbd_val').val());
     formData.append('cbd_measure', $('#cbd_measure').val());
     formData.append('categories', $('#category').val());
+    formData.append('experiences', $('#experience').val());
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
 
