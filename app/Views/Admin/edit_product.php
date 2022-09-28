@@ -12,6 +12,9 @@
   <!-- Navbar -->
   <?php echo $this->include('templates/__dash_top_nav.php'); ?>
   <!-- End Navbar -->
+
+  <pre><?php print_r($images); ?></pre>
+  <!-- <pre><?php print_r($product_data); ?></pre> -->
   
   <div class="container-fluid py-4">
     <form id="edit_product" class="enjoymint-form" enctype="multipart/form-data">
@@ -223,6 +226,18 @@
 
           <h6>Images</h6>
           <div class="row" id='image_lists'>
+            <div class="row current_images mb-5">
+              <?php foreach($images as $image): ?>
+              <div class="col-lg-5">
+                <input type="hidden" name="current_images[]" value="<?= $image->id; ?>">
+                <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
+              </div>
+              <div class="col-lg-5"></div>
+              <div class="col-lg-2">
+                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
+              </div>
+              <?php endforeach; ?>
+            </div>
             <div class="row">
               <div class="col-lg-10">
                 <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">

@@ -243,7 +243,17 @@ class Products extends BaseController {
     $this->data['categories'] = $this->category_model->get()->getResult();
     $this->data['experience'] = $this->experience_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
-    $this->data['product_data'] = $this->product_model->getProductData($pid);
+
+    $product = $this->product_model->getProductData($pid);
+
+    $this->data['product_data'] = $product;
+    $this->data['images'] = [];
+
+    $imageIds = [];
+    if($product->images) {
+        $imageIds = explode(',',$product->images);
+        $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+    }
 
     $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
     $experience = $this->product_experience->select('exp_id')->where('pid', $pid)->get()->getResult();
