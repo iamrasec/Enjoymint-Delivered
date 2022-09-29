@@ -59,7 +59,7 @@
         }
       }) .then(response => response.json()).then(response => {
           var { message, success }  = response;
-          // success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/blogs') : enjoymintAlert('Sorry!', message, 'error', 0);
+          success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/blogs') : enjoymintAlert('Sorry!', message, 'error', 0);
       }).catch((error) => {
           console.log('Error:', error);
       });
