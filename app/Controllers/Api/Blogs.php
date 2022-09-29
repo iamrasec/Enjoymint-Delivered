@@ -47,23 +47,30 @@ class Blogs extends ResourceController
         $images = array(); // initialize image array
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
-          // loop through all files uploaded
-          foreach($file['blog_image'] as $img){
-            if (!$img->hasMoved()) {
-                $fileName = $img->getRandomName(); // generate a new random name
-                $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads/blogs/' . $fileName); // move the file to writable/uploads
-                
-                // json data to be save to image
-                $imageData = [
-                  'filename' => $fileName,
-                  'mime' => $type,
-                  'url' => 'writable/uploads/blogs/'. $fileName,
-                ];
-                $this->image_model->save($imageData); // try to save to images table
-                $imageId = $this->image_model->insertID();
-                array_push($images, $imageId);
-            }
+
+          print_r($file);
+
+          $img = $file['blog_image'];
+
+          if (!$img->hasMoved()) {
+            // print_r("has not moved");
+            $fileName = $img->getRandomName(); // generate a new random name
+            $type = $img->getMimeType();
+            $img->move( WRITEPATH . 'uploads/blogs', $fileName); // move the file to writable/uploads
+            // $img->store('blogs/', $fileName);
+            
+            // json data to be save to image
+            $imageData = [
+              'filename' => $fileName,
+              'mime' => $type,
+              'url' => 'writable/uploads/blogs/'. $fileName,
+            ];
+
+            print_r($imageData);
+
+            $this->image_model->save($imageData); // try to save to images table
+            $imageId = $this->image_model->insertID();
+            array_push($images, $imageId);
           }
         }
         
@@ -76,6 +83,9 @@ class Blogs extends ResourceController
           'author' => $this->request->getVar('author'),
           'images' => implode(',', $images),
         ];
+
+        print_r($to_save);
+
         $this->blog_model->save($to_save); // trying to save product to database
         $data_arr = array("success" => TRUE,"message" => 'Blog Saved!');
       } else {

@@ -11,11 +11,19 @@ class BlogModel extends Model {
     protected $allowedFields = ['title', 'url', 'description', 'content', 'author', 'images'];
   
     public function getBlogbyID($id) 
-      {
-        $this->select('blogs.*, images.url');
-        $this->join('images', 'blogs.images = images.id');
-        $this->where('blogs.id', $id);
-        return $this->get()->getResult();
-      }
+    {
+      $this->select('blogs.*, images.url');
+      $this->join('images', 'blogs.images = images.id');
+      $this->where('blogs.id', $id);
+      return $this->get()->getResult();
+    }
+
+    public function getBlogByUrl($url)
+    {
+      $this->select('blogs.*, images.url');
+      $this->join('images', 'blogs.images = images.id');
+      $this->where('blogs.url', $url);
+      return $this->get()->getResult();
+    }
 } 
 ?>

@@ -14,25 +14,25 @@
     <div class="row">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->     
         <?php foreach($blogs as $blog): ?>
-          <div class="col-md-6 col-sm-6 pt-4 pb-4">
+          <div class="col-md-3 col-sm-12 pt-4 pb-4">
+            <?php if(isset($blog->images[0])): ?>
             <div class="product-featured">
-            <div class="img-wrap">
-              <a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>">
-                <img src="<?= base_url('blogs/get_blogs/').$blog->url; ?>" alt="No image" style="width:290px;" />
-              </a>
-                <!-- <img class="shadow" src="/assets/img/products/5621dd21-4801-41e7-bf08-df382aa81e79.jpeg"
-               itemprop="thumbnail" alt="Image description" style="width:290px;" />   -->
+              <div class="img-wrap">
+                <a href="<?= base_url('blogs/'.$blog->url); ?>">
+                  <img src="<?= base_url('blogs/images/'.$blog->images[0]->filename); ?>" alt="No image" style="width:290px;" />
+                </a>
               </div>   
             </div>
+            <?php endif; ?>
           </div>            
-          <div class="col-md-6 col-sm-6 pt-4 pb-4">
+          <div class="col-md-9 col-sm-12 pt-4 pb-4">
             <div class="product-featured">
             <div class="img-wrap">
-                <a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>"><h5><?= $blog->title; ?></h5></a>
-                <p id="p2"><?= $blog->content; ?></p>
+                <a href="<?= base_url('blogs/'.$blog->url); ?>"><h5><?= $blog->title; ?></h5></a>
+                <p id="p2"><?= $blog->description; ?></p>
                 <p id="p3"><?= $blog->author; ?></p>
                 <b class="news_feed_text">
-                <a href="news/" class="anchor"><a href="<?= base_url('blogs/get_blogs/'.$blog->id); ?>">Read More</a></i></a>
+                <a href="news/" class="anchor"><a href="<?= base_url('blogs/'.$blog->url); ?>">Read More</a></i></a>
                 </b>
               </div>
             </div>

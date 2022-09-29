@@ -19,27 +19,57 @@ class Blogs extends BaseController
     $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
   }
 
-  public function view_all_blogs() {
+  public function index($url = "")
+  {
+    if($url == "") {
+      return $this->view_all_blogs();
+    }
+    else {
 
-    $blog = $this->blog_model->get()->getResult(); 
+    }
+  }
+
+  public function view_blog($url)
+  {
+    $blog = $this->blog_model->getBlogByUrl($url); 
+    $this->data['blogs'] = $blog;
+
+    return view('Blogs/view_blog', $this->data);
+  }
+
+  public function view_all_blogs() 
+  {
+
+    $blog = $this->blog_model->orderBy('created', 'DESC')->get()->getResult(); 
+
+    $imageIds = [];
+
+    for($i = 0; $i < count($blog); $i++) {
+      if($blog[$i]->images != null) {
+        $imageIds = explode(',',$blog[$i]->images);
+        $blog[$i]->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+      }
+    }
 
     $this->data['blogs'] = $blog;
+
+    // echo "<pre>".print_r($blog, 1)."</pre>"; die();
+
     // print_r($this->data['blogs']);
 
     return view('Blogs/index', $this->data);
 }
 
-  public function get_blogs($id)
-  {
-    $blog = $this->blog_model->getBlogbyID($id); 
-    $this->data['blogs'] = $blog;
+  // public function get_blogs($id)
+  // {
+  //   $blog = $this->blog_model->getBlogbyID($id); 
+  //   $this->data['blogs'] = $blog;
 
-  return view('Blogs/view_blog', $this->data);
-
-  }
+  //   return view('Blogs/view_blog', $this->data);
+  // }
 
   public function images($filename) {
-    $filepath = WRITEPATH . 'uploads/' . $filename;
+    $filepath = WRITEPATH . 'uploads/blogs/' . $filename;
 
     $mime = mime_content_type($filepath);
     header('Content-Length: ' . filesize($filepath));
