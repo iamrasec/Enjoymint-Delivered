@@ -81,7 +81,11 @@
                     <div class="col-12 col-sm-12">
                       <h6 class="mb-0 mt-3">Price</h6>
                       <h5>$<span class="price d-inline"><?= $product->price; ?></span></h5>
+                      <?php if($product->stocks > 0): ?>
                       <span class="badge text-bg-success">In Stock</span>
+                      <?php else: ?>
+                      <span class="badge text-bg-danger">Out Of Stock</span>
+                      <?php endif; ?>
                     </div>
                   </div>
 
