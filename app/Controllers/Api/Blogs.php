@@ -79,7 +79,7 @@ class Blogs extends ResourceController
           'images' => implode(',', $images),
         ];
 
-        print_r($to_save);
+        // print_r($to_save);
 
         $this->blog_model->save($to_save); // trying to save product to database
         $data_arr = array("success" => TRUE,"message" => 'Blog Saved!');
