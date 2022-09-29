@@ -25,14 +25,26 @@ class Blogs extends BaseController
       return $this->view_all_blogs();
     }
     else {
-
+      return $this->view_blog($url);
     }
   }
 
   public function view_blog($url)
   {
     $blog = $this->blog_model->getBlogByUrl($url); 
-    $this->data['blogs'] = $blog;
+
+    // echo "<pre>".print_r($blog, 1)."</pre>"; die();
+
+    $imageIds = [];
+
+    for($i = 0; $i < count($blog); $i++) {
+      if($blog[$i]->images != null) {
+        $imageIds = explode(',',$blog[$i]->images);
+        $blog[$i]->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+      }
+    }
+
+    $this->data['blog'] = $blog;
 
     return view('Blogs/view_blog', $this->data);
   }
