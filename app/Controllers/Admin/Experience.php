@@ -16,7 +16,8 @@ class Experience extends BaseController {
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     }
 
-    public function index() {
+    public function index()
+    {
 
             $page_title = 'Experiences';
       
@@ -28,12 +29,13 @@ class Experience extends BaseController {
             $this->data['page_title'] = $page_title;
             // $this->data['categories'] = $this->category_model->where('parent', 0)->get()->getResult();
             $this->data['experience'] = $this->experience_model->get()->getResult();
-      
-                echo view('Admin/manage_experience', $this->data);
+
+            echo view('Admin/manage_experience', $this->data);
 
     }   
 
-    public function add_experience() {
+    public function add_experience()
+    {
         helper(['form']);
 
         // if($this->isLoggedIn == 1 && $this->role == 1) {
@@ -49,7 +51,7 @@ class Experience extends BaseController {
 
 
             // NOTE: For now can only add child category to top level categories (parent = 0)
-
+            
             // Check if there are posted form data.
             $this->data['post_data'] = $this->request->getPost();
 
@@ -67,7 +69,8 @@ class Experience extends BaseController {
             }
         }
 
-    private function save_experience($to_save) {
+    private function save_experience($to_save) 
+    {
         $this->experience_model->save($to_save);
         $session = session();
         $session->setFlashdata('success', 'Experience Added Successfully');
