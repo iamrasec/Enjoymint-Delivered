@@ -26,7 +26,7 @@ class Blogs extends BaseController {
   public function index() 
   {
     // $data = [];
-    $page_title = 'List Pages';
+    $page_title = 'List Articles';
 
     $this->data['page_body_id'] = "blog_list";
     $this->data['breadcrumbs'] = [

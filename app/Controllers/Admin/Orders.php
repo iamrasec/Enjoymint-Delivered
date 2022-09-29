@@ -11,6 +11,9 @@ class Orders extends BaseController {
          $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
         $this->order_model = model('CheckoutModel');
+        $this->order_products = model('OrderProductsModel');
+        $this->image_model = model('ImageModel');
+        $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
@@ -21,23 +24,109 @@ class Orders extends BaseController {
 
     public function index() {
        
-            $page_title = 'Orders';
-      
-            $this->data['page_body_id'] = "orders";
-            $this->data['breadcrumbs'] = [
-              'parent' => [],
-              'current' => $page_title,
-            ];
-            $this->data['page_title'] = $page_title;
-            $this->data['active_orders'] = $this->order_model->where('status', 0)->get()->getResult();
-           
-           
-                echo view('Admin/orders_list_view', $this->data);
-                //
-       
+        $page_title = 'All Orders';
+    
+        $this->data['page_body_id'] = "orders";
+        $this->data['breadcrumbs'] = [
+            'parent' => [],
+            'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        
+        echo view('Admin/Orders/all_orders', $this->data);       
     }
 
-    public function order(){
+    public function edit($id)
+    {
+        $order = $this->order_model->where('id', $id)->get()->getRow();
+        $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
+
+        // for($i = 0; $i < count($order_products); $i++) {
+        //     $product_data = $this->product_model->getProductData($order_products[$i]->product_id);
+
+        //     $images = [];
+        //     $imageIds = [];
+
+        //     // Fetch product images
+        //     if($product_data->images) {
+        //         $imageIds = explode(',',$product_data->images);
+        //         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+        //     }
+
+        //     $order_products[$i]->product_data = $product_data;
+        //     $order_products[$i]->images = $images;
+        // }
+
+        $all_products = $this->product_model->getAllProductsNoPaginate();
+
+        for($i = 0; $i < count($all_products); $i++) {
+
+            $images = [];
+            $imageIds = [];
+
+            // Fetch product images
+            if($all_products[$i]->images) {
+                $imageIds = explode(',',$all_products[$i]->images);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+            }
+
+            $all_products[$i]->images = $images;
+            
+            for($j = 0; $j < count($order_products); $j++) {
+                if($order_products[$j]->product_id == $all_products[$i]->id) {
+                    $order_products[$j]->product_data = $all_products[$i];
+
+                    unset($all_products[$i]);
+                    break;
+                }
+            }
+        }
+
+        // echo "<pre>".print_r($order_products, 1)."</pre>"; die();
+
+        $page_title = 'Edit Order #'. $order->id;
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/save_edit');
+        $this->data['order_data'] = $order;
+        $this->data['order_products'] = $order_products;
+        $this->data['all_products'] = $all_products;
+        
+        echo view('Admin/Orders/edit_order', $this->data);
+    }
+
+    public function save_edit()
+    {
+
+    }
+
+    public function active()
+    {
+        $page_title = 'Active Orders';
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/order');
+
+        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        
+        echo view('Admin/pending_orders', $this->data);
+    }
+
+    public function completed(){
        
              $page_title = 'Completed Orders';
 
@@ -55,6 +144,25 @@ class Orders extends BaseController {
           
                 echo view('Admin/complete_orders', $this->data);
             
+    }
+
+    public function cancelled()
+    {
+        $page_title = 'Cancelled Orders';
+
+        $this->data['page_body_id'] = "c_orders";
+        $this->data['breadcrumbs'] = [
+        'parent' => [
+            ['parent_url' => base_url('/admin/orders'), 'page_title' => 'Orders'],
+        ],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        $this->data['submit_url'] = base_url('/admin/orders/order');
+
+        $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
+        
+        echo view('Admin/cancelled_orders', $this->data);
     }
 
     public function drivers(){

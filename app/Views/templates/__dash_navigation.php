@@ -136,13 +136,7 @@
               <li class="nav-item <?php if( $uri->getSegment(2) === 'blogs' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
                 <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'blogs' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/blogs'); ?>">
                   <span class="sidenav-mini-icon">  </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> List Pages </span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white " href="../../pages/dashboards/discover.html">
-                  <span class="sidenav-mini-icon">  </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Add Page </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> List Articles </span>
                 </a>
               </li>
               <li class="nav-item <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>">
@@ -163,14 +157,23 @@
           <div class="collapse " id="ecommerce">
             <ul class="nav ">
               <li class="nav-item">
-                <a class="nav-link text-white " href="<?= base_url('admin/order') ?>">
+                <a class="nav-link text-white " href="<?= base_url('admin/orders') ?>">
                   <span class="sidenav-mini-icon"> O </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Order List </span>
                 </a>
-              </li>
+              </li>   
             </ul>
           </div>
         </li>
+        <!-- <li class="nav-item ">
+          <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+            <span class="sidenav-mini-icon"> R </span>
+            <span class="sidenav-normal  ms-2  ps-1"> Referral </span>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+  </li>
 
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#integration" class="nav-link text-white " aria-controls="integration" role="button" aria-expanded="false">

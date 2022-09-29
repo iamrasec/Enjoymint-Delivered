@@ -19,7 +19,7 @@
       <div class="col-lg-5 text-right d-flex flex-row justify-content-center">
         <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders'); ?>">View All Orders</a>
         <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/active'); ?>">View Active Orders</a>
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/cancelled'); ?>">View Cancelled Orders</a>
+        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/orders/completed'); ?>">View Completed Orders</a>
       </div>
     </div>
     
@@ -104,7 +104,7 @@ $(document).ready(function () {
       serverSide: true,
       order: [],
       ajax: {
-        url: '<?= base_url('api/orders/list_completed'); ?>',
+        url: '<?= base_url('api/orders/list_cancelled'); ?>',
         type: 'POST',
         headers: {
           "Authorization": "Bearer "+ jwt,
