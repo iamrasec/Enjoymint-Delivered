@@ -11,8 +11,8 @@ class Blogs extends BaseController {
     $this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
-    $this->product_model = model('productModel');
-    $this->blog_model = model('blogModel');
+    $this->product_model = model('ProductModel');
+    $this->blog_model = model('BlogModel');
     
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('imageModel');
