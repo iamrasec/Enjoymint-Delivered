@@ -18,7 +18,7 @@ class Blogs extends ResourceController
       $this->role = session()->get('role');
       $this->isLoggedIn = session()->get('isLoggedIn');
       $this->guid = session()->get('guid');
-      $this->blog_model = model('blogModel');
+      $this->blog_model = model('BlogModel');
       $this->image_model = model('ImageModel');
 
       helper(['form', 'functions']); // load helpers
@@ -48,12 +48,9 @@ class Blogs extends ResourceController
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
 
-          print_r($file);
-
           $img = $file['blog_image'];
 
           if (!$img->hasMoved()) {
-            // print_r("has not moved");
             $fileName = $img->getRandomName(); // generate a new random name
             $type = $img->getMimeType();
             $img->move( WRITEPATH . 'uploads/blogs', $fileName); // move the file to writable/uploads
@@ -65,8 +62,6 @@ class Blogs extends ResourceController
               'mime' => $type,
               'url' => 'writable/uploads/blogs/'. $fileName,
             ];
-
-            print_r($imageData);
 
             $this->image_model->save($imageData); // try to save to images table
             $imageId = $this->image_model->insertID();
