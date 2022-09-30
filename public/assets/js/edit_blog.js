@@ -48,8 +48,10 @@
       formData.append('title', $('#title').val());
       formData.append('url', $('#burl').val());
       formData.append('description', $('#description').val());
-      formData.append('content', $('#quill_content').val());
+      // formData.append('content', $('#quill_content').val());
+      formData.append('content', blog_content);
       formData.append('author', $('#author').val());
+      formData.append('current_image', $('#current_image').val());
   
       fetch('/api/blogs/edit_blog/' + $('#id').val(),  {
         method: 'POST',

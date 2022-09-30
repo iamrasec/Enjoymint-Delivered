@@ -101,6 +101,8 @@ class Blogs extends ResourceController
   public function edit_blog($id)
   {
     if($this->request->getPost()) {
+      // print_r($this->request->getPost());
+
       $validation =  \Config\Services::validation();
       
       $rules = [
@@ -112,27 +114,33 @@ class Blogs extends ResourceController
 
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
+        
         $images = array(); // initialize image array
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
-          // loop through all files uploaded
-          foreach($file['blog_image'] as $img){
-            if (!$img->hasMoved()) {
-                $fileName = $img->getRandomName(); // generate a new random name
-                $type = $img->getMimeType();
-                $img->move( WRITEPATH . 'uploads/blogs/' . $fileName); // move the file to writable/uploads
-                
-                // json data to be save to image
-                $imageData = [
-                  'filename' => $fileName,
-                  'mime' => $type,
-                  'url' => 'writable/uploads/blogs/'. $fileName,
-                ];
-                $this->image_model->save($imageData); // try to save to images table
-                $imageId = $this->image_model->insertID();
-                array_push($images, $imageId);
-            }
+
+          $img = $file['blog_image'];
+
+          if (!$img->hasMoved()) {
+            $fileName = $img->getRandomName(); // generate a new random name
+            $type = $img->getMimeType();
+            $img->move( WRITEPATH . 'uploads/blogs', $fileName); // move the file to writable/uploads
+            // $img->store('blogs/', $fileName);
+            
+            // json data to be save to image
+            $imageData = [
+              'filename' => $fileName,
+              'mime' => $type,
+              'url' => 'writable/uploads/blogs/'. $fileName,
+            ];
+
+            $this->image_model->save($imageData); // try to save to images table
+            $imageId = $this->image_model->insertID();
+            array_push($images, $imageId);
           }
+        }
+        else {
+          $images[0] = $this->request->getVar('current_image');
         }
         
         // data mapping for BLOGS table save
@@ -144,6 +152,9 @@ class Blogs extends ResourceController
           'author' => $this->request->getVar('author'),
           'images' => implode(',', $images),
         ];
+
+        // print_r($to_save);
+
         $this->blog_model->set($to_save)->where('id', $id)->update(); // trying to update blog to database
         $data_arr = array("success" => TRUE,"message" => 'Blog Saved!');
       } else {

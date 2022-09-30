@@ -39,6 +39,7 @@ $routes->get('products/images/(:any)', 'Products::images/$1'); // Show uploaded 
 $routes->get('products/(:any)', 'Products::index/$1');
 
 $routes->get('blogs/images/(:any)', 'Blogs::images/$1');
+$routes->get('blogs/(:any)', 'Blogs::index/$1');
 
 $routes->get('user', 'User::index', ['filter' => 'noauth']);
 $routes->post('save_data', 'Products::save');

@@ -126,7 +126,7 @@
         <div class="row mt-5">
           <?php foreach($experience as $exp) : ?> 
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
                 <a href="<?= base_url('experience/'.$exp->url); ?>"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
