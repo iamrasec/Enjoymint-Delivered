@@ -54,19 +54,31 @@ class Blogs extends BaseController {
 
   public function edit_blog($id)
   {
-      $page_title = 'Edit Blog';
-      $this->data['page_body_id'] = "edit_blog";
-      $this->data['breadcrumbs'] = [
-        'parent' => [
-          ['parent_url' => base_url('/admin/blogs'), 'page_title' => 'Blogs'],
-        ],
-        'current' => $page_title,
-      ];
-      $this->data['page_title'] = $page_title;
-      $this->data['blog_data'] = $this->blog_model->where('id', $id)->get()->getResult();
-   // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
+    $page_title = 'Edit Blog';
+    $this->data['page_body_id'] = "edit_blog";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/blogs'), 'page_title' => 'Blogs'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $blog = $this->blog_model->where('id', $id)->get()->getResult();
 
-      return view('Blogs/edit_blog', $this->data);
+    $imageIds = [];
+
+    for($i = 0; $i < count($blog); $i++) {
+      if($blog[$i]->images != null) {
+        $imageIds = explode(',',$blog[$i]->images);
+        $blog[$i]->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+      }
+    }
+
+    $this->data['blog_data'] = $blog;
+
+    // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
+
+    return view('Blogs/edit_blog', $this->data);
   }
   
   public function save_product() {

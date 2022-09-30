@@ -14,9 +14,11 @@
   <!-- End Navbar -->
   
   <div class="container-fluid py-4">
+    <pre><?php print_r($blog_data); ?></pre>
+
     <form id="edit_blog" class="enjoymint-form" enctype="multipart/form-data">
       <?php foreach ($blog_data as $blog): ?>  
-    <input type="hidden" value="<?= $blog->id; ?>" name="id" id="id">
+      <input type="hidden" value="<?= $blog->id; ?>" name="id" id="id">
     
       <div class="row">
         <div class="col-lg-6">
@@ -78,8 +80,8 @@
               <div class="col-12 col-md-12 col-xs-12 mb-3">
                   <label class="form-label" for="name">Content</label>
                   <div class="input-group input-group-dynamic">
-                    <div id="quill_editor" class="w-100"><?= $blog->content; ?></div>
-                    <input type="hidden" id="quill_content" value="<?= $blog->content; ?>"  name="content">
+                    <div id="quill_editor" class="w-100"><?= addslashes($blog->content); ?></div>
+                    <!-- <input type="hidden" id="quill_content" value="<?= stripslashes($blog->content); ?>" name="content"> -->
                   </div>
                 </div>
               </div>
@@ -87,6 +89,14 @@
               <div class="row mt-4">
                 <div class="col-12 col-md-12 col-xs-12 mb-3">
                   <label class="form-label" for="name">Main Image</label>
+                  <?php if(isset($blog->images[0])): ?>
+                  <div class="row">
+                    <div class="col-12 col-md-12 col-xs-12 mb-3">
+                      <img src="<?= base_url('blogs/images/'.$blog->images[0]->filename); ?>">
+                      <input type="hidden" id="current_image" name="current_image" value="<?= $blog->images[0]->id; ?>">
+                    </div>
+                  </div>
+                  <?php endif; ?>
                   <div class="input-group input-group-dynamic">
                     <input type="file" id="blog_image" name="blog_image" accept="image/png, image/jpeg, image/jpg">
                   </div>
@@ -140,8 +150,11 @@
     theme: 'snow'
   });
 
+  var blog_content = quill.root.innerHTML;
+
   quill.on('text-change', function(delta, oldDelta, source) {
-    document.getElementById("quill_content").value = quill.root.innerHTML;
+    // document.getElementById("quill_content").value = quill.root.innerHTML;
+    blog_content = quill.root.innerHTML;
   });
 </script>
 <?php $this->endSection() ?>
