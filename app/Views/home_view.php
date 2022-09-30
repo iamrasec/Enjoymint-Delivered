@@ -125,7 +125,7 @@
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
                 <a href="#"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
@@ -137,7 +137,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/creative.jpg'); ?>" /></a>
               </div>
@@ -148,7 +148,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/focus.jpg'); ?>" /></a>
               </div>
@@ -159,7 +159,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/bliss.jpg'); ?>" /></a>
               </div>
@@ -170,7 +170,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/calm.jpg'); ?>" /></a>
               </div>
@@ -181,7 +181,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/Sleep3.png'); ?>" /></a>
               </div>
@@ -192,7 +192,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/arouse.jpg'); ?>" /></a>
               </div>
@@ -203,7 +203,7 @@
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit">
+            <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <a href="#"><img src="<?= base_url('assets/img/experience/Comfort-2.png'); ?>" /></a>
               </div>
