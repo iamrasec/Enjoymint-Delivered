@@ -34,6 +34,7 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 $routes->get('categories/(:any)', 'Categories::index/$1');
+$routes->get('experience/(:any)', 'Experience::index/$1');
 $routes->get('products/images/(:any)', 'Products::images/$1'); // Show uploaded product images
 $routes->get('products/(:any)', 'Products::index/$1');
 

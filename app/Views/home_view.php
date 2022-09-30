@@ -124,95 +124,20 @@
         <h2>Discover <span class="text-sm">(Coming Soon)</span></h2>
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
+          <?php foreach($experience as $exp) : ?> 
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
-                <a href="#"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
+                <a href="<?= base_url('experience/'.$exp->url); ?>"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
               </div>
               <div class="discover-benefit-info">
-                <a href="#"><h5>Energy</h5></a>
-                <a class="btn" href="#">Shop Now</a>
+                <a href="<?= base_url('experience/'.$exp->url); ?>"><h5><?= $exp->name ?></h5></a>
+                <a class="btn" href="<?= base_url('experience/'.$exp->url); ?>">Shop Now</a>
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/creative.jpg'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Creativity</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/focus.jpg'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Focus</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/bliss.jpg'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Bliss</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/calm.jpg'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Calm</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/Sleep3.png'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Sleep</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/arouse.jpg'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Arouse</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <a href="#"><img src="<?= base_url('assets/img/experience/Comfort-2.png'); ?>" /></a>
-              </div>
-              <div class="discover-benefit-info">
-                <a href="#"><h5>Comfort</h5></a>
-                <a class="btn" href="#">Shop Now</a>
-              </div>
-            </div>
-          </div>
+         <?php endforeach ; ?>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Home extends BaseController
+class Experience extends BaseController
 {
     var $view_data = array();
 
@@ -29,20 +29,26 @@ class Home extends BaseController
         }
     }
 
-    public function index()
+    public function index($url)
     {
-        $page_title = 'Home';
+        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
 
-        $this->data['page_body_id'] = "home";
+
+        $page_title = $experience->name;
+
+        $this->data['page_body_id'] = "shop";
         $this->data['breadcrumbs'] = [
         'parent' => [],
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        // $this->data['products'] = $this->product_model->get()->getResult();
+        // $this->data['products'] = $this->product_model->getAllProducts();
 
-        // $all_products = $this->product_model->get()->getResult();
-        $all_products = $this->product_model->getAllProducts();
-        
+        $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
+
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -56,13 +62,13 @@ class Home extends BaseController
 
             $count++;
         }
-
-        //  print_r($experiences);
-
+        
         $this->data['products'] = $product_arr;
-        // $this->data['experience'] = $experiences;
-         $this->data['experience'] = $this->experience_model->get()->getResult();
+        $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
-        return view('home_view', $this->data);
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult();
+       
+        return view('experience_view', $this->data);
     }
 }
