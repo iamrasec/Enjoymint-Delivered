@@ -124,20 +124,20 @@
         <h2>Discover <span class="text-sm">(Coming Soon)</span></h2>
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
-          <?php foreach($experience as $exp) : ?> 
+          <?php for($i = 0; $i < count($experience); $i++)  : ?> 
           <div class="col-md-3 col-sm-6">
             <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
-                <a href="<?= base_url('experience/'.$exp->url); ?>"><img src="<?= base_url('assets/img/experience/energy.jpg'); ?>" /></a>
+                <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><img src="<?= $images[$i] ?>" /></a> 
               </div>
               <div class="discover-benefit-info">
-                <a href="<?= base_url('experience/'.$exp->url); ?>"><h5><?= $exp->name ?></h5></a>
-                <a class="btn" href="<?= base_url('experience/'.$exp->url); ?>">Shop Now</a>
+                <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><h5><?= $experience[$i]->name ?></h5></a>
+                <a class="btn" href="<?= base_url('experience/'.$experience[$i]->url); ?>">Shop Now</a>
               </div>
             </div>
           </div>
-         <?php endforeach ; ?>
+         <?php endfor ; ?>
         </div>
       </div>
     </div>
