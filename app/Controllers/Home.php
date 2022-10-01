@@ -42,7 +42,7 @@ class Home extends BaseController
 
         // $all_products = $this->product_model->get()->getResult();
         $all_products = $this->product_model->getAllProducts();
-        
+        $image = imageExperience();
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -57,10 +57,11 @@ class Home extends BaseController
             $count++;
         }
 
-        //  print_r($experiences);
-
+         
+   
         $this->data['products'] = $product_arr;
         // $this->data['experience'] = $experiences;
+        $this->data['images'] = $image;
          $this->data['experience'] = $this->experience_model->get()->getResult();
         $this->data['categories'] = $this->category_model->get()->getResult();
         return view('home_view', $this->data);

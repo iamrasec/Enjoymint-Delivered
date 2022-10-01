@@ -51,3 +51,18 @@ function getSignedJWTForUser(string $guid)
     $jwt = JWT::encode($payload, Services::getSecretKey(), 'HS256');
     return $jwt;
 }
+
+function imageExperience()
+{
+    $images = array(
+        'http://fuegonetworxservices.com/assets/img/experience/energy.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/creative.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/focus.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/bliss.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/calm.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/Sleep3.png',
+         'http://fuegonetworxservices.com/assets/img/experience/arouse.jpg',
+         'http://fuegonetworxservices.com/assets/img/experience/Comfort-2.png'
+    );
+    return $images;
+}
