@@ -161,7 +161,7 @@
                       <div class="input-group input-group-dynamic">
                         <!-- <input type="text" name="thc_val" id="thc_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)"> -->
                         <!-- <input type="range" name="rangeInput" min="0" max="1000" value="0" onchange="updateTextInput(this.value);"> -->
-                        <input type="text" name="thc_val" id="thc_val" value="0" readonly class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" name="thc_val" id="thc_val" placeholder="0.00" min="0" value="0" step="0.01" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
@@ -181,7 +181,7 @@
                       <div class="input-group input-group-dynamic">
                         <!-- <input type="text" name="cbd_val" id="cbd_val" class="form-control w-100 border px-2" value="0" onfocus="focused(this)" onfocusout="defocused(this)"> -->
                         <!-- <input type="range" name="rangeInput" min="0" max="1000" value="0" onchange="updateTextInput2(this.value);"> -->
-                        <input type="text" name="cbd_val" id="cbd_val" value="0" readonly class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                        <input type="number" name="cbd_val" id="cbd_val" placeholder="0.00" min="0" value="0" step="0.01" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
                       </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
