@@ -15,12 +15,15 @@ class Users extends BaseController
 		$this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
+		$this->uid = session()->get('id');
 		$this->user_model = model('UserModel');
+		$this->customerverification_model = model('VerificationModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
-
+		$this->image_model = model('ImageModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
 
 		$this->sender_email = 'cesar@fuegonetworx.com';
+		$this->reciever_email = 'welyelf@fuegonetworx.com';
 	}
 
 	public function index()
@@ -542,4 +545,86 @@ class Users extends BaseController
 		
 		return view('customer_dashboard/index', $this->data);
 	}
+
+	public function customerVerification()
+	{   
+		helper(['form']);
+		$page_title = "Upload ID";
+
+		// print_r($categories);
+
+		$this->data['page_body_id'] = "customer Verification";
+		$this->data['breadcrumbs'] = [
+		'parent' => [],
+		'current' => $page_title,
+		];
+		$this->data['page_title'] = $page_title;
+
+		$images = array();
+		// $file = $this->request->getFile('file');
+		
+		if ($this->request->getFileMultiple('file')) {
+ 
+			foreach($this->request->getFileMultiple('file') as $file)
+			{   
+				$newName = $file->getRandomName();
+				$type = $file->getMimeType();
+				$file->move( WRITEPATH . 'uploads', $newName);
+
+				$imageData = [
+						'filename' => $newName,
+						'mime' => $type,
+						'url' => 'writable/uploads/'. $newName,
+					  ];
+		      $this->image_model->save($imageData);
+			//  $msg = 'Files has been uploaded';
+			 $imageId = $this->image_model->insertID();
+                array_push($images, $imageId);
+			}
+	   }
+
+	   $data = [
+		'user_id' => $this->uid,
+		'images' => implode(',', $images),
+		'status' => 0
+	   ];
+	//   return $this->index()->with('msg', $msg);
+		$this->customerverification_model->save($data);
+
+		$this->send_verification($this->sender_email, $this->reciever_email);
+		return view('user/id_upload', $this->data);
+	}
+
+	public function send_verification($sender_email, $reciever_email)
+	{
+		// $confirm_key = getSignedJWTForUser($user['guid']);
+		$user['confirm_url'] = base_url('admin/verification_email/');
+
+		$email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($reciever_email);
+		$email->setSubject('Confirm the Verification');
+		$email->setNewline = "\r\n";
+
+		$template = view('email/verification', $user);
+
+		// $body  = 'Name: ' . $recipient_name . "\r\n";
+		// $body .= 'E-Mail: ' . $recipient_email . "\r\n";
+		// $body .= 'Message: ' . $message . "\r\n";
+
+		$email->setMessage($template);
+
+		if($email->send()) {
+				return true;
+		} 
+
+		// Output errors for debugging if necessary
+		// echo $email->printDebugger();
+		// exit;
+
+		//Handle any errors here...
+	} 
+
+		  
+    
 }
