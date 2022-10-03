@@ -9,7 +9,7 @@ class Cart extends BaseController
 {
   public function __construct() 
 	{
-		helper(['jwt', 'cookie']);
+		helper(['jwt', 'cookie', 'edimage']);
 
 		$this->data = [];
 		$this->role = session()->get('role');
@@ -25,6 +25,8 @@ class Cart extends BaseController
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
+
+    $this->sender_email = getenv('SMTP_EMAIL_USER');
 	}
 
   private function _cookie_to_db($cookie_cart)
@@ -233,6 +235,9 @@ class Cart extends BaseController
     $update_order = $this->checkout_model->update($order_id, $order_costs);
 
     if($update_order > 0) {
+      // Send Order Confirmation Email
+      $this->send_order_confirmation($order_data, $cart_products);
+
       // Delete user's cart items
       $this->_clear_cart($user['id']);
       session()->setFlashdata('order_completed', $data['cart_key']);
@@ -241,6 +246,37 @@ class Cart extends BaseController
     else {
       return redirect()->to('/cart');
     }
+  }
+
+  public function send_order_confirmation($order, $products)
+  {
+    $sender_email = $this->sender_email;
+    $user_email = session()->get('email');
+
+    $email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($user_email);
+		$email->setSubject('Order Placed Successfully');
+		
+
+    for($i = 0; $i < count($products); $i++) {
+      $products[$i]['images'] = getProductImage($products[$i]['product_id']);
+    }
+
+    $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
+
+    // echo "<pre>".print_r($sender_email, 1)."</pre>";
+    // echo "<pre>".print_r($user_email, 1)."</pre>";
+    // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
+
+		$template = view('email/order_confirmation', $order_data);
+
+    $email->setMessage($template);
+    $email->setNewline("\r\n");
+
+		if($email->send()) {
+      return true;
+		}
   }
 
   public function success()
