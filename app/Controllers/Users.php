@@ -555,7 +555,7 @@ class Users extends BaseController
 
 			$rules = [
 				'email' => [
-					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
+					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email, id, '.$this->uid.']',  // check if email is valid.  check if email is unique on users table
 					'errors' => [
 						'min_length' => 'Email should be longer than 6 characters.',
 						'max_length' => 'Email should be no longer than 50 characters.',
@@ -564,8 +564,8 @@ class Users extends BaseController
 					],
 				],
 				'mobile_phone' => [
-					// 'rules' => 'required|mobileValidation[mobile_phone]|is_unique[users.mobile_phone]',
-					'rules' => 'required|is_unique[users.mobile_phone]',
+					'rules' => 'required|mobileValidation[mobile_phone]|is_unique[users.mobile_phone, id, '.$this->uid.']',
+					// 'rules' => 'required|is_unique[users.mobile_phone, id, '.$this->uid.']',
 					'errors' => [
 						'required' => 'Mobile Number is required',
 						'mobileValidation' => 'Invalid Mobile Number',
@@ -579,7 +579,7 @@ class Users extends BaseController
 
 				// echo "<pre>".print_r($this->validator->listErrors(), 1)."</pre>"; die();
 
-				$session->setFlashdata('message', $this->validator->listErrors());
+				$session->setFlashdata('error', $this->validator->listErrors());
 				return redirect()->to('users/dashboard/_personal_info_tab');
 			}
 			else {

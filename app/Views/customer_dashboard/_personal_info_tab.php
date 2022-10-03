@@ -7,8 +7,14 @@
     </div>
     <?php endif; ?>
 
-    <?php if (session()->getFlashdata('message') !== NULL) : ?>
+    <?php if (session()->getFlashdata('error') !== NULL) : ?>
       <div class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+          <?php echo session()->getFlashdata('error'); ?>
+      </div>
+    <?php endif; ?>
+
+    <?php if (session()->getFlashdata('message') !== NULL) : ?>
+      <div class="alert alert-success text-white alert-dismissible fade show" role="alert">
           <?php echo session()->getFlashdata('message'); ?>
       </div>
     <?php endif; ?>
