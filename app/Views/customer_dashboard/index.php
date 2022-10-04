@@ -4,23 +4,22 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
-<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-6">
-
+<div class="container-sm">
+<div class="card card-body blur shadow-blur mx-md-4 mx-sm-0 mt-6">
 <section class="pt-3 pb-4" id="popular-products">
-  <div class="container">
     <div class="row">
       <div class="col-12 col-md-4 col-sm-12 mt-5">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1 class="page-title"><?= $page_title; ?></h1>
       </div>
       <div class="col-12 col-md-8 col-sm-12 mt-md-5 mt-xs-1">
-          <ul id="customer-dashboard-menu" class="d-flex flex-row">
-            <li><a href="<?= base_url('users/dashboard/_orders_tab'); ?>" class="px-2 py-2 border">Active Orders</a></li>
-            <li><a href="<?= base_url('users/dashboard/_archive_tab'); ?>" class="px-2 py-2 border">Previous Orders</a></li>
-            <li><a href="<?= base_url('users/dashboard/_personal_info_tab'); ?>" class="px-2 py-2 border">Personal Info</a></li>
-            <!-- <li><a href="<?= base_url('users/dashboard/_address_tab'); ?>" class="px-2 py-2 border">Address</a></li> -->
-            <li><a href="<?= base_url('users/customerverification'); ?>" class="px-2 py-2 border">Verification Center</a></li>
-            <li><a href="<?= base_url('users/logout'); ?>" class="px-2 py-2 border">Log Out</a></li>
+          <ul id="customer-dashboard-menu" class="d-flex flex-row flex-wrap">
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_orders_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_orders_tab') ? ' active' : ''; ?>">Active Orders</a></li>
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_archive_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_archive_tab') ? ' active' : ''; ?>">Previous Orders</a></li>
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_personal_info_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_personal_info_tab') ? ' active' : ''; ?>">Personal Info</a></li>
+            <!-- <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_address_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_address_tab') ? ' active' : ''; ?>">Address</a></li> -->
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/customerverification'); ?>" class="px-2 py-2 border">Verification Center</a></li>
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/logout'); ?>" class="px-2 py-2 border">Log Out</a></li>
           </ul>
       </div>
     </div>
@@ -29,9 +28,7 @@
         <?php echo view('customer_dashboard/'. $active_tab); ?>
       </div>
     </div>
-  </div>
 </section>
-
 
 
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
@@ -59,10 +56,15 @@
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 
 </div>
-
+</div>
 <style>
 #customer-dashboard-menu {
   list-style: none;
+  padding-left: 0;
+}
+#customer-dashboard-menu .active {
+  background-color: #489989;
+  color: #ffffff;
 }
 .prod_image {
   width: 100px;

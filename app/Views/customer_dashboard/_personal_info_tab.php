@@ -1,6 +1,6 @@
-<div class="card my-3">
-  <div class="card-header"><h6>Personal Information</h6></div>
-  <div class="card-body">
+<div class="card mt-3">
+  <div class="card-header pb-0"><h6>Personal Information</h6></div>
+  <div class="card-body pt-1">
     <?php if(isset($validation)): ?>
     <div class="alert alert-danger">
       <?= $validation->listErrors()?>

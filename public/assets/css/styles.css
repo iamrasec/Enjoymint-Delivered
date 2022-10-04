@@ -65,6 +65,12 @@ nav.navbar.sticky_header, body.inner-page nav.navbar {
   border-radius: 15px;
 }
 
+@media (max-width:425px) {
+  .navbar.navbar-absolute {
+    width: 90%;
+  }
+}
+
 .product-featured .img-wrap {
   margin-bottom: 10px;
 }
