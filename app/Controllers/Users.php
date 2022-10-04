@@ -560,7 +560,7 @@ class Users extends BaseController
 	}
 
 	public function customerVerification()
-	{   
+	{   $session = session();
 		helper(['form']);
 		$page_title = "Upload ID";
 
@@ -577,9 +577,17 @@ class Users extends BaseController
 		// $file = $this->request->getFile('file');
 		
 		if ($this->request->getFileMultiple('file')) {
- 
+			
+			// print_r($files);
+			
 			foreach($this->request->getFileMultiple('file') as $file)
 			{   
+				if(!$file->isValid()){
+					$this->data['status'] = 'Please select file first to verify account ';
+					return view('User/id_upload', $this->data);
+			}
+			else{
+
 				$newName = $file->getRandomName();
 				$type = $file->getMimeType();
 				$file->move( WRITEPATH . 'uploads', $newName);
@@ -593,19 +601,24 @@ class Users extends BaseController
 			//  $msg = 'Files has been uploaded';
 			 $imageId = $this->image_model->insertID();
                 array_push($images, $imageId);
+
+
+				$data = [
+					'user_id' => $this->uid,
+					'images' => implode(',', $images),
+					'status' => 0
+				   ];
+					//   return $this->index()->with('msg', $msg);
+					$this->customerverification_model->save($data);
+			
+					$this->send_verification($this->sender_email, $this->reciever_email);
+					return $this->index();
 			}
+		}
 	   }
-
-	   $data = [
-		'user_id' => $this->uid,
-		'images' => implode(',', $images),
-		'status' => 0
-	   ];
-		//   return $this->index()->with('msg', $msg);
-		$this->customerverification_model->save($data);
-
-		$this->send_verification($this->sender_email, $this->reciever_email);
-		return view('User/id_upload', $this->data);
+$this->data['status'] = '';
+return view('User/id_upload', $this->data);
+	   
 	}
 
 	public function send_verification($sender_email, $reciever_email)

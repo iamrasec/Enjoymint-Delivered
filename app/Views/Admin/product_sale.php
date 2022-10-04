@@ -14,7 +14,6 @@
       <div class="col-lg-6">
         <h4><?php echo $page_title; ?></h4>
       </div>
-    
     </div>
 
     <div class="row mt-4">
