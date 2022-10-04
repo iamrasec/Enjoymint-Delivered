@@ -11,9 +11,10 @@
       <div class="row"> 
         <div class="col-lg-6 col-sm-2 mt-5 text-center">
             <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
-            <label>Please Select 2 Files</label>
-            <input type="file" name="file[]" class="form-control" id="file" multiple style="margin-left: 220px ;" class="form-control">
-          <input type="submit" class="btn btn-primary" value="upload" /> 
+            <label>Please Select 2 Files</label><br>
+          <h7 style="color: red ;"> <?= $status ?></h7><br>
+        <input type="file" name="file[]" class="form-control" id="file" style="margin-left: 220px ;" class="form-control">
+            <input type="submit" class="btn btn-primary" value="upload" /> 
           
           </div>
           <div class="col-lg-6 col-sm-2 mt-5 text-center">
