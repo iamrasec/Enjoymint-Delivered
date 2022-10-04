@@ -9,7 +9,7 @@ class Users extends BaseController
 
 	public function __construct() 
 	{
-		helper(['jwt']);
+		helper(['jwt', 'edimage']);
 
 		$this->data = [];
 		$this->role = session()->get('role');
@@ -18,6 +18,8 @@ class Users extends BaseController
 		$this->uid = session()->get('id');
 		$this->user_model = model('UserModel');
 		$this->customerverification_model = model('VerificationModel');
+		$this->checkout_model = model('CheckoutModel');
+    $this->order_products_model = model('OrderProductsModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 		$this->image_model = model('ImageModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
@@ -531,12 +533,23 @@ class Users extends BaseController
 		'current' => $page_title,
 		];
 		$this->data['page_title'] = $page_title;
+		$this->data['user_data'] = $this->user_model->getUserByGuid($this->guid);
+		// $this->data['orders'] = array();
 
 		// Identify the tabs that goes with the Dashboard
-		$dashboard_tabs = ['_orders_tab', '_personal_info_tab', '_address_tab'];
+		$dashboard_tabs = ['_orders_tab', '_archive_tab', '_personal_info_tab', '_address_tab'];
 
 		// Added security to only allow tabs that are specified in the array
 		if(in_array($tab, $dashboard_tabs)) {
+			if($tab == '_orders_tab') {
+				$this->data['orders'] = $this->_user_active_orders($this->uid);
+				$this->data['pager'] = $this->checkout_model->pager;
+			}
+			else if($tab == '_archive_tab') {
+				$this->data['orders'] = $this->_user_archive_orders($this->uid);
+				$this->data['pager'] = $this->checkout_model->pager;
+			}
+
 			$this->data['active_tab'] = $tab;		// If tab specified is found, return tab
 		}
 		else {
@@ -588,7 +601,7 @@ class Users extends BaseController
 		'images' => implode(',', $images),
 		'status' => 0
 	   ];
-	//   return $this->index()->with('msg', $msg);
+		//   return $this->index()->with('msg', $msg);
 		$this->customerverification_model->save($data);
 
 		$this->send_verification($this->sender_email, $this->reciever_email);
@@ -625,6 +638,99 @@ class Users extends BaseController
 		//Handle any errors here...
 	} 
 
-		  
-    
+	// public function get_user_orders($uid)
+	// {
+	// 	$active_orders = $this->_user_active_orders($uid);
+
+	// 	$archive_orders = $this->_user_archive_orders($uid);
+
+	// 	$orders = ['active_orders' => $active_orders, 'previous_orders' => $archive_orders];
+
+	// 	return $orders;
+	// }
+
+	private function _user_active_orders($uid)
+	{
+		// $orders = $this->checkout_model->where('customer_id', $uid)->whereIn('status', [0,1])->get()->getResult();
+		$orders = $this->checkout_model->where('customer_id', $uid)->whereIn('status', [0,1])->paginate(10);
+
+		for($i = 0; $i < count($orders); $i++) {
+			$orders[$i]['products'] = $this->order_products_model->where('order_id', $orders[$i]['id'])->get()->getResult();
+
+			for($j = 0; $j < count($orders[$i]['products']); $j++) {
+				$orders[$i]['products'][$j]->images = getProductImage($orders[$i]['products'][$j]->product_id);
+			}
+		}
+
+		return $orders;
+	}
+
+	private function _user_archive_orders($uid)
+	{
+		// $orders = $this->checkout_model->where('customer_id', $uid)->whereIn('status', [2])->get()->getResult();
+		$orders = $this->checkout_model->where('customer_id', $uid)->whereIn('status', [2])->paginate(10);
+
+		for($i = 0; $i < count($orders); $i++) {
+			$orders[$i]['products'] = $this->order_products_model->where('order_id', $orders[$i]['id'])->get()->getResult();
+
+			for($j = 0; $j < count($orders[$i]['products']); $j++) {
+				$orders[$i]['products'][$j]->images = getProductImage($orders[$i]['products'][$j]->product_id);
+			}
+		}
+
+		return $orders;
+	}
+
+	public function update_personal_info()
+	{
+		$session = session();
+
+		if($this->request->getPost()) {
+
+			// echo "<pre>".print_r($this->request->getPost(), 1)."</pre>";
+
+			$rules = [
+				'email' => [
+					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email, id, '.$this->uid.']',  // check if email is valid.  check if email is unique on users table
+					'errors' => [
+						'min_length' => 'Email should be longer than 6 characters.',
+						'max_length' => 'Email should be no longer than 50 characters.',
+						'valid_email' => 'Please input a valid Email.',
+						'is_unique' => 'The Email you provided already has an account. Please try another one or Sign in with that email.',
+					],
+				],
+				'mobile_phone' => [
+					'rules' => 'required|mobileValidation[mobile_phone]|is_unique[users.mobile_phone, id, '.$this->uid.']',
+					// 'rules' => 'required|is_unique[users.mobile_phone, id, '.$this->uid.']',
+					'errors' => [
+						'required' => 'Mobile Number is required',
+						'mobileValidation' => 'Invalid Mobile Number',
+						'is_unique' => 'Mobile number already exists',
+					],
+				],
+			];
+
+			if(!$this->validate($rules)) {
+				$this->data['validation'] = $this->validator;
+
+				// echo "<pre>".print_r($this->validator->listErrors(), 1)."</pre>"; die();
+
+				$session->setFlashdata('error', $this->validator->listErrors());
+				return redirect()->to('users/dashboard/_personal_info_tab');
+			}
+			else {
+				$update_data = [
+					'email' => $this->request->getVar('email'),
+					'mobile_phone' => $this->request->getVar('mobile_phone'),
+				];
+
+				$save_update = $this->user_model->update($this->uid, $update_data);
+
+				if($save_update) {
+					$session->setFlashdata('message', 'Personal Info Updated.');
+					return redirect()->to('users/dashboard/_personal_info_tab');
+				}
+			}
+		}
+	}
 }

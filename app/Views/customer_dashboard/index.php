@@ -14,10 +14,11 @@
         <h1 class="page-title"><?= $page_title; ?></h1>
       </div>
       <div class="col-12 col-md-8 col-sm-12 mt-md-5 mt-xs-1">
-          <ul class="d-flex flex-row">
-            <li><a href="#" class="px-2 py-2 border">Orders</a></li>
-            <li><a href="#" class="px-2 py-2 border">Personal Info</a></li>
-            <li><a href="#" class="px-2 py-2 border">Address</a></li>
+          <ul id="customer-dashboard-menu" class="d-flex flex-row">
+            <li><a href="<?= base_url('users/dashboard/_orders_tab'); ?>" class="px-2 py-2 border">Active Orders</a></li>
+            <li><a href="<?= base_url('users/dashboard/_archive_tab'); ?>" class="px-2 py-2 border">Previous Orders</a></li>
+            <li><a href="<?= base_url('users/dashboard/_personal_info_tab'); ?>" class="px-2 py-2 border">Personal Info</a></li>
+            <!-- <li><a href="<?= base_url('users/dashboard/_address_tab'); ?>" class="px-2 py-2 border">Address</a></li> -->
             <li><a href="<?= base_url('users/customerverification'); ?>" class="px-2 py-2 border">Verification Center</a></li>
             <li><a href="<?= base_url('users/logout'); ?>" class="px-2 py-2 border">Log Out</a></li>
           </ul>
@@ -58,5 +59,14 @@
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 
 </div>
+
+<style>
+#customer-dashboard-menu {
+  list-style: none;
+}
+.prod_image {
+  width: 100px;
+}
+</style>
 
 <?php $this->endSection() ?>
