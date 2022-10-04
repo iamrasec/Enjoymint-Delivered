@@ -700,8 +700,8 @@ class Users extends BaseController
 					],
 				],
 				'mobile_phone' => [
-					'rules' => 'required|mobileValidation[mobile_phone]|is_unique[users.mobile_phone, id, '.$this->uid.']',
-					// 'rules' => 'required|is_unique[users.mobile_phone, id, '.$this->uid.']',
+					// 'rules' => 'required|mobileValidation[mobile_phone]|is_unique[users.mobile_phone, id, '.$this->uid.']',
+					'rules' => 'required|is_unique[users.mobile_phone, id, '.$this->uid.']',
 					'errors' => [
 						'required' => 'Mobile Number is required',
 						'mobileValidation' => 'Invalid Mobile Number',
