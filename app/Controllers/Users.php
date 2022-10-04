@@ -605,7 +605,7 @@ class Users extends BaseController
 		$this->customerverification_model->save($data);
 
 		$this->send_verification($this->sender_email, $this->reciever_email);
-		return view('user/id_upload', $this->data);
+		return view('User/id_upload', $this->data);
 	}
 
 	public function send_verification($sender_email, $reciever_email)
