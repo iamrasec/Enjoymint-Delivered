@@ -5,7 +5,7 @@
 <?php echo $this->include('templates/__navigation.php'); ?>
 
 <div class="container-sm">
-<div class="card card-body blur shadow-blur mx-md-4 mx-sm-0 mt-6">
+<div class="card card-body blur shadow-blur mx-md-4 mx-sm-0 mt-8 mt-sm-6">
 <section class="pt-3 pb-4" id="popular-products">
     <div class="row">
       <div class="col-12 col-md-4 col-sm-12 mt-5">

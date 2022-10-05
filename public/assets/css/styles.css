@@ -62,7 +62,16 @@ h1.page-title {
 
 @media (max-width:425px) {
   .logo {
-    height: 60px;
+    height: 50px;
+  }
+}
+
+@media (max-width:320px) {
+  .navbar-brand {
+    margin-right: 0;
+  }
+  .logo {
+    height: 75px;
   }
 }
 
@@ -297,6 +306,28 @@ padding: 5%;
 .login-page {
   /* background: url('/assets/img/age-check/cannabis.jpg') center center no-repeat;
   background-size: cover; */
+}
+
+@media (max-width:991px) {
+  #product-filter-toggle {
+    font-size: 1rem;
+    margin-top: 50px;
+    padding: 10px;
+    width: 170px;
+  }
+}
+
+@media (max-width:425px) {
+  #product-filter-toggle {
+    margin-top: 30px;
+    width: 100%;
+  }
+}
+
+@media (max-width:320px) {
+  #product-filter-toggle {
+    margin-top: 120px;
+  }
 }
 
 .home-category-link:hover {

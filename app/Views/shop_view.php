@@ -8,7 +8,8 @@
   <section class="pt-3 pb-4" id="popular-products">
     <div class="container">
       <div class="row">
-        <div class=" card col-lg-2 col-xs-0 mt-8">
+        <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
+        <div class="product-filter-form card col-lg-2 mt-2 mt-lg-8 d-lg-flex">
     
           <h5>Filter By:</h5>
           <form method='get' action="<?= base_url('/shop/')?>" id="searchForm">
@@ -260,7 +261,6 @@ body {
 h2 {
   margin: 16px;
 }
-
 
 .select-box {
   display: flex;

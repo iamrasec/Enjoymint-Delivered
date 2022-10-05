@@ -8,6 +8,23 @@
     }
   });
 
+  $('.product-filter-form').hide();
+  $(document).on('click', '#product-filter-toggle', function() {
+    // if($(this).hasClass('open')) {
+    //   $('.product-filter-form').hide("slide", {direction: "up"}, 1000, function() {
+    //     $('.product-filter-form').addClass('d-none');
+    //   });
+    //   $(this).removeClass('open');
+    // }
+    // else {
+    //   $('.product-filter-form').removeClass('d-none');
+    //   $(this).addClass('open');
+    //   $('.product-filter-form').show("slide", {direction: "down"}, 1000);
+    // }
+
+    $('.product-filter-form').slideToggle('slow');
+  });
+
   // $(document).on("click", "#modal-login-btn", function() {
   //   let data = {};
   //   data.email = $("input[name=email]").val();
