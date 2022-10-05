@@ -573,53 +573,53 @@ class Users extends BaseController
 		];
 		$this->data['page_title'] = $page_title;
 
-		$images = array();
-		// $file = $this->request->getFile('file');
 		
-		if ($this->request->getFileMultiple('file')) {
-			
-			// print_r($files);
-			
-			foreach($this->request->getFileMultiple('file') as $file)
-			{   
-				if(!$file->isValid()){
-					$this->data['status'] = 'Please select file first to verify account ';
-					return view('User/id_upload', $this->data);
-			}
-			else{
-
-				$newName = $file->getRandomName();
-				$type = $file->getMimeType();
-				$file->move( WRITEPATH . 'uploads', $newName);
-
-				$imageData = [
-						'filename' => $newName,
+		return view('User/id_upload', $this->data);
+	   
+}
+	
+public function uploadID(){
+	helper(['form', 'functions']); // load helpers
+    addJSONResponseHeader();
+	
+	$images = array();		
+			if (!empty($this->request->getFiles())) {
+				$file = $this->request->getFiles(); // get all files from post request
+				
+				// loop through all files uploaded
+				foreach($file['productImages'] as $img){
+				  if (!$img->hasMoved()) {
+					  $fileName = $img->getRandomName(); // generate a new random name
+					  $type = $img->getMimeType();
+					  $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+					  
+					  // json data to be save to image
+					  $imageData = [
+						'filename' => $fileName,
 						'mime' => $type,
-						'url' => 'writable/uploads/'. $newName,
+						'url' => 'writable/uploads/'. $fileName,
 					  ];
-		      $this->image_model->save($imageData);
-			//  $msg = 'Files has been uploaded';
-			 $imageId = $this->image_model->insertID();
-                array_push($images, $imageId);
-
-
+					  $this->image_model->save($imageData); // try to save to images table
+					  $imageId = $this->image_model->insertID();
+					  array_push($images, $imageId);
+				  }
+				  
+				}
 				$data = [
 					'user_id' => $this->uid,
 					'images' => implode(',', $images),
-					'status' => 0
-				   ];
-					//   return $this->index()->with('msg', $msg);
-					$this->customerverification_model->save($data);
-			
-					$this->send_verification($this->sender_email, $this->reciever_email);
-					return $this->index();
-			}
-		}
-	   }
-$this->data['status'] = '';
-return view('User/id_upload', $this->data);
-	   
-	}
+					'status' => 0,
+				];
+
+				$this->customerverification_model->save($data); 
+				$data_arr = array("success" => TRUE,"message" => 'Upload Success!');
+			  }else{
+				$data_arr = array("success" => False,"message" => 'Please add photo to verify your account!');
+			  }
+			  die(json_encode($data_arr));
+}
+
+
 
 	public function send_verification($sender_email, $reciever_email)
 	{
