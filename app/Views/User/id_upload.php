@@ -1,19 +1,20 @@
 <?php $this->extend("templates/base"); ?>
 
+
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
 <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-8">
   <section class="pt-3 pb-4" id="popular-products">
-  <form method="post" action="<?= base_url('upload')?>" enctype="multipart/form-data">
-    <div class="container">
+  <form id="verify" class="enjoymint-form" enctype="multipart/form-data">
+    <div class="container" id="image_lists">
       <div class="row"> 
         <div class="col-lg-6 col-sm-2 mt-5 text-center">
             <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
-            <label>Please Select 2 Files</label><br>
-          <h7 style="color: red ;"> <?= $status ?></h7><br>
-        <input type="file" name="file[]" class="form-control" id="file" style="margin-left: 220px ;" class="form-control">
+            
+        Select Valid ID photo:<input type="file" name="file[]" id="file" class="form-control" accept="image/png, image/jpeg, image/jpg"  style="margin-left:180px; border: 1px solid black; width:min-content;" class="form-control">
+        Select Selfie photo with your Valid ID:<input type="file" name="file[]" id="file" class="form-control" accept="image/png, image/jpeg, image/jpg" style="margin-left:180px; border: 1px solid black; width:min-content;" class="form-control">
             <input type="submit" class="btn btn-primary" value="upload" /> 
           
           </div>
@@ -56,22 +57,53 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
  <script type="text/javascript">
-const selected = document.querySelector(".selected");
-const optionsContainer = document.querySelector(".options-container");
+  
+$("#verify").submit(function(e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
 
-const optionsList = document.querySelectorAll(".option");
+    const formData = new FormData();
+    const photos = document.querySelectorAll('input[type="file"]');
+  
+    photos.forEach(function (item, field) {
+      formData.append('productImages[]', item.files[0]);
 
-selected.addEventListener("click", () => {
-  optionsContainer.classList.toggle("active");
-});
-
-optionsList.forEach(o => {
-  o.addEventListener("click", () => {
-    selected.innerHTML = o.querySelector("label").innerHTML;
-    optionsContainer.classList.remove("active");
+      
+    });
+   
+    fetch('/Users/uploadID',  {
+      method: 'POST',
+      body: formData,
+      headers : {
+        'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
+      }
+    }) .then(response => response.json()).then(response => {
+        var { message, success }  = response;
+        success ? enjoymintAlert('Nice!', message, 'success', 0, '/users/index') : enjoymintAlert('Sorry!', message, 'error', 0);
+    }).catch((error) => {
+        console.log('Error:', error);
+    });
   });
-});
 
+  function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
+    {
+      swal({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: false,
+        confirmButtonColor: '#32243d',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok'
+      }).then((result) => {
+          if(is_reload === 1){
+            window.location.reload();
+          }
+          if(redirect){
+            window.location.href = redirect;
+          }
+
+      });
+    }
  </script> 
  
 <?php $this->endSection() ?>
@@ -85,7 +117,10 @@ optionsList.forEach(o => {
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script>
+<!-- <script>
+
+
+
   console.log("scripts section");
 
   var cookie_cart = 'cart_data';
@@ -168,5 +203,5 @@ optionsList.forEach(o => {
     update_cart_count();
   });
 
-</script>
+</script> -->
 <?php $this->endSection() ?>
