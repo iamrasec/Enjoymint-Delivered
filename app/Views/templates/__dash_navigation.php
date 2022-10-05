@@ -165,6 +165,23 @@
             </ul>
           </div>
         </li>
+
+        <li class="nav-item">
+          <a data-bs-toggle="collapse" href="#settings_pages" class="nav-link text-white" aria-controls="settings_pages" role="button" aria-expanded="false">
+            <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">settings</i>
+            <span class="nav-link-text ms-2 ps-1">Settings</span>
+          </a>
+          <div class="collapse" id="settings_pages">
+            <ul class="nav ">
+              <li class="nav-item <?php if( $uri->getSegment(2) === 'verification_email' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
+                <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'verification_email' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/verification_email'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1">Verification Email</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
         <!-- <li class="nav-item ">
           <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
             <span class="sidenav-mini-icon"> R </span>
