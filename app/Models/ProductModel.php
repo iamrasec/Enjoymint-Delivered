@@ -44,13 +44,16 @@ class ProductModel extends Model {
     $this->join('product_categories', 'product_categories.pid = products.id', 'left');
     $this->join('strains', 'products.strain = strains.id', 'left');
     if($category != 0){
-      $this->like('cid', $category);
+      // $this->like('cid', $category);
+      $this->where('cid', $category);
     }
     if($strain != 0){
-      $this->like('strain', $strain);
+      // $this->like('strain', $strain);
+      $this->where('strain', $strain);
     }
     if($brands != 0){
-      $this->like('brands', $brands);
+      // $this->like('brands', $brands);
+      $this->where('brands', $brands);
     }
     if($min_price != 0 || $max_price!= 100){
       $this->where('price >=', $min_price);

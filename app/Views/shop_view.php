@@ -149,7 +149,7 @@
                 -->
                 <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
                 
-                <button type="submit" class="btn bg-primary-green mt-5">Search</button> 
+                <button id="searchFormSubmit" class="btn bg-primary-green mt-5">Search</button> 
               </div>
             </div>
           </form>
@@ -236,7 +236,7 @@ const optionsContainer = document.querySelector(".options-container");
 const optionsList = document.querySelectorAll(".option");
 
 selected.addEventListener("click", () => {
-  optionsContainer.classList.toggle("active");
+  // optionsContainer.classList.toggle("active");
 });
 
 optionsList.forEach(o => {
@@ -681,6 +681,7 @@ div[slider] > input[type=range]::-ms-tooltip {
 
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 
 <script>
   console.log("scripts section");
