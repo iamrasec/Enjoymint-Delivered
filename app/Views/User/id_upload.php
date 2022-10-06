@@ -4,27 +4,83 @@
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
-
+<style>
+  .fc {
+    border: 1px solid black; 
+    width:auto !important; 
+    display: inline !important; 
+    text-align:center
+  }
+</style>
 <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-8">
   <section class="pt-3 pb-4" id="popular-products">
   <form id="verify" class="enjoymint-form" enctype="multipart/form-data">
     <div class="container" id="image_lists">
       <div class="row"> 
-        <div class="col-lg-6 col-sm-2 mt-5 text-center">
-            <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
-            
-        Select Valid ID photo:<input type="file" name="file[]" id="file" class="form-control" accept="image/png, image/jpeg, image/jpg"  style="margin-left:180px; border: 1px solid black; width:min-content;" class="form-control">
-        Select Selfie photo with your Valid ID:<input type="file" name="file[]" id="file" class="form-control" accept="image/png, image/jpeg, image/jpg" style="margin-left:180px; border: 1px solid black; width:min-content;" class="form-control">
-            <input type="submit" class="btn btn-primary" value="upload" /> 
-          
+      <?php if(isset($success)): ?>
+        <div class="col-lg-6 col-sm-12  mt-5 text-center">
+          <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
+            <div class="card card-plain">
+              
+                <p style="color: <?= $color ?>;"><?= $success; ?></p>
+              
+            <div style="display:<?= $upload; ?> ;">
+            <label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
+          <div>
+            <input type="file" name="file[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
           </div>
-          <div class="col-lg-6 col-sm-2 mt-5 text-center">
-          <h6>Sample Captured</h6>
-            <img src="/assets/img/verification/id.jpg"/>
-            <img src="/assets/img/verification/selfie.jpg" style="height: 200px; border: solid black 2px;"/>
+          <label class="form-label">Select Selfie photo with your Valid ID:</label>
+          <div>
+            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
           </div>
-          
+          <label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
+          <div>
+            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
+          </div>
+          <div>
+            <input type="submit" class="btn btn-primary" value="upload" />  
+          </div>
+          </div>
+            </div>
         </div>
+        <div class="col-lg-6 col-sm-12 mt-5 text-center"> 
+        <h6>Your Uploaded Photo</h6>
+          <?php foreach($image_data['images'] as $dt => $val ){ ?>
+            <img src="<?= base_url('users/verification/'.$val->filename) ?>" style="height: 200px; border: solid black 2px;"/>
+          <?php } ?>
+        </div>
+       
+      <?php else: ?>
+        <div class="col-lg-6 col-sm-12 mt-5 " style="display: block; text-align: center">
+          <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
+          <label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
+          <div>
+            <input type="file" name="file[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
+          </div>
+          <label class="form-label">Select Selfie photo with your Valid ID:</label>
+          <div>
+            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
+          </div>
+          <label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
+          <div>
+            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
+          </div>
+          <div>
+            <input type="submit" class="btn btn-primary" value="upload" />  
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-12 col-12 mt-5 text-center">
+          <div class="row">
+          <h6>Sample Captured</h6>
+          <div class="col-lg-6 col-sm-6 col-6">
+            <img src="/assets/img/verification/id.jpg"/ style=" max-width: 100%; height: auto; border: solid black 2px;">
+          </div>
+          <div class="col-lg-6 col-sm-6 col-6">
+            <img src="/assets/img/verification/selfie.jpg" style=" max-width: 100%; height: auto; border: solid black 2px;"/>
+          </div>
+          </div>
+        </div>
+      <?php endif; ?>
     </div>  
     </form>
   </section>
@@ -78,7 +134,7 @@ $("#verify").submit(function(e) {
       }
     }) .then(response => response.json()).then(response => {
         var { message, success }  = response;
-        success ? enjoymintAlert('Nice!', message, 'success', 0, '/users/index') : enjoymintAlert('Sorry!', message, 'error', 0);
+        success ? enjoymintAlert('Nice!', message, 'success', 0, '/users/customerVerification') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);
     });

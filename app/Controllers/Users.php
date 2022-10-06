@@ -572,10 +572,69 @@ class Users extends BaseController
 		'current' => $page_title,
 		];
 		$this->data['page_title'] = $page_title;
-
+		$user_id = $this->uid;
+		$upload2 = $this->customerverification_model->get()->getResult();
+		$verify = $this->customerverification_model->verifyUser($user_id);
 		
+		if(empty($upload2)) {
+			return view('User/id_upload');
+		}else{
+			if(empty($verify)) {
+			
+				return view('User/id_upload');	
+			}
+			else{
+			
+			$all_products = $this->customerverification_model->get()->getResult();
+				 
+			$product_arr = [];
+			foreach($all_products as $product) {
+				// echo "<pre>".print_r($product, 1)."</pre>";
+				if(!empty($product->images)) {
+					$imageIds = [];
+					$imageIds = explode(',',$product->images);
+					$images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+					$product_arr['images'] = $images;
+				}
+				if($product->status == 0){
+					$this->data['success'] = 'Your account has on processing for verification.';
+					$this->data['color'] = 'orange';
+					$this->data['upload'] = 'none';
+				}elseif($product->status == 1){
+					$this->data['success'] = 'Your account has been Verified.';
+					$this->data['color'] = 'Green';
+					$this->data['upload'] = 'none';
+				}else{
+					$this->data['success'] = 'Your account has been denied. Please Upload Again!';
+					$this->data['error'] = 'Your photo has been denied for verification!';
+					$this->data['color'] = 'Red';
+					$this->data['upload'] = 'inline';
+	
+					
+						
+					}
+				
+			}
+		}
+		}
+		
+	// print_r($product_arr);
+		$this->data['image_data'] = $product_arr;
+		$this->data['data'] = $all_products;
+
 		return view('User/id_upload', $this->data);
 	   
+}
+
+public function verification($filename) {
+    $filepath = WRITEPATH . 'uploads/' . $filename;
+
+    $mime = mime_content_type($filepath);
+    header('Content-Length: ' . filesize($filepath));
+    header("Content-Type: $mime");
+    header('Content-Disposition: inline; filename="' . $filepath . '";');
+    readfile($filepath);
+    exit();
 }
 	
 public function uploadID(){
