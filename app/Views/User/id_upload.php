@@ -38,6 +38,7 @@
             <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
           </div>
           <div>
+            <br>
             <input type="submit" class="btn btn-primary" value="upload" />  
           </div>
           </div>
@@ -65,7 +66,7 @@
           <div>
             <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
           </div>
-          <div>
+          <div class="mt-2">
             <input type="submit" class="btn btn-primary" value="upload" />  
           </div>
         </div>
@@ -155,7 +156,7 @@ $("#verify").submit(function(e) {
             window.location.reload();
           }
           if(redirect){
-            window.location.href = redirect;
+            location.reload();
           }
 
       });

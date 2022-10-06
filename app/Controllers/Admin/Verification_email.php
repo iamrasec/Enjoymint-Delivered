@@ -26,9 +26,9 @@ class Verification_email extends BaseController {
   public function index() 
   {
     // $data = [];
-    $page_title = 'List Email Verification';
+    $page_title = 'Verification Center';
 
-    $this->data['page_body_id'] = "email_verification";
+    $this->data['page_body_id'] = "Verification Center";
     $this->data['breadcrumbs'] = [
       'parent' => [],
       'current' => $page_title,
