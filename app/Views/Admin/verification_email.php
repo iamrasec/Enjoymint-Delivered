@@ -26,6 +26,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Status</th>
+                    <th>Photo</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -33,6 +34,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Status</th>
+                    <th>Photo</th>
                     <th>Action</th>
                 </tfoot>
               </table>
@@ -112,5 +114,6 @@
  
     
   });
+  
 </script>
 <?php $this->endSection(); ?>
