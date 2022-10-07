@@ -597,7 +597,7 @@ class Users extends BaseController
 					$product_arr['images'] = $images;
 				}
 				if($product->status == 0){
-					$this->data['success'] = 'Your account has on processing for verification.';
+					$this->data['success'] = 'Your account is on processing for verification.';
 					$this->data['color'] = 'orange';
 					$this->data['upload'] = 'none';
 				}elseif($product->status == 1){
