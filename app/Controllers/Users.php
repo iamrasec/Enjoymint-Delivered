@@ -746,4 +746,85 @@ public function uploadID(){
 			}
 		}
 	}
+
+	public function add_user() 
+	{
+		helper(['form']);
+
+		if($this->request->getPost()) {
+			$validation =  \Config\Services::validation();
+
+			$rules = [
+				'first_name' => [
+					'rules' => 'required|min_length[3]|max_length[20]',
+					'errors' => [
+						'required' => 'Please input your First Name.',
+						'min_length' => 'First Name should be longer than 3 characters.',
+						'max_length' => 'First Name should be no longer than 20 characters.',
+					],
+				],	
+				'last_name' => [
+					'rules' => 'required|min_length[3]|max_length[20]',
+					'errors' => [
+						'required' => 'Please input your Last Name.',
+						'min_length' => 'Last Name should be longer than 3 characters.',
+						'max_length' => 'Last Name should be no longer than 20 characters.',
+					],
+				],
+				'email' => [
+					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
+					'errors' => [
+						'min_length' => 'Email should be longer than 6 characters.',
+						'max_length' => 'Email should be no longer than 50 characters.',
+						'valid_email' => 'Please input a valid Email.',
+						'is_unique' => 'The Email you provided already has an account. Please try another one or Sign in with that email.',
+					],
+				],
+				'role' => [
+					'rules' => 'required|integer',
+					'errors' => [
+						'required' => 'Please input your Last Name.',
+					],
+				],
+				'password' => [
+					'rules' => 'required|min_length[8]|max_length[255]',
+					'errors' => [
+						'min_length' => 'Password should be longer than 8 characters.',
+						'max_length' => 'Password should be no longer than 255 characters.',
+					],
+				],
+				'password_confirm' => [
+					'rules' => 'matches[password]',
+					'errors' => [
+						'matches' => 'Your Password does not match.'
+					],
+				],
+			];
+
+			if($this->validate($rules)) {
+				$this->data['validation'] = $this->validator;
+
+				$newData = [
+					'guid' => $this->_generate_guid(),
+					'first_name' => $this->request->getVar('first_name'),
+					'last_name' => $this->request->getVar('last_name'),
+					'email' => $this->request->getVar('email'),
+					'role' => $this->request->getVar('role'),//User Role
+					'password' => $this->request->getVar('password'),
+				];
+
+				$this->user_model->save($newData);
+				$data_arr = array("success" => TRUE,"message" => 'User Saved!');
+				
+			}
+			else {
+				$validationError = json_encode($validation->getErrors());
+				$data_arr = array("success" => FALSE,"message" => 'Validation Error!'.$validationError);
+			  }
+		}
+		else {
+			$data_arr = array("success" => FALSE,"message" => 'No posted data!');
+		  }
+		  die(json_encode($data_arr));
+	}
 }
