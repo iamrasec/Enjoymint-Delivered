@@ -55,7 +55,8 @@ class Verification_email extends BaseController {
 				if(!empty($verify->images)) {
 					$imageIds = [];
 					$imageIds = explode(',',$verify->images);
-					$images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+          
+					$images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
 					$product_arr['images'] = $images;
 				}
       if($verify->status == '0'){
