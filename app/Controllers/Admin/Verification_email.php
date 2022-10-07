@@ -26,9 +26,9 @@ class Verification_email extends BaseController {
   public function index() 
   {
     // $data = [];
-    $page_title = 'List Email Verification';
+    $page_title = 'Verification Center';
 
-    $this->data['page_body_id'] = "email_verification";
+    $this->data['page_body_id'] = "Verification Center";
     $this->data['breadcrumbs'] = [
       'parent' => [],
       'current' => $page_title,
@@ -51,6 +51,13 @@ class Verification_email extends BaseController {
 
     $verification = $this->verification_model->getAllVerification($start, $length);
     foreach($verification as $verify){
+      $product_arr = [];
+				if(!empty($verify->images)) {
+					$imageIds = [];
+					$imageIds = explode(',',$verify->images);
+					$images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+					$product_arr['images'] = $images;
+				}
       if($verify->status == '0'){
         $stat = 'Pending';
       }
@@ -63,12 +70,16 @@ class Verification_email extends BaseController {
       else{
         return 'Cancelled';
       }
+      // print_r($product_arr['images']);
       $name = $verify->first_name.' '.$verify->last_name;
       $start++;
       $data[] = array(
         $verify->cv_id,
         $name, 
         $stat,
+        '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'"><img src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">
+        <img src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">
+        <img src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>',
         "<div style='margin-top:20px; margin-left:-35px;'><button class='btn btn-sm deny'  data-id='".$verify->cv_id."'>deny</button>| 
         <button class='btn btn-sm approve'  data-id='".$verify->cv_id."'>approve</button></div>",
       );

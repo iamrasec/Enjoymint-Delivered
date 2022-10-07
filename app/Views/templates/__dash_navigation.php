@@ -176,7 +176,7 @@
               <li class="nav-item <?php if( $uri->getSegment(2) === 'verification_email' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
                 <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'verification_email' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/verification_email'); ?>">
                   <span class="sidenav-mini-icon">  </span>
-                  <span class="sidenav-normal  ms-2  ps-1">Verification Email</span>
+                  <span class="sidenav-normal  ms-2  ps-1">Verification Center</span>
                 </a>
               </li>
               <li class="nav-item <?php if( $uri->getSegment(2) === 'users' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
