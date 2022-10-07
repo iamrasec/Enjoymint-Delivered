@@ -50,6 +50,24 @@ class Users extends BaseController {
       echo view('User/add_user', $this->data);
   }
 
+  public function edit_user($id)
+  {
+    $page_title = 'Edit Blog';
+    $this->data['page_body_id'] = "edit_user";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/users'), 'page_title' => 'Users'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $user = $this->user_model->where('id', $id)->get()->getResult();
+
+    $this->data['user_data'] = $user;
+
+    return view('User/edit_user', $this->data);
+  }
+
   /**
    * This function will fetch product list from post request of datatable server side processing
    * 
@@ -84,7 +102,7 @@ class Users extends BaseController {
         $user->id, 
         $name, 
         $roles,
-        "<a href=".base_url().">Delete</a> | <a href=".base_url().">edit</a>",
+        "<a href=".base_url().">Delete</a> | <a href=".base_url('admin/users/edit_user/'. $user->id).">Edit</a>",
       );
     }
 
