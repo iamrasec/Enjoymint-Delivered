@@ -15,7 +15,7 @@ class Verification_email extends BaseController {
     $this->verification_model = model('VerificationModel');
     
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
-    $this->image_model = model('imageModel');
+    $this->image_model = model('ImageModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
@@ -56,9 +56,14 @@ class Verification_email extends BaseController {
 					$imageIds = [];
 					$imageIds = explode(',',$verify->images);
           
-					$images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+					// $images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+          $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
 					$product_arr['images'] = $images;
 				}
+
+        // echo "<pre>".print_r($verify, 1)."</pre>";
+        // echo "<pre>".print_r($product_arr, 1)."</pre>";
+
       if($verify->status == '0'){
         $stat = 'Pending';
       }
@@ -72,13 +77,13 @@ class Verification_email extends BaseController {
         return 'Cancelled';
       }
       if(isset($product_arr['images'][0])){
-        $img = '<img src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">';
+        $img = '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">';
       }
       if(isset($product_arr['images'][1])){
-        $img = $img. '<img src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">';
+        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">';
       }
       if(isset($product_arr['images'][2])){
-        $img = $img. '<img src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>';
+        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>';
       }
       // print_r($product_arr['images']);
       $name = $verify->first_name.' '.$verify->last_name;
@@ -87,9 +92,10 @@ class Verification_email extends BaseController {
         $verify->cv_id,
         $name, 
         $stat,
-        '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'">
-        '.$img.'
-            </a>',
+        // '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'">
+        // '.$img.'
+        //     </a>',
+        $img,
         "<div style='margin-top:20px; margin-left:-35px;'><button class='btn btn-sm deny'  data-id='".$verify->cv_id."'>deny</button>| 
         <button class='btn btn-sm approve'  data-id='".$verify->cv_id."'>approve</button></div>",
       );
