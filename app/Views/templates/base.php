@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/material-kit.css?v=3.0.0" rel="stylesheet" />
 <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
+<?php echo $this->renderSection("styles"); ?>
 </head>
 
 <?php if(isset($page_body_id)): ?>

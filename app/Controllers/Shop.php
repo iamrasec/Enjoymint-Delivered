@@ -42,6 +42,8 @@ class Shop extends BaseController
         $searchData = $this->request->getGet();
         // $search = "";
 
+        $this->data['current_filter'] = [];
+
         // print_r($searchData);
         //$all_products = $this->product_model->paginate(30);
        if(!empty($searchData['page'])){
@@ -67,7 +69,20 @@ class Shop extends BaseController
                 $min_cbd = $searchData['min_cbd'];
                 $max_cbd = $searchData['max_cbd'];
                 $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
+
+                $current_filter = [
+                    'category' => $searchData['category'],
+                    'strain' => $searchData['strain'],
+                    'brands' => $searchData['brands'],
+                    'min_price' => $searchData['min_price'],
+                    'max_price' => $searchData['max_price'],
+                    'min_thc' => $searchData['min_thc'],
+                    'max_thc' => $searchData['max_thc'],
+                    'min_cbd' => $searchData['min_cbd'],
+                    'max_cbd' => $searchData['max_cbd'],
+                ];
                  
+                $this->data['current_filter'] = $current_filter;
             }
            
         }
@@ -94,10 +109,10 @@ class Shop extends BaseController
 
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
-        $this->data['categories'] = $this->category_model->get()->getResult();
-        $this->data['brands'] = $this->brand_model->get()->getResult();
-        $this->data['strains'] = $this->strain_model->get()->getResult();
-       return view('shop_view', $this->data);
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        return view('shop_view', $this->data);
     }
     
 }
