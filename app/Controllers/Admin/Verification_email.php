@@ -70,6 +70,15 @@ class Verification_email extends BaseController {
       else{
         return 'Cancelled';
       }
+      if(isset($product_arr['images'][0])){
+        $img = '<img src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">';
+      }
+      if(isset($product_arr['images'][1])){
+        $img = $img. '<img src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">';
+      }
+      if(isset($product_arr['images'][2])){
+        $img = $img. '<img src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>';
+      }
       // print_r($product_arr['images']);
       $name = $verify->first_name.' '.$verify->last_name;
       $start++;
@@ -77,9 +86,9 @@ class Verification_email extends BaseController {
         $verify->cv_id,
         $name, 
         $stat,
-        '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'"><img src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">
-        <img src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">
-        <img src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>',
+        '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'">
+        '.$img.'
+            </a>',
         "<div style='margin-top:20px; margin-left:-35px;'><button class='btn btn-sm deny'  data-id='".$verify->cv_id."'>deny</button>| 
         <button class='btn btn-sm approve'  data-id='".$verify->cv_id."'>approve</button></div>",
       );
