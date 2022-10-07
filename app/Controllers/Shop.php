@@ -44,7 +44,8 @@ class Shop extends BaseController
 
         $this->data['current_filter'] = [];
 
-        // print_r($searchData);
+        // echo "<pre>".print_r($searchData, 1)."</pre>";
+
         //$all_products = $this->product_model->paginate(30);
        if(!empty($searchData['page'])){
         $page = $searchData['page'];
@@ -55,35 +56,32 @@ class Shop extends BaseController
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getAllProducts();
         }else{
-            if($page != null){
-                // $all_products = $this->product_model->paginate(30);
-                $all_products = $this->product_model->getAllProducts();
-            }else{
-                $category = $searchData['category'];
-                $min_price = $searchData['min_price'];
-                $max_price = $searchData['max_price'];
-                $strain = $searchData['strain'];
-                $brands = $searchData['brands'];
-                $min_thc = $searchData['min_thc'];
-                $max_thc = $searchData['max_thc'];
-                $min_cbd = $searchData['min_cbd'];
-                $max_cbd = $searchData['max_cbd'];
-                $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
+            $category = $searchData['category'];
+            $min_price = $searchData['min_price'];
+            $max_price = $searchData['max_price'];
+            $strain = $searchData['strain'];
+            $brands = $searchData['brands'];
+            $min_thc = $searchData['min_thc'];
+            $max_thc = $searchData['max_thc'];
+            $min_cbd = $searchData['min_cbd'];
+            $max_cbd = $searchData['max_cbd'];
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
 
-                $current_filter = [
-                    'category' => $searchData['category'],
-                    'strain' => $searchData['strain'],
-                    'brands' => $searchData['brands'],
-                    'min_price' => $searchData['min_price'],
-                    'max_price' => $searchData['max_price'],
-                    'min_thc' => $searchData['min_thc'],
-                    'max_thc' => $searchData['max_thc'],
-                    'min_cbd' => $searchData['min_cbd'],
-                    'max_cbd' => $searchData['max_cbd'],
-                ];
-                 
-                $this->data['current_filter'] = $current_filter;
-            }
+            // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+
+            $current_filter = [
+                'category' => $searchData['category'],
+                'strain' => $searchData['strain'],
+                'brands' => $searchData['brands'],
+                'min_price' => $searchData['min_price'],
+                'max_price' => $searchData['max_price'],
+                'min_thc' => $searchData['min_thc'],
+                'max_thc' => $searchData['max_thc'],
+                'min_cbd' => $searchData['min_cbd'],
+                'max_cbd' => $searchData['max_cbd'],
+            ];
+                
+            $this->data['current_filter'] = $current_filter;
            
         }
         // $all_products = $this->product_model->paginate(30);

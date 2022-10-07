@@ -4,28 +4,31 @@
     <div class="row">
 
       <div class="select-box" >
+        <label class="mt-3 py-0">Category:</label>
         <select class="selected" name="category">
-          <option value="0">Category</option>
+          <option value="0">All</option>
           <?php foreach($categories as $category): ?>
           <?php  echo '<option value="'.$category->id.'" '.((isset($_GET['category']) && $category->id == $_GET['category']) ? 'selected' : '').'>'.ucfirst($category->name).'</option>' ?>
           <?php endforeach; ?>
         </select>
   
+        <label class="mt-3 py-0">Strain Type:</label>
         <select class="selected" id="strain" name="strain">
-          <option value="0">Strain Type</option>
+          <option value="0">All</option>
           <?php foreach($strains as $str): ?>
           <?php  echo '<option value="'.$str->id.'" '.((isset($_GET['strain']) && $str->id == $_GET['strain']) ? 'selected' : '').'>'.ucfirst($str->url_slug).'</option>' ?>
           <?php endforeach; ?>
         </select>
     
+        <label class="mt-3 py-0">Brand:</label>
         <select class="selected" name="brands">
-          <option value="0">Brand</option>
+          <option value="0">All</option>
           <?php foreach($brands as $brand): ?>
           <?php  echo '<option value="'.$brand->id.'" '.((isset($_GET['brands']) && $brand->id == $_GET['brands']) ? 'selected' : '').'>'.ucfirst(strtolower($brand->name)).'</option>' ?>
           <?php endforeach; ?>
         </select>
       
-        <label>Price Range:</label>
+        <label class="mt-3 py-0">Price Range:</label>
         <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:60%;"></div>
@@ -49,7 +52,7 @@
           children[7].style.left=value+'%';children[11].style.left=value+'%';
           children[11].childNodes[1].innerHTML=this.value;" />
 
-          <input type="range" value="100" name="max_price" max="300" min="0" step="1" oninput="
+          <input type="range" value="300" name="max_price" max="300" min="0" step="1" oninput="
           this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
           let value = (this.value/parseInt(this.max))*100
           var children = this.parentNode.childNodes[1].childNodes;
@@ -59,7 +62,7 @@
           children[13].childNodes[1].innerHTML=this.value;" />
         </div>
   
-        <label class="mt-2">THC Value:</label>
+        <label class="mt-3 py-0">THC % Value:</label>
         <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:70%;"></div>
@@ -94,7 +97,7 @@
           children[13].childNodes[1].innerHTML=this.value;" />
         </div>
 
-        <label class="mt-2">CBD Value:</label>
+        <label class="mt-3 py-0">CBD % Value:</label>
         <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:70%;"></div>
@@ -110,7 +113,7 @@
             </div>
           </div>
 
-          <input type="range" value="0" name="min_cbd" max="200" min="0" step="1" oninput="
+          <input type="range" value="0" name="min_cbd" max="100" min="0" step="1" oninput="
           this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
           let value = (this.value/parseInt(this.max))*100
           var children = this.parentNode.childNodes[1].childNodes;
@@ -119,7 +122,7 @@
           children[7].style.left=value+'%';children[11].style.left=value+'%';
           children[11].childNodes[1].innerHTML=this.value;" />
 
-          <input type="range" value="100" name="max_cbd" max="200" min="0" step="1" oninput="
+          <input type="range" value="100" name="max_cbd" max="100" min="0" step="1" oninput="
           this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
           let value = (this.value/parseInt(this.max))*100
           var children = this.parentNode.childNodes[1].childNodes;
@@ -128,9 +131,6 @@
           children[9].style.left=value+'%';children[13].style.left=value+'%';
           children[13].childNodes[1].innerHTML=this.value;" />
         </div>
-
-        <label class="mt-2">Test Slider:</label>
-        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
 
         <!-- <p>
         <label>CBD_value:</label>

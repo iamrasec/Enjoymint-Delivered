@@ -38,35 +38,48 @@ class ProductModel extends Model {
     return $this->get()->getResult();
   }
 
-  public function getDataWithParam($category = 0, $min_price = 0, $max_price = 100, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 100, $min_cbd = 0, $max_cbd = 200){
+  public function getDataWithParam($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0){
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug, product_categories.cid');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->join('product_categories', 'product_categories.pid = products.id', 'left');
     $this->join('strains', 'products.strain = strains.id', 'left');
-    if($category != 0){
+    
+    // Add Category filter if $category is greater than 0
+    if($category > 0) {
       // $this->like('cid', $category);
-      $this->where('cid', $category);
+      $this->where('product_categories.cid', $category);
     }
-    if($strain != 0){
+
+    // Add Strain Type filter if $strain is greater than 0
+    if($strain > 0) {
       // $this->like('strain', $strain);
-      $this->where('strain', $strain);
+      $this->where('products.strain', $strain);
     }
-    if($brands != 0){
+
+    // Add Brand filter if $brands is greater than 0
+    if($brands > 0) {
       // $this->like('brands', $brands);
-      $this->where('brands', $brands);
+      $this->where('products.brands', $brands);
     }
-    if($min_price != 0 || $max_price!= 100){
-      $this->where('price >=', $min_price);
-      $this->where('price <=', $max_price);
+
+    if($min_price != 0) {
+      $this->where('products.price >=', $min_price);
     }
-    if($min_thc != 0 || $max_thc != 100){
-      $this->where('thc_value >=', $min_thc);
-      $this->where('thc_value <=', $max_thc);
+
+    if($max_price != 0) {
+      $this->where('products.price <=', $max_price);
     }
-    if($min_cbd != 0 || $max_cbd != 200){
-      $this->where('cbd_value >=', $min_cbd);
-      $this->where('cbd_value <=', $max_cbd);
-  } 
+    
+    if($min_thc != 0 || $max_thc != 0) {
+      $this->where('compounds.thc_value >=', $min_thc);
+      $this->where('compounds.thc_value <=', $max_thc);
+    }
+    
+    if($min_cbd != 0 || $max_cbd != 0) {
+      $this->where('compounds.cbd_value >=', $min_cbd);
+      $this->where('compounds.cbd_value <=', $max_cbd);
+    } 
+
     return $this->paginate(28);
 
   }
