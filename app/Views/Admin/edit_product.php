@@ -119,6 +119,16 @@
                   </select>
                   </div>
                 </div>
+
+                <div class="col-4 col-md-4 col-xs-12 mb-3">
+                  <label class="form-label" for="name">Delivery Type</label>
+                  <div class="input-group input-group-dynamic">
+                  <select class="delivery-type form-control w-100 border px-2" name="del_type[]" id="del_type" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                    <option value="1" <?= ($product_data->delivery_type == 1) ? 'selected' : ''; ?>>Scheduled</option>
+                    <option value="2" <?= ($product_data->delivery_type == 2) ? 'selected' : ''; ?>>Fast Tracked</option>
+                  </select>
+                  </div>
+                </div>
               </div>
               
               <div class="row mt-4">

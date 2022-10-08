@@ -9,6 +9,11 @@
       placeholder: "Select an Experience",
       // allowClear: true
     });
+    
+    $('.delivery-type').select2({
+      placeholder: "Select Delivery Type",
+      // allowClear: true
+    });
   });
 
   $(document).on('keyup', '#product_name', function() {
@@ -178,6 +183,7 @@
     formData.append('experiences', $('#experience').val());
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
+    formData.append('delivery_type', $('#del_type').val());
 
     // console.log(formData);
 
