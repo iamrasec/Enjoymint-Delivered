@@ -129,8 +129,11 @@ class Verification_email extends BaseController {
    * @param int id The id of the prodcut to be remove 
    * @return object a success indicator and the message
   */
-  public function verification_deny($id){
-    $this->verification_model->update($id, ['status' => 2]);
+  public function verification_deny(){
+    $id = $this->request->getVar('verification_id');
+    $message = $this->request->getVar('denial_message');
+
+    $this->verification_model->update($id, ['status' => 2, 'denial_message'=> $message]);
     die(json_encode(array("success" => TRUE,"message" => 'Deny Account!')));
   }
 
