@@ -17,7 +17,11 @@
         <?php echo $this->include('templates/_product_filter.php'); ?>
 
         <div class="col-lg-10 col-sm-12 mt-5 text-center">
+          <?php if($fast_tracked == true): ?>
+          <h1>Fast Tracked Shop</h1>
+          <?php else: ?>
           <h1>Shop</h1>
+          <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
             <?php foreach($products as $product): ?>
@@ -49,7 +53,7 @@
                     <hr id="color" class="mt-0">
                     <p class="price">$<span><?= $product['price']; ?></span></p>
                     <hr id="color" class="mt-0">
-                    <button class="btn add-to-cart btn-md bg-danger text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
+                    <button class="btn add-to-cart btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
                     <div class="lds-hourglass d-none"></div>

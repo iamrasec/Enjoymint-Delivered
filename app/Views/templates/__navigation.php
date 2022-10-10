@@ -23,10 +23,18 @@
               </a>
             </li>
 
-            <li class="nav-item mx-2">
+            <li class="nav-item mx-2 has-child">
               <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('shop'); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">shop</i> Shop
               </a>
+              <ul class="d-none position-absolute bg-secondary list-unstyled">
+                <li class="px-3 py-2 border-bottom">
+                  <a href="<?= base_url('shop'); ?>" class="text-white">Scheduled</a>
+                </li>
+                <li class="px-3 py-2">
+                  <a href="<?= base_url('shop/fast_tracked'); ?>" class="text-white">Fast-Tracked</a>
+                </li>
+              </ul>
             </li>
 
             <li class="nav-item mx-2">

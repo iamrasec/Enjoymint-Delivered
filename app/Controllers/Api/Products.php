@@ -98,6 +98,7 @@ class Products extends ResourceController
           'sku' => $this->request->getVar('sku'),
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
+          'delivery_type' => $this->request->getVar('delivery_type'),
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
@@ -232,6 +233,7 @@ class Products extends ResourceController
           'sku' => $this->request->getVar('sku'),
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
+          'delivery_type' => $this->request->getVar('delivery_type'),
           'images' => implode(',', $images),
         ];
 

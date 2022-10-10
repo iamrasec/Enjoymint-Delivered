@@ -19,7 +19,7 @@
       <div class="row"> 
       <?php if(isset($success)): ?>
         <div class="col-lg-6 col-sm-12  mt-5 text-center">
-          <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
+          <h6>Upload your Valid ID and Picture together with your ID to Verify your Account</h6>
             <div class="card card-plain">
               
                 <p style="color: <?= $color ?>;"><?= $success; ?></p>
@@ -46,14 +46,21 @@
         </div>
         <div class="col-lg-6 col-sm-12 mt-5 text-center"> 
         <h6>Your Uploaded Photo</h6>
-          <?php foreach($image_data['images'] as $dt => $val ){ ?>
+          <?php if(isset($image_data['images'])):
+          foreach($image_data['images'] as $dt => $val ){ ?>
             <img src="<?= base_url('users/verification/'.$val->filename) ?>" style="height: 200px; border: solid black 2px;"/>
-          <?php } ?>
+            
+          <?php } 
+          else: ?>
+            <img src="invalid_link" onerror="this.onerror=null;this.src='/assets/img/verification/id.jpg';">
+            <img src="invalid_link" onerror="this.onerror=null;this.src='/assets/img/verification/selfie.jpg';">
+            <?php endif; ?>
         </div>
        
       <?php else: ?>
         <div class="col-lg-6 col-sm-12 mt-5 " style="display: block; text-align: center">
-          <h4>Upload your Valid ID and Picture together with your ID to Verify your Account</h4>
+          <h6>Upload your Valid ID and Picture together with your ID to Verify your Account</h6>
+          <p></p>
           <label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
           <div>
             <input type="file" name="file[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
@@ -124,6 +131,7 @@ $("#verify").submit(function(e) {
     photos.forEach(function (item, field) {
       formData.append('productImages[]', item.files[0]);
 
+
       
     });
    
@@ -135,6 +143,7 @@ $("#verify").submit(function(e) {
       }
     }) .then(response => response.json()).then(response => {
         var { message, success }  = response;
+        console.log(response);
         success ? enjoymintAlert('Nice!', message, 'success', 0, '/users/customerVerification') : enjoymintAlert('Sorry!', message, 'error', 0);
     }).catch((error) => {
         console.log('Error:', error);

@@ -6,7 +6,8 @@
           <h1 class="text-white mb-4">Connecting Cannabis Patients with Quality Medicine</h1>
           <p class="text-white opacity-8 lead pe-5 me-5">We believe that every patients is entitled to a reliable source of medicine that provides an amazing experience for each and every patient discreetly.</p>
           <div class="buttons">
-            <a href="<?= base_url('shop'); ?>" class="btn btn-white mt-4">Shop Now</a>
+            <a href="<?= base_url('shop'); ?>" class="btn btn-white mt-4">View Scheduled Delivery Products</a> | 
+            <a href="<?= base_url('shop/fast_tracked'); ?>" class="btn btn-white mt-4">View Fast-tracked Delivery Products</a>
           </div>
         </div>
       </div>

@@ -4,6 +4,13 @@
     <div class="row">
 
       <div class="select-box" >
+        <label class="mt-3 py-0">Availability:</label>
+        <select class="selected" name="availability">
+          <option value="0">All</option>
+          <option value="1">Scheduled</option>
+          <option value="2">Fast-tracked</option>
+        </select>
+
         <label class="mt-3 py-0">Category:</label>
         <select class="selected" name="category">
           <option value="0">All</option>
