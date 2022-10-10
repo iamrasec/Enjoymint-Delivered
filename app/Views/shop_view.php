@@ -17,7 +17,11 @@
         <?php echo $this->include('templates/_product_filter.php'); ?>
 
         <div class="col-lg-10 col-sm-12 mt-5 text-center">
+          <?php if($fast_tracked == true): ?>
+          <h1>Fast Tracked Shop</h1>
+          <?php else: ?>
           <h1>Shop</h1>
+          <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
             <?php foreach($products as $product): ?>

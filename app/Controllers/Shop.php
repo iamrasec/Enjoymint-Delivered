@@ -110,6 +110,7 @@ class Shop extends BaseController
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = false;
         return view('shop_view', $this->data);
     }
 
@@ -139,7 +140,7 @@ class Shop extends BaseController
        }
          if(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
-            $all_products = $this->product_model->getAllProducts();
+            $all_products = $this->product_model->getFastTracked();
         }else{
             $category = $searchData['category'];
             $min_price = $searchData['min_price'];
@@ -150,7 +151,7 @@ class Shop extends BaseController
             $max_thc = $searchData['max_thc'];
             $min_cbd = $searchData['min_cbd'];
             $max_cbd = $searchData['max_cbd'];
-            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, true);
 
             // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
 
@@ -195,6 +196,7 @@ class Shop extends BaseController
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = true;
         return view('shop_view', $this->data);
     }
     

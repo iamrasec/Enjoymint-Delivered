@@ -8,6 +8,12 @@
     }
   });
 
+  $('.has-child').mouseover(function() {
+    $(this).find('ul').removeClass('d-none');
+  }).mouseout(function() {
+    $(this).find('ul').addClass('d-none');
+  });
+
   $('.product-filter-form').hide();
   $(document).on('click', '#product-filter-toggle', function() {
     // if($(this).hasClass('open')) {

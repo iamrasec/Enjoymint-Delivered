@@ -46,7 +46,7 @@ class ProductModel extends Model {
     return $this->get()->getResult();
   }
 
-  public function getDataWithParam($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0){
+  public function getDataWithParam($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0, $fast_tracked = false){
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug, product_categories.cid');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->join('product_categories', 'product_categories.pid = products.id', 'left');
@@ -87,6 +87,10 @@ class ProductModel extends Model {
       $this->where('compounds.cbd_value >=', $min_cbd);
       $this->where('compounds.cbd_value <=', $max_cbd);
     } 
+
+    if($fast_tracked == true) {
+      $this->where('products.delivery_type', 2);
+    }
 
     return $this->paginate(28);
 
