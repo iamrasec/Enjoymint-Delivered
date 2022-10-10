@@ -89,7 +89,7 @@ class Verification_email extends BaseController {
         '<a href="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'">
         '.$img.'
             </a>',
-        "<div style='margin-top:20px; margin-left:-35px;'><button class='btn btn-sm deny'  data-id='".$verify->cv_id."'>deny</button>| 
+        "<div style='margin-top:20px; margin-left:-35px;'><button class='btn btn-sm deny'  data-bs-toggle='modal' data-bs-target='#exampleModal' data-id='".$verify->cv_id."'>deny</button>| 
         <button class='btn btn-sm approve'  data-id='".$verify->cv_id."'>approve</button></div>",
       );
     }
@@ -122,8 +122,11 @@ class Verification_email extends BaseController {
    * @param int id The id of the prodcut to be remove 
    * @return object a success indicator and the message
   */
-  public function verification_deny($id){
-    $this->verification_model->update($id, ['status' => 2]);
+  public function verification_deny(){
+    $id = $this->request->getVar('verification_id');
+    $message = $this->request->getVar('denial_message');
+
+    $this->verification_model->update($id, ['status' => 2, 'denial_message'=> $message]);
     die(json_encode(array("success" => TRUE,"message" => 'Deny Account!')));
   }
 

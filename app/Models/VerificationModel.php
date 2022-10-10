@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class VerificationModel extends Model {
   protected $table = 'customer_verification';
-  protected $allowedFields = ['user_id', 'images', 'status'];
+  protected $allowedFields = ['user_id', 'images', 'status','denial_message'];
 
   public function getVerificationData($id){
     $this->select('customer_verification.*, images.filename');
