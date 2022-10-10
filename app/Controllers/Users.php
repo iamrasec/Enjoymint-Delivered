@@ -605,7 +605,7 @@ class Users extends BaseController
 					$this->data['color'] = 'Green';
 					$this->data['upload'] = 'none';
 				}else{
-					$this->data['success'] = 'Your account has been denied. Please Upload Again!';
+					$this->data['success'] = $product->denial_message;
 					$this->data['error'] = 'Your photo has been denied for verification!';
 					$this->data['color'] = 'Red';
 					$this->data['upload'] = 'inline';
@@ -640,7 +640,10 @@ public function verification($filename) {
 public function uploadID(){
 	helper(['form', 'functions']); // load helpers
     addJSONResponseHeader();
-	
+	$user_id = $this->uid;
+	$verify = $this->customerverification_model->verifyUser($user_id);
+
+	if(empty($verify)){
 	$images = array();		
 			if (!empty($this->request->getFiles())) {
 				$file = $this->request->getFiles(); // get all files from post request
@@ -676,9 +679,42 @@ public function uploadID(){
 				$data_arr = array("success" => False,"message" => 'Please add photo to verify your account!');
 			  }
 			  die(json_encode($data_arr));
+	}else{
+
+		$images = array();		
+			if (!empty($this->request->getFiles())) {
+				$file = $this->request->getFiles(); // get all files from post request
+				
+				// loop through all files uploaded
+				foreach($file['productImages'] as $img){
+				  if (!$img->hasMoved()) {
+					  $fileName = $img->getRandomName(); // generate a new random name
+					  $type = $img->getMimeType();
+					  $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+					  
+					  // json data to be save to image
+					  $imageData = [
+						'filename' => $fileName,
+						'mime' => $type,
+						'url' => 'writable/uploads/'. $fileName,
+					  ];
+					  $this->image_model->save($imageData); // try to save to images table
+					  $imageId = $this->image_model->insertID();
+					  array_push($images, $imageId);
+				  }
+				  
+				}
+				$this->customerverification_model->update($verify['id'], ['status' => 0, 'images' => implode(',', $images)]); 
+				$data_arr = array("success" => TRUE,"message" => 'Upload Success!');
+			  }else{
+				$data_arr = array("success" => False,"message" => 'Please add photo to verify your account!');
+			  }
+
+	}
+	die(json_encode($data_arr));
+
+
 }
-
-
 
 	public function send_verification($sender_email, $reciever_email)
 	{
