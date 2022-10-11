@@ -12,6 +12,19 @@ h2 {
   margin: 16px;
 }
 
+.shop-page-display, .shop-page-sort-wrapper {
+  position: relative;
+  top: 20px;
+  text-align: left;
+}
+
+@media (max-width: 576px) {
+  .shop-page-display, .shop-page-sort-wrapper {
+    position: static;
+    text-align: center;
+  }
+}
+
 .select-box {
   display: flex;
   width: 400px;

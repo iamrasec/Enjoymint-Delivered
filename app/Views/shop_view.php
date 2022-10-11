@@ -17,11 +17,28 @@
         <?php echo $this->include('templates/_product_filter.php'); ?>
 
         <div class="col-lg-10 col-sm-12 mt-5 text-center">
-          <?php if($fast_tracked == true): ?>
-          <h1>Fast Tracked Shop</h1>
-          <?php else: ?>
-          <h1>Shop</h1>
-          <?php endif; ?>
+          <div class="d-flex flex-column flex-md-row w-100">
+            <div class="shop-page-display mt-2 d-flex d-md-block float-md-left flex-row w-100 w-md-25">
+              <a href="#" class="px-2 py-2"><i class="fas fa-box"></i></a>
+              <a href="#" class="px-2 py-2"><i class="fas fa-th-large"></i></a>
+              <a href="#" class="px-2 py-2"><i class="fas fa-th-list"></i></a>
+            </div>
+            <?php if($fast_tracked == true): ?>
+            <h1 class="w-100 w-md-50">Fast Tracked Shop</h1>
+            <?php else: ?>
+            <h1 class="w-100 w-md-50">Shop</h1>
+            <?php endif; ?>
+            <div class="shop-page-sort-wrapper mt-2 d-flex d-md-block float-md-right flex-row w-100 w-md-25">
+              <select id="shop-page-sort">
+                <option value="no_sort">Default</option>
+                <option value="name_asc">Sort Products from A-Z</option>
+                <option value="name_desc">Sort Products from Z-A</option>
+                <option value="price_asc">Sort by Price from Lowest to Highest</option>
+                <option value="price_desc">Sort by Price from Highest to Lowest</option>
+              </select>
+            </div>
+          </div>
+
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
             <?php foreach($products as $product): ?>
