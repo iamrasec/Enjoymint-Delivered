@@ -20,7 +20,7 @@
         <h2>Shop by Category</h2>
         <div class="row mt-5 d-flex justify-content-center">
           <?php foreach($categories as $category): ?>
-          <div class="col-md-3 col-sm-6 pt-2 pb-2">
+          <div class="col-6 col-sm-6 col-md-3 pt-2 pb-2">
             <?php 
             switch(strtolower($category->name)) {
               case 'flowers':
@@ -64,7 +64,7 @@
                 break;
             } 
             ?>
-            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $cat_icon . $category->name; ?></a>
+            <a class="home-category-link border btn btn-outline-secondary px-0 px-md-6 py-2 d-block d-flex flex-column flex-md-row" href="<?= base_url('categories/'.$category->url); ?>"><?= $cat_icon . $category->name; ?></a>
           </div>
           <?php endforeach; ?>
         </div>
