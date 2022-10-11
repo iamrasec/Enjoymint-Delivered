@@ -475,3 +475,7 @@ nav ul.pagination li.active a {
 .ql-toolbar {
   width: 100%;
 }
+
+.navbar-nav .nav-item.has-child ul li:hover {
+  background: #489989;
+}
