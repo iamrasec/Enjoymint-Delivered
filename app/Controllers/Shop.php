@@ -65,7 +65,8 @@ class Shop extends BaseController
             $max_thc = $searchData['max_thc'];
             $min_cbd = $searchData['min_cbd'];
             $max_cbd = $searchData['max_cbd'];
-            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
+            $availability = $searchData['availability'];
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
 
             // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
 
@@ -79,6 +80,7 @@ class Shop extends BaseController
                 'max_thc' => $searchData['max_thc'],
                 'min_cbd' => $searchData['min_cbd'],
                 'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
             ];
                 
             $this->data['current_filter'] = $current_filter;
@@ -151,7 +153,8 @@ class Shop extends BaseController
             $max_thc = $searchData['max_thc'];
             $min_cbd = $searchData['min_cbd'];
             $max_cbd = $searchData['max_cbd'];
-            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, true);
+            $availability = $searchData['availability'];
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
 
             // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
 
@@ -165,6 +168,7 @@ class Shop extends BaseController
                 'max_thc' => $searchData['max_thc'],
                 'min_cbd' => $searchData['min_cbd'],
                 'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
             ];
                 
             $this->data['current_filter'] = $current_filter;

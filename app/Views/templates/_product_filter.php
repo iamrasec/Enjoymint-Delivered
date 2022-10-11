@@ -35,8 +35,12 @@
           <?php endforeach; ?>
         </select>
       
-        <label class="mt-3 py-0">Price Range:</label>
-        <div slider id="slider-distance" class="mt-1">
+        <label class="mt-3 py-0 price-range-display">Price Range: $<?= (isset($current_filter['min_price'])) ? $current_filter['min_price'] : 0; ?> - $<?= (isset($current_filter['max_price'])) ? $current_filter['max_price'] : 300; ?></label>
+        <input type="hidden" value="<?= (isset($current_filter['min_price'])) ? $current_filter['min_price'] : 0; ?>" name="min_price" id="min_price">
+        <input type="hidden" value="<?= (isset($current_filter['max_price'])) ? $current_filter['max_price'] : 300; ?>" name="max_price" id="max_price">
+        <div id="price-slider"></div>
+
+        <!-- <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:60%;"></div>
             <div inverse-right style="width:60%;"></div>
@@ -67,10 +71,14 @@
           children[5].style.right=(100-value)+'%';
           children[9].style.left=value+'%';children[13].style.left=value+'%';
           children[13].childNodes[1].innerHTML=this.value;" />
-        </div>
+        </div> -->
   
-        <label class="mt-3 py-0">THC % Value:</label>
-        <div slider id="slider-distance" class="mt-1">
+        <label class="mt-3 py-0 thc-range-display">THC % Value: <?= (isset($current_filter['min_thc'])) ? $current_filter['min_thc'] : 0; ?>% - <?= (isset($current_filter['max_thc'])) ? $current_filter['max_thc'] : 100; ?>%</label>
+        <input type="hidden" value="<?= (isset($current_filter['min_thc'])) ? $current_filter['min_thc'] : 0; ?>" name="min_thc" id="min_thc">
+        <input type="hidden" value="<?= (isset($current_filter['max_thc'])) ? $current_filter['max_thc'] : 100; ?>" name="max_thc" id="max_thc">
+        <div id="thc-slider"></div>
+
+        <!-- <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:70%;"></div>
             <div inverse-right style="width:70%;"></div>
@@ -102,10 +110,14 @@
           children[5].style.right=(100-value)+'%';
           children[9].style.left=value+'%';children[13].style.left=value+'%';
           children[13].childNodes[1].innerHTML=this.value;" />
-        </div>
+        </div> -->
 
-        <label class="mt-3 py-0">CBD % Value:</label>
-        <div slider id="slider-distance" class="mt-1">
+        <label class="mt-3 py-0 cbd-range-display">CBD % Value: <?= (isset($current_filter['min_cbd'])) ? $current_filter['min_cbd'] : 0; ?>% - <?= (isset($current_filter['max_cbd'])) ? $current_filter['max_cbd'] : 100; ?>%</label>
+        <input type="hidden" value="<?= (isset($current_filter['min_cbd'])) ? $current_filter['min_cbd'] : 0; ?>" name="min_cbd" id="min_cbd">
+        <input type="hidden" value="<?= (isset($current_filter['max_cbd'])) ? $current_filter['max_cbd'] : 100; ?>" name="max_cbd" id="max_cbd">
+        <div id="cbd-slider"></div>
+
+        <!-- <div slider id="slider-distance" class="mt-1">
           <div>
             <div inverse-left style="width:70%;"></div>
             <div inverse-right style="width:70%;"></div>
@@ -137,7 +149,7 @@
           children[5].style.right=(100-value)+'%';
           children[9].style.left=value+'%';children[13].style.left=value+'%';
           children[13].childNodes[1].innerHTML=this.value;" />
-        </div>
+        </div> -->
 
         <!-- <p>
         <label>CBD_value:</label>
