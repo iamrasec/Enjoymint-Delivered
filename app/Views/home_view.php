@@ -20,7 +20,7 @@
         <h2>Shop by Category</h2>
         <div class="row mt-5 d-flex justify-content-center">
           <?php foreach($categories as $category): ?>
-          <div class="col-md-3 col-sm-6 pt-2 pb-2">
+          <div class="col-6 col-sm-6 col-md-3 pt-2 pb-2">
             <?php 
             switch(strtolower($category->name)) {
               case 'flowers':
@@ -64,7 +64,7 @@
                 break;
             } 
             ?>
-            <a class="home-category-link border btn btn-outline-secondary px-6 py-2" href="<?= base_url('categories/'.$category->url); ?>"><?= $cat_icon . $category->name; ?></a>
+            <a class="home-category-link border btn btn-outline-secondary px-0 px-md-6 py-2 d-block d-flex flex-column flex-md-row" href="<?= base_url('categories/'.$category->url); ?>"><?= $cat_icon . $category->name; ?></a>
           </div>
           <?php endforeach; ?>
         </div>
@@ -82,14 +82,14 @@
         <div class="row">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
           <!-- <pre><?php print_r($products[$countp]); ?></pre> -->
-          <div class="col-md-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
-            <div class="card product-featured">
+          <div class="col-md-3 col-sm-6 pt-4 pb-1 pb-lg-4 reveal-fadein zoom">
+            <div class="card product-featured d-flex flex-row flex-lg-column">
               <div class="img-wrap">
                 <a href="<?= base_url('products/'.$products[$countp]['url']); ?>"><img src="<?= base_url('products/images/'.$products[$countp]['images'][0]->filename); ?>" /></a>
               </div>
-              <div class="product-info d-flex flex-column px-2">
-                <a href="<?= base_url('products/'. $products[$countp]['url']); ?>"><h5><?= $products[$countp]['name']; ?></h5></a>
-                <div class="product-info-bottom d-flex flex-column mt-auto">
+              <div class="product-info d-block d-lg-flex flex-column px-0 px-lg-2">
+                <a href="<?= base_url('products/'. $products[$countp]['url']); ?>"><h5 class="product-title"><?= $products[$countp]['name']; ?></h5></a>
+                <div class="product-info-bottom d-block d-lg-flex flex-column mt-auto">
                   <p>
                     <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $products[$countp]['thc_value'] . (($products[$countp]['thc_unit'] == 'pct') ? '%' : $products[$countp]['thc_unit']); ?></span> 
                     <?php if($products[$countp]['stocks'] > 0): ?>
@@ -111,7 +111,7 @@
           </div>
           <?php endfor; ?>
         </div>
-        <a class="btn btn-lg bg-primary-green" href="<?= base_url('/shop'); ?>">View Scheduled Delivery Products</a> | 
+        <a class="btn btn-lg bg-primary-green mt-4 mt-lg-0 me-lg-3" href="<?= base_url('/shop'); ?>">View Scheduled Delivery Products</a> 
         <a class="btn btn-lg bg-primary-green" href="<?= base_url('/shop/fast_tracked'); ?>">View Fast-tracked Delivery Products</a>
       </div>
     </div>
@@ -126,15 +126,15 @@
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
           <?php for($i = 0; $i < count($experience); $i++)  : ?> 
-          <div class="col-md-3 col-sm-6">
+          <div class="col-6 col-sm-6 col-md-3 mb-3">
             <div class="discover-benefit reveal-fadein zoom">
               <div class="img-wrap">
                 <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
                 <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><img src="<?= $images[$i] ?>" /></a> 
               </div>
-              <div class="discover-benefit-info">
+              <div class="discover-benefit-info py-2">
                 <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><h5><?= $experience[$i]->name ?></h5></a>
-                <a class="btn" href="<?= base_url('experience/'.$experience[$i]->url); ?>">Shop Now</a>
+                <!-- <a class="btn" href="<?= base_url('experience/'.$experience[$i]->url); ?>">Shop Now</a> -->
               </div>
             </div>
           </div>
@@ -419,12 +419,76 @@
 }
 
 .product-info {
-  min-height: 290px;
+  min-height: 205px;
 }
 
 .product-info h5 {
   font-size: 1rem;
   line-height: 1.625;
+}
+
+@media (max-width: 576px) {
+  .card .product-featured {
+    width: 100%;
+    min-height: 10%;
+  }
+
+  .product-featured .img-wrap {
+    width: 160px;
+    float: left;
+  }
+
+  .product-featured > .img-wrap img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 110px;
+  }
+
+  .product-featured > .product-info .product-title {
+    height: 70px;
+  }
+
+  .product-featured > .product-info h5 {
+    position: relative;
+    top: 20px;
+    left: 5px;
+    width: 95%;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .badge {
+    position: relative;
+    top: 20px;
+    left: 0;
+    width: 44%;
+    height: 28px;
+    font-size: 11px;
+    padding: 8px;
+  }
+
+  #color {
+    display: none;
+  }
+
+  .price {
+    position: absolute;
+    top: 145px;
+    left: 20px;
+    font-size: 23px;
+  }
+
+  .add-to-cart {
+    position: relative;
+    top: 20px;
+    left: 0;
+    width: 90%;
+    height: 40px;
+    font-size: 11px;
+    text-align: center;
+    padding: 0 2px;
+  }
 }
 </style>
 
