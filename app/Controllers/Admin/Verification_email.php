@@ -35,6 +35,7 @@ class Verification_email extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['verification_email'] = $this->user_model->get()->getResult();
+    $this->data['verification'] = $this->verification_model->get()->getResult();
     return view('Admin/verification_email', $this->data);
   }
 
@@ -124,17 +125,29 @@ class Verification_email extends BaseController {
   }
 
      // ...
-    /**
+    /**./
    * This function will update a product into the server
    * @param int id The id of the prodcut to be remove 
    * @return object a success indicator and the message
   */
   public function verification_deny(){
+
     $id = $this->request->getVar('verification_id');
     $message = $this->request->getVar('denial_message');
+    $valid_id = $this->request->getVar('image_validID');
+    $profile = $this->request->getVar('image_profile');
 
-    $this->verification_model->update($id, ['status' => 2, 'denial_message'=> $message]);
-    die(json_encode(array("success" => TRUE,"message" => 'Deny Account!')));
+    if(isset($valid_id)){
+      $param['image_validID'] = '';
+    }
+    if(isset($profile)){
+      $param['image_profile'] = '';
+    }
+    $param['status'] = 2;
+    $param['denial_message'] = $message;
+    $this->verification_model->update($id, $param);
+    die(json_encode(array("success" => TRUE,"message" => 'Deny Account!', 'data' => $param)));
+  
   }
 
 }

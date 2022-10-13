@@ -51,7 +51,7 @@
     <div class="modal-content">
     <form id="verification_submit" class="enjoymint-form" enctype="multipart/form-data">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Deny Information</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -60,12 +60,21 @@
        
         <input id="verification_id" type="hidden" ><br>
         <label>Denial Message to user:</label><br>
-        <textarea class="form-control" cols="60" rows="4" id="denial_msg" name="denial_message"></textarea>
+        <textarea class="form-control" cols="60" rows="2" id="denial_msg" name="denial_message"></textarea>
+    
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="valid_id" name="image_validID">
+        <label class="form-check-label" for="check1">Valid ID</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="profile" name="image_profile">
+        <label class="form-check-label" for="check2">Profile</label>
+      </div>
       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
       </form>
     </div>
@@ -161,6 +170,7 @@
     $("body").delegate(".deny", "click", function(){
       
       var verifyId = $(this).data('id');
+      
         // show modal
         $("#exampleModal").modal('show');
         $("#verification_id").val(verifyId);
@@ -169,8 +179,15 @@
     $("#verification_submit").submit(function(e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
         const fd = new FormData();
-        fd.append('denial_message',  $('#denial_msg').val());
+
         fd.append('verification_id',  $('#verification_id').val());
+        fd.append('denial_message',  $('#denial_msg').val());
+        if($('#profile').is(':checked')){
+          fd.append('image_profile',  'checked');
+        }
+        if($('#valid_id').is(':checked')){
+          fd.append('image_validID',  'checked');
+        }
         fetch('/admin/verification_email/verification_deny',  {
           method: 'POST',
           body: fd,
