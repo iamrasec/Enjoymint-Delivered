@@ -590,36 +590,76 @@ class Users extends BaseController
 			$product_arr = [];
 			foreach($all_products as $product) {
 				// echo "<pre>".print_r($product, 1)."</pre>";
-				if(!empty($product->images)) {
+				if(!empty($product->image_validID)) {
 					$imageIds = [];
-					$imageIds = explode(',',$product->images);
-					$images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-					$product_arr['images'] = $images;
+					$imageIds = $product->image_validID;
+					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['validID'] = $images;
+
+					$this->data['validID'] = $product_arr['validID'];
 				}
-				if($product->status == 0){
-					$this->data['success'] = 'Your account is on processing for verification.';
-					$this->data['color'] = 'orange';
-					$this->data['upload'] = 'none';
-				}elseif($product->status == 1){
-					$this->data['success'] = 'Your account has been Verified.';
-					$this->data['color'] = 'Green';
-					$this->data['upload'] = 'none';
-				}else{
+				if(!empty($product->image_profile)) {
+					$imageIds = [];
+					$imageIds = $product->image_profile;
+					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['profile'] = $images;
+
+					$this->data['profile'] = $product_arr['profile'];
+				}
+				if(!empty($product->image_MMIC)) {
+					$imageIds = [];
+					$imageIds = $product->image_MMIC;
+					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['mmic'] = $images;
+
+					$this->data['mmic'] = $product_arr['mmic'];
+				}
+				if($product->status == 2){
 					$this->data['success'] = $product->denial_message;
 					$this->data['error'] = 'Your photo has been denied for verification!';
 					$this->data['color'] = 'Red';
-					$this->data['upload'] = 'inline';
-	
-					
-						
+					if(empty($product->image_validID)){
+						$this->data['upload'] = '<label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
+						<div>
+						<input type="file" name="valid_ID[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com" >
+					  </div>
+					  '; 
+					}
+					if(empty($product->image_profile)){
+						$this->data['upload'] = $this->data['upload'].'<label class="form-label">Select Selfie photo with your Valid ID:</label>
+						<div>
+						  <input type="file" name="profile[]" id="file1" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
+						</div>';
+					}
+					if(empty($product->image_MMIC)){
+						$this->data['upload'] = $this->data['upload'].'
+						<label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
+						<div>  
+						<input type="file" name="mmic[]" id="file2" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
+						</div>';
+					}
+
+					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
+					$this->data['display'] = 'inline';
+				}elseif($product->status == 1){
+					$this->data['success'] = 'Your account has been Verified.';
+					$this->data['color'] = 'Green';
+					$this->data['upload'] = '';
+					$this->data['display'] = 'none';
+					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
+				}else{
+					$this->data['success'] = 'Your account is on processing for verification.';
+					$this->data['color'] = 'orange';
+					$this->data['upload'] = '';	
+					$this->data['display'] = 'none';
+					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
 					}
 				
 			}
 		}
 		}
 		
-	// print_r($product_arr);
-		$this->data['image_data'] = $product_arr;
+	
 		$this->data['data'] = $all_products;
 
 		return view('User/id_upload', $this->data);
@@ -644,34 +684,67 @@ public function uploadID(){
 	$verify = $this->customerverification_model->verifyUser($user_id);
 
 	if(empty($verify)){
-	$images = array();		
+			$images = array();		
 			if (!empty($this->request->getFiles())) {
 				$file = $this->request->getFiles(); // get all files from post request
-				
-				// loop through all files uploaded
-				foreach($file['productImages'] as $img){
-				  if (!$img->hasMoved()) {
-					  $fileName = $img->getRandomName(); // generate a new random name
-					  $type = $img->getMimeType();
-					  $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
-					  
-					  // json data to be save to image
-					  $imageData = [
-						'filename' => $fileName,
-						'mime' => $type,
-						'url' => 'writable/uploads/'. $fileName,
-					  ];
-					  $this->image_model->save($imageData); // try to save to images table
-					  $imageId = $this->image_model->insertID();
-					  array_push($images, $imageId);
-				  }
+				//upload for valid ID
+			   	if(array_key_exists('file', $file)){
+					if (!$file['file']->hasMoved()) {
+					$fileName = $file['file']->getRandomName(); // generate a new random name
+					$type = $file['file']->getMimeType();
+					$file['file']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+					
+					// json data to be save to image
+					$imageData = [
+					  'filename' => $fileName,
+					  'mime' => $type,
+					  'url' => 'writable/uploads/'. $fileName,
+					];
+					$this->image_model->save($imageData); // try to save to images table
+					$imageId = $this->image_model->insertID();
+					$data['image_validID'] = $imageId;
+					}
+			   	}
+				//upload for profile
+				   if(array_key_exists('file1', $file)){
+					if (!$file['file1']->hasMoved()) {
+					$fileName = $file['file1']->getRandomName(); // generate a new random name
+					$type = $file['file1']->getMimeType();
+					$file['file1']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+					
+					// json data to be save to image
+					$imageData = [
+					  'filename' => $fileName,
+					  'mime' => $type,
+					  'url' => 'writable/uploads/'. $fileName,
+					];
+					$this->image_model->save($imageData); // try to save to images table
+					$image_profile_id = $this->image_model->insertID();
+					$data['image_profile'] = $image_profile_id;
+					}
+			   	}
+				   if(array_key_exists('file2', $file)){
+					if (!$file['file2']->hasMoved()) {
+					$fileName = $file['file2']->getRandomName(); // generate a new random name
+					$type = $file['file2']->getMimeType();
+					$file['file2']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+					
+					// json data to be save to image
+					$imageData = [
+					  'filename' => $fileName,
+					  'mime' => $type,
+					  'url' => 'writable/uploads/'. $fileName,
+					];
+					$this->image_model->save($imageData); // try to save to images table
+					$image_mmic = $this->image_model->insertID();
+					$data['image_MMIC'] = $image_mmic;
+					}
+			   	}
+			
 				  
-				}
-				$data = [
-					'user_id' => $this->uid,
-					'images' => implode(',', $images),
-					'status' => 0,
-				];
+				
+				$data['user_id'] = $this->uid;
+				$data['status'] = '0';
 
 				$this->customerverification_model->save($data); 
 				$data_arr = array("success" => TRUE,"message" => 'Upload Success!');
@@ -681,40 +754,82 @@ public function uploadID(){
 			  die(json_encode($data_arr));
 	}else{
 
-		$images = array();		
-			if (!empty($this->request->getFiles())) {
-				$file = $this->request->getFiles(); // get all files from post request
+	
+		$images = array();	
+		
+		if (!empty($this->request->getFiles())) {
+			$file = $this->request->getFiles(); 	
+		if(array_key_exists('file', $file)){
+			if (!$file['file']->hasMoved()) {
+			$fileName = $file['file']->getRandomName(); // generate a new random name
+			$type = $file['file']->getMimeType();
+			$file['file']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+			
+			// json data to be save to image
+			$imageData = [
+			  'filename' => $fileName,
+			  'mime' => $type,
+			  'url' => 'writable/uploads/'. $fileName,
+			];
+			$this->image_model->save($imageData); // try to save to images table
+			$imageId = $this->image_model->insertID();
+			$data['image_validID'] = $imageId;
+			}
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_validID' => $data['image_validID']]);
+		   }
+		//upload for profile
+		   if(array_key_exists('file1', $file)){
+			if (!$file['file1']->hasMoved()) {
+			$fileName = $file['file1']->getRandomName(); // generate a new random name
+			$type = $file['file1']->getMimeType();
+			$file['file1']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+			
+			// json data to be save to image
+			$imageData = [
+			  'filename' => $fileName,
+			  'mime' => $type,
+			  'url' => 'writable/uploads/'. $fileName,
+			];
+			$this->image_model->save($imageData); // try to save to images table
+			$image_profile_id = $this->image_model->insertID();
+			$data['image_profile'] = $image_profile_id;
+			}
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_profile' => $data['image_profile']]);
+		   }
+		   //mmic
+		   if(array_key_exists('file2', $file)){
+			if (!$file['file2']->hasMoved()) {
+			$fileName = $file['file2']->getRandomName(); // generate a new random name
+			$type = $file['file2']->getMimeType();
+			$file['file2']->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
+			
+			// json data to be save to image
+			$imageData = [
+			  'filename' => $fileName,
+			  'mime' => $type,
+			  'url' => 'writable/uploads/'. $fileName,
+			];
+			$this->image_model->save($imageData); // try to save to images table
+			$image_mmic = $this->image_model->insertID();
+			$data['image_MMIC'] = $image_mmic;
+			}
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_MMIC' => $data['image_MMIC']]);
+		   }
+
 				
-				// loop through all files uploaded
-				foreach($file['productImages'] as $img){
-				  if (!$img->hasMoved()) {
-					  $fileName = $img->getRandomName(); // generate a new random name
-					  $type = $img->getMimeType();
-					  $img->move( WRITEPATH . 'uploads', $fileName); // move the file to writable/uploads
-					  
-					  // json data to be save to image
-					  $imageData = [
-						'filename' => $fileName,
-						'mime' => $type,
-						'url' => 'writable/uploads/'. $fileName,
-					  ];
-					  $this->image_model->save($imageData); // try to save to images table
-					  $imageId = $this->image_model->insertID();
-					  array_push($images, $imageId);
-				  }
-				  
-				}
-				$this->customerverification_model->update($verify['id'], ['status' => 0, 'images' => implode(',', $images)]); 
 				$data_arr = array("success" => TRUE,"message" => 'Upload Success!');
 			  }else{
 				$data_arr = array("success" => False,"message" => 'Please add photo to verify your account!');
 			  }
+
+			
 
 	}
 	die(json_encode($data_arr));
 
 
 }
+
 
 	public function send_verification($sender_email, $reciever_email)
 	{

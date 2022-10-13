@@ -24,37 +24,38 @@
               
                 <p style="color: <?= $color ?>;"><?= $success; ?></p>
               
-            <div style="display:<?= $upload; ?> ;">
-            <label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
-          <div>
-            <input type="file" name="file[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
-          </div>
-          <label class="form-label">Select Selfie photo with your Valid ID:</label>
-          <div>
-            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
-          </div>
-          <label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
-          <div>
-            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
-          </div>
-          <div>
+            <div>
+              <?php if(isset($upload)): ?>
+              <?= $upload ;?>
+          <div style="display:<?= $display ;?> ;">
             <br>
-            <input type="submit" class="btn btn-primary" value="upload" />  
+            <?= $button ;?>
           </div>
+          <?php endif; ?>
           </div>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12 mt-5 text-center"> 
         <h6>Your Uploaded Photo</h6>
-          <?php if(isset($image_data['images'])):
-          foreach($image_data['images'] as $dt => $val ){ ?>
-            <img src="<?= base_url('users/verification/'.$val->filename) ?>" style="height: 200px; border: solid black 2px;"/>
-            
-          <?php } 
-          else: ?>
+          <?php if(isset($validID)):
+          foreach($validID as $valid) :?>
+            <img src="<?= base_url('users/verification/'.$valid->filename) ?>" style="height: 200px; border: solid black 2px;"/>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if(isset($profile)):
+            foreach($profile as $prof) :?>
+              <img src="<?= base_url('users/verification/'.$prof->filename) ?>" style="height: 200px; border: solid black 2px;"/>
+              <?php endforeach; ?>
+            <?php endif; ?>
+            <?php if(isset($mmic)):
+              foreach($mmic as $mmi) :?>
+                <img src="<?= base_url('users/verification/'.$mmi->filename) ?>" style="height: 200px; border: solid black 2px;"/>
+                <?php endforeach; ?>
+              <?php endif;?>
+              <?php if(!isset($validID) && !isset($profile) && !isset($mmic)) : ?>
             <img src="invalid_link" onerror="this.onerror=null;this.src='/assets/img/verification/id.jpg';">
             <img src="invalid_link" onerror="this.onerror=null;this.src='/assets/img/verification/selfie.jpg';">
-            <?php endif; ?>
+        <?php endif;?>
         </div>
        
       <?php else: ?>
@@ -63,15 +64,15 @@
           <p></p>
           <label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
           <div>
-            <input type="file" name="file[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
+            <input type="file" name="valid_ID" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com">
           </div>
           <label class="form-label">Select Selfie photo with your Valid ID:</label>
           <div>
-            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
+            <input type="file" name="profile" id="file1" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
           </div>
           <label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
           <div>
-            <input type="file" name="file[]" id="file" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
+            <input type="file" name="mmic" id="file2" class="form-control fc" accept="image/png, image/jpeg, image/jpg">
           </div>
           <div class="mt-2">
             <input type="submit" class="btn btn-primary" value="upload" />  
@@ -127,13 +128,29 @@ $("#verify").submit(function(e) {
 
     const formData = new FormData();
     const photos = document.querySelectorAll('input[type="file"]');
-  
-    photos.forEach(function (item, field) {
-      formData.append('productImages[]', item.files[0]);
-
+    
+    
+    // var file2 = $('#file2')[0].files[0];
+    console.log(file);
+    // photos.forEach(function (item, field) {
+    //   formData.append('productImages[]', item.files[0]);
+    if ($('#file').val()){
+      var file = $('#file')[0].files[0];
+      formData.append('file', file);
+    }
+    if ($('#file1').val()){
+      var file1 = $('#file1')[0].files[0];
+      formData.append('file1', file1);
+    }
+    if ($('#file2').val()){
+      var file2 = $('#file2')[0].files[0];
+      formData.append('file2', file2);
+    }
 
       
-    });
+    // });
+    
+    
    
     fetch('/Users/uploadID',  {
       method: 'POST',
