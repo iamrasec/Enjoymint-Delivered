@@ -465,7 +465,7 @@ class Users extends BaseController
 
 		// echo "<pre>".print_r($validate, 1)."</pre>"; die();
 
-		return view('User/id_upload', $validate);
+		return redirect('User/id_upload', $validate);
 
 		// print_r($validate);die();
 	}
@@ -585,10 +585,10 @@ class Users extends BaseController
 			}
 			else{
 			
-			// $all_products = $this->customerverification_model->get()->getResult();
+			$all_products = $this->customerverification_model->get()->getResult();
 				 
 			$product_arr = [];
-			foreach($verify as $product) {
+			foreach($all_products as $product) {
 				// echo "<pre>".print_r($product, 1)."</pre>";
 				if(!empty($product->image_validID)) {
 					$imageIds = [];
@@ -614,7 +614,7 @@ class Users extends BaseController
 
 					$this->data['mmic'] = $product_arr['mmic'];
 				}
-				if(isset($product->status) == 2){
+				if($product->status == 2){
 					$this->data['success'] = $product->denial_message;
 					$this->data['error'] = 'Your photo has been denied for verification!';
 					$this->data['color'] = 'Red';
@@ -642,7 +642,7 @@ class Users extends BaseController
 
 					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
 					$this->data['display'] = 'inline';
-				}elseif(isset($product->status) == 1){
+				}elseif($product->status == 1){
 					$this->data['success'] = 'Your account has been Verified.';
 					$this->data['color'] = 'Green';
 					$this->data['upload'] = '';
@@ -661,8 +661,12 @@ class Users extends BaseController
 		}
 		
 	
+<<<<<<< HEAD
+		 $this->data['data'] = $all_products;
+=======
 		// $this->data['data'] = $all_products;
     //    print_r($verify);
+>>>>>>> 860c53a398a6a8ab574fa0ba6b26e39a9adbe47b
 		return view('User/id_upload', $this->data);
 	   
 }
