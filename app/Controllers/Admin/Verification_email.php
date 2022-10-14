@@ -53,13 +53,30 @@ class Verification_email extends BaseController {
     $verification = $this->verification_model->getAllVerification($start, $length);
     foreach($verification as $verify){
       $product_arr = [];
-				if(!empty($verify->images)) {
+      $img= '';
+				if(!empty($verify->image_validID)) {
 					$imageIds = [];
-					$imageIds = explode(',',$verify->images);
+					$imageIds = $verify->image_validID;
           
 					// $images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-          $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-					$product_arr['images'] = $images;
+          $images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['validID'] = $images;
+				}
+        if(!empty($verify->image_profile)) {
+					$imageIds = [];
+					$imageIds = $verify->image_profile;
+          
+					// $images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+          $images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['profile'] = $images;
+				}
+        if(!empty($verify->image_MMIC)) {
+					$imageIds = [];
+					$imageIds = $verify->image_MMIC;
+          
+					// $images = $imageIds ?? $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+          $images = $this->image_model->where('id', $imageIds)->get()->getResult();
+					$product_arr['mmic'] = $images;
 				}
 
         // echo "<pre>".print_r($verify, 1)."</pre>";
@@ -77,16 +94,16 @@ class Verification_email extends BaseController {
       else{
         return 'Cancelled';
       }
-      if(isset($product_arr['images'][0])){
-        $img = '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][0]->filename).'" style="width:120px; width: 90px;">';
+      if(isset($product_arr['validID'][0])){
+        $img = '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['validID'][0]->filename).'" style="width:120px; width: 90px;">';
       }
-      if(isset($product_arr['images'][1])){
-        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][1]->filename).'" style="width:120px; width: 90px;">';
+      if(isset($product_arr['profile'][0])){
+        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['profile'][0]->filename).'" style="width:120px; width: 90px;">';
       }
-      if(isset($product_arr['images'][2])){
-        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['images'][2]->filename).'" style="width:120px; width: 90px;"></a>';
+      if(isset($product_arr['mmic'][0])){
+        $img = $img. '<img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['mmic'][0]->filename).'" style="width:120px; width: 90px;"></a>';
       }
-      // print_r($product_arr['images']);
+      //  print_r($product_arr);
       $name = $verify->first_name.' '.$verify->last_name;
       $start++;
       $data[] = array(
@@ -103,6 +120,7 @@ class Verification_email extends BaseController {
     }
 
     $output = array(
+      
       "draw" => $_POST['draw'],
       "recordsTotal" => $this->verification_model->countAll(),
       "recordsFiltered" => $this->verification_model->countAll(),

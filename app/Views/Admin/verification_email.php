@@ -60,7 +60,7 @@
        
         <input id="verification_id" type="hidden" ><br>
         <label>Denial Message to user:</label><br>
-        <textarea class="form-control" cols="60" rows="2" id="denial_msg" name="denial_message"></textarea>
+        <textarea class="form-control" cols="60" rows="2" id="denial_msg" name="denial_message" required></textarea>
     
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="valid_id" name="image_validID">
@@ -68,7 +68,7 @@
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="profile" name="image_profile">
-        <label class="form-check-label" for="check2">Profile</label>
+        <label class="form-check-label" for="check2">Selfie</label>
       </div>
       
       </div>
