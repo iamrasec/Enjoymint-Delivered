@@ -452,7 +452,7 @@ class Users extends BaseController
 		else if($validate['is_active'] == 1){
 			$this->data['status'] = 'Account is already activated';
 
-			return redirect('User/id_upload', $this->data);	
+			return redirect()->to('/users/customerverification');
 		}
 
 		$validate['is_active'] = 1;
@@ -465,7 +465,7 @@ class Users extends BaseController
 
 		// echo "<pre>".print_r($validate, 1)."</pre>"; die();
 
-		return redirect('User/id_upload', $validate);
+		return redirect()->to('/users/customerverification');
 
 		// print_r($validate);die();
 	}
