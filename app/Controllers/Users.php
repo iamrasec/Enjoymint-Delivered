@@ -662,7 +662,7 @@ class Users extends BaseController
 		
 	
 		// $this->data['data'] = $all_products;
-       print_r($verify);
+    //    print_r($verify);
 		return view('User/id_upload', $this->data);
 	   
 }
