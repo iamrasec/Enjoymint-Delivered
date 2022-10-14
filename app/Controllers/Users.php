@@ -13,13 +13,13 @@ class Users extends BaseController
 
 		$this->data = [];
 		$this->role = session()->get('role');
-    $this->isLoggedIn = session()->get('isLoggedIn');
+    	$this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
 		$this->uid = session()->get('id');
 		$this->user_model = model('UserModel');
 		$this->customerverification_model = model('VerificationModel');
 		$this->checkout_model = model('CheckoutModel');
-    $this->order_products_model = model('OrderProductsModel');
+    	$this->order_products_model = model('OrderProductsModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 		$this->image_model = model('ImageModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
@@ -595,7 +595,7 @@ class Users extends BaseController
 					$imageIds = $product->image_validID;
 					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
 					$product_arr['validID'] = $images;
-
+					
 					$this->data['validID'] = $product_arr['validID'];
 				}
 				if(!empty($product->image_profile)) {
@@ -618,6 +618,7 @@ class Users extends BaseController
 					$this->data['success'] = $product->denial_message;
 					$this->data['error'] = 'Your photo has been denied for verification!';
 					$this->data['color'] = 'Red';
+					$this->data['upload'] = '';
 					if(empty($product->image_validID)){
 						$this->data['upload'] = '<label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
 						<div>
@@ -775,7 +776,7 @@ public function uploadID(){
 			$imageId = $this->image_model->insertID();
 			$data['image_validID'] = $imageId;
 			}
-			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_validID' => $data['image_validID']]);
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_validID' => $data['image_validID'] , 'denial_message' => null]);
 		   }
 		//upload for profile
 		   if(array_key_exists('file1', $file)){
@@ -794,7 +795,7 @@ public function uploadID(){
 			$image_profile_id = $this->image_model->insertID();
 			$data['image_profile'] = $image_profile_id;
 			}
-			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_profile' => $data['image_profile']]);
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_profile' => $data['image_profile'], 'denial_message' => null]);
 		   }
 		   //mmic
 		   if(array_key_exists('file2', $file)){
@@ -813,7 +814,7 @@ public function uploadID(){
 			$image_mmic = $this->image_model->insertID();
 			$data['image_MMIC'] = $image_mmic;
 			}
-			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_MMIC' => $data['image_MMIC']]);
+			$this->customerverification_model->update($verify['id'], ['status' => 0, 'image_MMIC' => $data['image_MMIC'], 'denial_message' => null]);
 		   }
 
 				
