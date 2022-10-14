@@ -661,7 +661,12 @@ class Users extends BaseController
 		}
 		
 	
+<<<<<<< HEAD
 		 $this->data['data'] = $all_products;
+=======
+		// $this->data['data'] = $all_products;
+    //    print_r($verify);
+>>>>>>> 860c53a398a6a8ab574fa0ba6b26e39a9adbe47b
 		return view('User/id_upload', $this->data);
 	   
 }
