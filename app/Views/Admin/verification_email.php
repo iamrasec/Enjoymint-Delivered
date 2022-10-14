@@ -68,7 +68,7 @@
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="profile" name="image_profile">
-        <label class="form-check-label" for="check2">Profile</label>
+        <label class="form-check-label" for="check2">Selfie</label>
       </div>
       
       </div>
