@@ -53,7 +53,7 @@
 <?php $this->section('scripts'); ?>
 <!-- Load Data Table JS -->
 <script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Product List page js -->
 <script>
   $(document).ready(function () {
@@ -75,6 +75,23 @@
             "orderable": false
         }]
     });
+
+    $("body").delegate(".removeBtn", "click", function(){
+      var userId = $(this).data('id');
+      console.log(userId);
+      
+      fetch('/api/users/delete_user/'+userId,  {
+        method: 'POST',
+        headers : {
+          'Authorization': 'Bearer ' + $("[name='atoken']").attr('content')
+        }
+      }) .then(response => response.json()).then(response => {
+          var { message, success }  = response;
+          success ? enjoymintAlert('Nice!', message, 'success', 0, '/admin/users') : enjoymintAlert('Sorry!', message, 'error', 0);
+      }).catch((error) => {
+          console.log('Error:', error);
+      });
+    }); 
   });
 </script>
 <?php $this->endSection(); ?>

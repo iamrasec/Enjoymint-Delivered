@@ -80,12 +80,19 @@ class Users extends BaseController {
     $length = $_POST['length'];
 
     $users = $this->user_model->select('*')
+      ->where('del_user', 0)
+      ->get()
+      ->getResult();
+    if($_POST['search']['value'] && $_POST['search']['value']){
+      $users = $this->user_model->select('*')
+      ->where('del_user', 0)
       ->like('first_name',$_POST['search']['value'])
       ->orLike('last_name',$_POST['search']['value'])
       ->limit($length, $start)
       ->get()
       ->getResult();
-   
+    }
+     
     foreach($users as $user){
       $start++;
       if($user->role == '1'){
@@ -102,10 +109,10 @@ class Users extends BaseController {
         $user->id, 
         $name, 
         $roles,
-        "<a href=".base_url().">Delete</a> | <a href=".base_url('admin/users/edit_user/'. $user->id).">Edit</a>",
-      );
+        "<a href='' class=\"removeBtn\" data-id='".$user->id."'>Delete</a> | <a href=".base_url('admin/users/edit_user/'. $user->id).">Edit</a>",
+      );    
     }
-
+    
     $output = array(
       "draw" => $_POST['draw'],
       "recordsTotal" => $this->user_model->countAll(),

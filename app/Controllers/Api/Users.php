@@ -37,5 +37,16 @@ class Users extends ResourceController
     exit;
   }
 
+  
+      /**
+   * This function will delete a product into the server
+   * @param int pid The pid of the prodcut to be remove 
+   * @return object a success indicator and the message
+  */
+  public function delete_user($id){
+    $this->user_model->update($id, ['del_user' => 1]);
+    die(json_encode(array("success" => TRUE,"message" => 'User Delete!')));
+  }
+
   // ...
 }
