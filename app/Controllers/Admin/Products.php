@@ -311,43 +311,46 @@ class Products extends BaseController {
   {
     
     $data  = array();
-    $start = $_POST['start'];
-    $length = $_POST['length'];
+    $post = $this->request->getPost();
 
-    
-    $products = $this->product_model->select('id,name,url,archived')
-      ->where('archived', 0)
-      ->get()
-      ->getResult();
-    if($_POST['search']['value'] && $_POST['search']['value']){
-        $products = $this->product_model->select('id,name,url')
-        ->like('name',$_POST['search']['value'])
-        ->orLike('url',$_POST['search']['value'])
-        ->limit($length, $start)
-        ->get()
-        ->getResult();
-        }
-    
-    foreach($products as $product){
-      $start++;
-      $data[] = array(
-        $product->id, 
-        $product->name, 
-        $product->url,
-        "<a href=".base_url('admin/products/edit_product/'. $product->id).">edit</a>
-        <button class=\"btn btn-sm removeBtn\" data-id='".$product->id."'>delete</button>",
-      );
+    // 1st query for counting data
+    $this->product_model->select("id");
+
+    if(isset($post['search']['value']) && !empty($post['search']['value'])) {
+      $search_value = strtolower($post['search']['value']);
+      $this->product_model->like("LOWER(name)", $search_value);
+      $this->product_model->orLike("LOWER(url)", $search_value);
     }
-      
+
+    $count_all = $this->product_model->countAllResults();
+
+    // 2nd Query that gets all the data
+    $this->product_model->select('id, name, url, archived');
+
+    if(isset($post['search']['value']) && !empty($post['search']['value'])) {
+      $search_value = strtolower($post['search']['value']);
+      $this->product_model->like("LOWER(name)", $search_value);
+      $this->product_model->orLike("LOWER(url)", $search_value);
+    }
+
+    $this->order_model->orderBy("id ASC");
+
+    if(isset($post['start']) && isset($post['length'])) {
+      $products = $this->product_model->get($post['length'], $post['start'])->getResult();
+    }
+    else {
+      $products = $this->product_model->get()->getResult();
+    }
 
     $output = array(
-      "draw" => $_POST['draw'],
-      "recordsTotal" => $this->product_model->countAll(),
-      "recordsFiltered" => $this->product_model->countAll(),
-      "data" => $data,
+      "draw" => $post['draw'],
+      "recordsTotal" => $count_all,
+      "recordsFiltered" => $count_all,
+      "data" => $products,
     );
-    echo json_encode($output);
-  }
 
+    echo json_encode($output);
+    exit();
+  }
 
 }

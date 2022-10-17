@@ -30,6 +30,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>URL</th>
+                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -37,6 +38,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>URL</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tfoot>
               </table>
@@ -67,14 +69,57 @@
         "order": [],
         // Load data from an Ajax source
         "ajax": {
-            "url": "<?= base_url('admin/products/getProductLists'); ?>",
-            "type": "POST"
+          "url": "<?= base_url('admin/products/getProductLists'); ?>",
+          "type": "POST"
         },
         //Set column definition initialisation properties
         "columnDefs": [{ 
-            "targets": [0],
-            "orderable": false
-        }]
+          "targets": [0, 1, 2, 3, 4],
+          // "orderable": false
+        }],
+        "columns": [
+          { 
+            data: 'id',
+            className: 'product-id px-2',
+            // "orderable": true,
+          },
+          { 
+            data: 'name',
+            className: 'product-name px-2',
+            // "orderable": true,
+          },
+          { 
+            data: 'url',
+            className: 'product-url px-2',
+            // "orderable": true,
+          },
+          { 
+            data: 'archived',
+            className: 'product-status px-2',
+            render: function(data, type, row) {
+              // console.log(row.archived);
+
+              if(row.archived == 1) {
+                return '<span class="offline text-center d-block fs-4">●</span>';
+              }
+              else {
+                return '<span class="online text-center d-block fs-4">●</span>';
+              }
+            }  
+            // "orderable": true,
+          },
+          { 
+          data: 'actions',
+          render: function(data, type, row) {
+            // console.log(row);
+            let actions = '';
+            actions += '<a href="<?= base_url('admin/products/edit_product'); ?>/'+row.id+'"><i class="fas fa-edit"></i></a> | ';
+            actions += '<a href="javascript;;" class="removeBtn" data-id="'+row.id+'"><i class="fas fa-trash"></i></a>';
+
+            return actions;
+          }
+        },
+        ],
     });
 
     $("body").delegate(".removeBtn", "click", function(){

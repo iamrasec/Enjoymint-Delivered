@@ -81,7 +81,7 @@ class Orders extends ResourceController
     $this->order_model->orderBy("created DESC");
 
     if(isset($post['start']) && isset($post['length'])) {
-      $orders = $this->order_model->get($post['start'], $post['length'])->getResult();
+      $orders = $this->order_model->get($post['length'], $post['start'])->getResult();
     }
     else {
       $orders = $this->order_model->get()->getResult();
@@ -95,7 +95,7 @@ class Orders extends ResourceController
     $output = array(
       "draw" => $post['draw'],
       "recordsTotal" => $count_all,
-      "recordsFiltered" => count($orders),
+      "recordsFiltered" => $count_all,
       "data" => $orders,
     );
 
@@ -132,7 +132,7 @@ class Orders extends ResourceController
     $this->order_model->orderBy("created DESC");
 
     if(isset($post['start']) && isset($post['length'])) {
-      $orders = $this->order_model->get($post['start'], $post['length'])->getResult();
+      $orders = $this->order_model->get($post['length'], $post['start'])->getResult();
     }
     else {
       $orders = $this->order_model->get()->getResult();
@@ -183,7 +183,7 @@ class Orders extends ResourceController
     $this->order_model->orderBy("created DESC");
 
     if(isset($post['start']) && isset($post['length'])) {
-      $orders = $this->order_model->get($post['start'], $post['length'])->getResult();
+      $orders = $this->order_model->get($post['length'], $post['start'])->getResult();
     }
     else {
       $orders = $this->order_model->get()->getResult();
@@ -234,7 +234,7 @@ class Orders extends ResourceController
     $this->order_model->orderBy("created DESC");
 
     if(isset($post['start']) && isset($post['length'])) {
-      $orders = $this->order_model->get($post['start'], $post['length'])->getResult();
+      $orders = $this->order_model->get($post['length'], $post['start'])->getResult();
     }
     else {
       $orders = $this->order_model->get()->getResult();

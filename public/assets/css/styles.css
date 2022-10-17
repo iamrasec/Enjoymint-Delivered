@@ -479,3 +479,11 @@ nav ul.pagination li.active a {
 .navbar-nav .nav-item.has-child ul li:hover {
   background: #489989;
 }
+
+.offline {
+  color: red;
+}
+
+.online {
+  color: green;
+}
