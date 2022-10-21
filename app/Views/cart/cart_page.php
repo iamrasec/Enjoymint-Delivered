@@ -45,7 +45,10 @@
                             </div>
                             <div class="product-qty">
                               <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
-                            </div>
+                            </div><br>
+                            <!-- <div class="product-date">
+                              <span>Date:<input type="text" id="picker" class="form-control"></span>
+                            </div> -->
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
                             <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
@@ -83,6 +86,14 @@
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
+          <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+              <div class="input-group-prepend">
+                <button type="button" id="toggle" class="input-group-text">
+                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                </button>
+              </div>
+           </div>
           <div class="row mt-4">
             <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
             <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
@@ -107,12 +118,33 @@
   </div>
 </main>
 
-<?php echo $this->include('cart/_login_register_modal.php'); ?>
 
+
+<?php echo $this->include('cart/_login_register_modal.php'); ?>
+<link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" />
 <?php $this->endSection(); ?>
 
 <?php $this->section("script"); ?>
+<script src="<?php echo base_url(); ?>/assets/js/jquery.datetimepicker.full.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script>
+
+jQuery.datetimepicker.setDateFormatter('moment')
+      $('#picker').datetimepicker({
+         timepicker: true,
+         datepicker: true,
+         format: 'YYYY-MM-DD h:mm a'
+      })
+      $('#toggle').on('click', function(){
+         $('#picker').datetimepicker('toggle')
+      })
+
   var tax_rate = <?= $tax_rate; ?>;  // 35%
 
   // Create our number formatter.
@@ -173,5 +205,7 @@
     e.preventDefault();
     $("#update-cart-form").submit();
   });
+
+
 </script>
 <?php $this->endSection(); ?>
