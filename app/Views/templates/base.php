@@ -31,6 +31,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css" integrity="sha512-MQXduO8IQnJVq1qmySpN87QQkiR1bZHtorbJBD0tzy7/0U9+YIC93QWHeGTEoojMVHWWNkoCp8V6OzVSYrX0oQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/material-kit.css?v=3.0.0" rel="stylesheet" />
 <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
+<link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" rel="stylesheet">
 <?php echo $this->renderSection("styles"); ?>
 </head>
 

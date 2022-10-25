@@ -240,6 +240,14 @@
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> items</div>
+		  <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+              <div class="input-group-prepend">
+                <button type="button" id="toggle" class="input-group-text">
+                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                </button>
+              </div>
+           </div>
           <div class="row mt-4">
             <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
             <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">$<?= number_format($subtotal, 2, '.', ','); ?></span></div>
@@ -270,9 +278,24 @@
 <?php $this->endSection(); ?>
 
 <?php $this->section("script"); ?>
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script>
   $(document).on("click", ".place-order", function() {
 		$("#checkout").submit();
 	})
+
+	jQuery.datetimepicker.setDateFormatter('moment')
+      $('#picker').datetimepicker({
+         timepicker: true,
+         datepicker: true,
+         format: 'YYYY-MM-DD h:mm a'
+      })
+      $('#toggle').on('click', function(){
+         $('#picker').datetimepicker('toggle')
+      })
 </script>
 <?php $this->endSection(); ?>
