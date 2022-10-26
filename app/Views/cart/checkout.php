@@ -143,11 +143,11 @@
         <!-- <div class="continue_shopping px-3"><a href="<?= base_url('shop'); ?>"><i class="fas fa-chevron-left"></i> Continue Shoppping</a></div> -->
       </div>
     </div>
+	<form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
     <div class="row">
-      <div class="col-12 col-md-8 col-xs-12">
+      <div class="col-12 col-md-8 col-xs-7">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Checkout</h1>
-          <form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
 						<input type="hidden" name="guid" value="<?= $guid; ?>">
 						<input type="hidden" name="cart_key" value="<?= $checkout_token; ?>">
             <div class="row">
@@ -222,7 +222,7 @@
 								</div>
 							</div>
 						</div>
-          </form>
+          
         </div>
       </div>
 
@@ -236,9 +236,9 @@
 				$tax_cost = $subtotal * ($tax_rate - 1);
 				$total_cost = $subtotal * $tax_rate;
 			?>
-			<div class="col-12 col-md-4 col-xs-12">
+			<div class="col-12 col-md-4 col-xs-5">
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
-          <h4 class="text-white">Cart Summary</h4>
+          <h4 class="text-white">Cart Summary</h4>   
           <div class="cart-item-count"><?= count($cart_products); ?> items</div>
 		  <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
               <div class="input-group-prepend">
@@ -270,6 +270,7 @@
       </div>
 			<?php endif; ?>
     </div>
+	</form>
   </div>
 </main>
 
