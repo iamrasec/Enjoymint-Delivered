@@ -21,6 +21,7 @@ class CheckoutModel extends Model {
         'created',
         'modified',
         'order_notes',
+        'delivery_schedule',
     ];
     
     public function fetchOrderDetails($key)
