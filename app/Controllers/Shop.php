@@ -7,7 +7,7 @@ class Shop extends BaseController
     var $view_data = array();
 
     public function __construct() {
-        helper(['jwt']);
+        helper(['jwt', 'date']);
     
         $this->data = [];
         $this->role = session()->get('role');
@@ -26,6 +26,8 @@ class Shop extends BaseController
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
+
+        date_default_timezone_set('America/Los_Angeles');
     }
 
     public function index()
@@ -113,6 +115,7 @@ class Shop extends BaseController
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['fast_tracked'] = false;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
         return view('shop_view', $this->data);
     }
 

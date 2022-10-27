@@ -24,6 +24,16 @@
           <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
+
+            <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+              <div class="input-group-prepend">
+                <button type="button" id="toggle" class="input-group-text">
+                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
+                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                </button>
+              </div>
+           </div>
+
             <?php foreach($products as $product): ?>
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
@@ -119,6 +129,11 @@ optionsList.forEach(o => {
 
 </script>  -->
 
+<div class="d-none">
+  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
+</div>
+<?php echo $this->include('templates/_delivery_popup.php'); ?>
+
 <?php $this->endSection() ?>
 
 <?php 
@@ -128,11 +143,66 @@ optionsList.forEach(o => {
 ?>
 
 <?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 
 <script>
   console.log("scripts section");
+
+  jQuery.datetimepicker.setDateFormatter('moment');
+
+  var serverDate = '<?php echo $currDate; ?>';
+  
+  $('#picker').datetimepicker({
+    timepicker: true,
+    datepicker: true,
+    format: 'YYYY-MM-DD h:mm a',
+    minDate: serverDate,
+    allowTimes: [
+      '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+    ],
+    minTime: function setMinTime() {
+      var today = new Date(serverDate);
+      today.setHours(today.getHours() + 3);
+
+      return today;
+    }(),
+    // hours12: true,
+  });
+
+  $('#toggle').on('click', function(){
+    $('#picker').datetimepicker('toggle');
+  });
+
+  $('#inline_picker').datetimepicker({
+    timepicker: true,
+    datepicker: true,
+    inline: true,
+    format: 'YYYY-MM-DD h:mm a',
+    minDate: serverDate,
+    allowTimes: [
+      '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+    ],
+    minTime: function setMinTime() {
+      var today = new Date(serverDate);
+      // today.setHours(today.getHours() + 3);
+
+      console.log(today.getHours());
+      console.log(today.getUTCHours());
+
+      return today;
+    }(),
+    // hours12: true,
+  });
+
+  $(document).ready(function() {
+    $(".delivery-popup").click();
+    $(".save-delivery-schedule").click(function() {
+      console.log($("#inline_picker").val());
+    });
+  });
 
   var cookie_cart = 'cart_data';
 
