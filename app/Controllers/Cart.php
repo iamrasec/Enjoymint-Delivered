@@ -183,6 +183,7 @@ class Cart extends BaseController
       'address' => $data['apt_no'] ." ". $data['street'] .", ". $data['city'] .", ". $data['state'] ." ". $data['zipcode'],
       'payment_method' => $data['payment_method'],
       'order_notes' => $data['order_notes'],
+      'delivery_schedule' => $data['delivery_schedule'],
     ];
 
     // Insert initial order record and grab the order id
@@ -266,7 +267,7 @@ class Cart extends BaseController
     $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
 
     // echo "<pre>".print_r($sender_email, 1)."</pre>";
-    // echo "<pre>".print_r($user_email, 1)."</pre>";
+    //echo "<pre>".print_r($user_email, 1)."</pre>";
     // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
 
 		$template = view('email/order_confirmation', $order_data);
