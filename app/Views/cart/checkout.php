@@ -244,7 +244,7 @@
               <div class="input-group-prepend">
                 <button type="button" id="toggle" class="input-group-text">
                 <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                <input style="color: white;" type="text" id="picker" value="<?= $sched ?>" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
                 </button>
               </div>
            </div>
