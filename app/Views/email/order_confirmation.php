@@ -21,7 +21,7 @@
         <?php foreach($order_products as $product): ?>
         <tr>
           <td style="padding: 5px;">
-            <img src="http://fuegonetworxservices.com/products/images/<?= $product['images'][0]->filename; ?>" style="width: 200px">
+          <img src="http://fuegonetworxservices.com/products/images/<?= $product['images'][0]->filename; ?>" style="width: 200px">
           </td>
           <td style="padding: 5px;">
             <strong><?= $product['product_name']; ?></strong><br>
@@ -35,7 +35,9 @@
     <div style="padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
       <strong>Address:</strong> <?= $order_data['address']; ?>
     </div>
-
+    <div style="padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
+      <strong>Selected Schedule:</strong> <?= $order_data['delivery_schedule']; ?>
+    </div>
     <div style="padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
       <strong>Order Notes:</strong> <?= $order_data['order_notes']; ?>
     </div>

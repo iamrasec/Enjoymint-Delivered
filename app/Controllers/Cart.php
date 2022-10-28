@@ -93,7 +93,7 @@ class Cart extends BaseController
         $imageIds = explode(',',$product_data->images);
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
-
+// print_r($product_data);
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
@@ -267,7 +267,7 @@ class Cart extends BaseController
     $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
 
     // echo "<pre>".print_r($sender_email, 1)."</pre>";
-    //echo "<pre>".print_r($user_email, 1)."</pre>";
+    // echo "<pre>".print_r($user_email, 1)."</pre>";
     // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
 
 		$template = view('email/order_confirmation', $order_data);
@@ -309,7 +309,7 @@ class Cart extends BaseController
           'images' => $images,
         ];
       }
-
+      
       $this->data['order_data'] = $order;
       $this->data['order_products'] = $cart_products;
       $this->data['order_completed'] = 1;
