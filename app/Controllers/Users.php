@@ -740,17 +740,21 @@ public function uploadID(){
 					$data['image_MMIC'] = $image_mmic;
 					}
 			   	}
-			
-				  
-				
+				   if(empty($user_id)){
+					$data_arr = array("success" => False,"message" => 'Please Sign in First!');
+				}else{
 				$data['user_id'] = $this->uid;
 				$data['status'] = '0';
 
 				$this->customerverification_model->save($data); 
+				
 				$data_arr = array("success" => TRUE,"message" => 'Upload Success!');
+				}
+				
 			  }else{
 				$data_arr = array("success" => False,"message" => 'Please add photo to verify your account!');
 			  }
+				
 			  die(json_encode($data_arr));
 	}else{
 
