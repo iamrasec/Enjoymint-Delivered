@@ -48,13 +48,13 @@
                             </div><br>
                             <?php if($product['product_data']->delivery_type == 1): ?>
                              <div class="product-date">
-                              <span>Date Selected:<input type="text" id="picker" class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
+                              <span>Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
                             </div> 
                             
                             <?php endif;
                             if($product['product_data']->delivery_type  == 2): ?>
                               <div class="product-date">
-                              <span>Date Selected:<input type="text" id="picker" class="form-control" placeholder="None" style="border: 1px solid black ; width:min-content"></span>
+                              <span>Date Selected:<input type="text"  class="form-control" placeholder="None" style="border: 1px solid black ; width:min-content"></span>
                             </div> 
                             <?php endif; ?>
                           </div>
