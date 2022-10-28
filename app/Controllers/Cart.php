@@ -111,9 +111,15 @@ class Cart extends BaseController
 
   public function checkout()
   {
+    $postData = $this->request->getPost();
+    
+    if(!empty($postData)){
+      $this->data['sched'] = $postData['delivery_schedule'];
+    }
     // If not logged-in redirect back to cart
     if($this->isLoggedIn != 1) {
       return redirect()->to('/cart');
+
 		}
 
     $db_cart = $this->_fetch_cart_items();

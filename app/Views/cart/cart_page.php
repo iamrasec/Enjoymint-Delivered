@@ -91,6 +91,7 @@
             <div class="rect5"></div>
           </div>
         </div>
+        <form method="post" action="<?= base_url('cart/checkout/'); ?>">
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
@@ -116,10 +117,11 @@
           </div>
           <div class="row mt-5">
             <div class="col-12 col-md-12 col-xs-12 d-grid">
-              <button class="btn bg-primary-green btn-lg checkout-btn" type="button">Proceed to Checkout</button>
+              <button class="btn bg-primary-green btn-lg checkout-btn" type="submit">Proceed to Checkout</button>
             </div>
           </div>
         </div>
+        </form>
       </div>
       <?php endif; ?>
     </div>
@@ -184,16 +186,23 @@ jQuery.datetimepicker.setDateFormatter('moment')
     $(".total-cost").html(formatter.format(total_cost));
   });
   
-  $(document).on("click", ".checkout-btn", function(e) {
+  $(document).on("click", ".checkout-btn1", function(e) {
     e.preventDefault();
-    console.log($("input[name=guid]").val());
+    var sched =$('#picker').val();
+    // console.log($("input[name=guid]").val());
 
-    if($("input[name=guid]").val() == '') {
-      $("#loginRegisterModal").modal('show');
-    }
-    else {
-      window.location.replace("<?= base_url('cart/checkout'); ?>");
-    }
+    // if($("input[name=guid]").val() == '') {
+    //   $("#loginRegisterModal").modal('show');
+    // }
+    // else {
+      window.location.replace("<?= base_url('cart/checkout/'); ?>");
+    // }
+    const fd = new FormData();
+    fd.append('delivery_schedule', sched);
+    fetch('<?= base_url('cart/checkout'); ?>',{
+      method: 'POST',
+      body: fd
+    })
   });
 
   $(document).on("click", ".remove-item", function(e) {
