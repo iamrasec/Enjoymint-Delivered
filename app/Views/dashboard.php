@@ -345,7 +345,6 @@
                 <li class="list-group-item px-0 border-0">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <!-- Country flag -->
                       <img src="../../assets/img/icons/flags/US.png" alt="Country flag">
                     </div>
                     <div class="col">
@@ -366,7 +365,6 @@
                 <li class="list-group-item px-0 border-0">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <!-- Country flag -->
                       <img src="../../assets/img/icons/flags/US.png" alt="Country flag">
                     </div>
                     <div class="col">
