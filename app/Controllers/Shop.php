@@ -106,7 +106,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-
+        
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
