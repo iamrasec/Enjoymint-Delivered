@@ -63,9 +63,15 @@
                     <hr id="color" class="mt-0">
                     <p class="price">$<span><?= $product['price']; ?></span></p>
                     <hr id="color" class="mt-0">
-                    <button class="btn add-to-cart btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
+                    <?php if($product['stocks'] > 0): ?>
+                    <button class="btn add-to-cart btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" >
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
+                    <?php elseif($product['stocks'] <= 0): ?>
+                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled = 'disabled'; ?>>
+                      <span class="material-icons">add_shopping_cart</span> Add to Cart
+                    </button>
+                    <?php endif; ?>
                     <div class="lds-hourglass d-none"></div>
                   </div>
                 </div>
@@ -80,7 +86,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section>7f[9'/r/7]
 </div>
 
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
