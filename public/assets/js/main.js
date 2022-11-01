@@ -234,7 +234,7 @@ function delete_cart_item(guid, toRemove)
       }
     });
   }
-  else {
+  // else {
     // console.log("User not logged in");
 
     let get_cookie = getCookie('cart_data');
@@ -258,7 +258,7 @@ function delete_cart_item(guid, toRemove)
       // console.log(cookie_products);
       setCookie('cart_data',JSON.stringify(cookie_products),'1');
     }
-  }
+  // }
 
   update_cart_count();
 
