@@ -131,12 +131,12 @@
 
 
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
-<link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" />
+<!-- <link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" /> -->
 <?php $this->endSection(); ?>
 
 <?php $this->section("script"); ?>
-<script src="<?php echo base_url(); ?>/assets/js/jquery.datetimepicker.full.js"></script>
-<script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script>
+<!-- <script src="<?php echo base_url(); ?>/assets/js/jquery.datetimepicker.full.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script> -->
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
@@ -211,7 +211,7 @@ jQuery.datetimepicker.setDateFormatter('moment')
     let guid = $("input[name=guid]").val();
     let delete_item = delete_cart_item(guid, toRemove);
     
-    console.log(delete_item);
+    // console.log(delete_item);
 
     if(delete_item == 0) {
       window.location.replace("<?= base_url('cart'); ?>");

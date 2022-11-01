@@ -58,7 +58,7 @@ function setCookie(key, value, expiry) {
 }
 
 function getCookie(key) {
-  console.log("key: " + key);
+  // console.log("key: " + key);
   var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
   return keyValue ? keyValue[2] : null;
 }
@@ -133,7 +133,7 @@ function add_to_cart(uid, pid, qty)
       setCookie('cart_items_count',cartCountr,'1');
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.log(textStatus);
+      // console.log(textStatus);
     },
     beforeSend: function(xhr) {
       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
@@ -160,7 +160,7 @@ function update_cart_count()
     // Count the number of products in the cookie
     new_count = cookie_products.length;
 
-    console.log("New Cart Count: " + new_count);
+    // console.log("New Cart Count: " + new_count);
 
     // Update the cart counter
     $("#count_cart").html(new_count);
@@ -172,13 +172,13 @@ function update_cart_count()
 
 function update_cart()
 {
-  console.log("jwt: " + jwt);
+  // console.log("jwt: " + jwt);
   
   if(jwt != "") {
-    console.log("user is logged in.  ajax request count.");
+    // console.log("user is logged in.  ajax request count.");
   }
   else {
-    console.log("user is not logged in.");
+    // console.log("user is not logged in.");
   }
   
   // let jwt = $("[name='atoken']").attr('content');
@@ -197,7 +197,7 @@ function update_cart()
       update_cart_count();
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.log(textStatus);
+      // console.log(textStatus);
     },
     beforeSend: function(xhr) {
       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
@@ -207,6 +207,8 @@ function update_cart()
 
 function delete_cart_item(guid, toRemove)
 {
+  // console.log('deleting item '+ toRemove);
+  // console.log('JWT: '+ jwt);
   if(jwt != "") {
     let data = {};
     data.pid = toRemove;
@@ -225,7 +227,7 @@ function delete_cart_item(guid, toRemove)
         });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        console.log(textStatus);
+        // console.log(textStatus);
       },
       beforeSend: function(xhr) {
         xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
@@ -233,27 +235,27 @@ function delete_cart_item(guid, toRemove)
     });
   }
   else {
-    console.log("User not logged in");
+    // console.log("User not logged in");
 
     let get_cookie = getCookie('cart_data');
 
-    console.log(get_cookie);
+    // console.log(get_cookie);
 
     if(get_cookie) {
       // Parse JSON data into readable array
       cookie_products = JSON.parse(get_cookie);
   
-      console.log(cookie_products);
+      // console.log(cookie_products);
 
       for(var i = 0; i < cookie_products.length; i++) {
-        console.log(cookie_products[i]['pid']);
+        // console.log(cookie_products[i]['pid']);
         if(cookie_products[i]['pid'] == toRemove) {
           cookie_products.splice(i, 1);
           $("tr.pid-"+toRemove).hide('slow', function(){ $("tr.pid-"+toRemove).remove(); });
         }
       }
 
-      console.log(cookie_products);
+      // console.log(cookie_products);
       setCookie('cart_data',JSON.stringify(cookie_products),'1');
     }
   }
@@ -277,7 +279,7 @@ function update_cart_summary(guid)
     data: data,
     dataType: "json",
     success: function(json) {
-      console.log(json);
+      // console.log(json);
       $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
       $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
       $(".cart-summary .tax-cost").html(json.order_costs.tax);
@@ -286,7 +288,7 @@ function update_cart_summary(guid)
       $(".spinner-wrap").hide().addClass('d-none');
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.log(textStatus);
+      // console.log(textStatus);
     },
     beforeSend: function(xhr) {
       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
