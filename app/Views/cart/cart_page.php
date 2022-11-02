@@ -46,17 +46,6 @@
                             <div class="product-qty">
                               <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
                             </div><br>
-                            <?php if($product['product_data']->delivery_type == 1): ?>
-                             <div class="product-date">
-                              <span>Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
-                            </div> 
-                            
-                            <?php endif;
-                            if($product['product_data']->delivery_type  == 2): ?>
-                              <div class="product-date">
-                              <span>Date Selected:<input type="text"  class="form-control" placeholder="None" style="border: 1px solid black ; width:min-content"></span>
-                            </div> 
-                            <?php endif; ?>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
                             <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
