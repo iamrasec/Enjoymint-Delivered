@@ -242,6 +242,9 @@ class Cart extends BaseController
     $update_order = $this->checkout_model->update($order_id, $order_costs);
 
     if($update_order > 0) {
+      $order_data['id'] = $order_id;
+      $order_data['order_costs'] = $order_costs;
+
       // Send Order Confirmation Email
       $this->send_order_confirmation($order_data, $cart_products);
 
