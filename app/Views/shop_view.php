@@ -15,12 +15,18 @@
         <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
         
         <?php echo $this->include('templates/_product_filter.php'); ?>
-
+        
         <div class="col-lg-10 col-sm-12 mt-5 text-center">
           <?php if($fast_tracked == true): ?>
           <h1>Fast Tracked Shop</h1>
           <?php else: ?>
           <h1>Shop</h1>
+          <form method="GET" action="<?= base_url('/shop/')?>">
+            <div class="search" style="text-align: right ;">
+            <input type="text" name="inputdata" placeholder="Search">
+            <button type="submit" class="btn bg-primary-green">Search</button>
+            </div>
+          </form>
           <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
@@ -86,7 +92,7 @@
         </div>
       </div>
     </div>
-  </section>7f[9'/r/7]
+  </section>
 </div>
 
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
