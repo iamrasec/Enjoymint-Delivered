@@ -40,19 +40,23 @@ class Shop extends BaseController
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
         $searchData = $this->request->getGet();
+        $search= $this->request->getGet('inputdata');
         // $search = "";
 
         $this->data['current_filter'] = [];
 
         // echo "<pre>".print_r($searchData, 1)."</pre>";
-
         //$all_products = $this->product_model->paginate(30);
        if(!empty($searchData['page'])){
         $page = $searchData['page'];
        }else{
         $page = null;
        }
-         if(empty($searchData)){
+       if(!empty($search)){
+        $search = $this->request->getGet('inputdata');
+        $all_products = $this->product_model->getProducts($search);
+        
+    }elseif(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getAllProducts();
         }else{
