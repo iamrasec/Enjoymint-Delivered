@@ -14,6 +14,14 @@ class ProductModel extends Model {
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     return $this->paginate(28);
   }
+  public function getProducts($search) {
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
+    $this->join('strains', 'strains.id = products.strain', 'left');
+    $this->join('compounds', 'compounds.pid = products.id', 'left');
+    $this->like('products.name',$search);
+    $this->orlike('products.price', $search);
+    return $this->paginate(28);
+  }
 
   public function getAllProductsNoPaginate() {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
@@ -28,7 +36,7 @@ class ProductModel extends Model {
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->where('products.delivery_type', 2);
     return $this->paginate(28);
-  }
+  } 
 
   public function getProductData($pid) {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
