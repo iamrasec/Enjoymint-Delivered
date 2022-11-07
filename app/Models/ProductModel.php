@@ -72,7 +72,7 @@ class ProductModel extends Model {
 
   public function incrementOrders($pid) {
     $this->where("id", $pid);
-    $this->set('views', '(views + 1)', FALSE);
+    $this->set('orders', '(orders + 1)', FALSE);
     return $this->update();
   }
 
