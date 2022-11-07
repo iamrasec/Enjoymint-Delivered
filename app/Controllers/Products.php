@@ -118,6 +118,13 @@ class Products extends BaseController
             $this->data['cart_products'] = 0;
         }
 
+        $this->increment_product_views($product->id);
+
+        $cookie_value = '';
+        if(isset($_COOKIE['pvid'])) {
+            $cookie_value = $_COOKIE['pvid'] . ',';
+        }
+
 
         // print_r($imageIds);die();
 
@@ -126,6 +133,11 @@ class Products extends BaseController
         // print_r($this->data['images']);die();
 
         echo view('product_view', $this->data);
+    }
+
+    public function increment_product_views($pid) {
+        $this->product_model->incrementViews($pid);
+        
     }
 
     public function view_all_products() {

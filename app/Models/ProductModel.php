@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model {
   protected $table = 'products';
-  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags', 'delivery_type'];
+  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags', 'delivery_type', 'views', 'orders'];
  
   public function getAllProducts() {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
@@ -52,6 +52,22 @@ class ProductModel extends Model {
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->where('products.url', $url);
     return $this->get()->getResult();
+  }
+
+  public function getPopularProducts($limit=4) {
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
+    $this->join('strains', 'strains.id = products.strain', 'left');
+    $this->join('compounds', 'compounds.pid = products.id', 'left');
+    $this->orderBy('products.orders', 'DESC');
+    $this->orderBy('products.views', 'DESC');
+    $this->limit($limit);
+    return $this->get()->getResultArray();
+  }
+
+  public function incrementViews($pid) {
+    $this->where("id", $pid);
+    $this->set('views', '(views + 1)', FALSE);
+    return $this->update();
   }
 
   public function getDataWithParam($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0, $availability = 0){

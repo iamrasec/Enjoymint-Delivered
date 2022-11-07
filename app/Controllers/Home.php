@@ -41,7 +41,10 @@ class Home extends BaseController
         $this->data['page_title'] = $page_title;
 
         // $all_products = $this->product_model->get()->getResult();
-        $all_products = $this->product_model->getAllProducts();
+        $all_products = $this->product_model->getPopularProducts(4);
+
+        // echo "<pre>".print_r($all_products)."</pre>";die();
+
         $image = imageExperience();
         $product_arr = [];
         $count = 0;
