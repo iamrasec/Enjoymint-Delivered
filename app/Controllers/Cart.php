@@ -300,6 +300,9 @@ class Cart extends BaseController
       $order_products = $this->checkout_model->fetchOrderDetails($success);
 
       foreach($order_products as $product) {
+
+        $this->product_model->incrementOrders($product->product_id);
+
         // initialize images
         $images = [];
         $imageIds = [];
