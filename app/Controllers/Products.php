@@ -118,14 +118,22 @@ class Products extends BaseController
             $this->data['cart_products'] = 0;
         }
 
-        $this->increment_product_views($product->id);
-
-        $cookie_value = '';
+        $record_view = true;
+        
         if(isset($_COOKIE['pvid'])) {
-            $cookie_value = $_COOKIE['pvid'] . ',';
+            $pvid = explode(",", $_COOKIE['pvid']);
+            
+            // echo "<pre>".print_r($pvid, 1)."</pre>";
+            
+            if(in_array($product->id, $pvid)) {
+                $record_view = false;
+            }
         }
 
-
+        if($record_view == true) {
+            $this->increment_product_views($product->id);
+        }
+        
         // print_r($imageIds);die();
 
         // print_r($this->image_model->getLastQuery());
@@ -138,6 +146,15 @@ class Products extends BaseController
     public function increment_product_views($pid) {
         $this->product_model->incrementViews($pid);
         
+        $cookie_value = '';
+        if(isset($_COOKIE['pvid'])) {
+            $cookie_value = $_COOKIE['pvid'] . ',' . $pid;
+        }
+        else {
+            $cookie_value = $pid;
+        }
+
+        setcookie('pvid', $cookie_value, time() + 86400);
     }
 
     public function view_all_products() {
