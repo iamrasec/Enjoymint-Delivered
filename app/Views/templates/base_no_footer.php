@@ -68,6 +68,7 @@
 <script src="<?php echo base_url(); ?>/assets/js/material-kit.min.js?v=3.0.0" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/age-check.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>/assets/js/main.js" type="text/javascript"></script>
 

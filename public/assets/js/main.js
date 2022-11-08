@@ -85,6 +85,7 @@ function add_to_cart(uid, pid, qty)
     dataType: "json",
     success: function(json) {
       // console.log("successs");
+      enjoymintAlert('', 'Product added to cart', 'success', 0);
       $(".add-to-cart").removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
 
@@ -293,5 +294,26 @@ function update_cart_summary(guid)
     beforeSend: function(xhr) {
       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
     }
+  });
+}
+
+function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
+{
+  swal({
+    title: title,
+    text: text,
+    icon: icon,
+    showCancelButton: false,
+    confirmButtonColor: '#32243d',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ok'
+  }).then((result) => {
+      if(is_reload === 1){
+        window.location.reload();
+      }
+      if(redirect){
+        window.location.href = redirect;
+      }
+
   });
 }
