@@ -102,7 +102,16 @@ class Cart extends BaseController
         'images' => $images,
       ];
     }
-
+   if(!empty($product_data->delivery_type)){
+      if($product_data->delivery_type == 1){
+    $this->data['delivery'] = $product_data->delivery_type;
+      }else{
+        $this->data['delivery'] = ""; 
+      }
+   }else{
+    $this->data['delivery'] = ""; 
+   }
+    
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
 
