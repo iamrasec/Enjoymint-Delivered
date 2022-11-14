@@ -1,6 +1,6 @@
 <div class="modal fade" id="delivery-modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-md text-center" role="document">
-    <div class="modal-content">
+    <div class="modal-content-datepicker">
       <div class="modal-body p-0">
         <div class="card card-plain">
           <div class="card-header pb-0 text-left">

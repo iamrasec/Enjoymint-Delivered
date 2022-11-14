@@ -487,3 +487,38 @@ nav ul.pagination li.active a {
 .online {
   color: green;
 }
+
+.xdsoft_datetimepicker {
+  width: 700px !important;
+  height: 215px !important;
+}
+
+.xdsoft_datetimepicker .xdsoft_datepicker {
+  width: 600px !important;
+  float: left;
+  margin-left: 16px !important;
+}
+
+.modal-content-datepicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 900px;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  outline: 0;
+  margin-left: -110px !important;
+}
+
+.xdsoft_datetimepicker .xdsoft_month {
+  width: 230px !important;
+  text-align: right
+}
+
+.xdsoft_datetimepicker .xdsoft_year {
+  width: 280px !important;
+  margin-left: 5px
+}
