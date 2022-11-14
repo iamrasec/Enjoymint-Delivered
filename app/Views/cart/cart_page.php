@@ -15,7 +15,17 @@
       <div class="col-12 col-md-8 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
-
+          
+          <?php if($delivery): ?>
+                  <div class="product-date">
+                    <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
+                  </div>             
+                  <?php else: ?>  
+                    <div class="product-date">
+                    <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="none" style="border: 1px solid black ; width:min-content"></span>
+                  </div> 
+                 <?php endif; ?>
+                
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
           <?php else: ?>
@@ -23,12 +33,14 @@
             <div class="col-12">
               <form id="update-cart-form" method="POST" action="<?= base_url('cart/update_cart'); ?>">
                 <input type="hidden" name="guid" value="<?= $guid; ?>">
-                <h4>Products</h4>
+              
+                <h4>Products</h4><br>
                 <table id="cart_products" class="w-100">
                   <tbody>
-                    <?php foreach($cart_products as $product): ?>
+                  <?php foreach($cart_products as $product): ?>
                     <tr class="pid-<?= $product['pid']; ?> border">
                       <td>
+                      
                         <div class="row product-wrap d-flex py-3">
                           <div class="col-12 col-md-2 col-xs-12 product-img">
                             <?php if(!empty($product['images'])): ?>
@@ -67,6 +79,7 @@
             </div>
           </div>
           <?php endif; ?>
+         
         </div>
       </div>
       <?php if(!empty($cart_products)): ?>
