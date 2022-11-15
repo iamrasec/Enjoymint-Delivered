@@ -167,26 +167,30 @@ optionsList.forEach(o => {
   jQuery.datetimepicker.setDateFormatter('moment');
 
   var serverDate = '<?php echo $currDate; ?>';
-  
-  $('#picker').datetimepicker({
-    timepicker: true,
-    datepicker: true,
-    format: 'YYYY-MM-DD h:mm a',
-    minDate: serverDate,
-    allowTimes: [
-      '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-    ],
-    minTime: function setMinTime() {
-      var today = new Date(serverDate);
-      today.setHours(today.getHours() + 3);
 
-      return today;
-    }(),
-    // hours12: true,
-  });
+  var today = new Date(serverDate);
+  // today = today.toISOString();
+  
+  // $('#picker').datetimepicker({
+  //   timepicker: true,
+  //   datepicker: true,
+  //   format: 'YYYY-MM-DD h:mm a',
+  //   minDate: serverDate,
+  //   allowTimes: [
+  //     '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+  //   ],
+  //   minTime: function setMinTime() {
+  //     var today = new Date(serverDate);
+  //     today.setHours(today.getHours() + 3);
+
+  //     return today;
+  //   }(),
+  //   // hours12: true,
+  // });
 
   $('#toggle').on('click', function(){
-    $('#picker').datetimepicker('toggle');
+    // $('#picker').datetimepicker('toggle');
+    $(".delivery-popup").click();
   });
 
   $('#inline_picker').datetimepicker({
@@ -198,16 +202,58 @@ optionsList.forEach(o => {
     allowTimes: [
       '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
     ],
-    minTime: function setMinTime() {
-      var today = new Date(serverDate);
-      // today.setHours(today.getHours() + 3);
+    onGenerate:function(ct) {
+      console.log("ct: " + ct);
+      console.log("today: " + today);
 
-      console.log(today.getHours());
-      console.log(today.getUTCHours());
+      if(ct.getDay() == today.getDay()) {
+        console.log("Same day");
+        let currTime = today.getHours() + ":" + today.getMinutes();
+        console.log("today hour: " + currTime);
 
-      return today;
-    }(),
-    // hours12: true,
+        let minSchedTime = today.getHours() + 3;
+        
+        $(".xdsoft_time").each(function() {
+          if($(this).data("hour") < minSchedTime) {
+            $(this).addClass('xdsoft_disabled');
+          }
+
+          if($(this).data("hour") == minSchedTime && $(this).data("minute") < today.getMinutes()) {
+            $(this).addClass('xdsoft_disabled');
+          }
+        });
+      }
+      else {
+        console.log("Different day");
+      }
+    },
+    onSelectDate:function(ct,$i){
+      $(".xdsoft_time").removeClass('xdsoft_disabled');
+
+      let minSchedTime = ct.getHours() + 3;
+        
+      $(".xdsoft_time").each(function() {
+        if($(this).data("hour") < minSchedTime) {
+          $(this).addClass('xdsoft_disabled');
+        }
+
+        if($(this).data("hour") == minSchedTime && $(this).data("minute") < ct.getMinutes()) {
+          $(this).addClass('xdsoft_disabled');
+        }
+      });
+    },
+    // minTime: function setMinTime(ct) {
+    //   // var today = new Date(serverDate);
+    //   // today.setHours(today.getHours() + 3);
+    //   // today.setTime();
+
+    //   console.log(today);
+    //   console.log(today.getHours());
+    //   console.log(today.getUTCHours());
+    //   // console.log(inputDate);
+
+    //   return today;
+    // }(),
   });
 
   $(document).ready(function() {
