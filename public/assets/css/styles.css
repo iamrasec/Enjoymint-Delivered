@@ -494,7 +494,8 @@ nav ul.pagination li.active a {
 }
 
 .xdsoft_datetimepicker .xdsoft_datepicker {
-  width: 600px !important;
+  /* width: 600px !important; */
+  width: 97% !important;
   float: left;
   margin-left: 16px !important;
 }

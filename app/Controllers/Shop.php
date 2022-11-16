@@ -90,6 +90,13 @@ class Shop extends BaseController
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['fast_tracked'] = false;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '16') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+
         return view('shop_view', $this->data);
     }
 
