@@ -61,7 +61,47 @@ class Shop extends BaseController
     }else{
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getAllProducts();
+        
+       if(empty($searchData)){
+            // $all_products = $this->product_model->paginate(30);
+            $all_products = $this->product_model->getAllProducts();
+        }else{
+            if($page != null){
+                // $all_products = $this->product_model->paginate(30);
+                $all_products = $this->product_model->getAllProducts();
+            }else{
+            $category = $searchData['category'];
+            $min_price = $searchData['min_price'];
+            $max_price = $searchData['max_price'];
+            $strain = $searchData['strain'];
+            $brands = $searchData['brands'];
+            $min_thc = $searchData['min_thc'];
+            $max_thc = $searchData['max_thc'];
+            $min_cbd = $searchData['min_cbd'];
+            $max_cbd = $searchData['max_cbd'];
+            $availability = $searchData['availability'];
+            $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+
+            // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+
+            $current_filter = [
+                'category' => $searchData['category'],
+                'strain' => $searchData['strain'],
+                'brands' => $searchData['brands'],
+                'min_price' => $searchData['min_price'],
+                'max_price' => $searchData['max_price'],
+                'min_thc' => $searchData['min_thc'],
+                'max_thc' => $searchData['max_thc'],
+                'min_cbd' => $searchData['min_cbd'],
+                'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
+            ];
+                
+            $this->data['current_filter'] = $current_filter;
+           
         }
+    }
+    }
         // $all_products = $this->product_model->paginate(30);
 
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();

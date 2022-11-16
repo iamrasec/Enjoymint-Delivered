@@ -27,6 +27,7 @@
             <button type="submit" class="btn bg-primary-green">Search</button>
             </div>
           </form>
+          <br>
           <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
