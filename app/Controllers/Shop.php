@@ -54,12 +54,21 @@ class Shop extends BaseController
        }else{
         $page = null;
        }
+       if(!empty($search)){
+        $search = $this->request->getGet('inputdata');
+        $all_products = $this->product_model->getProducts($search);
+        
+    }else{
+            // $all_products = $this->product_model->paginate(30);
+            $all_products = $this->product_model->getAllProducts();
+        
        if(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getAllProducts();
         }else{
             if($page != null){
-                $all_products = $this->product_model->paginate(30);
+                // $all_products = $this->product_model->paginate(30);
+                $all_products = $this->product_model->getAllProducts();
             }else{
             $category = $searchData['category'];
             $min_price = $searchData['min_price'];
@@ -91,6 +100,7 @@ class Shop extends BaseController
             $this->data['current_filter'] = $current_filter;
            
         }
+    }
     }
         // $all_products = $this->product_model->paginate(30);
 
