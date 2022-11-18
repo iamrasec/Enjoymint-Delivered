@@ -13,6 +13,8 @@ class CheckoutModel extends Model {
         'customer_id',
         'first_name',
         'last_name',
+        'email',
+        'phone',
         'address',
         'subtotal',
         'tax',
