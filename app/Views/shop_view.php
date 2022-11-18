@@ -261,7 +261,7 @@ optionsList.forEach(o => {
     $(this).prop('disabled', true);
     $(".lds-hourglass").removeClass('d-none');
 
-    console.log("addcvffffffffffffffffffffffffffdsxc to cart clicked");
+    console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
     let qty = 1;
