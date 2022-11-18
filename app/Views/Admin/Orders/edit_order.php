@@ -36,6 +36,14 @@
             <div class="row mt-4">
               <div class="col-12 col-md-8 col-xs-12">
                 <h5>Products</h5>
+                <div class="input-group" style="float: right; margin-top:-52px; margin-right:-30px;">
+                    <div class="input-group-prepend">
+                      <button type="button" id="toggle" class="input-group-text">
+                      <i class="fa fa-calendar-alt" style="color: black"></i>&nbsp;&nbsp; 
+                      <input style="color: black;" type="text" id="picker" value="<?= $order_data->delivery_schedule; ?>" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                      </button>
+                    </div>  
+                </div>
                 <table id="cart_products" class="w-100">
                   <tbody>
                     <?php foreach($order_products as $product): ?>
@@ -147,6 +155,11 @@
 <?php $this->endSection(); ?>
 
 <?php $this->section('scripts'); ?>
+   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 
 <script>
 var jwt = $("[name='atoken']").attr('content');
@@ -154,6 +167,17 @@ var jwt = $("[name='atoken']").attr('content');
 $(document).ready(function () {
     
 });
+
+    jQuery.datetimepicker.setDateFormatter('moment')
+      $('#picker').datetimepicker({
+         timepicker: true,
+         datepicker: true,
+         format: 'YYYY-MM-DD h:mm a'
+      })
+      $('#toggle').on('click', function(){
+         $('#picker').datetimepicker('toggle')
+      })
+      
 </script>
 
 <?php $this->endSection(); ?>

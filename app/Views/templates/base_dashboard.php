@@ -27,6 +27,7 @@
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/material-dashboard.css?v=3.0.1" rel="stylesheet" />
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <link id="pagestyle" href="<?php echo base_url(); ?>/assets/css/styles.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" rel="stylesheet">
 
   <!-- initialize uri service -->
   <?php $uri = service('uri'); ?>
