@@ -192,22 +192,28 @@
 									</div>
 								</div>
 								<div class="row mb-4">
-									<div class="col-4 col-md-4 col-xs-12">
+									<div class="col-3 col-md-3 col-xs-12">
 										<div class="input-group input-group-outline">
 											<label class="form-label">City</label>
 											<input type="text" name="city" class="form-control">
 										</div>
 									</div>
-									<div class="col-4 col-md-4 col-xs-12">
+									<div class="col-3 col-md-3 col-xs-12">
 										<div class="input-group input-group-outline">
 											<label class="form-label">State</label>
 											<input type="text" name="state" class="form-control">
 										</div>
 									</div>
-									<div class="col-4 col-md-4 col-xs-12">
+									<div class="col-3 col-md-3 col-xs-12">
 										<div class="input-group input-group-outline">
 											<label class="form-label">Zipcode</label>
 											<input type="text" name="zipcode" class="form-control">
+										</div>
+									</div>
+									<div class="col-3 col-md-3 col-xs-12">
+										<div class="input-group input-group-outline">
+											<label class="form-label">Phone Number</label>
+											<input type="number" name="phone" class="form-control">
 										</div>
 									</div>
 								</div>

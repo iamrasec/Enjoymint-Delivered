@@ -200,6 +200,8 @@ class Cart extends BaseController
       'customer_id' => $user['id'],
       'first_name' => $user['first_name'],
       'last_name' => $user['last_name'],
+      'email' => $user['email'],
+      'phone' => $data['phone'],
       'address' => $data['apt_no'] ." ". $data['street'] .", ". $data['city'] .", ". $data['state'] ." ". $data['zipcode'],
       'payment_method' => $data['payment_method'],
       'order_notes' => $data['order_notes'],
@@ -261,7 +263,7 @@ class Cart extends BaseController
 
       // Send Order Confirmation Email
       $this->send_order_confirmation($order_data, $cart_products);
-
+      $this->send_order_notification($order_data, $cart_products);
       // Delete user's cart items
       $this->_clear_cart($user['id']);
       session()->setFlashdata('order_completed', $data['cart_key']);
@@ -294,6 +296,37 @@ class Cart extends BaseController
     // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
 
 		$template = view('email/order_confirmation', $order_data);
+
+    $email->setMessage($template);
+    $email->setNewline("\r\n");
+
+		if($email->send()) {
+      return true;
+		}
+  }
+  
+  public function send_order_notification($order, $products)
+  {
+    $sender_email = $this->sender_email;
+    
+
+    $email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($this->sender_email);
+		$email->setSubject('New Order');
+		
+
+    for($i = 0; $i < count($products); $i++) {
+      $products[$i]['images'] = getProductImage($products[$i]['product_id']);
+    }
+
+    $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
+
+    // echo "<pre>".print_r($sender_email, 1)."</pre>";
+    // echo "<pre>".print_r($user_email, 1)."</pre>";
+    // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
+
+		$template = view('email/order_notification', $order_data);
 
     $email->setMessage($template);
     $email->setNewline("\r\n");

@@ -8,20 +8,14 @@
 </head>
 
 <body>
-    <div style="text-align: center; padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
-      <img src="<?= $site_logo; ?>" alt="Enjoymint Delivered" style="margin: 0 auto 20px; width: 300px; background: rgba(38,50,48,0.95); padding: 10px; border-radius: 20px;">
-      <br>
-      <h3>ORDER CONFIRMATION</h3>
-      <p>Hi <strong><?= $order_data['first_name']; ?></strong>, thank you for your order!</p>
-      <p>We've received your order and will contact you soon.  You can find your purchase information below.</p>
-      <br><br>
-    </div>
     <div style="padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
       <h1>Order Summary</h1>
       <p>Order ID: <strong><?= $order_data['id']; ?></strong></p>
+      <p>Customer Name: <strong><?= $order_data['first_name']; ?><?= $order_data['last_name']; ?></strong></p>
+      <p>Email: <strong><?= $order_data['email']; ?></strong></p>
+      <p>Phone number: <strong><?= $order_data['phone']; ?></strong></p>
       <p>Payment Method: <strong><?= ucfirst($order_data['payment_method']); ?></strong></p>
       <p>Address: <strong><?= $order_data['address']; ?></strong></p>
-      
       <?php if($order_data['delivery_schedule'] != null): ?>
       <p>Selected Schedule: <strong><?= $order_data['delivery_schedule']; ?></strong></p>
       <?php else: ?>
