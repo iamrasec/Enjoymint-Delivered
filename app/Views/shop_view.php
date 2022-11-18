@@ -169,29 +169,6 @@ optionsList.forEach(o => {
   var serverDate = '<?php echo $currDate; ?>';
 
   var today = new Date(serverDate);
-  // today = today.toISOString();
-  
-  // $('#picker').datetimepicker({
-  //   timepicker: true,
-  //   datepicker: true,
-  //   format: 'YYYY-MM-DD h:mm a',
-  //   minDate: serverDate,
-  //   allowTimes: [
-  //     '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-  //   ],
-  //   minTime: function setMinTime() {
-  //     var today = new Date(serverDate);
-  //     today.setHours(today.getHours() + 3);
-
-  //     return today;
-  //   }(),
-  //   // hours12: true,
-  // });
-
-  $('#toggle').on('click', function(){
-    // $('#picker').datetimepicker('toggle');
-    $(".delivery-popup").click();
-  });
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -222,18 +199,6 @@ optionsList.forEach(o => {
             return false;
           }
         });
-
-        // let minSchedTime = today.getHours() + 3;
-        
-        // $(".xdsoft_time").each(function() {
-        //   if($(this).data("hour") < minSchedTime) {
-        //     $(this).addClass('xdsoft_disabled');
-        //   }
-
-        //   if($(this).data("hour") == minSchedTime && $(this).data("minute") < today.getMinutes()) {
-        //     $(this).addClass('xdsoft_disabled');
-        //   }
-        // });
       }
       else {
         $("#time_window option:first").prop("selected", "selected");
@@ -244,39 +209,47 @@ optionsList.forEach(o => {
       console.log("onSelectDate");
       $("#time_window option").show();
       $("#time_window option:selected").prop("selected", false);
-
-      // $(".xdsoft_time").removeClass('xdsoft_disabled');
-
-      // let minSchedTime = ct.getHours() + 3;
-        
-      // $(".xdsoft_time").each(function() {
-      //   if($(this).data("hour") < minSchedTime) {
-      //     $(this).addClass('xdsoft_disabled');
-      //   }
-
-      //   if($(this).data("hour") == minSchedTime && $(this).data("minute") < ct.getMinutes()) {
-      //     $(this).addClass('xdsoft_disabled');
-      //   }
-      // });
     },
-    // minTime: function setMinTime(ct) {
-    //   // var today = new Date(serverDate);
-    //   // today.setHours(today.getHours() + 3);
-    //   // today.setTime();
+  });
 
-    //   console.log(today);
-    //   console.log(today.getHours());
-    //   console.log(today.getUTCHours());
-    //   // console.log(inputDate);
+  // Check if cookie exists
+  var delivery_cookie = getCookie("delivery_schedule");
 
-    //   return today;
-    // }(),
+  // if(delivery_cookie) {
+  //   console.log("delivery_cookie cookie exists");
+  // }
+  // else {
+  //   console.log("delivery_cookie cookie doesn't exists");
+  //   $('#toggle').on('click', function(){
+  //     $(".delivery-popup").click();
+  //   });
+  // }
+
+  $('#toggle').on('click', function(){
+    $(".delivery-popup").click();
   });
 
   $(document).ready(function() {
-    $(".delivery-popup").click();
+
+    if(!delivery_cookie) {
+      // Show delivery schedule popup if no cookie is found.
+      $(".delivery-popup").click();
+    }
+
+    // Save Delivery Schedule
     $(".save-delivery-schedule").click(function() {
+      console.log("save delivery schedule");
       console.log($("#inline_picker").val());
+      console.log($("#time_window").find(":selected").val());
+
+      let delsched = {};
+      delsched.d = $("#inline_picker").val();
+      delsched.t = $("#time_window").find(":selected").val();
+
+      console.log(JSON.stringify(delsched));
+
+      setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+      $(".btn-link").click();
     });
   });
 
@@ -288,7 +261,7 @@ optionsList.forEach(o => {
     $(this).prop('disabled', true);
     $(".lds-hourglass").removeClass('d-none');
 
-    console.log("add to cart clicked");
+    console.log("addcvffffffffffffffffffffffffffdsxc to cart clicked");
 
     let pid = $(this).data('pid');
     let qty = 1;

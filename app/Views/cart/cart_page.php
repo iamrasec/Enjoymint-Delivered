@@ -16,15 +16,15 @@
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
           
-          <?php if($delivery): ?>
-                  <div class="product-date">
-                    <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
-                  </div>             
-                  <?php else: ?>  
-                    <div class="product-date">
-                    <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="none" style="border: 1px solid black ; width:min-content"></span>
-                  </div> 
-                 <?php endif; ?>
+          <!-- <?php if($delivery): ?>
+          <div class="product-date">
+            <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
+          </div>             
+          <?php else: ?>  
+            <div class="product-date">
+            <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="none" style="border: 1px solid black ; width:min-content"></span>
+          </div> 
+          <?php endif; ?> -->
                 
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
@@ -131,8 +131,12 @@
 </main>
 
 
-
+<div class="d-none">
+  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
+</div>
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
+<?php echo $this->include('templates/_delivery_popup.php'); ?>
+
 <!-- <link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" /> -->
 <?php $this->endSection(); ?>
 
@@ -148,14 +152,64 @@
 <script>
 
 jQuery.datetimepicker.setDateFormatter('moment')
-      $('#picker').datetimepicker({
-         timepicker: true,
-         datepicker: true,
-         format: 'YYYY-MM-DD h:mm a'
-      })
-      $('#toggle').on('click', function(){
-         $('#picker').datetimepicker('toggle')
-      })
+  // $('#picker').datetimepicker({
+  //    timepicker: true,
+  //    datepicker: true,
+  //    format: 'YYYY-MM-DD h:mm a'
+  // })
+  // $('#toggle').on('click', function(){
+  //    $('#picker').datetimepicker('toggle')
+  // })
+
+  var serverDate = '<?php echo $currDate; ?>';
+
+  var today = new Date(serverDate);
+
+  $('#inline_picker').datetimepicker({
+    timepicker: false,
+    datepicker: true,
+    inline: true,
+    // format: 'YYYY-MM-DD h:mm a',
+    format: 'YYYY-MM-DD',
+    minDate: serverDate,
+    // allowTimes: [
+    //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+    // ],
+    onGenerate:function(ct) {
+      console.log("onGenerate");
+      console.log("ct: " + ct.getDate());
+      console.log("today: " + today.getDate());
+
+      if(ct.getDate() == today.getDate()) {
+        console.log("Same day");
+        let currTime = today.getHours() + ":" + today.getMinutes();
+        console.log("today hour: " + currTime);
+
+        $("#time_window option").each(function() {
+          if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
+            $(this).hide();
+          }
+          else {
+            $(this).prop("selected", true);
+            return false;
+          }
+        });
+      }
+      else {
+        $("#time_window option:first").prop("selected", "selected");
+        console.log("Different day");
+      }
+    },
+    onSelectDate:function(ct,$i){
+      console.log("onSelectDate");
+      $("#time_window option").show();
+      $("#time_window option:selected").prop("selected", false);
+    },
+  });
+
+  $('#toggle').on('click', function(){
+    $(".delivery-popup").click();
+  });
 
   var tax_rate = <?= $tax_rate; ?>;  // 35%
 

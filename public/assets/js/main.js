@@ -52,6 +52,7 @@
 })(jQuery);
 
 function setCookie(key, value, expiry) {
+  console.log("setting cookie " + key);
   var expires = new Date();
   expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
   document.cookie = key + '=' + value + ';expires=' + expires.toUTCString() +';path=/';
@@ -317,3 +318,20 @@ function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
 
   });
 }
+
+// function saveDeliverySchedule(d, t) {
+//   let data = {};
+//   data.d = d;
+//   data.t = t;
+
+//   $.ajax({
+//     type: "POST",
+//     url: baseUrl + '/api/cart/add',
+//     // url: baseUrl + '/cart/add',
+//     data: data,
+//     dataType: "json",
+//     success: function(json) {
+
+//     }
+//   });
+// }

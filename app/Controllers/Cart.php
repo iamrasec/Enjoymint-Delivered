@@ -114,6 +114,11 @@ class Cart extends BaseController
     
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
+    $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+    if($this->data['currDate']->format('H') > '16') {
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+    }
 
     return view('cart/cart_page', $this->data);
   }
