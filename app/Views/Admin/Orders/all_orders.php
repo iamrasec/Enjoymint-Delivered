@@ -39,6 +39,7 @@
                     <th>Total</th>
                     <th>Order Date</th>
                     <th>Order Status</th>
+                    <th>Delivery Schedule</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -111,7 +112,7 @@ $(document).ready(function () {
         }
       },
       "columnDefs": [{ 
-          "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+          "targets": [0, 1, 2, 3, 4, 5, 6, 7,8],
           // "orderable": false
       }],
       columns: [
@@ -171,6 +172,9 @@ $(document).ready(function () {
               return 'Cancelled';
             }
           }
+        }, { 
+          data: 'delivery_schedule',
+          // "orderable": true,
         },
         { 
           data: 'actions',
