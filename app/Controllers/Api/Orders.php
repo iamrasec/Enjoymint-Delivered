@@ -69,7 +69,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
+    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_schedule");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -77,7 +77,7 @@ class Orders extends ResourceController
       $this->order_model->orLike("LOWER(address)", $search_value);
     }
 
-    // $this->order_model->whereIn("status", [0,1]);
+    // $this->order_model->whereIn("status", [0,1]);R
     $this->order_model->orderBy("created DESC");
 
     if(isset($post['start']) && isset($post['length'])) {
