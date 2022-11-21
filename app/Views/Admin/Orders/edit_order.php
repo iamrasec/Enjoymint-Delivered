@@ -140,6 +140,11 @@
   </div>
 </main>
 
+<div class="d-none">
+  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
+</div>
+<?php echo $this->include('templates/_delivery_popup.php'); ?>
+
 <style>
   .order-user-data {
     background-color: rgba(38,50,48,0.95) !important;
@@ -169,14 +174,64 @@ $(document).ready(function () {
 });
 
     jQuery.datetimepicker.setDateFormatter('moment')
-      $('#picker').datetimepicker({
-         timepicker: true,
-         datepicker: true,
-         format: 'YYYY-MM-DD h:mm a'
-      })
-      $('#toggle').on('click', function(){
-         $('#picker').datetimepicker('toggle')
-      })
+  // $('#picker').datetimepicker({
+  //    timepicker: true,
+  //    datepicker: true,
+  //    format: 'YYYY-MM-DD h:mm a'
+  // })
+  // $('#toggle').on('click', function(){
+  //    $('#picker').datetimepicker('toggle')
+  // })
+
+  var serverDate = '<?php echo $currDate; ?>';
+
+  var today = new Date(serverDate);
+
+  $('#inline_picker').datetimepicker({
+    timepicker: false,
+    datepicker: true,
+    inline: true,
+    // format: 'YYYY-MM-DD h:mm a',
+    format: 'YYYY-MM-DD',
+    minDate: serverDate,
+    // allowTimes: [
+    //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+    // ],
+    onGenerate:function(ct) {
+      console.log("onGenerate");
+      console.log("ct: " + ct.getDate());
+      console.log("today: " + today.getDate());
+
+      if(ct.getDate() == today.getDate()) {
+        console.log("Same day");
+        let currTime = today.getHours() + ":" + today.getMinutes();
+        console.log("today hour: " + currTime);
+
+        $("#time_window option").each(function() {
+          if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
+            $(this).hide();
+          }
+          else {
+            $(this).prop("selected", true);
+            return false;
+          }
+        });
+      }
+      else {
+        $("#time_window option:first").prop("selected", "selected");
+        console.log("Different day");
+      }
+    },
+    onSelectDate:function(ct,$i){
+      console.log("onSelectDate");
+      $("#time_window option").show();
+      $("#time_window option:selected").prop("selected", false);
+    },
+  });
+
+  $('#toggle').on('click', function(){
+    $(".delivery-popup").click();
+  });
       
 </script>
 
