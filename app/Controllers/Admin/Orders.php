@@ -98,6 +98,11 @@ class Orders extends BaseController {
         $this->data['order_data'] = $order;
         $this->data['order_products'] = $order_products;
         $this->data['all_products'] = $all_products;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '16') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
         
         echo view('Admin/Orders/edit_order', $this->data);
     }
