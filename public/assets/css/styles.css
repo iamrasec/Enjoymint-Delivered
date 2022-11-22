@@ -523,3 +523,18 @@ nav ul.pagination li.active a {
   width: 280px !important;
   margin-left: 5px
 }
+
+@media (max-width:425px) {
+  .xdsoft_datetimepicker {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .modal-content-datepicker {
+    width: 100%;
+  }
+
+  .modal-content-datepicker {
+    margin-left: 0 !important;
+  }
+}
