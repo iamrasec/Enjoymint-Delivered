@@ -29,17 +29,17 @@
                 $del_time_to = $del_time[1];
 
                 if($del_time_from > 1200) {
-                  $del_time_from = ($del_time_from - 1200) . ' pm';
+                  $del_time_from = ($del_time_from - 1200) . ' PM';
                 }
                 else {
-                  $del_time_from = $del_time_from . ' am';
+                  $del_time_from = $del_time_from . ' AM';
                 }
 
                 if($del_time_to > 1200) {
-                  $del_time_to = ($del_time_to - 1200) . ' pm';
+                  $del_time_to = ($del_time_to - 1200) . ' PM';
                 }
                 else {
-                  $del_time_to = $del_time_to . ' am';
+                  $del_time_to = $del_time_to . ' AM';
                 }
 
                 $del_time_from = substr_replace($del_time_from, ':', -5, 0);

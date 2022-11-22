@@ -36,7 +36,7 @@
               <div class="input-group-prepend">
                 <button type="button" id="toggle" class="input-group-text">
                 <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                <input style="width: 240px;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
                 </button>
               </div>
            </div>
@@ -235,6 +235,14 @@ optionsList.forEach(o => {
       // Show delivery schedule popup if no cookie is found.
       $(".delivery-popup").click();
     }
+    else {
+      let delsched = JSON.parse(delivery_cookie);
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+      
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+    }
 
     // Save Delivery Schedule
     $(".save-delivery-schedule").click(function() {
@@ -249,6 +257,8 @@ optionsList.forEach(o => {
       console.log(JSON.stringify(delsched));
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+      $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+      console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
   });
