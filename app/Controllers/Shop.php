@@ -230,7 +230,6 @@ class Shop extends BaseController
         if($this->data['currDate']->format('H') > '16') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
-
         return view('shop_view', $this->data);
     }
     

@@ -4,6 +4,7 @@
     <div class="row mb-5">
       <div class="col-12 col-md-12 col-xs-12">
         <?php foreach($orders as $active_orders): ?>
+        <!-- <pre><?php print_r($active_orders); ?></pre> -->
         <div class="row border mb-3">
           <div class="col-12 col-md-12 col-xs-12 mx-0 px-0">
             <div class="order-list-header bg-primary-green d-flex flex-column flex-md-row text-white px-2 py-2">
@@ -21,6 +22,33 @@
               <div class="px-2 px-md-4 py-0 py-md-2">
                 <strong>Total Cost: $<?= $active_orders['total']; ?></strong>
               </div>
+              <?php if($active_orders['delivery_schedule'] != '' && $active_orders['delivery_time'] != ''): ?>
+                <?php
+                $del_time = explode("-", $active_orders['delivery_time']);
+                $del_time_from = $del_time[0];
+                $del_time_to = $del_time[1];
+
+                if($del_time_from > 1200) {
+                  $del_time_from = ($del_time_from - 1200) . ' PM';
+                }
+                else {
+                  $del_time_from = $del_time_from . ' AM';
+                }
+
+                if($del_time_to > 1200) {
+                  $del_time_to = ($del_time_to - 1200) . ' PM';
+                }
+                else {
+                  $del_time_to = $del_time_to . ' AM';
+                }
+
+                $del_time_from = substr_replace($del_time_from, ':', -5, 0);
+                $del_time_to = substr_replace($del_time_to, ':', -5, 0);
+                ?>
+                <div class="px-2 px-md-4 py-0 py-md-2">
+                  <strong>Delivery Schedule: <?= $active_orders['delivery_schedule']; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong>
+                </div>
+              <?php endif; ?>
             </div>
             <?php foreach($active_orders['products'] as $products): ?>
             <div class="row p-2 d-flex d-md-none">

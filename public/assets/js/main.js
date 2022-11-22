@@ -335,3 +335,19 @@ function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
 //     }
 //   });
 // }
+
+function tConvert (time) {
+  if(time > 1200) {
+    time = time - 1200 + ' PM';
+  }
+  else {
+    time = time + ' AM';
+  }
+
+  console.log("time: " + time);
+  console.log("time length: " + time.length);
+
+  var formattedTime = time.slice(0, time.length - 5) + ":" + time.slice(time.length - 5);
+
+  return formattedTime;
+}

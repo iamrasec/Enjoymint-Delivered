@@ -21,6 +21,33 @@
               <div class="px-2 px-md-4 py-0 py-md-2">
                 <strong>Total Cost: $<?= $previous_orders['total']; ?></strong>
               </div>
+              <?php if($previous_orders['delivery_schedule'] != '' && $previous_orders['delivery_time'] != ''): ?>
+                <?php
+                $del_time = explode("-", $previous_orders['delivery_time']);
+                $del_time_from = $del_time[0];
+                $del_time_to = $del_time[1];
+
+                if($del_time_from > 1200) {
+                  $del_time_from = ($del_time_from - 1200) . ' PM';
+                }
+                else {
+                  $del_time_from = $del_time_from . ' AM';
+                }
+
+                if($del_time_to > 1200) {
+                  $del_time_to = ($del_time_to - 1200) . ' PM';
+                }
+                else {
+                  $del_time_to = $del_time_to . ' AM';
+                }
+
+                $del_time_from = substr_replace($del_time_from, ':', -5, 0);
+                $del_time_to = substr_replace($del_time_to, ':', -5, 0);
+                ?>
+                <div class="px-2 px-md-4 py-0 py-md-2">
+                  <strong>Delivery Schedule: <?= $previous_orders['delivery_schedule']; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong>
+                </div>
+              <?php endif; ?>
             </div>
             <?php foreach($previous_orders['products'] as $products): ?>
             <div class="row p-2 d-flex d-md-none">

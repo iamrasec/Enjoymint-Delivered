@@ -32,14 +32,16 @@
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
 
+            <?php if($fast_tracked == false): ?>
             <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
               <div class="input-group-prepend">
                 <button type="button" id="toggle" class="input-group-text">
                 <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                <input style="width: 240px;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
                 </button>
               </div>
            </div>
+           <?php endif; ?>
 
             <?php foreach($products as $product): ?>
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
@@ -231,9 +233,18 @@ optionsList.forEach(o => {
 
   $(document).ready(function() {
 
+    <?php if($fast_tracked == false): ?>
     if(!delivery_cookie) {
       // Show delivery schedule popup if no cookie is found.
       $(".delivery-popup").click();
+    }
+    else {
+      let delsched = JSON.parse(delivery_cookie);
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+      
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
     }
 
     // Save Delivery Schedule
@@ -249,8 +260,16 @@ optionsList.forEach(o => {
       console.log(JSON.stringify(delsched));
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+      console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
+    <?php endif; ?>
   });
 
   var cookie_cart = 'cart_data';
