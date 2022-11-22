@@ -355,17 +355,17 @@ update_cart_count();
     $(".total-cost").html(formatter.format(total_cost));
   });
   
-  $(document).on("click", ".checkout-btn1", function(e) {
+  $(document).on("click", ".checkout-btn", function(e) {
     e.preventDefault();
-    var sched =$('#picker').val();
+    var sched = $('#picker').val();
     // console.log($("input[name=guid]").val());
 
-    // if($("input[name=guid]").val() == '') {
-    //   $("#loginRegisterModal").modal('show');
-    // }
-    // else {
+    if($("input[name=guid]").val() == '') {
+      $("#loginRegisterModal").modal('show');
+    }
+    else {
       window.location.replace("<?= base_url('cart/checkout/'); ?>");
-    // }
+    }
     const fd = new FormData();
     fd.append('delivery_schedule', sched);
     fetch('<?= base_url('cart/checkout'); ?>',{
