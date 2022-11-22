@@ -101,7 +101,7 @@
               <div class="input-group-prepend">
                 <button type="button" id="toggle" class="input-group-text">
                 <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
                 </button>
               </div>
            </div>
@@ -144,6 +144,11 @@
 <!-- <script src="<?php echo base_url(); ?>/assets/js/jquery.datetimepicker.full.js"></script>
 <script src="<?php echo base_url(); ?>/assets/js/jquery.js"></script> -->
 
+<?php 
+  $session = session();
+  // $uguid = ($session->get('guid')) ? $session->get('guid') : '';
+  $uid = ($session->get('id')) ? $session->get('id') : 0;
+?>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
@@ -206,10 +211,118 @@ jQuery.datetimepicker.setDateFormatter('moment')
       $("#time_window option:selected").prop("selected", false);
     },
   });
+// Check if cookie exists
+var delivery_cookie = getCookie("delivery_schedule");
 
   $('#toggle').on('click', function(){
     $(".delivery-popup").click();
   });
+
+  $(document).ready(function() {
+
+if(!delivery_cookie) {
+  // Show delivery schedule popup if no cookie is found.
+  $(".delivery-popup").click();
+}
+
+// Save Delivery Schedule
+$(".save-delivery-schedule").click(function() {
+  console.log("save delivery schedule");
+  console.log($("#inline_picker").val());
+  console.log($("#time_window").find(":selected").val());
+
+  let delsched = {};
+  delsched.d = $("#inline_picker").val();
+  delsched.t = $("#time_window").find(":selected").val();
+
+  console.log(JSON.stringify(delsched));
+
+  setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+  $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+      console.log(delsched.d + " @ " + delsched.t);
+  $(".btn-link").click();
+});
+});
+
+var cookie_cart = 'cart_data';
+
+$(document).on('click', '.add-to-cart', function(e) {
+e.preventDefault();
+
+$(this).prop('disabled', true);
+$(".lds-hourglass").removeClass('d-none');
+
+console.log("add to cart clicked");
+
+let pid = $(this).data('pid');
+let qty = 1;
+let get_cookie = '';
+let cookie_products = [];
+
+if($("[name='atoken']").attr('content') != "") {
+  add_to_cart(<?= $uid; ?>, pid, qty);
+}
+else {
+  // Current user is not logged in
+  console.log("no JWT");
+
+  //Check if cookie exists.  Get cookie value if any.
+  get_cookie = getCookie(cookie_cart);
+
+  // Cookie doesn't exist.  Create cookie
+  if(!get_cookie) {
+    console.log('cart_data cookie not set.');
+
+    // Set value to add to the cookie
+    cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
+
+    // Create cookie
+    setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+  }
+  // Cookie exists.  Check if data is correct.  Add product data to the cart data.
+  else {
+    console.log('cart_data cookie found.');
+
+    // Parse JSON data into readable array
+    cookie_products = JSON.parse(get_cookie);
+
+    // Check if product is already existing in the cookie
+    let pid_exists = false;
+
+    // Loop through each product in the cookie and match each product ids
+    cookie_products.forEach(function(product) {
+      console.log("products in cookie: ");
+      console.log(product);
+
+      // If a match is found, add the new qty to the existing qty.
+      if(product.pid == pid) {
+        console.log("product "+pid+" found");
+        product.qty = parseInt(product.qty) + parseInt(qty);
+
+        // Update the variable to indicate that the product id exists in the cookie
+        pid_exists = true;
+      }
+    });
+
+    // If product is not found after the loop, append the product
+    if(pid_exists == false) {
+      cookie_products.push({"pid": pid, "qty": parseInt(qty)});
+    }
+
+    console.log("New product array: ");
+    console.log(cookie_products);
+
+    // Save new products array to cookie
+    setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+  }
+
+  $(".add-to-cart").removeAttr('disabled');
+  $(".lds-hourglass").addClass('d-none');
+}
+
+// Update the cart counter
+update_cart_count();
+});
 
   var tax_rate = <?= $tax_rate; ?>;  // 35%
 
