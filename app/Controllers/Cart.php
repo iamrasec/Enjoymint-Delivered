@@ -125,11 +125,12 @@ class Cart extends BaseController
 
   public function checkout()
   {
-    $postData = $this->request->getPost();
+    // $postData = $this->request->getPost();
     
-    if(!empty($postData)){
-      $this->data['sched'] = $postData['delivery_schedule'];
-    }
+    // if(!empty($postData)){
+    //   $this->data['sched'] = $postData['delivery_schedule'];
+    // }
+
     // If not logged-in redirect back to cart
     if($this->isLoggedIn != 1) {
       return redirect()->to('/cart');
@@ -181,6 +182,12 @@ class Cart extends BaseController
     $enjoymint_utils = new EnjoymintUtils();
 
     $this->data['checkout_token'] = $enjoymint_utils->generateRandomString(20);
+
+    $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+    if($this->data['currDate']->format('H') > '16') {
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+    }
 
     return view('cart/checkout', $this->data);
   }

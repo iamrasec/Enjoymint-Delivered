@@ -319,23 +319,6 @@ function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
   });
 }
 
-// function saveDeliverySchedule(d, t) {
-//   let data = {};
-//   data.d = d;
-//   data.t = t;
-
-//   $.ajax({
-//     type: "POST",
-//     url: baseUrl + '/api/cart/add',
-//     // url: baseUrl + '/cart/add',
-//     data: data,
-//     dataType: "json",
-//     success: function(json) {
-
-//     }
-//   });
-// }
-
 function tConvert (time) {
   if(time > 1200) {
     time = time - 1200 + ' PM';
