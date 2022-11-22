@@ -32,6 +32,7 @@
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
 
+            <?php if($fast_tracked == false): ?>
             <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
               <div class="input-group-prepend">
                 <button type="button" id="toggle" class="input-group-text">
@@ -40,6 +41,7 @@
                 </button>
               </div>
            </div>
+           <?php endif; ?>
 
             <?php foreach($products as $product): ?>
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
@@ -231,6 +233,7 @@ optionsList.forEach(o => {
 
   $(document).ready(function() {
 
+    <?php if($fast_tracked == false): ?>
     if(!delivery_cookie) {
       // Show delivery schedule popup if no cookie is found.
       $(".delivery-popup").click();
@@ -266,6 +269,7 @@ optionsList.forEach(o => {
       console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
+    <?php endif; ?>
   });
 
   var cookie_cart = 'cart_data';
