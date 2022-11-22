@@ -257,7 +257,12 @@ optionsList.forEach(o => {
       console.log(JSON.stringify(delsched));
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
-      $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
       console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
