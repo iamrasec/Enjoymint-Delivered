@@ -531,7 +531,7 @@ nav ul.pagination li.active a {
   }
 
   .modal-content-datepicker {
-    width: 100%;
+    width: 100% !important;
   }
 
   .modal-content-datepicker {
