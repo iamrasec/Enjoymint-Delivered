@@ -37,10 +37,11 @@
                 <h4>Products</h4><br>
                 <table id="cart_products" class="w-100">
                   <tbody>
+                  <?php $fast_tracked = true; ?>
                   <?php foreach($cart_products as $product): ?>
+                    <?php if($product['product_data']->delivery_type == 0 || $product['product_data']->delivery_type == 2) { $fast_tracked = false; } ?>
                     <tr class="pid-<?= $product['pid']; ?> border">
                       <td>
-                      
                         <div class="row product-wrap d-flex py-3">
                           <div class="col-12 col-md-2 col-xs-12 product-img">
                             <?php if(!empty($product['images'])): ?>
@@ -157,91 +158,91 @@
 <script>
 
 jQuery.datetimepicker.setDateFormatter('moment')
+  // $('#picker').datetimepicker({
+  //    timepicker: true,
+  //    datepicker: true,
+  //    format: 'YYYY-MM-DD h:mm a'
+  // })
+  // $('#toggle').on('click', function(){
+  //    $('#picker').datetimepicker('toggle')
+  // })
 
-var serverDate = '<?php echo $currDate; ?>';
+  var serverDate = '<?php echo $currDate; ?>';
 
-var today = new Date(serverDate);
+  var today = new Date(serverDate);
 
-$('#inline_picker').datetimepicker({
-  timepicker: false,
-  datepicker: true,
-  inline: true,
-  // format: 'YYYY-MM-DD h:mm a',
-  format: 'YYYY-MM-DD',
-  minDate: serverDate,
-  // allowTimes: [
-  //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-  // ],
-  onGenerate:function(ct) {
-    console.log("onGenerate");
-    console.log("ct: " + ct.getDate());
-    console.log("today: " + today.getDate());
+  $('#inline_picker').datetimepicker({
+    timepicker: false,
+    datepicker: true,
+    inline: true,
+    // format: 'YYYY-MM-DD h:mm a',
+    format: 'YYYY-MM-DD',
+    minDate: serverDate,
+    // allowTimes: [
+    //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
+    // ],
+    onGenerate:function(ct) {
+      console.log("onGenerate");
+      console.log("ct: " + ct.getDate());
+      console.log("today: " + today.getDate());
 
-    if(ct.getDate() == today.getDate()) {
-      console.log("Same day");
-      let currTime = today.getHours() + ":" + today.getMinutes();
-      console.log("today hour: " + currTime);
+      if(ct.getDate() == today.getDate()) {
+        console.log("Same day");
+        let currTime = today.getHours() + ":" + today.getMinutes();
+        console.log("today hour: " + currTime);
 
-      $("#time_window option").each(function() {
-        if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
-          $(this).hide();
-        }
-        else {
-          $(this).prop("selected", true);
-          return false;
-        }
-      });
-    }
-    else {
-      $("#time_window option:first").prop("selected", "selected");
-      console.log("Different day");
-    }
-  },
-  onSelectDate:function(ct,$i){
-    console.log("onSelectDate");
-    $("#time_window option").show();
-    $("#time_window option:selected").prop("selected", false);
-  },
-});
-
+        $("#time_window option").each(function() {
+          if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
+            $(this).hide();
+          }
+          else {
+            $(this).prop("selected", true);
+            return false;
+          }
+        });
+      }
+      else {
+        $("#time_window option:first").prop("selected", "selected");
+        console.log("Different day");
+      }
+    },
+    onSelectDate:function(ct,$i){
+      console.log("onSelectDate");
+      $("#time_window option").show();
+      $("#time_window option:selected").prop("selected", false);
+    },
+  });
 // Check if cookie exists
 var delivery_cookie = getCookie("delivery_schedule");
 
-$('#toggle').on('click', function(){
-  $(".delivery-popup").click();
-});
-
-$(document).ready(function() {
-  if(!delivery_cookie) {
-    // Show delivery schedule popup if no cookie is found.
+  $('#toggle').on('click', function(){
     $(".delivery-popup").click();
-  }
-  else {
-    let delsched = JSON.parse(delivery_cookie);
-    let delTime = delsched.t.split("-");
-    let delFrom = tConvert(delTime[0]);
-    let delTo = tConvert(delTime[1]);
-    
-    $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
-  }
-
-  // Save Delivery Schedule
-  $(".save-delivery-schedule").click(function() {
-    console.log("save delivery schedule");
-    console.log($("#inline_picker").val());
-    console.log($("#time_window").find(":selected").val());
-
-    let delsched = {};
-    delsched.d = $("#inline_picker").val();
-    delsched.t = $("#time_window").find(":selected").val();
-
-    console.log(JSON.stringify(delsched));
-
-    setCookie("delivery_schedule", JSON.stringify(delsched), '1');
-    $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
-        console.log(delsched.d + " @ " + delsched.t);
-    $(".btn-link").click();
   });
+
+  $(document).ready(function() {
+
+if(!delivery_cookie) {
+  // Show delivery schedule popup if no cookie is found.
+  $(".delivery-popup").click();
+}
+
+// Save Delivery Schedule
+$(".save-delivery-schedule").click(function() {
+  console.log("save delivery schedule");
+  console.log($("#inline_picker").val());
+  console.log($("#time_window").find(":selected").val());
+
+  let delsched = {};
+  delsched.d = $("#inline_picker").val();
+  delsched.t = $("#time_window").find(":selected").val();
+
+  console.log(JSON.stringify(delsched));
+
+  setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+  $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+      console.log(delsched.d + " @ " + delsched.t);
+  $(".btn-link").click();
+});
 });
 
 var cookie_cart = 'cart_data';
@@ -355,33 +356,23 @@ update_cart_count();
     $(".total-cost").html(formatter.format(total_cost));
   });
   
-  $(document).on("click", ".checkout-btn", function(e) {
+  $(document).on("click", ".checkout-btn1", function(e) {
     e.preventDefault();
-    var sched = $('.datetime_picker').val();
+    var sched =$('#picker').val();
+    // console.log($("input[name=guid]").val());
 
-    console.log($("input[name=guid]").val());
-    console.log(sched);
-
-    if($("input[name=guid]").val() == '') {
-      $("#loginRegisterModal").modal('show');
-    }
-    else if(sched == "") {
-      $(".delivery-popup").click();
-    }
-    else {
-    //   const fd = new FormData();
-    //   fd.append('delivery_schedule', sched);
-    //   fetch('<?= base_url('cart/checkout'); ?>',{
-    //     method: 'POST',
-    //     body: fd
-    //   })
-    //   .then()
-    //   .catch((error) => {
-    //     console.log('Error:', error);
-    // });
-
+    // if($("input[name=guid]").val() == '') {
+    //   $("#loginRegisterModal").modal('show');
+    // }
+    // else {
       window.location.replace("<?= base_url('cart/checkout/'); ?>");
-    }
+    // }
+    const fd = new FormData();
+    fd.append('delivery_schedule', sched);
+    fetch('<?= base_url('cart/checkout'); ?>',{
+      method: 'POST',
+      body: fd
+    })
   });
 
   $(document).on("click", ".remove-item", function(e) {

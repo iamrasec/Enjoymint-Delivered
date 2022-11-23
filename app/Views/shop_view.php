@@ -346,6 +346,7 @@ optionsList.forEach(o => {
 
       $(".add-to-cart").removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
+      enjoymintAlert('', 'Product added to cart', 'success', 0);
     }
 
     // Update the cart counter
