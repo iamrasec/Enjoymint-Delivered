@@ -560,8 +560,9 @@ class Users extends BaseController
 	}
 
 	public function customerVerification()
-	{   $session = session();
-		helper(['form']);
+	{   
+		$session = session();
+		helper(['form', 'jwt']);
 		$page_title = "Upload ID";
 
 		// print_r($categories);
@@ -575,92 +576,91 @@ class Users extends BaseController
 		$user_id = $this->uid;
 		$upload2 = $this->customerverification_model->get()->getResult();
 		$verify = $this->customerverification_model->verifyUser($user_id);
+
+		$this->data['user_jwt'] = getSignedJWTForUser($this->guid);
 		
 		if(empty($upload2)) {
-			return view('User/id_upload');
+			return view('User/id_upload', $this->data);
 		}else{
 			if(empty($verify)) {
 			
-				return view('User/id_upload');	
+				return view('User/id_upload', $this->data);	
 			}
 			else{
-			
-			$all_products = $this->customerverification_model->get()->getResult();
-				 
-			$product_arr = [];
-			foreach($all_products as $product) {
-				// echo "<pre>".print_r($product, 1)."</pre>";
-				if(!empty($product->image_validID)) {
-					$imageIds = [];
-					$imageIds = $product->image_validID;
-					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
-					$product_arr['validID'] = $images;
+				$all_products = $this->customerverification_model->get()->getResult();
 					
-					$this->data['validID'] = $product_arr['validID'];
-				}
-				if(!empty($product->image_profile)) {
-					$imageIds = [];
-					$imageIds = $product->image_profile;
-					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
-					$product_arr['profile'] = $images;
+				$product_arr = [];
+				foreach($all_products as $product) {
+					// echo "<pre>".print_r($product, 1)."</pre>";
+					if(!empty($product->image_validID)) {
+						$imageIds = [];
+						$imageIds = $product->image_validID;
+						$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+						$product_arr['validID'] = $images;
+						
+						$this->data['validID'] = $product_arr['validID'];
+					}
+					if(!empty($product->image_profile)) {
+						$imageIds = [];
+						$imageIds = $product->image_profile;
+						$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+						$product_arr['profile'] = $images;
 
-					$this->data['profile'] = $product_arr['profile'];
-				}
-				if(!empty($product->image_MMIC)) {
-					$imageIds = [];
-					$imageIds = $product->image_MMIC;
-					$images = $this->image_model->where('id', $imageIds)->get()->getResult();
-					$product_arr['mmic'] = $images;
+						$this->data['profile'] = $product_arr['profile'];
+					}
+					if(!empty($product->image_MMIC)) {
+						$imageIds = [];
+						$imageIds = $product->image_MMIC;
+						$images = $this->image_model->where('id', $imageIds)->get()->getResult();
+						$product_arr['mmic'] = $images;
 
-					$this->data['mmic'] = $product_arr['mmic'];
-				}
-				if($product->status == 2){
-					$this->data['success'] = $product->denial_message;
-					$this->data['error'] = 'Your photo has been denied for verification!';
-					$this->data['color'] = 'Red';
-					$this->data['upload'] = '';
-					if(empty($product->image_validID)){
-						$this->data['upload'] = '<label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
-						<div>
-						<input type="file" name="valid_ID[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com" >
-					  </div>
-					  '; 
+						$this->data['mmic'] = $product_arr['mmic'];
 					}
-					if(empty($product->image_profile)){
-						$this->data['upload'] = $this->data['upload'].'<label class="form-label">Select Selfie photo with your Valid ID:</label>
-						<div>
-						  <input type="file" name="profile[]" id="file1" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
-						</div>';
-					}
-					if(empty($product->image_MMIC)){
-						$this->data['upload'] = $this->data['upload'].'
-						<label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
-						<div>  
-						<input type="file" name="mmic[]" id="file2" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
-						</div>';
-					}
+					if($product->status == 2){
+						$this->data['success'] = $product->denial_message;
+						$this->data['error'] = 'Your photo has been denied for verification!';
+						$this->data['color'] = 'Red';
+						$this->data['upload'] = '';
+						if(empty($product->image_validID)){
+							$this->data['upload'] = '<label for="exampleFormControlInput1" class="form-label">Select Valid ID(*Driver License):</label>
+							<div>
+							<input type="file" name="valid_ID[]" id="file" accept="image/png, image/jpeg, image/jpg" class="form-control fc" id="exampleFormControlInput1" placeholder="name@example.com" >
+							</div>
+							'; 
+						}
+						if(empty($product->image_profile)){
+							$this->data['upload'] = $this->data['upload'].'<label class="form-label">Select Selfie photo with your Valid ID:</label>
+							<div>
+								<input type="file" name="profile[]" id="file1" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
+							</div>';
+						}
+						if(empty($product->image_MMIC)){
+							$this->data['upload'] = $this->data['upload'].'
+							<label class="form-label">Select Medical Marijuana Identification Card photo (optional):</label>
+							<div>  
+							<input type="file" name="mmic[]" id="file2" class="form-control fc" accept="image/png, image/jpeg, image/jpg" >
+							</div>';
+						}
 
-					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
-					$this->data['display'] = 'inline';
-				}elseif($product->status == 1){
-					$this->data['success'] = 'Your account has been Verified.';
-					$this->data['color'] = 'Green';
-					$this->data['upload'] = '';
-					$this->data['display'] = 'none';
-					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
-				}else{
-					$this->data['success'] = 'Your account is on processing for verification.';
-					$this->data['color'] = 'orange';
-					$this->data['upload'] = '';	
-					$this->data['display'] = 'none';
-					$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
-					}
-				
+						$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
+						$this->data['display'] = 'inline';
+					}elseif($product->status == 1){
+						$this->data['success'] = 'Your account has been Verified.';
+						$this->data['color'] = 'Green';
+						$this->data['upload'] = '';
+						$this->data['display'] = 'none';
+						$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
+					}else{
+						$this->data['success'] = 'Your account is on processing for verification.';
+						$this->data['color'] = 'orange';
+						$this->data['upload'] = '';	
+						$this->data['display'] = 'none';
+						$this->data['button'] = '<input type="submit" class="btn btn-primary" value="upload" /> ';
+						}
+					
+				}
 			}
 		}
-		}
-		
-	
 		 $this->data['data'] = $all_products;
 		return view('User/id_upload', $this->data);
 	   
