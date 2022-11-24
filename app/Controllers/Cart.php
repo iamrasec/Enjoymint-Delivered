@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Libraries\EnjoymintUtils;
+use CodeIgniter\I18n\Time;
 
 class Cart extends BaseController
 {
@@ -114,11 +115,26 @@ class Cart extends BaseController
     
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
-    $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+    $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($this->data['currDate']->format('H') > '16') {
-        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+    if($currDate->format('H') > '16') {
+      $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
+
+    $this->data['currDate'] = $currDate;
+
+    // For use with Fast-tracked checkout
+    $fsDelTime = explode(":", $currDate->toTimeString());
+
+    if($fsDelTime[0] < 10) {
+      $fsDelTime = 10 . $fsDelTime[1] ." - ". 13 . $fsDelTime[1];
+    }
+    else {
+      $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
+    }
+
+    $this->data['fscurrDay'] = $currDate->toDateString();
+    $this->data['fsDelTime'] = $fsDelTime;
 
     return view('cart/cart_page', $this->data);
   }
@@ -183,11 +199,14 @@ class Cart extends BaseController
 
     $this->data['checkout_token'] = $enjoymint_utils->generateRandomString(20);
 
-    $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+    $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($this->data['currDate']->format('H') > '16') {
-        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+    if($currDate->format('H') > '16') {
+      $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
+
+    $this->data['currDate'] = $currDate;
+    $this->data['currDay'] = $currDate->toDateString();
 
     return view('cart/checkout', $this->data);
   }
@@ -213,6 +232,7 @@ class Cart extends BaseController
       'payment_method' => $data['payment_method'],
       'order_notes' => $data['order_notes'],
       'delivery_schedule' => $data['delivery_schedule'],
+      'delivery_time' => $data['time_window'],
     ];
 
     // Insert initial order record and grab the order id

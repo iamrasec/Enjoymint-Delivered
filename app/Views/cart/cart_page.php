@@ -15,16 +15,6 @@
       <div class="col-12 col-md-8 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
-          
-          <!-- <?php if($delivery): ?>
-          <div class="product-date">
-            <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="yyyy-mm-dd H : i : s" style="border: 1px solid black ; width:min-content"></span>
-          </div>             
-          <?php else: ?>  
-            <div class="product-date">
-            <span style="float: right; margin-top: -20px;">Date Selected:<input type="text"  class="form-control" placeholder="none" style="border: 1px solid black ; width:min-content"></span>
-          </div> 
-          <?php endif; ?> -->
                 
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
@@ -39,7 +29,7 @@
                   <tbody>
                   <?php $fast_tracked = true; ?>
                   <?php foreach($cart_products as $product): ?>
-                    <?php if($product['product_data']->delivery_type == 0 || $product['product_data']->delivery_type == 2) { $fast_tracked = false; } ?>
+                    <?php if($product['product_data']->delivery_type == 0 || $product['product_data']->delivery_type == 1) { $fast_tracked = false; } ?>
                     <tr class="pid-<?= $product['pid']; ?> border">
                       <td>
                         <div class="row product-wrap d-flex py-3">
@@ -98,14 +88,21 @@
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>
           <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
+
           <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
-              <div class="input-group-prepend">
-                <button type="button" id="toggle" class="input-group-text">
-                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-                </button>
-              </div>
-           </div>
+            <div class="input-group-prepend">
+              <?php if($fast_tracked == false): ?>
+              <button type="button" id="toggle" class="input-group-text">
+              <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+              <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+              </button>
+              <?php else: ?>
+              <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+              <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+              <?php endif; ?>
+            </div>
+          </div>
+
           <div class="row mt-4">
             <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
             <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
@@ -131,12 +128,13 @@
   </div>
 </main>
 
-
+<?php if($fast_tracked == false): ?>
 <div class="d-none">
   <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
 </div>
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
 <?php echo $this->include('templates/_delivery_popup.php'); ?>
+<?php endif; ?>
 
 <!-- <link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" /> -->
 <?php $this->endSection(); ?>
@@ -157,93 +155,83 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script>
 
-jQuery.datetimepicker.setDateFormatter('moment')
-  // $('#picker').datetimepicker({
-  //    timepicker: true,
-  //    datepicker: true,
-  //    format: 'YYYY-MM-DD h:mm a'
-  // })
-  // $('#toggle').on('click', function(){
-  //    $('#picker').datetimepicker('toggle')
-  // })
+jQuery.datetimepicker.setDateFormatter('moment');
 
-  var serverDate = '<?php echo $currDate; ?>';
+var serverDate = '<?php echo $currDate; ?>';
 
-  var today = new Date(serverDate);
+var today = new Date(serverDate);
 
-  $('#inline_picker').datetimepicker({
-    timepicker: false,
-    datepicker: true,
-    inline: true,
-    // format: 'YYYY-MM-DD h:mm a',
-    format: 'YYYY-MM-DD',
-    minDate: serverDate,
-    // allowTimes: [
-    //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-    // ],
-    onGenerate:function(ct) {
-      console.log("onGenerate");
-      console.log("ct: " + ct.getDate());
-      console.log("today: " + today.getDate());
+<?php if($fast_tracked == false): ?>
+$('#inline_picker').datetimepicker({
+  timepicker: false,
+  datepicker: true,
+  inline: true,
+  format: 'YYYY-MM-DD',
+  minDate: serverDate,
+  onGenerate:function(ct) {
+    console.log("onGenerate");
+    console.log("ct: " + ct.getDate());
+    console.log("today: " + today.getDate());
 
-      if(ct.getDate() == today.getDate()) {
-        console.log("Same day");
-        let currTime = today.getHours() + ":" + today.getMinutes();
-        console.log("today hour: " + currTime);
+    if(ct.getDate() == today.getDate()) {
+      console.log("Same day");
+      let currTime = today.getHours() + ":" + today.getMinutes();
+      console.log("today hour: " + currTime);
 
-        $("#time_window option").each(function() {
-          if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
-            $(this).hide();
-          }
-          else {
-            $(this).prop("selected", true);
-            return false;
-          }
-        });
-      }
-      else {
-        $("#time_window option:first").prop("selected", "selected");
-        console.log("Different day");
-      }
-    },
-    onSelectDate:function(ct,$i){
-      console.log("onSelectDate");
-      $("#time_window option").show();
-      $("#time_window option:selected").prop("selected", false);
-    },
-  });
+      $("#time_window option").each(function() {
+        if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
+          $(this).hide();
+        }
+        else {
+          $(this).prop("selected", true);
+          return false;
+        }
+      });
+    }
+    else {
+      $("#time_window option:first").prop("selected", "selected");
+      console.log("Different day");
+    }
+  },
+  onSelectDate:function(ct,$i){
+    console.log("onSelectDate");
+    $("#time_window option").show();
+    $("#time_window option:selected").prop("selected", false);
+  },
+});
+
 // Check if cookie exists
 var delivery_cookie = getCookie("delivery_schedule");
 
-  $('#toggle').on('click', function(){
-    $(".delivery-popup").click();
-  });
-
-  $(document).ready(function() {
-
-if(!delivery_cookie) {
-  // Show delivery schedule popup if no cookie is found.
+$('#toggle').on('click', function(){
   $(".delivery-popup").click();
-}
-
-// Save Delivery Schedule
-$(".save-delivery-schedule").click(function() {
-  console.log("save delivery schedule");
-  console.log($("#inline_picker").val());
-  console.log($("#time_window").find(":selected").val());
-
-  let delsched = {};
-  delsched.d = $("#inline_picker").val();
-  delsched.t = $("#time_window").find(":selected").val();
-
-  console.log(JSON.stringify(delsched));
-
-  setCookie("delivery_schedule", JSON.stringify(delsched), '1');
-  $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
-      console.log(delsched.d + " @ " + delsched.t);
-  $(".btn-link").click();
 });
+
+$(document).ready(function() {
+  if(!delivery_cookie) {
+    // Show delivery schedule popup if no cookie is found.
+    $(".delivery-popup").click();
+  }
+
+  // Save Delivery Schedule
+  $(".save-delivery-schedule").click(function() {
+    console.log("save delivery schedule");
+    console.log($("#inline_picker").val());
+    console.log($("#time_window").find(":selected").val());
+
+    let delsched = {};
+    delsched.d = $("#inline_picker").val();
+    delsched.t = $("#time_window").find(":selected").val();
+
+    console.log(JSON.stringify(delsched));
+
+    setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+    $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+        console.log(delsched.d + " @ " + delsched.t);
+    $(".btn-link").click();
+  });
 });
+<?php endif; ?>
 
 var cookie_cart = 'cart_data';
 
