@@ -4,6 +4,8 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
+<?php $fast_tracked = true; ?>
+
 <main class="main-content position-relative border-radius-lg mt-9">
   <div class="container">
     <div class="row">
@@ -27,7 +29,6 @@
                 <h4>Products</h4><br>
                 <table id="cart_products" class="w-100">
                   <tbody>
-                  <?php $fast_tracked = true; ?>
                   <?php foreach($cart_products as $product): ?>
                     <?php if($product['product_data']->delivery_type == 0 || $product['product_data']->delivery_type == 1) { $fast_tracked = false; } ?>
                     <tr class="pid-<?= $product['pid']; ?> border">
