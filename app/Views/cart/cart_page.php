@@ -85,7 +85,7 @@
             <div class="rect5"></div>
           </div>
         </div>
-        <form method="post" action="<?= base_url('cart/checkout/'); ?>">
+        <form id="cart-checkout" method="post" action="<?= base_url('cart/checkout/'); ?>">
           <div class="cart-summary px-3 py-3 px-4 rounded-5">
             <h4 class="text-white">Cart Summary</h4>
             <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
@@ -97,9 +97,11 @@
                 <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
                 <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
                 </button>
+                <input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
                 <?php else: ?>
                 <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
                 <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+                <input style="color: white;" type="hidden" value="fs" name="del_type" class="form-control">
                 <?php endif; ?>
               </div>
             </div>
@@ -372,7 +374,8 @@ update_cart_count();
     //     console.log('Error:', error);
     // });
 
-      window.location.replace("<?= base_url('cart/checkout/'); ?>");
+      // window.location.replace("<?= base_url('cart/checkout/'); ?>");
+      $("#cart-checkout").submit();
     }
   });
 

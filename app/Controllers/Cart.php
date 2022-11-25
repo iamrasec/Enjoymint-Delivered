@@ -141,16 +141,26 @@ class Cart extends BaseController
 
   public function checkout()
   {
-    // $postData = $this->request->getPost();
+    $postData = $this->request->getPost();
+
+    // echo "<pre>".print_r($postData, 1)."</pre>";die();
     
-    // if(!empty($postData)){
-    //   $this->data['sched'] = $postData['delivery_schedule'];
-    // }
+    if(!empty($postData)){
+      $this->data['del_type'] = $postData['del_type'];
+      $this->data['delivery_schedule'] = $postData['delivery_schedule'];
+      $this->data['time_window'] = $postData['time_window'];
+    }
+    else {
+      // $this->data['del_type'] = 'nfs';
+      // $this->data['delivery_schedule'] = '';
+      // $this->data['time_window'] = '';
+
+      return redirect()->to('/cart');
+    }
 
     // If not logged-in redirect back to cart
     if($this->isLoggedIn != 1) {
       return redirect()->to('/cart');
-
 		}
 
     $db_cart = $this->_fetch_cart_items();

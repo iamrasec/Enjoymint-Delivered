@@ -248,10 +248,17 @@
           <div class="cart-item-count"><?= count($cart_products); ?> items</div>
 		  <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
               <div class="input-group-prepend">
+								<?php if($del_type == 'nfs'): ?>
                 <button type="button" id="toggle" class="input-group-text">
                 <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
                 <input style="color: white;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
                 </button>
+								<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
+								<?php else: ?>
+                <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+                <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+                <input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
+                <?php endif; ?>
               </div>
            </div>
           <div class="row mt-4">
@@ -276,11 +283,13 @@
       </div>
 			<?php endif; ?>
     </div>
-
+		
+		<?php if($del_type == 'nfs'): ?>
 		<div class="d-none">
 			<button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
 		</div>
 		<?php echo $this->include('templates/_delivery_popup.php'); ?>
+		<?php endif; ?>
 	</form>
   </div>
 </main>
@@ -306,16 +315,13 @@ var serverDate = '<?php echo $currDate; ?>';
 
 var today = new Date(serverDate);
 
+<?php if($del_type == 'nfs'): ?>
 $('#inline_picker').datetimepicker({
 	timepicker: false,
 	datepicker: true,
 	inline: true,
-	// format: 'YYYY-MM-DD h:mm a',
 	format: 'YYYY-MM-DD',
 	minDate: serverDate,
-	// allowTimes: [
-	//   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-	// ],
 	onGenerate:function(ct) {
 		console.log("onGenerate");
 		console.log("ct: " + ct.getDate());
@@ -387,5 +393,6 @@ $(document).ready(function() {
     $(".btn-link").click();
   });
 });
+<?php endif; ?>
 </script>
 <?php $this->endSection(); ?>
