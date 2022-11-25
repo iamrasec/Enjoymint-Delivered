@@ -206,7 +206,19 @@ class Cart extends BaseController
     }
 
     $this->data['currDate'] = $currDate;
-    $this->data['currDay'] = $currDate->toDateString();
+
+    // For use with Fast-tracked checkout
+    $fsDelTime = explode(":", $currDate->toTimeString());
+
+    if($fsDelTime[0] < 10) {
+      $fsDelTime = 10 . $fsDelTime[1] ." - ". 13 . $fsDelTime[1];
+    }
+    else {
+      $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
+    }
+
+    $this->data['fscurrDay'] = $currDate->toDateString();
+    $this->data['fsDelTime'] = $fsDelTime;
 
     return view('cart/checkout', $this->data);
   }

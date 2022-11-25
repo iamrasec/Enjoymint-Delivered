@@ -86,42 +86,50 @@
           </div>
         </div>
         <form method="post" action="<?= base_url('cart/checkout/'); ?>">
-        <div class="cart-summary px-3 py-3 px-4 rounded-5">
-          <h4 class="text-white">Cart Summary</h4>
-          <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
+          <div class="cart-summary px-3 py-3 px-4 rounded-5">
+            <h4 class="text-white">Cart Summary</h4>
+            <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
 
-          <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
-            <div class="input-group-prepend">
-              <?php if($fast_tracked == false): ?>
-              <button type="button" id="toggle" class="input-group-text">
-              <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-              <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-              </button>
-              <?php else: ?>
-              <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
-              <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
-              <?php endif; ?>
+            <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+              <div class="input-group-prepend">
+                <?php if($fast_tracked == false): ?>
+                <button type="button" id="toggle" class="input-group-text">
+                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+                <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                </button>
+                <?php else: ?>
+                <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+                <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+                <?php endif; ?>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-8 col-md-8 col-xs-8">Total</div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="total-cost">0</span></div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-12 col-md-12 col-xs-12 d-grid">
+                <button class="btn bg-primary-green btn-lg checkout-btn" type="submit">Proceed to Checkout</button>
+              </div>
             </div>
           </div>
 
-          <div class="row mt-4">
-            <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
-            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
+          <?php if($fast_tracked == false): ?>
+          <div class="d-none">
+            <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
           </div>
-          <div class="row mt-3">
-            <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
-            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-8 col-md-8 col-xs-8">Total</div>
-            <div class="col-4 col-md-4 col-xs-4 text-right"><span class="total-cost">0</span></div>
-          </div>
-          <div class="row mt-5">
-            <div class="col-12 col-md-12 col-xs-12 d-grid">
-              <button class="btn bg-primary-green btn-lg checkout-btn" type="submit">Proceed to Checkout</button>
-            </div>
-          </div>
-        </div>
+          <?php echo $this->include('templates/_delivery_popup.php'); ?>
+          <?php endif; ?>
+          
         </form>
       </div>
       <?php endif; ?>
@@ -129,13 +137,7 @@
   </div>
 </main>
 
-<?php if($fast_tracked == false): ?>
-<div class="d-none">
-  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
-</div>
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
-<?php echo $this->include('templates/_delivery_popup.php'); ?>
-<?php endif; ?>
 
 <!-- <link type="text/css" href="<?php echo base_url(); ?>/assets/css/jquery.datetimepicker.css" rel="stylesheet" /> -->
 <?php $this->endSection(); ?>
@@ -345,23 +347,33 @@ update_cart_count();
     $(".total-cost").html(formatter.format(total_cost));
   });
   
-  $(document).on("click", ".checkout-btn1", function(e) {
+  $(document).on("click", ".checkout-btn", function(e) {
     e.preventDefault();
-    var sched =$('#picker').val();
-    // console.log($("input[name=guid]").val());
+    var sched = $('.datetime_picker').val();
 
-    // if($("input[name=guid]").val() == '') {
-    //   $("#loginRegisterModal").modal('show');
-    // }
-    // else {
+    console.log($("input[name=guid]").val());
+    console.log(sched);
+
+    if($("input[name=guid]").val() == '') {
+      $("#loginRegisterModal").modal('show');
+    }
+    else if(sched == "") {
+      $(".delivery-popup").click();
+    }
+    else {
+    //   const fd = new FormData();
+    //   fd.append('delivery_schedule', sched);
+    //   fetch('<?= base_url('cart/checkout'); ?>',{
+    //     method: 'POST',
+    //     body: fd
+    //   })
+    //   .then()
+    //   .catch((error) => {
+    //     console.log('Error:', error);
+    // });
+
       window.location.replace("<?= base_url('cart/checkout/'); ?>");
-    // }
-    const fd = new FormData();
-    fd.append('delivery_schedule', sched);
-    fetch('<?= base_url('cart/checkout'); ?>',{
-      method: 'POST',
-      body: fd
-    })
+    }
   });
 
   $(document).on("click", ".remove-item", function(e) {

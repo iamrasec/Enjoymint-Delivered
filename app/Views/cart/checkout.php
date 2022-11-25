@@ -276,15 +276,16 @@
       </div>
 			<?php endif; ?>
     </div>
+
+		<div class="d-none">
+			<button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
+		</div>
+		<?php echo $this->include('templates/_delivery_popup.php'); ?>
 	</form>
   </div>
 </main>
 
-<div class="d-none">
-  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
-</div>
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
-<?php echo $this->include('templates/_delivery_popup.php'); ?>
 
 <?php $this->endSection(); ?>
 

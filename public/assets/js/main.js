@@ -141,6 +141,8 @@ function add_to_cart(uid, pid, qty)
       xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
     }
   });
+
+  update_cart_count();
 }
 
 function update_cart_count()
@@ -162,7 +164,7 @@ function update_cart_count()
     // Count the number of products in the cookie
     new_count = cookie_products.length;
 
-    // console.log("New Cart Count: " + new_count);
+    console.log("New Cart Count: " + new_count);
 
     // Update the cart counter
     $("#count_cart").html(new_count);
@@ -298,7 +300,7 @@ function update_cart_summary(guid)
   });
 }
 
-function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
+function enjoymintAlert(title, text, icon, is_reload = 0, redirect, update_cart)
 {
   swal({
     title: title,
