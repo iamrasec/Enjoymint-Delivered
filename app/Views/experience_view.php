@@ -1,5 +1,9 @@
 <?php $this->extend("templates/base"); ?>
 
+<?php $this->section("styles") ?>
+<link id="pagestyle" href="<?php echo base_url('assets/css/shop-view.css'); ?>" rel="stylesheet" />
+<?php $this->endSection() ?>
+
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
@@ -9,147 +13,8 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-
-      <div class="card col-lg-2 col-xs-0 mt-8">
-        <h5>Filter By:</h5>
-        <form method='get' action="<?= base_url('/shop/productFilter')?>" id="searchForm">
-          <div class="row">
-
-            <div class="select-box" >
-              <select class="selected" name="category">
-                <option value="0">Select Category:</option>
-                <?php foreach($categories as $category): ?>
-                <?php  echo '<option value="'.$category->id.'">'.$category->name.'</option>' ?>
-                <?php endforeach; ?>
-              </select>
-              
-              <select class="selected" id="strain" name="strain">
-                <option value="0">Select Strain:</option>
-                <?php foreach($strains as $str): ?>
-                <?php  echo '<option value="'.$str->id.'">'.$str->url_slug.'</option>' ?>
-                <?php endforeach; ?>
-              </select>
-
-              <select class="selected" name="brands">
-                <option value="0">Select Brand:</option>
-                <?php foreach($brands as $brand): ?>
-                <?php  echo '<option value="'.$brand->id.'">'.$brand->name.'</option>' ?>
-                <?php endforeach; ?>
-              </select>
-
-              <label>Price Range:</label>
-              <div slider id="slider-distance" class="mt-1">
-                <div>
-                  <div inverse-left style="width:60%;"></div>
-                  <div inverse-right style="width:60%;"></div>
-                  <div range style="left:0%;right:0%;"></div>
-                  <span thumb style="left:0%;"></span>
-                  <span thumb style="left:100%;"></span>
-                  <div sign style="left:0%;">
-                    <span id="value">$0</span>
-                  </div>
-                  <div sign style="left:100%;">
-                    <span id="value">$300</span>
-                  </div>
-                </div>
-                <input type="range" value="0" name="min_price" max="300" min="0" step="1" oninput="
-                this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[1].style.width=value+'%';
-                children[5].style.left=value+'%';
-                children[7].style.left=value+'%';children[11].style.left=value+'%';
-                children[11].childNodes[1].innerHTML=this.value;" />
-
-                <input type="range" value="100" name="max_price" max="300" min="0" step="1" oninput="
-                this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[3].style.width=(100-value)+'%';
-                children[5].style.right=(100-value)+'%';
-                children[9].style.left=value+'%';children[13].style.left=value+'%';
-                children[13].childNodes[1].innerHTML=this.value;" />
-              </div>
-            
-              <label class="mt-2">THC Value:</label>
-              <div slider id="slider-distance" class="mt-1">
-                <div>
-                  <div inverse-left style="width:70%;"></div>
-                  <div inverse-right style="width:70%;"></div>
-                  <div range style="left:0%;right:0%;"></div>
-                  <span thumb style="left:0%;"></span>
-                  <span thumb style="left:100%;"></span>
-                  <div sign style="left:0%;">
-                    <span id="value">0</span>
-                  </div>
-                  <div sign style="left:100%;">
-                    <span id="value">30</span>
-                  </div>
-                </div>
-                <input type="range" value="0" name="min_thc" max="30" min="0" step="1" oninput="
-                this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[1].style.width=value+'%';
-                children[5].style.left=value+'%';
-                children[7].style.left=value+'%';children[11].style.left=value+'%';
-                children[11].childNodes[1].innerHTML=this.value;" />
-
-                <input type="range" value="100" name="max_thc" max="30" min="0" step="1" oninput="
-                this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[3].style.width=(100-value)+'%';
-                children[5].style.right=(100-value)+'%';
-                children[9].style.left=value+'%';children[13].style.left=value+'%';
-                children[13].childNodes[1].innerHTML=this.value;" />
-              </div>
-
-              <label class="mt-2">CBD Value:</label>
-              <div slider id="slider-distance" class="mt-1">
-                <div>
-                  <div inverse-left style="width:70%;"></div>
-                  <div inverse-right style="width:70%;"></div>
-                  <div range style="left:0%;right:0%;"></div>
-                  <span thumb style="left:0%;"></span>
-                  <span thumb style="left:100%;"></span>
-                  <div sign style="left:0%;">
-                    <span id="value">0</span>
-                  </div>
-                  <div sign style="left:100%;">
-                    <span id="value">30</span>
-                  </div>
-                </div>
-                <input type="range" value="0" name="min_cbd" max="30" min="0" step="1" oninput="
-                this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[1].style.width=value+'%';
-                children[5].style.left=value+'%';
-                children[7].style.left=value+'%';children[11].style.left=value+'%';
-                children[11].childNodes[1].innerHTML=this.value;" />
-
-                <input type="range" value="100" name="max_cbd" max="30" min="0" step="1" oninput="
-                this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
-                let value = (this.value/parseInt(this.max))*100
-                var children = this.parentNode.childNodes[1].childNodes;
-                children[3].style.width=(100-value)+'%';
-                children[5].style.right=(100-value)+'%';
-                children[9].style.left=value+'%';children[13].style.left=value+'%';
-                children[13].childNodes[1].innerHTML=this.value;" />
-              </div>
-              <!-- <p>
-              <label>CBD_value:</label>
-              <input type="text" id="textInput1" value="0" style="border: 0;">
-              </p>
-              <input type="range" name="cbd_value" min="0" max="10" value="0" onchange="updateTextInput1(this.value);" >
-              -->
-              <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
-              <button type="submit" class="btn bg-primary-green mt-5">Search</button>   
-            </div>
-          </div>
-        </form>
-      </div>
+   
+    <?php echo $this->include('templates/_product_filter.php'); ?>
 
       <div class="col-lg-10 col-sm-12 mt-5 text-center">
         <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
@@ -181,7 +46,7 @@
                     <span class="badge text-bg-danger">Out Of Stock</span>
                     <?php endif; ?>
                   </p>
-                  <hr id="color" class="mt-0">
+                  <hr id="color" class="mt-0 ">
                   <p class="price">$<span><?= $product['price']; ?></span></p>
                   <hr id="color" class="mt-0">
                   <button class="btn add-to-cart btn-md bg-danger text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>">
@@ -663,7 +528,7 @@ div[slider] > input[type=range]::-ms-tooltip {
 
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 <script>
   console.log("scripts section");
 
