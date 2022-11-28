@@ -164,7 +164,7 @@ optionsList.forEach(o => {
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 
 <script>
-  console.log("scripts section");
+  // console.log("scripts section");
 
   jQuery.datetimepicker.setDateFormatter('moment');
 
@@ -172,25 +172,31 @@ optionsList.forEach(o => {
 
   var today = new Date(serverDate);
 
+  var dateNow = today.toISOString().slice(0, 10);
+
+  console.log("server date");
+  console.log(serverDate);
+  console.log(today);
+  console.log(dateNow);
+
   $('#inline_picker').datetimepicker({
     timepicker: false,
     datepicker: true,
     inline: true,
-    // format: 'YYYY-MM-DD h:mm a',
     format: 'YYYY-MM-DD',
     minDate: serverDate,
-    // allowTimes: [
-    //   '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30'
-    // ],
+    defaultDate: dateNow,
+    defaultSelect: true,
     onGenerate:function(ct) {
       console.log("onGenerate");
-      console.log("ct: " + ct.getDate());
-      console.log("today: " + today.getDate());
+      console.log(ct);
+      // console.log("ct: " + ct.getDate());
+      // console.log("today: " + today.getDate());
 
       if(ct.getDate() == today.getDate()) {
-        console.log("Same day");
+        // console.log("Same day");
         let currTime = today.getHours() + ":" + today.getMinutes();
-        console.log("today hour: " + currTime);
+        // console.log("today hour: " + currTime);
 
         $("#time_window option").each(function() {
           if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
@@ -204,11 +210,13 @@ optionsList.forEach(o => {
       }
       else {
         $("#time_window option:first").prop("selected", "selected");
-        console.log("Different day");
+        // console.log("Different day");
       }
     },
     onSelectDate:function(ct,$i){
       console.log("onSelectDate");
+      console.log(ct);
+      console.log(i);
       $("#time_window option").show();
       $("#time_window option:selected").prop("selected", false);
     },
@@ -249,15 +257,20 @@ optionsList.forEach(o => {
 
     // Save Delivery Schedule
     $(".save-delivery-schedule").click(function() {
-      console.log("save delivery schedule");
-      console.log($("#inline_picker").val());
-      console.log($("#time_window").find(":selected").val());
+      // console.log("save delivery schedule");
+      // console.log($("#inline_picker").val());
+      // console.log($("#time_window").find(":selected").val());
+
+      let timePickerVal = $("#inline_picker").datetimepicker('getValue');
+      timePickerVal = JSON.stringify(timePickerVal).split("T");
 
       let delsched = {};
-      delsched.d = $("#inline_picker").val();
+      delsched.d = timePickerVal[0].substring(1);
       delsched.t = $("#time_window").find(":selected").val();
 
-      console.log(JSON.stringify(delsched));
+      console.log("deelsched");
+      console.log(delsched.d);
+      console.log(timePickerVal);
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
 
@@ -266,7 +279,7 @@ optionsList.forEach(o => {
       let delTo = tConvert(delTime[1]);
 
       $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
-      console.log(delsched.d + " @ " + delsched.t);
+      // console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
     <?php endif; ?>
@@ -280,7 +293,7 @@ optionsList.forEach(o => {
     $(this).prop('disabled', true);
     $(".lds-hourglass").removeClass('d-none');
 
-    console.log("add to cart clicked");
+    // console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
     let qty = 1;
@@ -292,14 +305,14 @@ optionsList.forEach(o => {
     }
     else {
       // Current user is not logged in
-      console.log("no JWT");
+      // console.log("no JWT");
 
       //Check if cookie exists.  Get cookie value if any.
       get_cookie = getCookie(cookie_cart);
 
       // Cookie doesn't exist.  Create cookie
       if(!get_cookie) {
-        console.log('cart_data cookie not set.');
+        // console.log('cart_data cookie not set.');
 
         // Set value to add to the cookie
         cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
@@ -309,7 +322,7 @@ optionsList.forEach(o => {
       }
       // Cookie exists.  Check if data is correct.  Add product data to the cart data.
       else {
-        console.log('cart_data cookie found.');
+        // console.log('cart_data cookie found.');
 
         // Parse JSON data into readable array
         cookie_products = JSON.parse(get_cookie);
@@ -319,12 +332,12 @@ optionsList.forEach(o => {
 
         // Loop through each product in the cookie and match each product ids
         cookie_products.forEach(function(product) {
-          console.log("products in cookie: ");
-          console.log(product);
+          // console.log("products in cookie: ");
+          // console.log(product);
 
           // If a match is found, add the new qty to the existing qty.
           if(product.pid == pid) {
-            console.log("product "+pid+" found");
+            // console.log("product "+pid+" found");
             product.qty = parseInt(product.qty) + parseInt(qty);
 
             // Update the variable to indicate that the product id exists in the cookie
@@ -337,8 +350,8 @@ optionsList.forEach(o => {
           cookie_products.push({"pid": pid, "qty": parseInt(qty)});
         }
 
-        console.log("New product array: ");
-        console.log(cookie_products);
+        // console.log("New product array: ");
+        // console.log(cookie_products);
 
         // Save new products array to cookie
         setCookie(cookie_cart, JSON.stringify(cookie_products), '1');

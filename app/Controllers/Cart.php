@@ -146,15 +146,12 @@ class Cart extends BaseController
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
     
     if(!empty($postData)){
-      $this->data['del_type'] = $postData['del_type'];
-      $this->data['delivery_schedule'] = $postData['delivery_schedule'];
-      $this->data['time_window'] = $postData['time_window'];
+      $this->data['del_type'] = $postData['del_type'];    // Delivery Type.  fs for Fast-Tracked, nfs for Standard or  Non Fast-Tracked
+      $this->data['delivery_schedule'] = $postData['delivery_schedule'];    // Delivery Date
+      $this->data['time_window'] = $postData['time_window'];    // Delivery Time range (3 hour window).  24-hour format
     }
     else {
-      // $this->data['del_type'] = 'nfs';
-      // $this->data['delivery_schedule'] = '';
-      // $this->data['time_window'] = '';
-
+      // Go back to cart page when there are no post data
       return redirect()->to('/cart');
     }
 
@@ -186,12 +183,6 @@ class Cart extends BaseController
         $imageIds = explode(',',$product_data->images);
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
-
-      // For new cookie array
-      // $new_cookie_cart[] = [
-      //   'pid' => $product->pid,
-      //   'qty' => $product->qty,
-      // ];
 
       // Output array
       $cart_products[] = [

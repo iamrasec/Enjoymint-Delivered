@@ -232,6 +232,9 @@
         </div>
       </div>
 
+			<pre><?php print_r("Delivery Schedule: " . $delivery_schedule); ?></pre>
+			<pre><?php print_r("Time Range: " . $time_window); ?></pre>
+
 			<?php if(!empty($cart_products)): ?>
 			<?php
 				$subtotal = 0;
@@ -255,8 +258,8 @@
                 </button>
 								<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
 								<?php else: ?>
-                <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
-                <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+                <input style="color: white;" type="hidden" value="<?= $delivery_schedule; ?>" name="delivery_schedule" class="form-control datetime_picker">
+                <input style="color: white;" type="hidden" value="<?= $time_window; ?>" name="time_window" class="form-control time_window">
                 <input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
                 <?php endif; ?>
               </div>
