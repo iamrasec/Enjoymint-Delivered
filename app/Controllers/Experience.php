@@ -24,18 +24,18 @@ class Experience extends BaseController
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
     
-        if($this->isLoggedIn !== 1 && $this->role !== 1) {
+        if($this->isLoggedIn !== 1 && $this->role !== 1) {                                                                                                                                                              
           return redirect()->to('/');
         }
     }
 
     public function index($url)
-    {
+    {   
+        
         $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
-
-
+        
         $page_title = $experience->name;
-
+        
         $this->data['page_body_id'] = "shop";
         $this->data['breadcrumbs'] = [
         'parent' => [],
@@ -67,8 +67,8 @@ class Experience extends BaseController
         $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
-        $this->data['strains'] = $this->strain_model->get()->getResult();
-       
+        $this->data['strains'] = $this->strain_model->get()->getResult(); 
+        
         return view('experience_view', $this->data);
     }
 }
