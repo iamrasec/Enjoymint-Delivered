@@ -233,6 +233,11 @@ class Cart extends BaseController
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
 
+    $delivery_type = 0; // Defaults to Not Fast-Tracked
+    if($data['del_type'] == 'fs') {
+      $delivery_type = 1;
+    }
+
     // Initialize order record to be saved in the database
     $order_data = [
       'order_key' => $data['cart_key'],
@@ -246,7 +251,10 @@ class Cart extends BaseController
       'order_notes' => $data['order_notes'],
       'delivery_schedule' => $data['delivery_schedule'],
       'delivery_time' => $data['time_window'],
+      'delivery_type' => $delivery_type,
     ];
+    
+    // echo "<pre>".print_r($data, 1)."</pre>";die();
 
     // Insert initial order record and grab the order id
     $order_id = $this->checkout_model->insert($order_data);
@@ -376,12 +384,20 @@ class Cart extends BaseController
 		}
   }
 
-  public function success()
+  public function success($oid = false)
   {
-    $success = session()->getFlashdata('order_completed');
+    if($oid != false) {
+      $success = $oid;
+    }
+    else {
+      $success = session()->getFlashdata('order_completed');
+    }
+    
     if($success) {
       // Fetch Order Details
       $order = $this->checkout_model->where('order_key', $success)->get()->getResult();
+
+      // echo "<pre>".print_r($order, 1)."</pre>";die();
 
       // Fetch Order Products
       $order_products = $this->checkout_model->fetchOrderDetails($success);

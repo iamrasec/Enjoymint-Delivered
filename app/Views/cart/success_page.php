@@ -18,6 +18,31 @@
           <h1 class="pagetitle">Order Summary</h1>
           <p>Order ID: <strong><?= $order_data[0]->id; ?></strong></p>
           <p>Payment Method: <strong><?= ucfirst($order_data[0]->payment_method); ?></strong></p>
+          <?php if($order_data[0]->delivery_type == 0): ?>
+          <?php
+          $del_time = explode("-", $order_data[0]->delivery_time);
+          $del_time_from = $del_time[0];
+          $del_time_to = $del_time[1];
+
+          if($del_time_from > 1200) {
+            $del_time_from = ($del_time_from - 1200) . ' PM';
+          }
+          else {
+            $del_time_from = $del_time_from . ' AM';
+          }
+
+          if($del_time_to > 1200) {
+            $del_time_to = ($del_time_to - 1200) . ' PM';
+          }
+          else {
+            $del_time_to = $del_time_to . ' AM';
+          }
+
+          $del_time_from = substr_replace($del_time_from, ':', -5, 0);
+          $del_time_to = substr_replace($del_time_to, ':', -5, 0);
+          ?>
+          <p>Delivery Date: <strong><?= $order_data[0]->delivery_schedule; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
+          <?php endif; ?>
           <table id="order_products">
             <tbody>
               <?php foreach($order_products as $product): ?>

@@ -257,8 +257,8 @@
 						<?php else: ?>
 						<input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
 						<input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
-						<input style="color: white;" type="hidden" value="fs" name="del_type" class="form-control">
 						<?php endif; ?>
+						<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
 					</div>
 
           <div class="cart-item-count"><?= count($cart_products); ?> <?= (count($cart_products) > 1) ? "Items" : "Item"; ?></div>
