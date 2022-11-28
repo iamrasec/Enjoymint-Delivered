@@ -104,7 +104,7 @@
               <?php endif; ?>
             </div>
 
-            <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
+            <div class="cart-item-count"><?= count($cart_products); ?> <?= (count($cart_products) > 1) ? "Items" : "Item"; ?></div>
 
             <div class="row mt-4">
               <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
@@ -222,14 +222,14 @@ $(document).ready(function() {
     $(".delivery-popup").click();
   }
   else {
-      let delsched = JSON.parse(delivery_cookie);
-      let delTime = delsched.t.split("-");
-      let delFrom = tConvert(delTime[0]);
-      let delTo = tConvert(delTime[1]);
-      
-      $("input.datetime_picker").val(delsched.d);
-      $(".del_date_display").text(delsched.d + " @ " + delFrom + " - " + delTo);
-    }
+    let delsched = JSON.parse(delivery_cookie);
+    let delTime = delsched.t.split("-");
+    let delFrom = tConvert(delTime[0]);
+    let delTo = tConvert(delTime[1]);
+    
+    $("input.datetime_picker").val(delsched.d);
+    $(".del_date_display").text(delsched.d + " @ " + delFrom + " - " + delTo);
+  }
 
   // Save Delivery Schedule
   $(".save-delivery-schedule").click(function() {
