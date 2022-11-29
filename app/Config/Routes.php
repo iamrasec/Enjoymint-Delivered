@@ -49,7 +49,7 @@ $routes->get('checkout', 'Users::checkout');
 $routes->get('password-reset/(:any)', 'Users::reset_password/$1');
 $routes->post('counter', 'Products::index');
 $routes->get('search', 'Shop::index');
-  
+$routes->get('search1', 'Experience::searchProduct'); 
 
 // $routes->get('logout', 'User::logout');
 // $routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);
