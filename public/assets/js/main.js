@@ -277,7 +277,8 @@ function delete_cart_item(guid, toRemove)
   
   // If there are no more items in the cookie, redirect back to cart.
   if(cookie_products.length == 0) {
-    window.location.replace(baseUrl + '/cart');
+    // window.location.replace(baseUrl + '/cart');
+    window.location.reload();
   }
 
   // return cookie_products.length;
