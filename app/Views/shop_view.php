@@ -164,7 +164,6 @@ optionsList.forEach(o => {
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 
 <script>
-  // console.log("scripts section");
 
   jQuery.datetimepicker.setDateFormatter('moment');
 
@@ -173,11 +172,6 @@ optionsList.forEach(o => {
   var today = new Date(serverDate);
 
   var dateNow = today.toISOString().slice(0, 10);
-
-  console.log("server date");
-  console.log(serverDate);
-  console.log(today);
-  console.log(dateNow);
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -214,9 +208,6 @@ optionsList.forEach(o => {
       }
     },
     onSelectDate:function(ct,$i){
-      // console.log("onSelectDate");
-      // console.log(ct);
-      // console.log(i);
       $("#time_window option").show();
       $("#time_window option:selected").prop("selected", false);
     },
@@ -224,16 +215,6 @@ optionsList.forEach(o => {
 
   // Check if cookie exists
   var delivery_cookie = getCookie("delivery_schedule");
-
-  // if(delivery_cookie) {
-  //   console.log("delivery_cookie cookie exists");
-  // }
-  // else {
-  //   console.log("delivery_cookie cookie doesn't exists");
-  //   $('#toggle').on('click', function(){
-  //     $(".delivery-popup").click();
-  //   });
-  // }
 
   $('#toggle').on('click', function(){
     $(".delivery-popup").click();
@@ -257,20 +238,12 @@ optionsList.forEach(o => {
 
     // Save Delivery Schedule
     $(".save-delivery-schedule").click(function() {
-      // console.log("save delivery schedule");
-      // console.log($("#inline_picker").val());
-      // console.log($("#time_window").find(":selected").val());
-
       let timePickerVal = $("#inline_picker").datetimepicker('getValue');
       timePickerVal = JSON.stringify(timePickerVal).split("T");
 
       let delsched = {};
       delsched.d = timePickerVal[0].substring(1);
       delsched.t = $("#time_window").find(":selected").val();
-
-      console.log("deelsched");
-      console.log(delsched.d);
-      console.log(timePickerVal);
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
 
