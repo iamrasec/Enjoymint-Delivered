@@ -25,7 +25,9 @@
             <input type="text" name="inputdata1" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
         </div>
+        <br>
           </form>
+          
           <?php if($products == null): ?>
           <div class="col-12 col-md-12 pt-4 pb-4">
             <p>No Products available for this Experience.</p>

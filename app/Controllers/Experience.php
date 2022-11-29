@@ -91,7 +91,7 @@ class Experience extends BaseController
         }
 
         $this->data['currDate'] = $currDate;
-        
+        $session->currDate = $this->data['currDate'];
         return view('experience_view', $this->data);
     }
 
@@ -144,7 +144,7 @@ class Experience extends BaseController
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult(); 
-        
+        $this->data['currDate'] = $session->get('currDate');;
         return view('experience_view', $this->data);
      }
 }
