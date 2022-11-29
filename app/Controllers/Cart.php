@@ -117,7 +117,7 @@ class Cart extends BaseController
     $this->data['guid'] = $this->guid;
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($currDate->format('H') > '16') {
+    if($currDate->format('H') > '18') {
       $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
 
@@ -198,11 +198,13 @@ class Cart extends BaseController
 
     $enjoymint_utils = new EnjoymintUtils();
 
+    // Generate unique order token
     $this->data['checkout_token'] = $enjoymint_utils->generateRandomString(20);
 
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($currDate->format('H') > '16') {
+
+    if($currDate->format('H') > '18') {
       $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
 

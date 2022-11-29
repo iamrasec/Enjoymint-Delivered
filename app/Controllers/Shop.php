@@ -131,7 +131,7 @@ class Shop extends BaseController
         $this->data['fast_tracked'] = false;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
-        if($this->data['currDate']->format('H') > '16') {
+        if($this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
 
@@ -227,7 +227,7 @@ class Shop extends BaseController
         $this->data['fast_tracked'] = true;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
-        if($this->data['currDate']->format('H') > '16') {
+        if($this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
         return view('shop_view', $this->data);
