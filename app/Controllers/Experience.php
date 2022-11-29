@@ -30,9 +30,17 @@ class Experience extends BaseController
     }
 
     public function index($url)
-    {   
-        
-        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
+    {  $session = session();
+        $search= $this->request->getGet('inputdata');
+
+        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+        $session->exp_id = $experience;
+        if(!empty($search)){
+            
+            $all_products = $this->product_model->where('url', $experience->url)->experienceGetProducts($search);
+            
+        }else{
+        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
         
         $page_title = $experience->name;
         
@@ -44,9 +52,9 @@ class Experience extends BaseController
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
         // $this->data['products'] = $this->product_model->getAllProducts();
-
+        
         $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
-
+    }
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
 
         $product_arr = [];
@@ -59,7 +67,7 @@ class Experience extends BaseController
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
                 $product_arr[$count]['images'] = $images;
             }
-
+            
             $count++;
         }
         
@@ -71,4 +79,57 @@ class Experience extends BaseController
         
         return view('experience_view', $this->data);
     }
+
+     public function searchProduct(){
+        $session = session();
+        $search= $this->request->getGet('inputdata1');
+        $data = $session->get('exp_id');
+       
+        // $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+        if(!empty($search)){
+             $exp_id = $data->id;
+             $search= $this->request->getGet('inputdata1');
+            //$all_products = $this->experience_model->experienceGetProducts($search, $exp_url);
+            $all_products = $this->experience_model->experienceGetProducts($exp_id, $search);
+        }else{
+        
+        
+        
+        // $this->data['products'] = $this->product_model->get()->getResult();
+        // $this->data['products'] = $this->product_model->getAllProducts();
+        
+        $all_products = $this->experience_model->experienceGetProductsPaginate($data->id);
+    }
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+        $page_title = $data->name;
+        
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product['images']) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+            
+            $count++;
+        }
+        // echo $exp_id;
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->experience_model->pager;
+        $this->data['categories'] = $this->category_model->get()->getResult();
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult(); 
+        
+        return view('experience_view', $this->data);
+     }
 }
