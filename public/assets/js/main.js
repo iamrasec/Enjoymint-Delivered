@@ -52,7 +52,7 @@
 })(jQuery);
 
 function setCookie(key, value, expiry) {
-  console.log("setting cookie " + key);
+  // console.log("setting cookie " + key);
   var expires = new Date();
   expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
   document.cookie = key + '=' + value + ';expires=' + expires.toUTCString() +';path=/';
@@ -125,6 +125,8 @@ function add_to_cart(uid, pid, qty)
       else {
         cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty)}];
 
+        // console.log(cookie_products);
+
         setCookie('cart_data',JSON.stringify(cookie_products),'1');
       }
 
@@ -133,6 +135,8 @@ function add_to_cart(uid, pid, qty)
       cartCountr = cookie_products.length;
 
       setCookie('cart_items_count',cartCountr,'1');
+
+      update_cart_count_override(cartCountr);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       // console.log(textStatus);
@@ -164,7 +168,7 @@ function update_cart_count()
     // Count the number of products in the cookie
     new_count = cookie_products.length;
 
-    console.log("New Cart Count: " + new_count);
+    // console.log("New Cart Count: " + new_count);
 
     // Update the cart counter
     $("#count_cart").html(new_count);
@@ -172,6 +176,11 @@ function update_cart_count()
   else {
     update_cart();
   }
+}
+
+function update_cart_count_override(count)
+{
+  $("#count_cart").html(count);
 }
 
 function update_cart()
@@ -265,8 +274,13 @@ function delete_cart_item(guid, toRemove)
   // }
 
   update_cart_count();
+  
+  // If there are no more items in the cookie, redirect back to cart.
+  if(cookie_products.length == 0) {
+    window.location.replace(baseUrl + '/cart');
+  }
 
-  return cookie_products.length;
+  // return cookie_products.length;
 }
 
 function update_cart_summary(guid)
@@ -329,8 +343,8 @@ function tConvert (time) {
     time = time + ' AM';
   }
 
-  console.log("time: " + time);
-  console.log("time length: " + time.length);
+  // console.log("time: " + time);
+  // console.log("time length: " + time.length);
 
   var formattedTime = time.slice(0, time.length - 5) + ":" + time.slice(time.length - 5);
 

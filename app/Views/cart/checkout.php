@@ -245,22 +245,24 @@
 			<div class="col-12 col-md-4 col-xs-5">
         <div class="cart-summary px-3 py-3 px-4 rounded-5">
           <h4 class="text-white">Cart Summary</h4>   
-          <div class="cart-item-count"><?= count($cart_products); ?> items</div>
-		  <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
-              <div class="input-group-prepend">
-								<?php if($del_type == 'nfs'): ?>
-                <button type="button" id="toggle" class="input-group-text">
-                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-                </button>
-								<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
-								<?php else: ?>
-                <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
-                <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
-                <input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
-                <?php endif; ?>
-              </div>
-           </div>
+
+					<div>
+						<?php if($del_type == "nfs"): ?>
+						<button type="button" id="toggle" class="input-group-text w-100 border-0">
+						<i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+						<input style="color: white;" type="hidden" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+						<span class="del_date_display text-white">Delivery Schedule</span>
+						</button>
+						<input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
+						<?php else: ?>
+						<input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+						<input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+						<?php endif; ?>
+						<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
+					</div>
+
+          <div class="cart-item-count"><?= count($cart_products); ?> <?= (count($cart_products) > 1) ? "Items" : "Item"; ?></div>
+
           <div class="row mt-4">
             <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
             <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">$<?= number_format($subtotal, 2, '.', ','); ?></span></div>
@@ -315,13 +317,17 @@ var serverDate = '<?php echo $currDate; ?>';
 
 var today = new Date(serverDate);
 
+var dateNow = today.toISOString().slice(0, 10);
+
 <?php if($del_type == 'nfs'): ?>
 $('#inline_picker').datetimepicker({
 	timepicker: false,
-	datepicker: true,
-	inline: true,
-	format: 'YYYY-MM-DD',
-	minDate: serverDate,
+  datepicker: true,
+  inline: true,
+  format: 'YYYY-MM-DD',
+  minDate: serverDate,
+  defaultDate: dateNow,
+  defaultSelect: true,
 	onGenerate:function(ct) {
 		console.log("onGenerate");
 		console.log("ct: " + ct.getDate());
@@ -367,13 +373,14 @@ $(document).ready(function() {
     $(".delivery-popup").click();
   }
 	else {
-		let delsched = JSON.parse(delivery_cookie);
-		let delTime = delsched.t.split("-");
-		let delFrom = tConvert(delTime[0]);
-		let delTo = tConvert(delTime[1]);
-		
-		$("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
-	}
+    let delsched = JSON.parse(delivery_cookie);
+    let delTime = delsched.t.split("-");
+    let delFrom = tConvert(delTime[0]);
+    let delTo = tConvert(delTime[1]);
+    
+    $("input.datetime_picker").val(delsched.d);
+    $(".del_date_display").text(delsched.d + " @ " + delFrom + " - " + delTo);
+  }
 
   // Save Delivery Schedule
   $(".save-delivery-schedule").click(function() {

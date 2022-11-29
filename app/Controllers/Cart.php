@@ -10,7 +10,7 @@ class Cart extends BaseController
 {
   public function __construct() 
 	{
-		helper(['jwt', 'cookie', 'edimage']);
+		helper(['jwt', 'cookie', 'edimage', 'date']);
 
 		$this->data = [];
 		$this->role = session()->get('role');
@@ -28,6 +28,8 @@ class Cart extends BaseController
     $this->data['tax_rate'] = 1.35;  // 35%
 
     $this->sender_email = getenv('SMTP_EMAIL_USER');
+
+    date_default_timezone_set('America/Los_Angeles');
 	}
 
   private function _cookie_to_db($cookie_cart)
@@ -115,9 +117,12 @@ class Cart extends BaseController
     
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
+
+    // Generate current date/time (PDT/PST)
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($currDate->format('H') > '16') {
+    // If current time is more than 6PM, generate tomorrow's date/time (PDT/PST)
+    if($currDate->format('H') > '18') {
       $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
 
@@ -146,15 +151,12 @@ class Cart extends BaseController
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
     
     if(!empty($postData)){
-      $this->data['del_type'] = $postData['del_type'];
-      $this->data['delivery_schedule'] = $postData['delivery_schedule'];
-      $this->data['time_window'] = $postData['time_window'];
+      $this->data['del_type'] = $postData['del_type'];    // Delivery Type.  fs for Fast-Tracked, nfs for Standard or  Non Fast-Tracked
+      $this->data['delivery_schedule'] = $postData['delivery_schedule'];    // Delivery Date
+      $this->data['time_window'] = $postData['time_window'];    // Delivery Time range (3 hour window).  24-hour format
     }
     else {
-      // $this->data['del_type'] = 'nfs';
-      // $this->data['delivery_schedule'] = '';
-      // $this->data['time_window'] = '';
-
+      // Go back to cart page when there are no post data
       return redirect()->to('/cart');
     }
 
@@ -187,12 +189,6 @@ class Cart extends BaseController
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
 
-      // For new cookie array
-      // $new_cookie_cart[] = [
-      //   'pid' => $product->pid,
-      //   'qty' => $product->qty,
-      // ];
-
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
@@ -207,11 +203,13 @@ class Cart extends BaseController
 
     $enjoymint_utils = new EnjoymintUtils();
 
+    // Generate unique order token
     $this->data['checkout_token'] = $enjoymint_utils->generateRandomString(20);
 
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
-    if($currDate->format('H') > '16') {
+
+    if($currDate->format('H') > '18') {
       $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }
 
@@ -242,6 +240,11 @@ class Cart extends BaseController
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
 
+    $delivery_type = 0; // Defaults to Not Fast-Tracked
+    if($data['del_type'] == 'fs') {
+      $delivery_type = 1;
+    }
+
     // Initialize order record to be saved in the database
     $order_data = [
       'order_key' => $data['cart_key'],
@@ -255,7 +258,10 @@ class Cart extends BaseController
       'order_notes' => $data['order_notes'],
       'delivery_schedule' => $data['delivery_schedule'],
       'delivery_time' => $data['time_window'],
+      'delivery_type' => $delivery_type,
     ];
+    
+    // echo "<pre>".print_r($data, 1)."</pre>";die();
 
     // Insert initial order record and grab the order id
     $order_id = $this->checkout_model->insert($order_data);
@@ -385,12 +391,20 @@ class Cart extends BaseController
 		}
   }
 
-  public function success()
+  public function success($oid = false)
   {
-    $success = session()->getFlashdata('order_completed');
+    if($oid != false) {
+      $success = $oid;
+    }
+    else {
+      $success = session()->getFlashdata('order_completed');
+    }
+    
     if($success) {
       // Fetch Order Details
       $order = $this->checkout_model->where('order_key', $success)->get()->getResult();
+
+      // echo "<pre>".print_r($order, 1)."</pre>";die();
 
       // Fetch Order Products
       $order_products = $this->checkout_model->fetchOrderDetails($success);

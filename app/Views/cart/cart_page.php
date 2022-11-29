@@ -88,23 +88,23 @@
         <form id="cart-checkout" method="post" action="<?= base_url('cart/checkout/'); ?>">
           <div class="cart-summary px-3 py-3 px-4 rounded-5">
             <h4 class="text-white">Cart Summary</h4>
-            <div class="cart-item-count"><?= count($cart_products); ?> Items</div>
 
-            <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
-              <div class="input-group-prepend">
-                <?php if($fast_tracked == false): ?>
-                <button type="button" id="toggle" class="input-group-text">
-                <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-                <input style="color: white;" type="text" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-                </button>
-                <input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
-                <?php else: ?>
-                <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
-                <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
-                <input style="color: white;" type="hidden" value="fs" name="del_type" class="form-control">
-                <?php endif; ?>
-              </div>
+            <div>
+              <?php if($fast_tracked == false): ?>
+              <button type="button" id="toggle" class="input-group-text w-100 border-0">
+              <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
+              <input style="color: white;" type="hidden" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+              <span class="del_date_display text-white">Delivery Schedule</span>
+              </button>
+              <input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
+              <?php else: ?>
+              <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+              <input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
+              <input style="color: white;" type="hidden" value="fs" name="del_type" class="form-control">
+              <?php endif; ?>
             </div>
+
+            <div class="cart-item-count"><?= count($cart_products); ?> <?= (count($cart_products) > 1) ? "Items" : "Item"; ?></div>
 
             <div class="row mt-4">
               <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
@@ -166,6 +166,8 @@ var serverDate = '<?php echo $currDate; ?>';
 
 var today = new Date(serverDate);
 
+var dateNow = today.toISOString().slice(0, 10);
+
 <?php if($fast_tracked == false): ?>
 $('#inline_picker').datetimepicker({
   timepicker: false,
@@ -173,15 +175,17 @@ $('#inline_picker').datetimepicker({
   inline: true,
   format: 'YYYY-MM-DD',
   minDate: serverDate,
+  defaultDate: dateNow,
+  defaultSelect: true,
   onGenerate:function(ct) {
-    console.log("onGenerate");
-    console.log("ct: " + ct.getDate());
-    console.log("today: " + today.getDate());
+    // console.log("onGenerate");
+    // console.log("ct: " + ct.getDate());
+    // console.log("today: " + today.getDate());
 
     if(ct.getDate() == today.getDate()) {
-      console.log("Same day");
+      // console.log("Same day");
       let currTime = today.getHours() + ":" + today.getMinutes();
-      console.log("today hour: " + currTime);
+      // console.log("today hour: " + currTime);
 
       $("#time_window option").each(function() {
         if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
@@ -195,11 +199,11 @@ $('#inline_picker').datetimepicker({
     }
     else {
       $("#time_window option:first").prop("selected", "selected");
-      console.log("Different day");
+      // console.log("Different day");
     }
   },
   onSelectDate:function(ct,$i){
-    console.log("onSelectDate");
+    // console.log("onSelectDate");
     $("#time_window option").show();
     $("#time_window option:selected").prop("selected", false);
   },
@@ -217,22 +221,35 @@ $(document).ready(function() {
     // Show delivery schedule popup if no cookie is found.
     $(".delivery-popup").click();
   }
+  else {
+    let delsched = JSON.parse(delivery_cookie);
+    let delTime = delsched.t.split("-");
+    let delFrom = tConvert(delTime[0]);
+    let delTo = tConvert(delTime[1]);
+    
+    $("input.datetime_picker").val(delsched.d);
+    $(".del_date_display").text(delsched.d + " @ " + delFrom + " - " + delTo);
+  }
 
   // Save Delivery Schedule
   $(".save-delivery-schedule").click(function() {
-    console.log("save delivery schedule");
-    console.log($("#inline_picker").val());
-    console.log($("#time_window").find(":selected").val());
+    // console.log("save delivery schedule");
+    // console.log($("#inline_picker").val());
+    // console.log($("#time_window").find(":selected").val());
+
+    let timePickerVal = $("#inline_picker").datetimepicker('getValue');
+    timePickerVal = JSON.stringify(timePickerVal).split("T");
 
     let delsched = {};
-    delsched.d = $("#inline_picker").val();
+    delsched.d = timePickerVal[0].substring(1);
     delsched.t = $("#time_window").find(":selected").val();
 
-    console.log(JSON.stringify(delsched));
+    // console.log(JSON.stringify(delsched));
 
     setCookie("delivery_schedule", JSON.stringify(delsched), '1');
-    $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
-        console.log(delsched.d + " @ " + delsched.t);
+    // $("input.datetime_picker").val(delsched.d + " @ " + delsched.t);
+    $("input.datetime_picker").val(delsched.d);
+    // console.log(delsched.d + " @ " + delsched.t);
     $(".btn-link").click();
   });
 });
@@ -246,7 +263,7 @@ e.preventDefault();
 $(this).prop('disabled', true);
 $(".lds-hourglass").removeClass('d-none');
 
-console.log("add to cart clicked");
+// console.log("add to cart clicked");
 
 let pid = $(this).data('pid');
 let qty = 1;
@@ -258,14 +275,14 @@ if($("[name='atoken']").attr('content') != "") {
 }
 else {
   // Current user is not logged in
-  console.log("no JWT");
+  // console.log("no JWT");
 
   //Check if cookie exists.  Get cookie value if any.
   get_cookie = getCookie(cookie_cart);
 
   // Cookie doesn't exist.  Create cookie
   if(!get_cookie) {
-    console.log('cart_data cookie not set.');
+    // console.log('cart_data cookie not set.');
 
     // Set value to add to the cookie
     cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
@@ -275,7 +292,7 @@ else {
   }
   // Cookie exists.  Check if data is correct.  Add product data to the cart data.
   else {
-    console.log('cart_data cookie found.');
+    // console.log('cart_data cookie found.');
 
     // Parse JSON data into readable array
     cookie_products = JSON.parse(get_cookie);
@@ -285,12 +302,12 @@ else {
 
     // Loop through each product in the cookie and match each product ids
     cookie_products.forEach(function(product) {
-      console.log("products in cookie: ");
-      console.log(product);
+      // console.log("products in cookie: ");
+      // console.log(product);
 
       // If a match is found, add the new qty to the existing qty.
       if(product.pid == pid) {
-        console.log("product "+pid+" found");
+        // console.log("product "+pid+" found");
         product.qty = parseInt(product.qty) + parseInt(qty);
 
         // Update the variable to indicate that the product id exists in the cookie
@@ -303,8 +320,8 @@ else {
       cookie_products.push({"pid": pid, "qty": parseInt(qty)});
     }
 
-    console.log("New product array: ");
-    console.log(cookie_products);
+    // console.log("New product array: ");
+    // console.log(cookie_products);
 
     // Save new products array to cookie
     setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
@@ -353,8 +370,8 @@ update_cart_count();
     e.preventDefault();
     var sched = $('.datetime_picker').val();
 
-    console.log($("input[name=guid]").val());
-    console.log(sched);
+    // console.log($("input[name=guid]").val());
+    // console.log(sched);
 
     if($("input[name=guid]").val() == '') {
       $("#loginRegisterModal").modal('show');
@@ -387,9 +404,9 @@ update_cart_count();
     
     // console.log(delete_item);
 
-    if(delete_item == 0) {
-      window.location.replace("<?= base_url('cart'); ?>");
-    }
+    // if(delete_item == 0) {
+    //   window.location.replace("<?= base_url('cart'); ?>");
+    // }
   });
 
   $(document).on("click", "#update-cart", function(e) {
