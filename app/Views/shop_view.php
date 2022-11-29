@@ -214,9 +214,9 @@ optionsList.forEach(o => {
       }
     },
     onSelectDate:function(ct,$i){
-      console.log("onSelectDate");
-      console.log(ct);
-      console.log(i);
+      // console.log("onSelectDate");
+      // console.log(ct);
+      // console.log(i);
       $("#time_window option").show();
       $("#time_window option:selected").prop("selected", false);
     },
