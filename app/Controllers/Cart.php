@@ -10,7 +10,7 @@ class Cart extends BaseController
 {
   public function __construct() 
 	{
-		helper(['jwt', 'cookie', 'edimage']);
+		helper(['jwt', 'cookie', 'edimage', 'date']);
 
 		$this->data = [];
 		$this->role = session()->get('role');
@@ -28,6 +28,8 @@ class Cart extends BaseController
     $this->data['tax_rate'] = 1.35;  // 35%
 
     $this->sender_email = getenv('SMTP_EMAIL_USER');
+
+    date_default_timezone_set('America/Los_Angeles');
 	}
 
   private function _cookie_to_db($cookie_cart)
@@ -115,8 +117,11 @@ class Cart extends BaseController
     
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
+
+    // Generate current date/time (PDT/PST)
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
+    // If current time is more than 6PM, generate tomorrow's date/time (PDT/PST)
     if($currDate->format('H') > '18') {
       $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
     }

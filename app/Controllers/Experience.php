@@ -2,12 +2,14 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\I18n\Time;
+
 class Experience extends BaseController
 {
     var $view_data = array();
 
     public function __construct() {
-        helper(['jwt']);
+        helper(['jwt', 'date']);
     
         $this->data = [];
         $this->role = session()->get('role');
@@ -23,10 +25,12 @@ class Experience extends BaseController
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
+
+        date_default_timezone_set('America/Los_Angeles');
     
-        if($this->isLoggedIn !== 1 && $this->role !== 1) {                                                                                                                                                              
-          return redirect()->to('/');
-        }
+        // if($this->isLoggedIn !== 1 && $this->role !== 1) {                                                                                                                                                              
+        //   return redirect()->to('/');
+        // }
     }
 
     public function index($url)
@@ -68,6 +72,17 @@ class Experience extends BaseController
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult(); 
+        $this->data['guid'] = $this->guid;
+
+        // Generate current date/time (PDT/PST)
+        $currDate = new Time("now", "America/Los_Angeles", "en_EN");
+
+        // If current time is more than 6PM, generate tomorrow's date/time (PDT/PST)
+        if($currDate->format('H') > '18') {
+        $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        $this->data['currDate'] = $currDate;
         
         return view('experience_view', $this->data);
     }

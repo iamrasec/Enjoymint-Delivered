@@ -25,6 +25,15 @@
             <p>No Products available for this Category.</p>
           </div>
           <?php else: ?>
+          <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+            <div class="input-group-prepend">
+              <button type="button" id="toggle" class="input-group-text">
+              <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
+              <input style="width: 240px;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+              </button>
+            </div>
+          </div>
+
           <?php foreach($products as $product): ?>
           <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
             <div class="card product-featured">
@@ -518,6 +527,12 @@ div[slider] > input[type=range]::-ms-tooltip {
   line-height: 1.625;
 }
 </style>
+
+<div class="d-none">
+  <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
+</div>
+<?php echo $this->include('templates/_delivery_popup.php'); ?>
+
 <?php $this->endSection() ?>
 
 <?php 
@@ -527,10 +542,100 @@ div[slider] > input[type=range]::-ms-tooltip {
 ?>
 
 <?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
 <script>
-  console.log("scripts section");
+  jQuery.datetimepicker.setDateFormatter('moment');
+
+  var serverDate = '<?php echo $currDate; ?>';
+
+  var today = new Date(serverDate);
+
+  var dateNow = today.toISOString().slice(0, 10);
+
+  $('#inline_picker').datetimepicker({
+    timepicker: false,
+    datepicker: true,
+    inline: true,
+    format: 'YYYY-MM-DD',
+    minDate: serverDate,
+    defaultDate: dateNow,
+    defaultSelect: true,
+    onGenerate:function(ct) {
+      console.log("onGenerate");
+      console.log(ct);
+      // console.log("ct: " + ct.getDate());
+      // console.log("today: " + today.getDate());
+
+      if(ct.getDate() == today.getDate()) {
+        // console.log("Same day");
+        let currTime = today.getHours() + ":" + today.getMinutes();
+        // console.log("today hour: " + currTime);
+
+        $("#time_window option").each(function() {
+          if($(this).val() < today.getHours() + ":" + today.getMinutes()) {
+            $(this).hide();
+          }
+          else {
+            $(this).prop("selected", true);
+            return false;
+          }
+        });
+      }
+      else {
+        $("#time_window option:first").prop("selected", "selected");
+        // console.log("Different day");
+      }
+    },
+    onSelectDate:function(ct,$i){
+      $("#time_window option").show();
+      $("#time_window option:selected").prop("selected", false);
+    },
+  });
+
+  // Check if cookie exists
+  var delivery_cookie = getCookie("delivery_schedule");
+
+  $('#toggle').on('click', function(){
+    $(".delivery-popup").click();
+  });
+
+  $(document).ready(function() {
+    if(!delivery_cookie) {
+      // Show delivery schedule popup if no cookie is found.
+      $(".delivery-popup").click();
+    }
+    else {
+      let delsched = JSON.parse(delivery_cookie);
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+      
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+    }
+
+    // Save Delivery Schedule
+    $(".save-delivery-schedule").click(function() {
+      let timePickerVal = $("#inline_picker").datetimepicker('getValue');
+      timePickerVal = JSON.stringify(timePickerVal).split("T");
+
+      let delsched = {};
+      delsched.d = timePickerVal[0].substring(1);
+      delsched.t = $("#time_window").find(":selected").val();
+
+      setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+
+      let delTime = delsched.t.split("-");
+      let delFrom = tConvert(delTime[0]);
+      let delTo = tConvert(delTime[1]);
+
+      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+      // console.log(delsched.d + " @ " + delsched.t);
+      $(".btn-link").click();
+    });
+  });
 
   var cookie_cart = 'cart_data';
 
