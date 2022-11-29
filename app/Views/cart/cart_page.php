@@ -404,9 +404,9 @@ update_cart_count();
     
     // console.log(delete_item);
 
-    if(delete_item == 0) {
-      window.location.replace("<?= base_url('cart'); ?>");
-    }
+    // if(delete_item == 0) {
+    //   window.location.replace("<?= base_url('cart'); ?>");
+    // }
   });
 
   $(document).on("click", "#update-cart", function(e) {

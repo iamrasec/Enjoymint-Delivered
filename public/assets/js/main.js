@@ -220,7 +220,7 @@ function update_cart()
 
 function delete_cart_item(guid, toRemove)
 {
-  // console.log('deleting item '+ toRemove);
+  console.log('deleting item '+ toRemove);
   // console.log('JWT: '+ jwt);
   if(jwt != "") {
     let data = {};
@@ -275,7 +275,11 @@ function delete_cart_item(guid, toRemove)
 
   update_cart_count();
 
-  return cookie_products.length;
+  if(cookie_products.length == 0) {
+    window.location.replace(baseUrl + '/cart');
+  }
+
+  // return cookie_products.length;
 }
 
 function update_cart_summary(guid)
