@@ -106,7 +106,7 @@
                   </div>
                   <div class="row mt-4">
                     <div class="col-lg-5 d-flex flex-row align-items-center">
-                      <button class="btn add-to-cart bg-danger text-white mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">
+                      <button class="btn add-to-cart bg-warning text-white mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">
                         <span class="material-icons">add_shopping_cart</span> Add to cart
                       </button>
                       <div class="lds-hourglass d-none"></div>
