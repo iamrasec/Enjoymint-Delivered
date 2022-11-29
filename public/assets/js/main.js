@@ -269,14 +269,14 @@ function delete_cart_item(guid, toRemove)
       }
 
       // console.log(cookie_products);
-      setCookie('cart_data',JSON.stringify(cookie_products),'1');
+      var modifyCookie = setCookie('cart_data',JSON.stringify(cookie_products),'1');
     }
   // }
 
   update_cart_count();
   
   // If there are no more items in the cookie, redirect back to cart.
-  if(cookie_products.length == 0) {
+  if(cookie_products.length == 0 && modifyCookie) {
     // window.location.replace(baseUrl + '/cart');
     window.location.reload();
   }
