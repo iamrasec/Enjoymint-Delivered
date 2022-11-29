@@ -20,9 +20,17 @@
         <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h1><?= $page_title; ?></h1>
         <div class="row">
+        <form method="GET" action="<?= base_url('search1')?>">
+            <div class="search" style="text-align: right ;">
+            <input type="text" name="inputdata1" placeholder="Search">
+            <button type="submit" class="btn bg-primary-green">Search</button>
+        </div>
+        <br>
+          </form>
+          
           <?php if($products == null): ?>
           <div class="col-12 col-md-12 pt-4 pb-4">
-            <p>No Products available for this Category.</p>
+            <p>No Products available for this Experience.</p>
           </div>
           <?php else: ?>
           <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
@@ -102,11 +110,6 @@
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 
 </div>
-<style>
-* {
-  margin: 0;
-  box-sizing: border-box;
-}
 
 body {
   font-family: "Roboto", sans-serif;
