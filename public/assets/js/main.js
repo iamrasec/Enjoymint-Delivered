@@ -85,7 +85,7 @@ function add_to_cart(uid, pid, qty)
     data: data,
     dataType: "json",
     success: function(json) {
-      // console.log("successs");
+      console.log("successs");
       enjoymintAlert('', 'Product added to cart', 'success', 0);
       $(".add-to-cart").removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
@@ -102,7 +102,7 @@ function add_to_cart(uid, pid, qty)
       if(cart_data_cookie != null) {
         var cookie_products = JSON.parse(cart_data_cookie);
 
-        // console.log(cookie_products);
+        console.log(cookie_products);
 
         var pid_added = false;
         cookie_products.forEach(function(product) {
@@ -125,6 +125,8 @@ function add_to_cart(uid, pid, qty)
       else {
         cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty)}];
 
+        console.log(cookie_products);
+
         setCookie('cart_data',JSON.stringify(cookie_products),'1');
       }
 
@@ -133,6 +135,8 @@ function add_to_cart(uid, pid, qty)
       cartCountr = cookie_products.length;
 
       setCookie('cart_items_count',cartCountr,'1');
+
+      update_cart_count_override(cartCountr);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       // console.log(textStatus);
@@ -172,6 +176,11 @@ function update_cart_count()
   else {
     update_cart();
   }
+}
+
+function update_cart_count_override(count)
+{
+  $("#count_cart").html(count);
 }
 
 function update_cart()
