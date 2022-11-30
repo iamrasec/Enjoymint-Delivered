@@ -147,4 +147,109 @@ class Experience extends BaseController
         $this->data['currDate'] = $session->get('currDate');;
         return view('experience_view', $this->data);
      }
+
+     public function filterProduct(){
+        $session = session();
+        $searchData = $this->request->getGet();
+        $data = $session->get('exp_id');
+        
+        // $search = "";
+
+        $this->data['current_filter'] = [];
+
+        // echo "<pre>".print_r($searchData, 1)."</pre>";
+        //$all_products = $this->product_model->paginate(30);
+       if(!empty($searchData['page'])){
+        $page = $searchData['page'];
+       }else{
+        $page = null;
+       }      
+       
+        // $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+        // if(!empty($searchData)){
+        //      $exp_id = $data->id;
+        //      $data = $session->get('exp_id');
+        //     //$all_products = $this->experience_model->experienceGetProducts($search, $exp_url);
+        //     $all_products = $this->experience_model->experienceGetProducts($exp_id, $searchData);
+        // }else{
+        // $all_products = $this->experience_model->experienceGetProductsPaginate($data->id);
+
+        if(empty($searchData)){
+            $exp_id = $data->id;
+            // $all_products = $this->product_model->paginate(30);
+            $all_products = $this->experience_model->experienceGetAllProduct($exp_id);
+        }else{
+            if($page != null){
+                $exp_id = $data->id;
+                // $all_products = $this->product_model->paginate(30);
+                $all_products = $this->experience_model->experienceGetAllProduct($exp_id);
+            }else{
+            $exp_id = $data->id;
+            $category = $searchData['category'];
+            $min_price = $searchData['min_price'];
+            $max_price = $searchData['max_price'];
+            $strain = $searchData['strain'];
+            $brands = $searchData['brands'];
+            $min_thc = $searchData['min_thc'];
+            $max_thc = $searchData['max_thc'];
+            $min_cbd = $searchData['min_cbd'];
+            $max_cbd = $searchData['max_cbd'];
+            $availability = $searchData['availability'];
+            $all_products = $this->experience_model->getDataWithParam($exp_id, $category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+
+            // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+
+            $current_filter = [
+                'category' => $searchData['category'],
+                'strain' => $searchData['strain'],
+                'brands' => $searchData['brands'],
+                'min_price' => $searchData['min_price'],
+                'max_price' => $searchData['max_price'],
+                'min_thc' => $searchData['min_thc'],
+                'max_thc' => $searchData['max_thc'],
+                'min_cbd' => $searchData['min_cbd'],
+                'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
+            ];
+                
+            $this->data['current_filter'] = $current_filter;
+
+           
+        }
+
+    }
+        
+    
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+        $page_title = $data->name;
+        
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product['images']) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+            
+            $count++;
+        }
+        // echo $exp_id;
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->experience_model->pager;
+        $this->data['categories'] = $this->category_model->get()->getResult();
+        $this->data['brands'] = $this->brand_model->get()->getResult();
+        $this->data['strains'] = $this->strain_model->get()->getResult(); 
+        $this->data['currDate'] = $session->get('currDate');;
+        return view('experience_view', $this->data);
+     }
 }
