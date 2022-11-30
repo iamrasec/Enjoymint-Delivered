@@ -160,7 +160,7 @@
         <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
         
         <button id="searchFormSubmit" class="btn bg-primary-green mt-5">Search</button>
-        <div class="text-center mb-5"><a href="<?= base_url('experience'); ?>" id="clear-product-filter">Clear Filter</a></div>
+        <div class="text-center mb-5"><a href="<?= base_url('clear'); ?>" id="clear-product-filter">Clear Filter</a></div>
       </div>
     </div>
   </form>
