@@ -277,6 +277,7 @@ function delete_cart_item(guid, toRemove)
   
   // If there are no more items in the cookie, redirect back to cart.
   if(cookie_products.length == 0) {
+    // Timeout for 2 seconds before reloading the page
     setTimeout(function() {
       // window.location.replace(baseUrl + '/cart');
       window.location.reload();
