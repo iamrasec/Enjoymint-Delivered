@@ -243,7 +243,7 @@ class Experience extends BaseController
             
             $count++;
         }
-        // echo $exp_id;
+         //echo $exp_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
