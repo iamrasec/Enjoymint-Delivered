@@ -15,16 +15,7 @@
     <div class="row">
       <div class="col-lg-6 col-md-7 d-flex justify-content-center flex-column">
         <h1 class="text-white mb-4">What Makes us Different?</h1>
-        <p class="text-white">The extensive choices and information when walking into a 
-        <br>Cannabis dispensary can be very overwhelming especially to a new patient. 
-        <br>Numerous of people are yet to understand the differences between various 
-        <br>Cannabis strains, their effects and benefits. 
-        <br>However, Enjoymint Delivered believes that every patient is entitled to an amazing 
-        <br>experience when shifting to plant-based medicine, and offers in-depth reviews of each 
-        <br>product to help you better understand them before consumption. 
-        <br>Rest assured, the products delivered to you are only the best quality - created and stored 
-        <br>in the cleanest environment with correct handling and storage. 
-        <br>Call us now for free consultation.</p>
+        <p class="text-white">The extensive choices and information when walking into a Cannabis dispensary can be very overwhelming especially to a new patient. Numerous of people are yet to understand the differences between various Cannabis strains, their effects and benefits. However, Enjoymint Delivered believes that every patient is entitled to an amazing experience when shifting to plant-based medicine, and offers in-depth reviews of each product to help you better understand them before consumption. Rest assured, the products delivered to you are only the best quality - created and stored in the cleanest environment with correct handling and storage. Call us now for free consultation.</p>
         <div class="buttons">
           <a href="<?= base_url('shop'); ?>" class="btn btn-white mt-4">View Scheduled Delivery Products</a> | 
           <a href="<?= base_url('shop/fast_tracked'); ?>" class="btn btn-white mt-4">View Fast-tracked Delivery Products</a>
