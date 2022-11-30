@@ -34,7 +34,7 @@
         delivery. Enjoymint Delivered is the best local Cannabis delivery service in the Bay area that gets you your greens in no time! Expect same-day delivery and high 
         standards of service, offering a wide variety of concentrates, high CBD products and edibles of only the finest quality</p>
     </div>
-</div>
+  </div>
 </div>
 
 <div id= "vision-section" class="container-fluid text-white p-6">
