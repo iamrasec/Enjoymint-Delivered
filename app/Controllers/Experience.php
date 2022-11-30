@@ -217,8 +217,6 @@ class Experience extends BaseController
            
         }
 
-        print_r($searchData);
-
     }
         
     
