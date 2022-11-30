@@ -38,7 +38,7 @@
             </li>
 
             <li class="nav-item mx-2">
-              <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false" href="<?= base_url('about'); ?>">
+              <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('about'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">eco</i> About Us
               </a>
             </li>

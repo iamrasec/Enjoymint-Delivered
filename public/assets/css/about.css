@@ -1,0 +1,13 @@
+#about-header {
+  background: url('../img/banner/about1.jpg');
+  background-size: cover;
+}
+
+#vision-section {
+  background: url('../img/banner/about2.jpg');
+  background-size: cover;
+}
+
+.star {
+  color: #49be99;
+}
