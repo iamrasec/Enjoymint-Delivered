@@ -51,7 +51,7 @@ $routes->post('counter', 'Products::index');
 $routes->get('search', 'Shop::index');
 $routes->get('search1', 'Experience::searchProduct'); 
 $routes->get('filter', 'Experience::filterProduct');
-
+$routes->get('clear', 'Experience::searchProduct'); 
 // $routes->get('logout', 'User::logout');
 // $routes->match(['get', 'post'], 'register', 'User::register', ['filter' => 'noauth']);
 // $routes->match(['get', 'post'], 'profile', 'User::profile', ['filter' => 'auth']);
