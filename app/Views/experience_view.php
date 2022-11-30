@@ -14,7 +14,7 @@
   <div class="container">
     <div class="row">
    
-    <?php echo $this->include('templates/_product_filter.php'); ?>
+    <?php echo $this->include('templates/_experience_filter.php'); ?>
 
       <div class="col-lg-10 col-sm-12 mt-5 text-center">
         <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
