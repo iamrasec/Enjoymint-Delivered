@@ -14,37 +14,37 @@
       <div class="col-lg-6">
         <h4><?php echo $page_title; ?></h4>
       </div>
-      <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/products/add_brand'); ?>">Add Brands</a>
-      </div>
+      <div class="col-lg-6 text-right d-flex flex-column justify-content-center"></div>
     </div>
 
     <div class="row mt-4">
       <div class="col-lg-12 mt-lg-0 mt-4">
         <div class="card">
           <div class="card-body">
-            <div class="table-responsive">
-              <table class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach($brands as $brand): ?>
-                  <tr class="text-xs font-weight-bold mb-0">
-                    <td><?php echo $brand->id; ?></td>
-                    <td><?php echo $brand->name; ?></td>
-                    <td><?php echo $brand->url; ?></td>
-                    <td><a href="<?php echo base_url('admin/products/brands') . "/edit_brand/" .$brand->id; ?>">edit</a></td>
-                  </tr>
-                  <?php endforeach; ?>
-                </tbody>
-              </table>
+            <form role="form" method="post" action="<?php echo $submit_url; ?>">
+              <div class="row mt-4">
+                <div class="col-12 col-sm-6">
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control w-100" aria-describedby="emailHelp" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                  <div class="input-group input-group-outline mb-3">
+                    <label class="form-label">URL</label>
+                    <input type="text" name="url" class="form-control w-100" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-12 col-md-2 col-sm-12 text-center">
+                <button type="submit" class="btn btn-lg bg-gradient-primary w-100 mt-4 mb-0">Save</button>
+              </div>
+              <div class="col-12 col-md-2 col-sm-12 text-left pt-4" style="display:flex; align-items:center;">
+                <a href="<?php echo base_url('/admin/strains'); ?>">Cancel</a>
+              </div>
             </div>
+            </form>
           </div>
         </div>
       </div>

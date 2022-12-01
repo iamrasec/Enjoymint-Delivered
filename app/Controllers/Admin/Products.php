@@ -192,19 +192,26 @@ class Products extends BaseController {
           $to_save = [
             'name' => $this->request->getVar('name'),
             'url' => $this->request->getVar('url'),
-            'parent' => $this->request->getVar('parent'),
-            'weight' => $this->request->getVar('weight'),
+            // 'parent' => $this->request->getVar('parent'),
+            // 'weight' => $this->request->getVar('weight'),
           ];
 
-          $this->save_strain($to_save); 
-          return redirect()->to('/admin/products/strains');
+          $this->save_brand($to_save); 
+          return redirect()->to('/admin/products/brands');
       }
 
-		  echo view('Admin/add_strain', $this->data);
+		  echo view('Admin/add_brand', $this->data);
     }
     else {
       return redirect()->to('/');
     }
+  }
+
+  private function save_brand($to_save) {
+    $this->brand_model->save($to_save);
+    $session = session();
+    $session->setFlashdata('success', 'Brand Added Successfully');
+    return true;
   }
 
   public function measurements() {

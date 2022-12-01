@@ -22,16 +22,20 @@ class Dashboard extends BaseController {
   public function index() {
     $data = [];
 
-    $role = session()->get('role');
-    $isLoggedIn = session()->get('isLoggedIn');
-
-    if($isLoggedIn == 1) {
-      $this->data['page_body_id'] = "user_login";
-
-		  echo view('dashboard', $this->data);
-    }
-    else {
+    if($this->isLoggedIn != 1) {
       return redirect()->to('/');
-    }        
+    }
+
+    if($this->role != 1) {
+      return redirect()->to('/');
+    }
+    // else {
+    //   echo "<pre>isLoggedIn: ".$this->isLoggedIn."</pre>";
+    //   echo "<pre>role: ".$this->role."</pre>";
+    // }
+
+    $this->data['page_body_id'] = "user_login";
+
+    echo view('dashboard', $this->data);     
   }
 }
