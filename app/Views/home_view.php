@@ -149,8 +149,28 @@
   </div>
 </section>
 
-<section class="pt-3 pb-4" id="partner-companies">
-  
+<section class="mt-5 pt-3 pb-4 text-center" id="partner-companies">
+  <h3 class="mb-5">REPUTABLE COMPANIES WE WORK WITH</h3>
+  <div class="partner-logos">
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-6.png'); ?>" alt="Logo 6"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-5.png'); ?>" alt="Logo 5"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-4.png'); ?>" alt="Logo 4"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-3.png'); ?>" alt="Logo 3"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-2.png'); ?>" alt="Logo 2"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/companies-logo-1.png'); ?>" alt="Logo 1"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Kushy-Punch.png'); ?>" alt="Logo 18"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Kind-Medicine.png'); ?>" alt="Logo 17"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Humboldt-Apothecary.png'); ?>" alt="Logo 16"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Cookies.png'); ?>" alt="Logo 15"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Beezle.png'); ?>" alt="Logo 14"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Whoopi-Maya.png'); ?>" alt="Logo 13"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Vertex.png'); ?>" alt="Logo 12"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Stiiizy.png'); ?>" alt="Logo 11"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Select-Elite.png'); ?>" alt="Logo 10"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Runtz.png'); ?>" alt="Logo 9"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Raw-Garden.png'); ?>" alt="Logo 8"></div>
+    <div class="image-container"><img src="<?= base_url('assets/img/partners/Raw-icon.png'); ?>" alt="Logo 7"></div>
+  </div>
 </section>
 
 <section class="pt-3 pb-4" id="inspiring-products">
@@ -380,6 +400,20 @@
   line-height: 1.625;
 }
 
+.image-container {
+  width: 220px;
+  height: 100px;
+  display: flex !important;
+  align-content: center;
+  align-items: center;
+}
+
+.partner-logos img {
+  max-height: 220px;
+  margin: auto;
+  width: 100px!important;
+}
+
 @media (max-width: 576px) {
   .card .product-featured {
     width: 100%;
@@ -538,6 +572,16 @@
 
     // Update the cart counter
     update_cart_count();
+  });
+
+  $(document).ready(function(){
+    $('.partner-logos').slick({
+      slidesToShow: 6,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      arrows: false,
+    });
   });
 
 </script>
