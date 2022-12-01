@@ -125,7 +125,7 @@
       <div class="col-12">
         <div class="text-center">
           <p class="my-4 text-xs font-weight-normal text-justify font-italic">
-          <img src="https://secureservercdn.net/198.71.233.194/596.a1c.myftpupload.com/wp-content/uploads/2019/10/UniversalSymbol.png" alt="" width="50" height="57" align="left" class="me-2"> Warning: These products contain cannabis, a controlled substance. Keep out of reach of children and animals. Cannabis may only be possessed or consumed
+          <img src="<?= base_url('assets/img/UniversalSymbol.png'); ?>" alt="" width="50" height="57" align="left" class="me-2"> Warning: These products contain cannabis, a controlled substance. Keep out of reach of children and animals. Cannabis may only be possessed or consumed
 by persons 21 years of age or older unless the person is a qualified patient. Cannabis use while pregnant or breastfeeding may be harmful. Consumption of cannabis impairs your ability to drive and operate machinery.
 Please use extreme caution. California Proposition 65 Warning: Smoking this product will expose you and those in your immediate vicinity to marijuana smoke, a chemical known to the State of California to cause cancer.
           </p>

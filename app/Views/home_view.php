@@ -1,5 +1,9 @@
 <?php $this->extend("templates/base"); ?>
 
+<?php $this->section("styles") ?>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<?php $this->endSection() ?>
+
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
@@ -143,6 +147,10 @@
       </div>
     </div>
   </div>
+</section>
+
+<section class="pt-3 pb-4" id="partner-companies">
+  
 </section>
 
 <section class="pt-3 pb-4" id="inspiring-products">
@@ -447,6 +455,7 @@
 
 <?php $this->section("scripts") ?>
 <script src="<?php echo base_url(); ?>/assets/js/contact.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script>
   console.log("scripts section");
