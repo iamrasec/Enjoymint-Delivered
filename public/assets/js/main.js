@@ -87,7 +87,7 @@ function add_to_cart(uid, pid, qty)
     success: function(json) {
       // console.log("successs");
       enjoymintAlert('', 'Product added to cart', 'success', 0);
-      $(".add-to-cart").removeAttr('disabled');
+      $(".add-product-"+pid).removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
 
       // console.log(json);

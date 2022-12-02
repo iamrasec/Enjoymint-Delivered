@@ -52,7 +52,7 @@
                   <hr id="color" class="mt-0">
                   <p class="price">$<span><?= $product['price']; ?></span></p>
                   <hr id="color" class="mt-0">
-                  <button class="btn add-to-cart btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
+                  <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
                     <span class="material-icons">add_shopping_cart</span> Add to Cart
                   </button>
                   <div class="lds-hourglass d-none"></div>
@@ -187,6 +187,7 @@
 
       $(this).removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
+      enjoymintAlert('', 'Product added to cart', 'success', 0);
     }
 
     // Update the cart counter
