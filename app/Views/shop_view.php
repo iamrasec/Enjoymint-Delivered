@@ -330,7 +330,7 @@ optionsList.forEach(o => {
         setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
       }
 
-      $(".add-to-cart").removeAttr('disabled');
+      $(this).removeAttr('disabled');
       $(".lds-hourglass").addClass('d-none');
       enjoymintAlert('', 'Product added to cart', 'success', 0);
     }
