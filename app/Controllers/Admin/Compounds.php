@@ -48,7 +48,7 @@ class Compounds extends BaseController {
             'current' => $page_title,
             ];
             $this->data['page_title'] = $page_title;
-            $this->data['submit_url'] = base_url('/admin/categories/add_category');
+            $this->data['submit_url'] = base_url('/admin/compounds/add_compound');
 
             // Check if there are posted form data.
             $this->data['post_data'] = $this->request->getPost();

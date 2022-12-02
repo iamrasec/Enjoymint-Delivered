@@ -15,7 +15,7 @@
         <h4><?php echo $page_title; ?></h4>
       </div>
       <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/compounds/add_compound'); ?>">Add Compound</a>
+        <!-- <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/compounds/add_compound'); ?>">Add Compound</a> -->
       </div>
     </div>
 
@@ -28,10 +28,10 @@
                 <thead>
                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">THC %</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">THC mg</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CBD %</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CBD mg</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">THC unit</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">THC value</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CBD unit</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CBD value</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                   </tr>
                 </thead>
@@ -39,10 +39,10 @@
                   <?php foreach($compounds as $compound): ?>
                   <tr class="text-xs font-weight-bold mb-0">
                     <td><?php echo $compound->pid; ?></td>
-                    <td><?php echo $compound->thc_pct; ?></td>
-                    <td><?php echo $compound->thc_mg; ?></td>
-                    <td><?php echo $compound->cbd_pct; ?></td>
-                    <td><?php echo $compound->cbd_mg; ?></td>
+                    <td><?php echo $compound->thc_unit; ?></td>
+                    <td><?php echo $compound->thc_value; ?></td>
+                    <td><?php echo $compound->cbd_unit; ?></td>
+                    <td><?php echo $compound->cbd_value; ?></td>
                     <td><a href="<?php echo base_url('admin/compounds') . "/edit_compound/" .$compound->id; ?>">edit</a></td>
                   </tr>
                   <?php endforeach; ?>
