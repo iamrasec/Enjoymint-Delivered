@@ -13,7 +13,7 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-   
+   <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
     <?php echo $this->include('templates/_experience_filter.php'); ?>
 
       <div class="col-lg-10 col-sm-12 mt-5 text-center">
