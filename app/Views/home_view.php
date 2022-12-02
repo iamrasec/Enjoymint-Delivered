@@ -85,7 +85,6 @@
         <h2>Popular Products</h2>
         <div class="row">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
-          <pre><?php print_r($products[$countp]); ?></pre>
           <div class="col-md-3 col-sm-6 pt-4 pb-1 pb-lg-4 reveal-fadein zoom">
             <div class="card product-featured d-flex flex-row flex-lg-column">
               <div class="img-wrap">
