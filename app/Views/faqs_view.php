@@ -131,12 +131,16 @@
       e.preventDefault;
       $('.hiw-content').removeClass('d-none');
       $('.services-content').addClass('d-none');
+      $('#services-faqs').removeClass('active');
+      $(this).addClass('active');
     });
 
     $('#services-faqs').click(function(e) {
       e.preventDefault;
       $('.services-content').removeClass('d-none');
       $('.hiw-content').addClass('d-none');
+      $('#how-it-works-faqs').removeClass('active');
+      $(this).addClass('active');
     });
   });
 </script>
