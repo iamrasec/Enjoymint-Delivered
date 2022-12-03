@@ -13,7 +13,7 @@
     <div id="intro" class="container text-center p-6">
       <div class="row">
         <div class="col-12 col-md-12">
-          <h3 class="mb-5">FREQUENTLY ASKED QUESTIONS</h3>
+          <h3 class="page-title mb-5"><?= strtoupper($page_title); ?></h3>
           
           <div class="row">
             <div class="col-6 col-md-6 col-xs-12">
