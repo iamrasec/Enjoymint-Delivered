@@ -120,7 +120,7 @@ class Blogs extends BaseController {
         $blog->title, 
         $blog->description,
         $blog->author,
-        "<a href=".base_url('blogs/view_all_blogs'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit_blog/'. $blog->id).">edit</a>",
+        "<a href=".base_url('blogs/'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit_blog/'. $blog->id).">edit</a>",
       );
     }
 
