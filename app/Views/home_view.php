@@ -96,15 +96,20 @@
                   <p>
                     <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $products[$countp]['thc_value'] . (($products[$countp]['thc_unit'] == 'pct') ? '%' : $products[$countp]['thc_unit']); ?></span> 
                     <?php if($products[$countp]['stocks'] > 0): ?>
+                    <?php $btn_disabled = ''; ?>
                     <span class="badge text-bg-success">In Stock</span>
                     <?php else: ?>
+                    <?php $btn_disabled = 'disabled'; ?>
                     <span class="badge text-bg-danger">Out Of Stock</span>
                     <?php endif; ?>
                   </p>
                   <hr id="color" class="mt-0">
                   <p class="price">$<span><?= $products[$countp]['price']; ?></span></p>
                   <hr id="color" class="mt-0">
-                  <button class="btn add-to-cart add-product-<?= $products[$countp]['id']; ?> btn-md bg-warning text-white" type="button" name="add-to-cart" data-pid="<?= $products[$countp]['id']; ?>">
+                  <?php if($products[$countp]['stocks'] <= 5 && $products[$countp]['stocks'] > 0): ?>  
+                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $products[$countp]['stocks']; ?> left!</div>
+                  <?php endif; ?>
+                  <button class="btn add-to-cart add-product-<?= $products[$countp]['id']; ?> btn-md bg-warning text-white" type="button" name="add-to-cart" data-pid="<?= $products[$countp]['id']; ?>" <?= $btn_disabled; ?>>
                     <span class="material-icons">add_shopping_cart</span> Add to Cart
                   </button>
                   <div class="lds-hourglass d-none"></div>

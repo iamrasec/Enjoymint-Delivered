@@ -44,6 +44,7 @@
            <?php endif; ?>
 
             <?php foreach($products as $product): ?>
+              <!-- <pre><?php print_r($product); ?></pre> -->
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
                 <div class="img-wrap">
@@ -73,6 +74,9 @@
                     <p class="price">$<span><?= $product['price']; ?></span></p>
                     <hr id="color" class="mt-0">
                     <?php if($product['stocks'] > 0): ?>
+                    <?php if($product['stocks'] <= 5): ?>  
+                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $product['stocks']; ?> left!</div>
+                    <?php endif; ?>
                     <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" >
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
