@@ -50,18 +50,18 @@
         <h5 class="text-white">Service</h5>
         <ul class="d-flex flex-column ms-n3 nav">
           <li class="nav-item">
-            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="#">
+            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('faq'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">help_center</i> FAQs
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="#">
+            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('terms'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">task</i> Terms of Agreement
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="#">
+            <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('privacy'); ?>">
             <i class="material-icons opacity-6 me-2 text-md">security</i> Privacy Policy
             </a>
           </li>
