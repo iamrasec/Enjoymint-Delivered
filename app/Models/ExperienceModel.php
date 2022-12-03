@@ -12,6 +12,20 @@ class ExperienceModel extends Model {
    * Get Products in a Particular Experience
    * 
    */
+  public function getExperiencebyID($id) 
+    {
+      $this->select('experience.*, images.url');
+      $this->where('experience.id', $id);
+      return $this->get()->getResult();
+    }
+
+    public function getExperienceByUrl($url)
+    {
+      $this->select('experience.*, images.url');
+      $this->where('experience.url', $url);
+      return $this->get()->getResult();
+    }
+
  public function experienceGetAllProduct($exp_id){
   $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, experience.url');
   $this->join('product_experience', 'product_experience.exp_id = experience.id', 'inner');
@@ -41,7 +55,7 @@ public function experienceGetProducts($exp_id, $search){
   $this->like('products.name', $search);
   $this->orlike('products.price', $search);
   return $this->paginate(28);
-}
+} 
 
 public function getDataWithParam($exp_id, $category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0, $availability = 0){
   $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug, product_categories.cid');
@@ -85,7 +99,7 @@ public function getDataWithParam($exp_id, $category = 0, $min_price = 0, $max_pr
     $this->where('compounds.thc_value >=', $min_thc);
       $this->where('compounds.thc_value <=', $max_thc);
     
-  }
+  }                                  
   
   if($min_cbd != 0 || $max_cbd != 0) {
     // $this->like('compounds.cbd_value', $min_cbd);

@@ -24,25 +24,17 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table align-items-center mb-0">
+              <table id="experience-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>URL</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <?php foreach($experience as $exp): ?>
-                  <tr class="text-xs font-weight-bold mb-0">
-                    <td><?php echo $exp->name; ?></td>
-                    <td><?php echo $exp->url; ?></td>
-                    <td><a href="<?php echo base_url('admin/experience')?>">edit</a></td>
-                  </tr>
-                  <?php endforeach; ?>
-                </tbody>
               </table>
             </div>
-            <!-- <pre><?php echo print_r($experience); ?></pre> -->
           </div>
         </div>
       </div>
@@ -81,5 +73,28 @@
 <?php $this->endSection(); ?>
 
 <?php $this->section('scripts'); ?>
-<script src="<?php echo base_url(); ?>/assets/js/plugins/datatables.js"></script>
+<script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
+
+<script>
+  $(document).ready(function () {
+      $('#experience-table').DataTable({
+        // Processing indicator
+        "processing": true,
+        // DataTables server-side processing mode
+        "serverSide": true,
+        // Initial no order.
+        "order": [],
+        // Load data from an Ajax source
+        "ajax": {
+            "url": "<?= base_url('admin/experience/getExperience'); ?>",
+            "type": "POST"
+        },
+        //Set column definition initialisation properties
+        "columnDefs": [{ 
+            "targets": [0],
+            "orderable": false
+        }]
+    });
+  });
+</script>
 <?php $this->endSection(); ?>
