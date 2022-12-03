@@ -18,6 +18,15 @@ class About extends BaseController
 
   public function index()
   {
+    $page_title = 'About Us';
+
+    $this->data['page_body_id'] = "faq";
+    $this->data['breadcrumbs'] = [
+    'parent' => [],
+    'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+
     return view('about_page', $this->data);
   }
 }
