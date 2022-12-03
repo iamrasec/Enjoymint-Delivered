@@ -14,7 +14,7 @@
   <!-- End Navbar -->
   
   <div class="container-fluid py-4">
-    <pre><?php print_r($blog_data); ?></pre>
+    <pre><?php //print_r($blog_data); ?></pre>
 
     <form id="edit_blog" class="enjoymint-form" enctype="multipart/form-data">
       <?php foreach ($blog_data as $blog): ?>  

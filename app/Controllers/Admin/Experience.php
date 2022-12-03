@@ -54,7 +54,7 @@ class Experience extends BaseController {
             
             // Check if there are posted form data.
             $this->data['post_data'] = $this->request->getPost();
-
+            
             if($this->request->getPost()) {
                 $to_save = [
 					'name' => $this->request->getVar('exp_name'),
@@ -76,4 +76,85 @@ class Experience extends BaseController {
         $session->setFlashdata('success', 'Experience Added Successfully');
         // return redirect()->to('/admin/categories');
     }
+
+    public function getExperience()
+  {
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+
+    $exp = $this->experience_model->select('*')
+      ->like('name',$_POST['search']['value'])
+      ->orLike('url',$_POST['search']['value'])
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+   
+    foreach($exp as $experience){
+      $start++;
+      $data[] = array(
+        $experience->id,
+        $experience->name, 
+        $experience->url, 
+        "<a href=".base_url('admin/experience/edit_experience/'. $experience->id).">edit</a>",
+      );
+    }
+
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->experience_model->countAll(),
+      "recordsFiltered" => $this->experience_model->countAll(),
+      "data" => $data,
+    );
+    
+    echo json_encode($output);
+
+  }
+
+  public function edit_experience($id)
+  {
+    $page_title = 'Edit Experience';
+    $this->data['page_body_id'] = "edit_experience";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/experience'), 'page_title' => 'Experience'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $exp = $this->experience_model->where('id', $id)->get()->getResult();
+    $this->data['submit_url'] = base_url('/admin/experience/update');
+   
+
+    $this->data['experience'] = $exp;
+    return view('admin/edit_experience', $this->data);
+
+
+    // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
+
+    
+  }
+
+  public function update(){
+
+    $data = $this->request->getPost();
+    // $name = $this->request->getVar('exp_name');
+     $id = $this->request->getVar('exp_id');
+    // $verify_experience = $this->experience_model->verifyExperience($id, $name);
+    // if($verify_experience){
+    if($this->request->getPost()) {
+
+        $to_save = [
+            'name' => $this->request->getVar('exp_name'),
+            'url' => $this->request->getVar('exp_url'),
+        ];
+        $this->experience_model->set($to_save)->where('id', $id)->update(); 
+        return redirect()->to('/admin/experience');
+       
+    }
+    else {
+        echo view('Admin/add_experience', $this->data);
+    // }
+  }
+}
 }
