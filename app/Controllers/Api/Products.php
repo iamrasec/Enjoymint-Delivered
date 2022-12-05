@@ -99,6 +99,7 @@ class Products extends ResourceController
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
           'delivery_type' => $this->request->getVar('delivery_type'),
+          'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
@@ -234,6 +235,7 @@ class Products extends ResourceController
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
           'delivery_type' => $this->request->getVar('delivery_type'),
+          'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
           'images' => implode(',', $images),
         ];
 

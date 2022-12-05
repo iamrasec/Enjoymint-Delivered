@@ -191,6 +191,7 @@
     formData.append('unit_value', $('#unit_value').val());
     formData.append('tags', $('#tags').val());
     formData.append('delivery_type', $('#del_type').val());
+    formData.append('lowstock_threshold', $('#lowstock_threshold').val());
 
     fetch('/api/products/add',  {
       method: 'POST',

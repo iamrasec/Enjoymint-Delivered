@@ -36,6 +36,8 @@ class Products extends BaseController {
     // $data = [];
     $page_title = 'Products List';
 
+    $state = (isset($_GET['state'])) ? $_GET['state'] : 'all';
+
     $this->data['page_body_id'] = "products_list";
     $this->data['breadcrumbs'] = [
       'parent' => [],
@@ -43,6 +45,7 @@ class Products extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['products'] = $this->product_model->get()->getResult();
+    $this->data['state'] = $state;
     return view('Admin/products_list_view', $this->data);
   }
 
@@ -314,11 +317,14 @@ class Products extends BaseController {
    * 
    * @return json product list json format
   */
-  public function getProductLists()
+  public function getProductLists($state = 'all')
   {
     
     $data  = array();
     $post = $this->request->getPost();
+    // $state = (isset($_GET['state'])) ? $_GET['state'] : 'all';
+
+    // echo print_r($state);die();
 
     // 1st query for counting data
     $this->product_model->select("id");
@@ -329,15 +335,41 @@ class Products extends BaseController {
       $this->product_model->orLike("LOWER(url)", $search_value);
     }
 
+    if($state == 'low-stock') {
+      $this->product_model->where("stocks <= lowstock_threshold");
+      $this->product_model->where("stocks > 0");
+    }
+
+    if($state == 'out-of-stock') {
+      $this->product_model->where("stocks = 0");
+    }
+
+    if($state == 'archived') {
+      $this->product_model->where("archived = 1");
+    }
+
     $count_all = $this->product_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->product_model->select('id, name, url, archived');
+    $this->product_model->select('id, name, url, stocks, archived');
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
       $this->product_model->like("LOWER(name)", $search_value);
       $this->product_model->orLike("LOWER(url)", $search_value);
+    }
+
+    if($state == 'low-stock') {
+      $this->product_model->where("stocks <= lowstock_threshold");
+      $this->product_model->where("stocks > 0");
+    }
+
+    if($state == 'out-of-stock') {
+      $this->product_model->where("stocks = 0");
+    }
+
+    if($state == 'archived') {
+      $this->product_model->where("archived = 1");
     }
 
     $this->order_model->orderBy("id ASC");

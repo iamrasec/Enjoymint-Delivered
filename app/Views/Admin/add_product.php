@@ -206,6 +206,15 @@
                 </div>
               </div>
 
+              <div class="row mt-4">
+                <div class="col-md-6 col-xs-12">
+                  <label class="form-label w-100">Low Stock Threshold</label>
+                  <div class="input-group input-group-dynamic">
+                    <input type="number" name="lowstock_threshold" id="lowstock_threshold" placeholder="0" min="0" value="0" step="1" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

@@ -184,6 +184,7 @@
     formData.append('unit_measure', $('#unit').val());
     formData.append('unit_value', $('#unit_value').val());
     formData.append('delivery_type', $('#del_type').val());
+    formData.append('lowstock_threshold', $('#lowstock_threshold').val());
 
     // console.log(formData);
 
