@@ -166,13 +166,10 @@ optionsList.forEach(o => {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
-<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
-<!-- <script src="jquery.ui.touch-punch.min.js"></script> -->
 
 <script>
 
-  // jQuery.datetimepicker.setDateFormatter('moment');
+  jQuery.datetimepicker.setDateFormatter('moment');
 
   var serverDate = '<?php echo $currDate; ?>';
 
