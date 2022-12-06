@@ -1,5 +1,5 @@
 (function($) {
-  jQuery.datetimepicker.setDateFormatter('moment');
+  // jQuery.datetimepicker.setDateFormatter('moment');
 
   var serverDate = '<?php echo $currDate; ?>';
 
