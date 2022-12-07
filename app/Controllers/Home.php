@@ -41,7 +41,7 @@ class Home extends BaseController
         $this->data['page_title'] = $page_title;
 
         // $all_products = $this->product_model->get()->getResult();
-        $all_products = $this->product_model->getPopularProducts(4);
+        $all_products = $this->product_model->getPopularProducts(10);
 
         // echo "<pre>".print_r($all_products)."</pre>";die();
 

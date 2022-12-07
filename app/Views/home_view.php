@@ -83,7 +83,7 @@
       <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
-        <div class="row">
+        <div class="row popular-products-container">
           <?php for($countp = 0; $countp <= 3; $countp++): ?>
           <div class="col-md-3 col-sm-6 pt-4 pb-1 pb-lg-4 reveal-fadein zoom">
             <div class="card product-featured d-flex flex-row flex-lg-column">
@@ -591,6 +591,21 @@
           breakpoint: 480,
           settings: {
             slidesToShow: 2
+          }
+        }
+      ],
+    });
+
+    $('.popular-products-container').slick({
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      responsive: [
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1
           }
         }
       ],
