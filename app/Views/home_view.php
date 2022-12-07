@@ -80,7 +80,7 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-      <div cla ss="col-lg-12 col-sm-12 mt-5 text-center">
+      <div class="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
         <div class="row">
@@ -107,7 +107,7 @@
                   <p class="price">$<span><?= $products[$countp]['price']; ?></span></p>
                   <hr id="color" class="mt-0">
                   <?php if($products[$countp]['stocks'] <= 5 && $products[$countp]['stocks'] > 0): ?>  
-                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $products[$countp]['stocks']; ?> left!</div>
+                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold text-center">Only <?= $products[$countp]['stocks']; ?> left!</div>
                   <?php endif; ?>
                   <button class="btn add-to-cart add-product-<?= $products[$countp]['id']; ?> btn-md bg-warning text-white" type="button" name="add-to-cart" data-pid="<?= $products[$countp]['id']; ?>" <?= $btn_disabled; ?>>
                     <span class="material-icons">add_shopping_cart</span> Add to Cart
@@ -586,6 +586,14 @@
       autoplay: true,
       autoplaySpeed: 2000,
       arrows: false,
+      responsive: [
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 2
+          }
+        }
+      ],
     });
   });
 
