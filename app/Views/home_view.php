@@ -80,7 +80,7 @@
 <section class="pt-3 pb-4" id="popular-products">
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 col-sm-12 mt-5 text-center">
+      <div cla ss="col-lg-12 col-sm-12 mt-5 text-center">
       <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
         <h2>Popular Products</h2>
         <div class="row">
@@ -130,7 +130,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 col-xs-12 mt-5 text-center">
-        <h2>Discover <span class="text-sm">(Coming Soon)</span></h2>
+        <h2>Discover</h2>
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
           <?php for($i = 0; $i < count($experience); $i++)  : ?> 
