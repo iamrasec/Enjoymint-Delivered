@@ -7,8 +7,8 @@ class Orders extends BaseController {
     public function __construct() {
         helper(['jwt']);
 		$this->data = [];
-		 $this->role = session()->get('role');
-         $this->isLoggedIn = session()->get('isLoggedIn');
+		$this->role = session()->get('role');
+        $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
         $this->order_model = model('CheckoutModel');
         $this->order_products = model('OrderProductsModel');
@@ -38,6 +38,7 @@ class Orders extends BaseController {
             'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        $this->data['role'] = $this->role;
         
         echo view('Admin/Orders/all_orders', $this->data);       
     }

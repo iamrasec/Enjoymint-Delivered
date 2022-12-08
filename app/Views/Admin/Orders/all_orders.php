@@ -2,7 +2,9 @@
 
 <?php $this->section("content") ?>
 
+<?php if($role != 4): ?>
 <?php echo $this->include('templates/__dash_navigation.php'); ?>
+<?php endif; ?>
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
   <!-- Navbar -->
