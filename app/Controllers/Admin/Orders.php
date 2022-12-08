@@ -16,6 +16,8 @@ class Orders extends BaseController {
         $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
 
+        $this->allowed_roles = [1,2,4];
+
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
             return redirect()->to('/');
@@ -23,6 +25,10 @@ class Orders extends BaseController {
     }
 
     public function index() {
+
+        if(!in_array($this->role, $this->allowed_roles)) {
+            return redirect()->to('/');
+        }
        
         $page_title = 'All Orders';
     
