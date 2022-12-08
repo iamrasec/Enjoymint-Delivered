@@ -2,7 +2,7 @@
 
 <?php $this->section("content") ?>
 
-<?php if($role != 4): ?>
+<?php if(isset($role) && $role != 4): ?>
 <?php echo $this->include('templates/__dash_navigation.php'); ?>
 <?php endif; ?>
 
