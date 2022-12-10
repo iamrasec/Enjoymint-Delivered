@@ -60,6 +60,8 @@
   </div>
 </main>
 
+<?php echo $this->include('templates/_image_popup.php'); ?>
+
 <style>
   table.dataTable td.dt-control:before {
     height: 1em;
@@ -87,6 +89,9 @@
   }
   table.dataTable .order-id, table.dataTable .customer-name, table.dataTable .customer-address {
     text-align: left;
+  }
+  .customer-valid-id {
+    cursor: pointer;
   }
 </style>
 
@@ -198,15 +203,41 @@ $(document).ready(function () {
 
     function product_area(d)
     {
-      // console.log(d);
+      console.log('PRODUCT AREA');
+      console.log(d);
+      console.log(d.customer_ids);
+      console.log(Object.keys(d.customer_ids).length);
 
       let customer_ids = '';
 
-      if(d.customer_ids.length > 0) {
-        customer_ids += '<div class="customer_ids"></div>';
+      if(Object.keys(d.customer_ids).length > 0) {
+
+        // let profile_img = '';
+        // let valid_id = '';
+        // let mmic = '';
+
+        // let raw_data = Object.entries(d.customer_ids);
+
+        // console.log(Object.entries(d.customer_ids)[0]);
+
+        customer_ids += '<div class="customer_ids">';
+        
+        for([key, val] of Object.entries(d.customer_ids)) {
+          if(key == 'profile_img' && val != '') {
+            // console.log(val);
+            customer_ids += '<div class="d-inline-block me-4" style="width:120px; width: 90px;"><div><strong>Profile Image</strong></div>'+ val +'</div>';
+          }
+          else if(key == 'valid_id' && val != '') {
+            customer_ids += '<div class="d-inline-block me-4" style="width:120px; width: 90px;"><div><strong>Valid ID</strong></div>'+ val +'</div>';
+          }
+          else if(key == 'mmic' && val != '') {
+            customer_ids += '<div class="d-inline-block me-4" style="width:120px; width: 90px;"><div><strong>MMIC</strong></div>'+ val +'</div>';
+          }
+        }
+        customer_ids += '</div>';
       }
 
-      let products_table = '<table cellpadding="5" cellspacing="0" border="0" class="w-90 ms-5 fs-6">';
+      let products_table = customer_ids + '<table cellpadding="5" cellspacing="0" border="0" class="w-90 ms-5 fs-6">';
       
       products_table += '<tr class="fw-bold"><td>Product Title</td><td class="text-center">Qty</td><td class="text-right">Unit Price</td><td class="text-right">Total</td></tr>';
 
@@ -253,6 +284,12 @@ $(document).ready(function () {
           console.log('Error:', error);
       });
     }); 
+
+    // Show image modal
+    $(document).on('click', '.customer-valid-id', function() {
+      $('#imagepreview').attr('src', $(this).attr('src'));
+      $('#imagemodal').modal('show');
+    });
 });
 </script>
 

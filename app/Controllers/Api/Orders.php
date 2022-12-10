@@ -124,7 +124,7 @@ class Orders extends ResourceController
           'status' => $customer_id->status,
           'user_id' => $customer_id->user_id,
           'valid_id' => (isset($valid_id)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$valid_id[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'proile_img' => (isset($proile_img)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$proile_img[0]->filename).'"style="width:120px; width: 90px;">' : '',
+          'profile_img' => (isset($proile_img)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$proile_img[0]->filename).'"style="width:120px; width: 90px;">' : '',
           'mmic' => (isset($mmic)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$mmic[0]->filename).'"style="width:120px; width: 90px;">' : '',
         ];
       }
