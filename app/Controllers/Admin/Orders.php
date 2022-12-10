@@ -15,6 +15,7 @@ class Orders extends BaseController {
         $this->image_model = model('ImageModel');
         $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
+        $this->customerverification_model = model('VerificationModel');
 
         $this->allowed_roles = [1,2,4];
 

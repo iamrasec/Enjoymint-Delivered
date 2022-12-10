@@ -200,6 +200,12 @@ $(document).ready(function () {
     {
       // console.log(d);
 
+      let customer_ids = '';
+
+      if(d.customer_ids.length > 0) {
+        customer_ids += '<div class="customer_ids"></div>';
+      }
+
       let products_table = '<table cellpadding="5" cellspacing="0" border="0" class="w-90 ms-5 fs-6">';
       
       products_table += '<tr class="fw-bold"><td>Product Title</td><td class="text-center">Qty</td><td class="text-right">Unit Price</td><td class="text-right">Total</td></tr>';
