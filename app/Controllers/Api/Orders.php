@@ -48,10 +48,15 @@ class Orders extends ResourceController
     
   }
 
-  public function complete($id) {
-    // $this->drivers_model->save($id, ['name' => $this->request->getVar('driver')]);
-    $this->order_model->update($id, ['status' => 1]);
-    die(json_encode(array("success" => TRUE,"message" => 'Product Delete!', "id" => $id)));
+  public function complete() 
+  {
+    $post = $this->request->getPost();
+
+    // print_r($post['pid']);die();
+
+    $this->order_model->where('id', $post['pid'])->set('status', 2)->update();
+
+    die(json_encode(array("success" => TRUE,"message" => 'Order Completed', "id" => $post['pid'])));
   }
 
   public function list_all()
