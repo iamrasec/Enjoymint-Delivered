@@ -67,9 +67,33 @@
               <div class="col-4 col-sm-4">
                 <strong>Total:</strong><br><?= $products->total; ?>
               </div>
-              <div class="col-4 col-sm-4">
-                <strong>Action:</strong><br><button>Rate</button>
-              </div>
+              <div class="row" id="myform"  >
+              <h6>Rate Here</6>   
+              <form role="form" method="post" action="/products/rating">
+              <div class="col-sm-6" >
+                      <div class="input-group input-group-outline mb-3">
+                        <!-- <?php for($y=5;$y>0;$y--): ?>
+                          <i class="material-icons text-lg">star_outline</i>
+                          <input type="text" name="result" hidden>
+                          <?php endfor; ?> -->
+                          <i class="material-icons text-lg stars" data-id="1" id="star_1">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="2" id="star_2">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="3" id="star_3">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="4" id="star_4">star_outline</i>
+                          <i class="material-icons text-lg stars" data-id="5" id="star_5">star_outline</i>
+                          <input type="hidden" name="ratings" id="ratings" value="">
+                      </div>
+                      <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Comment</label>
+                        
+                        <input type="text" name="message" class="form-control"> 
+                        <input type="hidden" value="<?= $review_orders['id']; ?>" name="id">
+                        <input type="hidden" name="customer_id" value="<?= $user_data['id']; ?>" class="form-control">                  
+                      </div>                                  
+                  </div>
+                  <button type="submit" class="login-btn btn btn-lg bg-gradient-primary btn-sm mt-4 mb-0">Submit</button>
+              </form>
+                </div>
             </div>
             <?php endforeach; ?>
             <div class="row p-2 d-none d-md-block">
