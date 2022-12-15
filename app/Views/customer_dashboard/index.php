@@ -16,6 +16,7 @@
           <ul id="customer-dashboard-menu" class="d-flex flex-row flex-wrap">
             <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_orders_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_orders_tab') ? ' active' : ''; ?>">Active Orders</a></li>
             <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_archive_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_archive_tab') ? ' active' : ''; ?>">Previous Orders</a></li>
+            <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_review'); ?>" class="px-2 py-2 border<?= ($active_tab == '_review') ? ' active' : ''; ?>">To Review</a></li>
             <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_personal_info_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_personal_info_tab') ? ' active' : ''; ?>">Personal Info</a></li>
             <!-- <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/dashboard/_address_tab'); ?>" class="px-2 py-2 border<?= ($active_tab == '_address_tab') ? ' active' : ''; ?>">Address</a></li> -->
             <li class="px-2 py-2 mb-2"><a href="<?= base_url('users/customerverification'); ?>" class="px-2 py-2 border">Verification Center</a></li>
