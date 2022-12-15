@@ -44,7 +44,7 @@
         <div class="col-12">
           <div class="card mt-8">
             <div class="card-body">
-              <h5 class="mb-4">Product Details</h5>
+             <h5 class="mb-4">Product Details</h5>
               <div class="row">
 
                 <div class="col-xl-5 col-lg-6 text-center">
@@ -88,7 +88,7 @@
                       <?php endif; ?>
                     </div>
                   </div>
-
+                        
                   <hr id="color">
 
                   <div class="row mb-5">
@@ -109,30 +109,15 @@
                       <button class="btn add-to-cart bg-warning text-white mb-0 mt-lg-auto w-100" type="button" name="add-to-cart" data-pid="<?= $product->id; ?>">
                         <span class="material-icons">add_shopping_cart</span> Add to cart
                       </button>
-                      <div class="lds-hourglass d-none"></div>
+                      <div class="[lds-hourglass d-none"></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- <div class="row mt-5">
+              <div class="row mt-5">
                 <h6>Ratings</h5>
-                <div class="row">
-                  <div class="col-sm-6">
-                    <form role="form" method="post" action="/users">
-                      <div class="input-group input-group-outline mb-3">
-                        <?php for($y=5;$y>0;$y--): ?>
-                          <i class="material-icons text-lg">star_outline</i>
-                          <?php endfor; ?>
-                      </div>
-                      <div class="input-group input-group-outline mb-3">
-                        <label class="form-label">Comment</label>
-                        <input type="text" name="message" class="form-control">
-                      </div>
-                      <button type="submit" class="login-btn btn btn-lg bg-gradient-primary btn-sm mt-4 mb-0">Submit</button>
-                    </form>
-                  </div>
-                </div>
+                
                 <hr/>
                 <div class="row">
                   <div class="col-sm-3">
@@ -140,19 +125,36 @@
                       <div class="card-body text-center" style="background-color: #f0f2f5 !important;">
                         <div class="rating-block">
                           <h6>Average user rating</h6>
-                          <h2 class="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
-                          <div class="rating">
-                            <i class="material-icons text-lg">grade</i>
+                          <?php foreach($rate as $rt ): ?>
+                            <?php if($rt->avg_r != null): ?>
+                          <h2 class="bold padding-bottom-7"><?= bcadd(0, $rt->avg_r, 1); ?><small>/ 5</small></h2>
+                          <?php 
+                            for( $x = 0; $x < 5; $x++ )
+                            {
+                                if( floor( $rt->avg_r )-$x >= 1 )
+                                { echo '<i style="color: gold;" class="fa fa-star">&nbsp;</i>'; }
+                                elseif( $rt->avg_r-$x > 0 )
+                                { echo '<i style="color: gold;" class="fa fa-star-half"></i>'; }
+                                else
+                                { echo '<i style="color: gold;" class="fa fa-star-o"></i>'; }
+                            }
+                          ?>                           
+                              
+                          <?php else: ?>
+                            <h2 class="bold padding-bottom-7">0<small>/ 5</small></h2>
+                            <?php endif; ?>
+                          <?php endforeach; ?>
+                          <!-- <div class="rating">
                             <i class="material-icons text-lg">grade</i>
                             <i class="material-icons text-lg">grade</i>
                             <i class="material-icons text-lg">grade</i>
                             <i class="material-icons text-lg">star_outline</i>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-5">
+                  <!-- <div class="col-sm-6">
                     <div class="card">
                       <div class="card-body">
                         <?php for($x=5;$x>0;$x--): ?>
@@ -177,9 +179,9 @@
                         <?php endfor; ?>
                       </div>
                     </div>
-                  </div>			
+                  </div>			 -->
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-7">
                     <hr/>
                     <div class="review-block">
@@ -201,10 +203,51 @@
                       <hr/>
                     </div>
                   </div>
+                </div> -->
+
+                <div class="row">
+                  <div class="col-sm-7">
+                    <hr/>
+                    <?php foreach($rate_data as $rate): ?>
+                    <div class="review-block">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" class="img-rounded">
+                          <div class="review-block-name"><a href="#"> <?= $rate->first_name ?> <?= $rate->last_name ?></a></div>
+                            <div class="review-block-date">
+                            <?php
+                              $date = $rate->created;     
+                              $timestamp = strtotime($date);
+                              $display_date = date("F j, Y", $timestamp);
+                              ?>
+                              <p><?= $display_date; ?></hp>
+                              <!-- <br/><small><i>1 day ago</i></small> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div class="review-block-rate">
+                          
+                          <?php for($y=0;$y<5 ;$y++): ?>
+                            <?php if(($y+1)<=$rate->star): ?>
+                               <?= '<i style="color: gold;" class="material-icons text-lg">grade</i>' ?>
+                            <?php else: ?>
+                              <?= '<i style="color: gold;" class="material-icons text-lg">star_outline</i>' ?>
+                            <?php endif; ?>
+                          <?php endfor; ?>
+                           
+                          <div class="review-block-description"> 
+                          <?= $rate->message ?>
+                          </div>
+                      </div>
+                        </div>
+                      </div>
+                      <hr/>
+                    </div>
+                    <?php endforeach; ?> 
+                  </div>
                 </div>
                 
-              </div> -->
-              
+              </div>
               <!-- <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
@@ -220,7 +263,7 @@
       </div>
      
 <?php $this->endSection() ?>
-
+        
 <?php 
   $session = session();
   // $uguid = ($session->get('guid')) ? $session->get('guid') : '';
@@ -243,7 +286,7 @@
 
     console.log("add to cart clicked");
 
-    let pid = $(this).data('pid');
+    let pid = $(this).data('pid');  
     let qty = $("input[name=qty]").val();
     let get_cookie = '';
     let cookie_products = [];
@@ -261,7 +304,7 @@
       // Cookie doesn't exist.  Create cookie
       if(!get_cookie) {
         console.log('cart_data cookie not set.');
-
+    
         // Set value to add to the cookie
         cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
 
@@ -313,6 +356,14 @@
     update_cart_count();
   });
 
+  $("body").delegate(".stars", "click", function(){
+    let count = $(this).data('id');
+    for(var x=1;x<=5;x++){
+      count >= x ?  $('#star_'+x).html('grade') : $('#star_'+x).html('star_outline');
+      
+    }
+    document.getElementById('ratings').value= count;
+  });
 </script>
 <?php $this->endSection() ?>
 
@@ -320,7 +371,7 @@
 <!-- <style>
 .rate {
     float: left;
-    height: 46px;
+    height: 46px;   
     padding: 0 10px;
 }
 .rate:not(:checked) > input {

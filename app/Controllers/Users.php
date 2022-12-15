@@ -16,12 +16,16 @@ class Users extends BaseController
     	$this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
 		$this->uid = session()->get('id');
+		$this->id = session()->get('id');
 		$this->user_model = model('UserModel');
 		$this->customerverification_model = model('VerificationModel');
 		$this->checkout_model = model('CheckoutModel');
     	$this->order_products_model = model('OrderProductsModel');
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 		$this->image_model = model('ImageModel');
+		$this->rating_model = model('RatingModel');
+
+        $this->order_model = model('CheckoutModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
 
 		$this->sender_email = 'cesar@fuegonetworx.com';
@@ -524,7 +528,7 @@ class Users extends BaseController
 
 		if($email->send()) {
 				return true;
-		} 
+		}
 	}
 
 	public function dashboard($tab = "_orders_tab")
@@ -543,10 +547,10 @@ class Users extends BaseController
 		// $this->data['orders'] = array();
 
 		// Identify the tabs that goes with the Dashboard
-		$dashboard_tabs = ['_orders_tab', '_archive_tab', '_personal_info_tab', '_address_tab'];
+		$dashboard_tabs = ['_orders_tab', '_archive_tab','_review','_personal_info_tab', '_address_tab'];
 
 		// Added security to only allow tabs that are specified in the array
-		if(in_array($tab, $dashboard_tabs)) {
+		if(in_array($tab, $dashboard_tabs)) {			
 			if($tab == '_orders_tab') {
 				$this->data['orders'] = $this->_user_active_orders($this->uid);
 				$this->data['pager'] = $this->checkout_model->pager;
@@ -555,13 +559,21 @@ class Users extends BaseController
 				$this->data['orders'] = $this->_user_archive_orders($this->uid);
 				$this->data['pager'] = $this->checkout_model->pager;
 			}
+			else if($tab == '_review') {
+				$this->data['orders'] = $this->_user_review_orders($this->uid);
+				$this->data['pager'] = $this->checkout_model->pager;
+				$this->data['user_data'];
+				
+				
+				
+			}
 
 			$this->data['active_tab'] = $tab;		// If tab specified is found, return tab
 		}
 		else {
 			$this->data['active_tab'] = '_orders_tab';  // If tab specified is not found, default back to order tab
 		}
-		
+		             
 		return view('customer_dashboard/index', $this->data);
 	}
 
@@ -712,7 +724,7 @@ public function uploadID(){
 					}
 			   	}
 				//upload for profile
-				   if(array_key_exists('file1', $file)){
+				    if(array_key_exists('file1', $file)){
 					if (!$file['file1']->hasMoved()) {
 					$fileName = $file['file1']->getRandomName(); // generate a new random name
 					$type = $file['file1']->getMimeType();
@@ -878,7 +890,7 @@ public function uploadID(){
 	// 	$archive_orders = $this->_user_archive_orders($uid);
 
 	// 	$orders = ['active_orders' => $active_orders, 'previous_orders' => $archive_orders];
-
+        
 	// 	return $orders;
 	// }
 
@@ -912,6 +924,28 @@ public function uploadID(){
 		}
 
 		return $orders;
+	}
+
+	private function _user_review_orders($uid)
+	{
+		
+		$orders = $this->checkout_model->where('customer_id', $uid)->where('is_rated', [0])->whereIn('status', [2])->paginate(10);
+		//$orders = $this->checkout_model->getOrders($uid);
+		
+		$this->data['user_data'] = $this->user_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name")->getUserByGuid($this->guid);
+		for($i = 0; $i < count($orders); $i++) {
+			$orders[$i]['products'] = $this->order_products_model->where('order_id', $orders[$i]['id'])->get()->getResult();
+
+			for($j = 0; $j < count($orders[$i]['products']); $j++) {
+				$orders[$i]['products'][$j]->images = getProductImage($orders[$i]['products'][$j]->product_id);
+			}
+		}
+	
+
+
+		return $orders;
+		
+	
 	}
 
 	public function update_personal_info()

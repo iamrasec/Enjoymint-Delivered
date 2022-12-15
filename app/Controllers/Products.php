@@ -23,13 +23,15 @@ class Products extends BaseController
         $this->measurement_model = model('MeasurementModel');
         $this->cart_model = model('CartModel');
         $this->rating_model = model('RatingModel');
+        $this->order_products_model = model('OrderProductsModel');
+        $this->user_model = model('UserModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
         helper(['jwt']);
 
-        $this->order_model = model('checkoutModel');
+        $this->order_model = model('CheckoutModel');
         $this->pagecounter_model = model('pagecounterModel');
         $this->product_model = model('productModel');
        
@@ -40,6 +42,14 @@ class Products extends BaseController
 
     public function index($url = '')
     {
+        $session = session();
+    //     $status = $this->order_model->where('customer_id', $this->id )->select('status')->first();
+    //     if($this->isLoggedIn == 1 && $status['status'] == 2){
+    //       $this->data['isRating'] = 'inline';
+    //   }else{
+    //       $this->data['isRating'] = 'none';
+    //   }
+
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
 
@@ -51,7 +61,6 @@ class Products extends BaseController
             $product = $this->product_model->get()->getResult();
             return $this->view_all_products();
         }
-
         // $ip_views = $this->request->getIPAddress();
         // $newData = ['ip_views' => $ip_views]; 
         // $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
@@ -64,7 +73,8 @@ class Products extends BaseController
         //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
         //     $this->pagecounter_model->save($newData);
         // }
-
+        $session->product_id = $product;
+        
         $page_title = $product->name;
 
         $this->data['page_body_id'] = "product-".$product->id;
@@ -81,9 +91,13 @@ class Products extends BaseController
             $imageIds = explode(',',$product->images);
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
-
-        $this->data ['rate_data'] = $this->rating_model->where('id', 32)->select( 'star,message')->first();
-
+        // $number_reviews = $this->rating_model->where('product_id', $product->id)->countrows();
+        $this->data['rate'] = $this->rating_model->where('product_id', $product->id)->select('star, product_id, COUNT(star) AS total_ratings, AVG(`star`) As avg_r',FALSE)->get()->getResult();
+        //  $this->data['user_id'] = session()->get('id');
+        // $this->data['test'] = $this->rating_model->select('total_ratings, average_ratings')->getAvgRatings($this->id);
+        $id = $product->id;
+        $this->data ['rate_data'] = $this->rating_model->getUserId($id);
+        // print_r($id); 
         $session = session();
         $session->set('cart_items', []);
         $cookie_cart = [];
@@ -91,11 +105,12 @@ class Products extends BaseController
         if($this->isLoggedIn && !isset($_COOKIE["cart_data"])) {
             // $this->data['cart_products'] = $this->cart_model->cartProductsCount(session()->get('id'));
             $cart_products = $this->cart_model->where('uid', session()->get('id'))->get()->getResult();
-
+            
             foreach($cart_products as $cart_product) {
                 // $session->push('cart_items', [['pid' => $cart_product->pid, 'qty' => $cart_product->qty]]);
                 $cookie_cart[] = (array)['pid' => $cart_product->pid, 'qty' => (int)$cart_product->qty];
             }
+            
 
             // print_r(json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE));die();
 
@@ -197,21 +212,27 @@ class Products extends BaseController
      return redirect()->to('/Shop');
 
       
-    }
+    }   
 
-    public function rating(){
-
+    public function rating($id = null){
+        $session = session();       
+        $data = $session->get('product_id');
+        //$id = $this->request->getPost('id');
         $ratings = [
+          'product_id' => $data->id,
           'message' => $this->request->getPost('message'),  
-          'star' => $this->request->getPost('ratings'),  
+          'star' => $this->request->getPost('ratings'),
+          'customer_id' => $this->request->getPost('customer_id'),    
        ];
-  
+    print_r($id);
        $this->rating_model->save($ratings);
-       return redirect()->to('/Shop'); 
+       $this->order_model->update($id, ['is_rated' => 1]);
+       return redirect()->to('/users/dashboard/_review'); 
     //    $page_data ['rate'] = $this->rating_model->where('id', 12)->select( 'star')->first();
     //    $page_data ['message'] = $this->rating_model->where('id', 12)->select( 'message')->first();
     //    echo view('product_view', $page_data); 
        
   
     }
+    
 }
