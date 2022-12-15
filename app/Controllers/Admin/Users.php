@@ -98,11 +98,17 @@ class Users extends BaseController {
       if($user->role == '1'){
         $roles = 'Admin';
       }
+      elseif($user->role == '2'){
+        $roles = 'Staff';
+      }
       elseif($user->role == '3'){
         $roles = 'Costumers';
       }
+      elseif($user->role == '4'){
+        $roles = 'Dispatcher';
+      }
       else{
-        return '';
+        $roles = 'Costumers';
       }
       $name = $user->first_name.' '.$user->last_name;
       $data[] = array(

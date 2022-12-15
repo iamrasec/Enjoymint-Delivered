@@ -20,5 +20,12 @@ class OrderProductsModel extends Model {
         
     ];
 
+    public function getProductData($pid)
+    {
+        $this->select('v_all_products.*');
+        $this->join('v_all_products', 'order_products.product_id = v_all_products.id', 'inner');
+        $this->where('order_products.product_id', $pid);
+        return $this->get()->getResult();
+    }
 }
 ?>

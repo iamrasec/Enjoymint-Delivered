@@ -17,7 +17,7 @@ class VerificationModel extends Model {
   public function getAllVerification($start = null, $length=null) 
   { 
     $this->select('customer_verification.id AS cv_id, customer_verification.*, users.*');
-    $this->join('users', 'customer_verification.user_id = users.id');
+    $this->join('users', 'customer_verification.user_id = users.id'); 
     
     // $this->groupBy('customer_verification.user_id');
     // $this->like('first_name',$_POST['search']['value']);
@@ -27,6 +27,14 @@ class VerificationModel extends Model {
       $this->limit($length, $start);
     }
 
+    return $this->get()->getResult();
+  }
+
+  public function getUserValidIds($user_id) {
+    $this->select('customer_verification.id AS cv_id, customer_verification.*, users.*');
+    $this->join('users', 'customer_verification.user_id = users.id'); 
+    $this->where('users.id', $user_id);
+    
     return $this->get()->getResult();
   }
 

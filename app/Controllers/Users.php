@@ -81,6 +81,12 @@ class Users extends BaseController
 					if($user['role'] == 1) {
 						return redirect()->to('admin/dashboard');
 					}
+					elseif($user['role'] == 2) {
+						return redirect()->to('admin/dashboard');
+					}
+					elseif($user['role'] == 4) {
+						return redirect()->to('admin/orders');
+					}
 					else {
 						return redirect()->to('/');
 					}
@@ -1031,7 +1037,7 @@ public function uploadID(){
 				'role' => [
 					'rules' => 'required|integer',
 					'errors' => [
-						'required' => 'Please input your Last Name.',
+						'required' => 'Please select a Role.',
 					],
 				],
 				'password' => [

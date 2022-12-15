@@ -22,6 +22,7 @@ class CheckoutModel extends Model {
         'payment_method',
         'created',
         'modified',
+        'status',
         'order_notes',
         'delivery_schedule',
         'delivery_time',

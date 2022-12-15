@@ -7,14 +7,17 @@ class Orders extends BaseController {
     public function __construct() {
         helper(['jwt']);
 		$this->data = [];
-		 $this->role = session()->get('role');
-         $this->isLoggedIn = session()->get('isLoggedIn');
+		$this->role = session()->get('role');
+        $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
         $this->order_model = model('CheckoutModel');
         $this->order_products = model('OrderProductsModel');
         $this->image_model = model('ImageModel');
         $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
+        $this->customerverification_model = model('VerificationModel');
+
+        $this->allowed_roles = [1,2,4];
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
@@ -23,6 +26,10 @@ class Orders extends BaseController {
     }
 
     public function index() {
+
+        if(!in_array($this->role, $this->allowed_roles)) {
+            return redirect()->to('/');
+        }
        
         $page_title = 'All Orders';
     
@@ -32,6 +39,7 @@ class Orders extends BaseController {
             'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        $this->data['role'] = $this->role;
         
         echo view('Admin/Orders/all_orders', $this->data);       
     }
@@ -41,23 +49,9 @@ class Orders extends BaseController {
         $order = $this->order_model->where('id', $id)->get()->getRow();
         $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
 
-        // for($i = 0; $i < count($order_products); $i++) {
-        //     $product_data = $this->product_model->getProductData($order_products[$i]->product_id);
+        $all_products = $this->product_model->getAllProductsNoPaginate('asc');
 
-        //     $images = [];
-        //     $imageIds = [];
-
-        //     // Fetch product images
-        //     if($product_data->images) {
-        //         $imageIds = explode(',',$product_data->images);
-        //         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-        //     }
-
-        //     $order_products[$i]->product_data = $product_data;
-        //     $order_products[$i]->images = $images;
-        // }
-
-        $all_products = $this->product_model->getAllProductsNoPaginate();
+        $order_pids = [];
 
         for($i = 0; $i < count($all_products); $i++) {
 
@@ -75,6 +69,7 @@ class Orders extends BaseController {
             for($j = 0; $j < count($order_products); $j++) {
                 if($order_products[$j]->product_id == $all_products[$i]->id) {
                     $order_products[$j]->product_data = $all_products[$i];
+                    $order_pids[] = $order_products[$j]->product_id;
 
                     unset($all_products[$i]);
                     break;
@@ -98,6 +93,7 @@ class Orders extends BaseController {
         $this->data['order_data'] = $order;
         $this->data['order_products'] = $order_products;
         $this->data['all_products'] = $all_products;
+        $this->data['order_pids'] = implode(',', $order_pids);
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
         if($this->data['currDate']->format('H') > '16') {

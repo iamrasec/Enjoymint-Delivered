@@ -23,10 +23,18 @@ class ProductModel extends Model {
     return $this->paginate(28);
   }
 
-  public function getAllProductsNoPaginate() {
+  public function getAllProductsNoPaginate($sort="none") {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
     $this->join('strains', 'strains.id = products.strain', 'left');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
+
+    if($sort == 'asc') {
+      $this->orderBy('products.name', 'ASC');
+    }
+    elseif($sort == 'desc') {
+      $this->orderBy('products.name', 'DESC');
+    }
+
     return $this->get()->getResult();
   }
 
