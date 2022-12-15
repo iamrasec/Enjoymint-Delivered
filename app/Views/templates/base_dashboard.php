@@ -66,6 +66,7 @@
   <script src="<?php echo base_url(); ?>/assets/js/material-dashboard.min.js?v=3.0.1"></script>
 
   <script>
+    const baseUrl = "<?= base_url(); ?>";
     function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
     {
       swal({

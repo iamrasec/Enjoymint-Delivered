@@ -23,6 +23,7 @@ class Orders extends ResourceController
       $this->order_products = model('OrderProductsModel');
       $this->customerverification_model = model('VerificationModel');
       $this->image_model = model('ImageModel');
+      $this->product_model = model('ProductModel');
 
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
@@ -46,6 +47,65 @@ class Orders extends ResourceController
           $this->drivers_model->save($drivers);
     }
     
+  }
+
+  public function add_product()
+  {
+    // getProductData
+    $post = $this->request->getPost();
+
+    $order_pids = $post['order_pids'];
+    // $order_pids[] = $post['pid'];
+
+    // print_r($order_pids);die();
+
+    // Check if selected product id is not already added in edit order but not yet committed to database.
+    if(in_array($post['pid'], $order_pids)) {
+      die(json_encode(array("success" => FALSE,"message" => 'Product already in cart.')));
+    }
+
+    // Check if product is already in cart
+    $check_product = $this->order_products->where('order_id', $post['oid'])->where('product_id', $post['pid'])->get()->getRow();
+
+    if(empty($check_product)) {
+      $db = \Config\Database::connect();
+      $builder = $db->table('v_all_products');
+      $data = $builder->where('id', $post['pid'])->get()->getRow();
+
+      $imageIds = [];
+      if($data->images) {
+          $imageIds = explode(',',$data->images);
+          $data->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+      }
+
+      // print_r($data);die();
+
+      $return = '<tr class="pid-'.$data->id.' border"><td><div class="row product-wrap d-flex py-3">';
+      $return .= '<div class="col-12 col-md-2 col-xs-12 product-img"><img src="'. base_url('/products/images/'. $data->images[0]->filename) .'" style="width: 100px;"></div>';
+      $return .= '<div class="col-12 col-md-8 col-xs-12 product-details"><h6 class="product-title"><a href="'. base_url('/products/'. $data->url) .'">'. $data->name .'</a></h6>';
+      $return .= '<div class="text-sm mb-3">';
+      if($data->strain_name != "") {
+        $return .= '<span class="badge text-bg-warning me-3">'. $data->strain_name .'</span>';
+      }
+      if($data->thc_value != 0 || $data->thc_value != "") {
+        $return .= '<span class="badge text-bg-dark ms-3">THC '. $data->thc_value . (($data->thc_unit == 'pct') ? '%' : $data->thc_unit) .'</span>';
+      }
+      $return .= '</div>';
+      $return .= '<div class="product-qty"><span>QTY: </span>';
+      $return .= '<input type="number" name="cart['.$data->id.'][qty]" class="product-'.$data->id.'-qty" min="1" max="100" value="1" data-pid="'.$data->id.'" data-unit-price="'.$data->price.'"></div></div>';
+      $return .= '<div class="col-12 col-md-2 col-xs-12 price text-right pe-4">';
+      $return .= '<input type="hidden" class="product-total-price product-'.$data->id.'-total-price" value="'.$data->price.'">';
+      $return .= '<strong class="total-price-display">$'.$data->price.'</strong>';
+      $return .= '<div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="'.$data->id.'"><i class="fas fa-trash" aria-hidden="true"></i></a></div>';
+      $return .= '</div>';
+
+      $return .= '</div></td></tr>';
+
+      die(json_encode(array("success" => TRUE,"message" => 'Product Added to Order.  Please click on Save to commit changes.', "data" => $data, "append_data" => $return)));
+    }
+    else {
+      die(json_encode(array("success" => FALSE,"message" => 'Product already in cart.')));
+    }
   }
 
   public function complete() 
