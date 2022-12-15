@@ -25,6 +25,8 @@ class Orders extends ResourceController
       $this->image_model = model('ImageModel');
       $this->product_model = model('ProductModel');
 
+      $this->tax_rate = 1.35;  // 35%
+
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
       
@@ -54,7 +56,7 @@ class Orders extends ResourceController
     // getProductData
     $post = $this->request->getPost();
 
-    $order_pids = $post['order_pids'];
+    $order_pids = (isset($post['order_pids'])) ? $post['order_pids'] : [];
     // $order_pids[] = $post['pid'];
 
     // print_r($order_pids);die();
@@ -106,6 +108,86 @@ class Orders extends ResourceController
     else {
       die(json_encode(array("success" => FALSE,"message" => 'Product already in cart.')));
     }
+  }
+
+  public function save_edit()
+  {
+    $post = $this->request->getPost();
+
+    $cart_key = $post['order_key'];
+    $cart_id = $post['oid'];
+    $order_pids = $post['order_pids'];
+    $to_save = $post['order_data'];
+
+    // echo "<pre>".print_r($post, 1)."</pre>";die();
+    // echo "<pre>".print_r($to_save, 1)."</pre>";die();
+
+    $get_saved_cart = $this->order_products->select('product_id, qty')->where('order_id', $post['oid'])->get()->getResult();
+
+    // echo "<pre>".print_r($get_saved_cart, 1)."</pre>";die();
+
+    $new_subtotal = 0;
+
+    foreach($to_save as $to_save_data) {
+      $existing_product = false;
+      foreach($get_saved_cart as $saved_cart) {
+        if($to_save_data['id'] == $saved_cart->product_id) {
+          $existing_product = true;
+
+          if($to_save_data['qty'] != $saved_cart->qty) {
+            $product_cost_total = number_format($to_save_data['qty'] * $to_save_data['price'], 2, '.', '');
+            $new_subtotal += $product_cost_total;
+
+            $update_cart_value = [
+              'qty' => $to_save_data['qty'],
+              'total' => $product_cost_total,
+            ];
+  
+            $this->order_products->where('product_id', $saved_cart->product_id)->set($update_cart_value)->update();
+          }
+        }
+      }
+
+      if($existing_product == false) {
+        $new_product_cost_total = number_format($to_save_data['price'] * $to_save_data['qty'], 2, '.', '');
+        $new_subtotal += $new_product_cost_total;
+
+        $to_save_new = [
+          'order_id' => $post['oid'],
+          'product_id' => $to_save_data['id'],
+          'product_name' => $to_save_data['name'],
+          'qty' => $to_save_data['qty'],
+          'unit_price' => $to_save_data['price'],
+          'is_sale' => 0,
+          'regular_price' => $to_save_data['price'],
+          'total' => $new_product_cost_total
+        ];
+
+        $this->order_products->save($to_save_new);
+      }
+    }
+
+    $tax_cost = $new_subtotal * ($this->tax_rate - 1);
+    $total_cost = $new_subtotal * $this->tax_rate;
+
+    $update_order = [
+      'address' => $post['del_address'],
+      'payment_method' => $post['pay_method'],
+      'order_notes' => $post['notes']
+    ];
+
+    if($new_subtotal > 0) {
+      $update_order['subtotal'] = $new_subtotal;
+      $update_order['tax'] = $tax_cost;
+      $update_order['total'] = $total_cost;
+    }
+
+    $this->order_model->where('id', $post['oid'])->set($update_order)->update();
+
+    // echo "<pre>".print_r($post, 1)."</pre>";
+    // echo "<pre>".print_r($get_saved_cart, 1)."</pre>";die();
+
+    die(json_encode(array("success" => TRUE,"message" => 'Order Updated Successfully')));
   }
 
   public function complete() 
