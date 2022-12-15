@@ -27,6 +27,7 @@ class CheckoutModel extends Model {
         'delivery_schedule',
         'delivery_time',
         'delivery_type',
+        'is_rated'
     ];
     
     public function fetchOrderDetails($key)
