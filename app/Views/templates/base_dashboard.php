@@ -67,6 +67,7 @@
 
   <script>
     const baseUrl = "<?= base_url(); ?>";
+    const jwt = $("[name='atoken']").attr('content');
     function enjoymintAlert(title, text, icon, is_reload = 0, redirect)
     {
       swal({

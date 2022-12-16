@@ -48,7 +48,7 @@
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
                             <div class="product-qty">
-                              <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
+                              <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-qty product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
                             </div><br>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
@@ -411,6 +411,29 @@ update_cart_count();
 
   $(document).on("click", "#update-cart", function(e) {
     e.preventDefault();
+    if(jwt == '') {
+      // let pid = $(this).data('pid');
+      // let qty = $(this).val();
+
+      // console.log("qty: "+qty);
+
+      get_cookie = getCookie(cookie_cart);
+
+      cookie_products = JSON.parse(get_cookie);
+
+      cookie_products.forEach(function(product) {
+        $(".product-qty").each(function() {
+          if(product.pid == $(this).data('pid')) {
+            product.qty = parseInt($(this).val());
+          }
+        });
+      });
+
+      // console.log(cookie_products);
+
+      setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+    }
+
     $("#update-cart-form").submit();
   });
 

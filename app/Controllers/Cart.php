@@ -32,55 +32,12 @@ class Cart extends BaseController
     date_default_timezone_set('America/Los_Angeles');
 	}
 
-  private function _cookie_to_db($cookie_cart)
-  {
-    foreach($cookie_cart as $cart_product) {
-      $toSave = [
-        'uid' => $this->uid,
-        'pid' => $cart_product->pid,
-        'qty' => $cart_product->qty,
-      ];
-
-      $this->cart_model->insert($toSave);
-    }
-
-    return true;
-  }
-
   public function index()
   {
-    $user_cart = '';
-    $cart_raw = [];
-    $cookie_cart = [];
     $cart_products = [];
 
-    // Check first if cookie cart is set
-    if(isset($_COOKIE['cart_data'])) {
-      $user_cart = $_COOKIE['cart_data'];
-
-      $cookie_cart = json_decode($user_cart);
-    }
-
-    // Check if user is logged in
-    if($this->isLoggedIn == 1) {
-      
-      $db_cart = $this->_fetch_cart_items();
-      // print_r($db_cart);die();
-
-      // If there are products from db, they should show up on the page
-      if(!empty($db_cart)) {
-        $cart_raw = $db_cart;
-      }
-      else {
-        if(!empty($cookie_cart)) {
-          $this->_cookie_to_db($cookie_cart);
-          $cart_raw = $this->_fetch_cart_items();
-        }
-      }
-		}
-    else {
-      $cart_raw = $cookie_cart;
-    }
+    // Fetch items in cart
+    $cart_raw = $this->get_cart_data();
 
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
@@ -96,7 +53,7 @@ class Cart extends BaseController
         $imageIds = explode(',',$product_data->images);
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
-// print_r($product_data);
+
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
@@ -447,13 +404,37 @@ class Cart extends BaseController
   {
     $data = $this->request->getPost();
 
+    $cart_products = [];
+
+    // Fetch items in cart
+    $cart_raw = $this->get_cart_data();
+
+    // echo "<pre>".print_r($data, 1)."</pre>";
+    // echo "<pre>".print_r($cart_raw, 1)."</pre>";
+
     $toUpdate = [];
 
-    foreach($data['cart'] as $cart_pid => $cart_product) {
+    $new_cart_data = '';
 
-      $this->cart_model->set('qty', $cart_product['qty'])->where('uid', $this->uid)->where('pid', $cart_pid)->update();
+    if($this->isLoggedIn == 1) {
+      foreach($data['cart'] as $cart_pid => $cart_product) {
+        $this->cart_model->set('qty', $cart_product['qty'])->where('uid', $this->uid)->where('pid', $cart_pid)->update();
+      }
     }
+    // else {
+    //   for($i = 0; count($cart_raw) > $i; $i++) {
+    //     foreach($data['cart'] as $pid => $pqty) {
+    //       if($pid == $cart_raw[$i]->pid) {
+    //         $cart_raw[$i]->qty = $pqty['qty'];
+    //       }
+    //     }
+    //   }
+    //   $new_cart_data = $cart_raw;
+    // }
 
+    // echo "<pre>".print_r($cart_raw, 1)."</pre>";die();
+
+    // $this->session->set_flashdata('updated_cart_qty', $new_cart_data);
     return redirect()->to('/cart');
   }
 
@@ -499,6 +480,48 @@ class Cart extends BaseController
     }
   }
 
+  private function get_cart_data()
+  {
+    $user_cart = '';
+    $cart_raw = [];
+    $cookie_cart = [];
+    $cart_products = [];
+
+    // Check first if cookie cart is set
+    if(isset($_COOKIE['cart_data'])) {
+      $user_cart = $_COOKIE['cart_data'];
+
+      $cookie_cart = json_decode($user_cart);
+    }
+
+    // if(isset($this->session->flashdata('updated_cart_qty'))) {
+    //   $cookie_cart = $this->session->flashdata('in');
+    // }
+
+    // Check if user is logged in
+    if($this->isLoggedIn == 1) {
+      
+      $db_cart = $this->_fetch_cart_items();
+      // print_r($db_cart);die();
+
+      // If there are products from db, they should show up on the page
+      if(!empty($db_cart)) {
+        $cart_raw = $db_cart;
+      }
+      else {
+        if(!empty($cookie_cart)) {
+          $this->_cookie_to_db($cookie_cart);
+          $cart_raw = $this->_fetch_cart_items();
+        }
+      }
+		}
+    else {
+      $cart_raw = $cookie_cart;
+    }
+
+    return $cart_raw;
+  }
+
   private function _fetch_cart_items()
   {
     // Fetch user data using guid
@@ -518,6 +541,21 @@ class Cart extends BaseController
 		}
     
     $this->cart_model->where('uid', $user_id)->delete();
+
+    return true;
+  }
+
+  private function _cookie_to_db($cookie_cart)
+  {
+    foreach($cookie_cart as $cart_product) {
+      $toSave = [
+        'uid' => $this->uid,
+        'pid' => $cart_product->pid,
+        'qty' => $cart_product->qty,
+      ];
+
+      $this->cart_model->insert($toSave);
+    }
 
     return true;
   }
