@@ -63,6 +63,7 @@
                         <option value="0">Select</option>
                         <option id="role" name="role" value="1">Admin</option>
                         <option id="role" name="role" value="3">Costumer</option>
+                        <option id="role" name="role" value="4">Dispatcher</option>
                   </select>
                   </div>
                 </div>
