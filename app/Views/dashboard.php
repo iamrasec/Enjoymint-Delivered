@@ -256,7 +256,7 @@
             <div class="card-body p-3 position-relative">
               <div class="row">
                 <div class="col-7 text-start">
-                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Monthly Sales</p>
+                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Monthly Products Sold</p>
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($monthly_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
@@ -276,7 +276,7 @@
             <div class="card-body p-3 position-relative">
               <div class="row">
                 <div class="col-7 text-start">
-                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Annual Sales</p>
+                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Annual Products Sold</p>
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($annual_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
