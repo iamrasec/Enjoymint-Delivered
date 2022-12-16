@@ -238,9 +238,7 @@
               <di v class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Daily Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">
-                    $<?= number_format($daily_sales['total_sales'], 2, ".", ","); ?>
-                  </h5>
+                  <h5 class="font-weight-bolder mb-0">0</h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -257,9 +255,7 @@
               <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Monthly Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">
-                    $<?= number_format($monthly_sales['total_sales'], 2, ".", ","); ?>
-                  </h5>
+                  <h5 class="font-weight-bolder mb-0">0</h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -277,9 +273,7 @@
               <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Annual Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">
-                    $<?= number_format($annual_sales['total_sales'], 2, ".", ","); ?>
-                  </h5>
+                  <h5 class="font-weight-bolder mb-0">0</h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
