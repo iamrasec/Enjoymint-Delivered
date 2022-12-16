@@ -80,42 +80,42 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Categories </span>
                 </a>
               </li>
-              <li class="nav-item <?= $uri->getSegment(2) == 'compounds' ? 'active' : '' ?>">
+              <!-- <li class="nav-item <?= $uri->getSegment(2) == 'compounds' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(2) == 'compounds' ? 'active' : '' ?>" href="<?php echo base_url('/admin/compounds'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Compounds </span>
                 </a>
-              </li>
-              <li class="nav-item <?= $uri->getSegment(3) == 'strains' ? 'active' : '' ?>">
+              </li> -->
+              <!-- <li class="nav-item <?= $uri->getSegment(3) == 'strains' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'strains' ? 'active' : '' ?>" href="<?php echo base_url('/admin/products/strains'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Strains </span>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item <?= $uri->getSegment(3) == 'brands' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'brands' ? 'active' : '' ?>" href="<?php echo base_url('/admin/products/brands'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Brands </span>
                 </a>
               </li>
-              <li class="nav-item <?= $uri->getSegment(3) == 'measurements' ? 'active' : '' ?>">
+              <!-- <li class="nav-item <?= $uri->getSegment(3) == 'measurements' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'measurements' ? 'active' : '' ?>" href="<?php echo base_url('/admin/products/measurements'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Product Measurements </span>
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'reviews' ? 'active' : '' ?>"  href="<?php echo base_url('/admin/products/reviews'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Manage Reviews </span>
                 </a>
-              </li>
-              <li class="nav-item <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>">
+              </li> -->
+              <!-- <li class="nav-item <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'sale' ? 'active' : '' ?>" href="<?php echo base_url('/admin/sale'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Product Sale </span>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item <?= $uri->getSegment(3) == 'experience' ? 'active' : '' ?>">
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'experience' ? 'active' : '' ?>" href="<?php echo base_url('/admin/experience'); ?>">
                   <span class="sidenav-mini-icon"></span>

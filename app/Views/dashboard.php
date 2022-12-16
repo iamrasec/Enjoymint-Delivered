@@ -231,13 +231,13 @@
 
       </div>
 
-      <!-- <div class="row mt-4">
+      <div class="row mt-4">
         <div class="col-sm-3">
           <div class="card">
             <div class="card-body p-3 position-relative">
               <di v class="row">
                 <div class="col-7 text-start">
-                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Daily Sales</p>
+                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Daily Products Sold</p>
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($daily_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
@@ -310,7 +310,7 @@
           </div>
         </div>
 
-      </div> -->
+      </div>
 
       <div class="row mt-4">
         <div class="col-lg-4 col-sm-6">
