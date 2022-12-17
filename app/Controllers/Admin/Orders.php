@@ -81,6 +81,7 @@ class Orders extends BaseController {
 
         $page_title = 'Edit Order #'. $order->id;
 
+        $this->data['role'] = $this->role;
         $this->data['page_body_id'] = "c_orders";
         $this->data['breadcrumbs'] = [
         'parent' => [
