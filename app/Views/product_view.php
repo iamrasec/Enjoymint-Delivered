@@ -116,7 +116,6 @@
               </div>
 
               <?php if(!empty($rate) && $rate[0]->total_ratings != 0): ?>
-                <pre><?php print_r($rate); ?></pre>
               <div class="row mt-5">
                 <h6>Ratings</h5>
                 
