@@ -115,6 +115,8 @@
                 </div>
               </div>
 
+              <?php if($rate[0]->total_ratings != 0): ?>
+                <pre><?php print_r($rate); ?></pre>
               <div class="row mt-5">
                 <h6>Ratings</h5>
                 
@@ -248,6 +250,8 @@
                 </div>
                 
               </div>
+              <?php endif; ?>
+
               <!-- <div class="row mt-5">
                 <div class="col-12">
                   <h5 class="ms-3">Other Products</h5>
