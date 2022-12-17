@@ -37,10 +37,11 @@
                     <th class="order-id px-2">ID</th>
                     <th class="customer-name px-2">Customer Name</th>
                     <th class="customer-address px-2">Address</th>
-                    <th>Products in Order</th>
+                    <th># of Products</th>
                     <th>Total</th>
                     <th>Order Date</th>
                     <th>Order Status</th>
+                    <th>Delivery Type</th>
                     <th>Delivery Schedule</th>
                     <th>Actions</th>
                   </tr>
@@ -104,7 +105,7 @@
 <!-- Product List page js -->
 <script>
 
-var jwt = $("[name='atoken']").attr('content');
+// var jwt = $("[name='atoken']").attr('content');
 
 $(document).ready(function () {
     var table = $('#sales-table').DataTable({
@@ -131,27 +132,27 @@ $(document).ready(function () {
         },
         { 
           data: 'id',
-          className: 'order-id px-2',
+          className: 'order-id px-2 text-xs',
           // "orderable": true,
         },
         { 
           data: 'customer_name',
-          className: 'customer-name px-2',
+          className: 'customer-name px-2 text-xs',
           // "orderable": true,
         },
         { 
           data: 'address',
-          className: 'customer-address px-2',
+          className: 'customer-address px-2 text-xs',
           // "orderable": true,
         },
         { 
           data: 'product_count',
-          className: 'product-count',
+          className: 'product-count text-xs',
           // "orderable": true,
         },
         { 
           data: 'total',
-          className: 'total-cost',
+          className: 'total-cost text-xs',
           // "orderable": true,
           render: function(data, type, row) {
             return '$'+data;
@@ -159,11 +160,12 @@ $(document).ready(function () {
         },
         { 
           data: 'created',
+          className: 'order-created text-xs',
           // "orderable": true,
         },
         { 
           data: 'status',
-          className: 'order-status',
+          className: 'order-status text-xs',
           // "orderable": true,
           render: function(data, type, row) {
             if(data == 0) {
@@ -179,10 +181,45 @@ $(document).ready(function () {
               return 'Cancelled';
             }
           }
-        }, { 
-          data: 'delivery_schedule',
-          // "orderable": true,
+        }, 
+        { 
+          data: 'delivery_type',
+          className: 'delivery-type text-xs',
+          render: function(data, type, row) {
+            if(data == 0) {
+              return 'Scheduled';
+            }
+            else if(data == 1) {
+              return 'Fast-tracked';
+            }
+            else {
+              return 'Scheduled';
+            }
+          }
         },
+        { 
+          data: 'delivery_schedule',
+          className: 'delivery-schedule text-xs',
+          render: function(data, type, row) {
+            console.log(row.delivery_time);
+            
+            if(row.delivery_time != null) {
+              let delTime = row.delivery_time.split("-");
+              let delFrom = tConvert(delTime[0]);
+              let delTo = tConvert(delTime[1]);
+
+              return "Date: " + row.delivery_schedule + "<br>Time: " + delFrom + " - " + delTo;
+            }
+            else {
+              return '';
+            }
+            
+          }
+        },
+        // { 
+        //   data: 'order_notes',
+        //   className: 'order-notes text-xs',
+        // },
         { 
           data: 'actions',
           render: function(data, type, row) {
@@ -213,6 +250,12 @@ $(document).ready(function () {
       console.log(d.customer_ids);
       console.log(Object.keys(d.customer_ids).length);
 
+      let order_notes = '';
+
+      if(d.order_notes != "") {
+        order_notes = '<div class="order_notes mb-3"><div><strong>Order Notes</strong></div><p class="fst-italic p-2 bg-warning bg-gradient" style="color: #ffffff;">'+ d.order_notes +'</p></div>';
+      }
+
       let customer_ids = '';
 
       if(Object.keys(d.customer_ids).length > 0) {
@@ -225,7 +268,7 @@ $(document).ready(function () {
 
         // console.log(Object.entries(d.customer_ids)[0]);
 
-        customer_ids += '<div class="customer_ids">';
+        customer_ids += '<div class="customer_ids mb-3">';
         
         for([key, val] of Object.entries(d.customer_ids)) {
           if(key == 'profile_img' && val != '') {
@@ -242,7 +285,7 @@ $(document).ready(function () {
         customer_ids += '</div>';
       }
 
-      let products_table = customer_ids + '<table cellpadding="5" cellspacing="0" border="0" class="w-90 ms-5 fs-6">';
+      let products_table = order_notes + customer_ids + '<table cellpadding="5" cellspacing="0" border="0" class="w-90 ms-5 fs-6">';
       
       products_table += '<tr class="fw-bold"><td>Product Title</td><td class="text-center">Qty</td><td class="text-right">Unit Price</td><td class="text-right">Total</td></tr>';
 
