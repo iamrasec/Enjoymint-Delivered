@@ -28,6 +28,7 @@
       <p>Selected Schedule:</p>
       <?php endif; ?>
       <p>Order Notes: <strong><?= $order_data['order_notes']; ?></strong></p>
+      <p>If you need to edit your order or delivery address, please call <a href="tel:+14084844644" class="nav-cta btn btn-sm bg-primary-green mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a> </p>
     </div>
     <div style="border: 1px solid #ccc; padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
       <table style="width: 100%;">
