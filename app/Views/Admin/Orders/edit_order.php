@@ -160,6 +160,7 @@
                   <div class="row mt-4">
                     <div class="col-12 col-md-12">
                       <h5>Delivery Type</h5>
+                      <p class="note text-xs">NOTE: Only change to Fast-tracked if all the products in the cart are available for Fast-tracked delivery.</p>
                       <select id="del_type" name="del_type" class="w-100 px-2 py-2 mb-4">
                         <option value="0" <?= ($order_data->delivery_type == 0) ? "selected" : ""; ?>>Scheduled</option>
                         <option value="1" <?= ($order_data->delivery_type == 1) ? "selected" : ""; ?>>Fast-tracked</option>
