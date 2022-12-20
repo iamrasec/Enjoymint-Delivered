@@ -161,8 +161,8 @@
                     <div class="col-12 col-md-12">
                       <h5>Delivery Type</h5>
                       <select id="del_type" name="del_type" class="w-100 px-2 py-2 mb-4">
-                        <option value="0" <?= ($order_data->payment_method == 0) ? "selected" : ""; ?>>Scheduled</option>
-                        <option value="1" <?= ($order_data->payment_method == 1) ? "selected" : ""; ?>>Fast-tracked</option>
+                        <option value="0" <?= ($order_data->delivery_type == 0) ? "selected" : ""; ?>>Scheduled</option>
+                        <option value="1" <?= ($order_data->delivery_type == 1) ? "selected" : ""; ?>>Fast-tracked</option>
                       </select>
                     </div>
                   </div>
