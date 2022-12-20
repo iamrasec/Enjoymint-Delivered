@@ -176,7 +176,7 @@
       </div>
     </div>
 
-    <pre>ORDER DATA: <?php print_r($order_data); ?></pre>
+    <!-- <pre>ORDER DATA: <?php print_r($order_data); ?></pre> -->
     <!-- <pre>ORDER PRODUCTS: <?php print_r($order_products); ?></pre> -->
     <!-- <pre>ALL PRODUCTS: <?php print_r($all_products); ?></pre> -->
 
