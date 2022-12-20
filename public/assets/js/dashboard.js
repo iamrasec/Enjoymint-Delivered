@@ -38,3 +38,21 @@ function tConvert (time) {
 
   return formattedTime;
 }
+
+function setCookie(key, value, expiry) {
+  // console.log("setting cookie " + key);
+  var expires = new Date();
+  expires.setTime(expires.getTime() + (expiry * 24 * 60 * 60 * 1000));
+  document.cookie = key + '=' + value + ';expires=' + expires.toUTCString() +';path=/';
+}
+
+function getCookie(key) {
+  // console.log("key: " + key);
+  var keyValue = document.cookie.match('(^|;) ?' + key + '=([^;]*)(;|$)');
+  return keyValue ? keyValue[2] : null;
+}
+
+function eraseCookie(key) {
+  var keyValue = getCookie(key);
+  setCookie(key, keyValue, '-1');
+}
