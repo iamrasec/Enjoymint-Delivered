@@ -39,12 +39,14 @@
             <div class="row mt-4">
               <div class="col-12 col-md-8 col-xs-12">
                 <h5>Products</h5>
-                <div class="input-group" style="float: right; margin-top:-52px; margin-right:-30px;">
+                <div class="input-group" style="float: right; margin-top:-52px; margin-right:30px;">
                     <div class="input-group-prepend">
-                      <button type="button" id="toggle" class="input-group-text">
+                      <button type="button" id="toggle" class="input-group-text" style="width: 250px;">
                       <i class="fa fa-calendar-alt" style="color: black"></i>&nbsp;&nbsp; 
                       <input style="color: black;" type="text" id="picker" value="<?= $order_data->delivery_schedule; ?>" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
                       </button>
+                      <input type="hidden" name="delivery_date" id="delivery_date" value="<?= $order_data->delivery_schedule; ?>">
+                      <input type="hidden" name="delivery_time" id="delivery_time" value="<?= $order_data->delivery_time; ?>">
                     </div>  
                 </div>
 
@@ -135,6 +137,16 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="row mt-4">
+                    <div class="col-12 col-md-12">
+                      <h5>Delivery Type</h5>
+                      <select id="del_type" name="del_type" class="w-100 px-2 py-2">
+                        <option value="0" <?= ($order_data->payment_method == 0) ? "selected" : ""; ?>>Scheduled</option>
+                        <option value="1" <?= ($order_data->payment_method == 1) ? "selected" : ""; ?>>Fast-tracked</option>
+                      </select>
+                    </div>
+                  </div>
                   
                 </div>
               </div>
@@ -145,8 +157,8 @@
       </div>
     </div>
 
-    <!-- <pre>ORDER DATA: <?php print_r($order_data); ?></pre>
-    <pre>ORDER PRODUCTS: <?php print_r($order_products); ?></pre> -->
+    <pre>ORDER DATA: <?php print_r($order_data); ?></pre>
+    <!-- <pre>ORDER PRODUCTS: <?php print_r($order_products); ?></pre> -->
     <!-- <pre>ALL PRODUCTS: <?php print_r($all_products); ?></pre> -->
 
   </div>
@@ -191,16 +203,18 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 
 <script>
-var jwt = $("[name='atoken']").attr('content');
+// var jwt = $("[name='atoken']").attr('content');
 
 const order_pids = [<?= $order_pids; ?>];
 
 $(document).ready(function () {
-  jQuery.datetimepicker.setDateFormatter('moment')
+  jQuery.datetimepicker.setDateFormatter('moment');
 
   var serverDate = '<?php echo $currDate; ?>';
 
   var today = new Date(serverDate);
+
+  var dateNow = today.toISOString().slice(0, 10);
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -208,8 +222,11 @@ $(document).ready(function () {
     inline: true,
     format: 'YYYY-MM-DD',
     minDate: serverDate,
+    defaultDate: dateNow,
+    defaultSelect: true,
     onGenerate:function(ct) {
-      // console.log("onGenerate");
+      console.log("onGenerate");
+      console.log(ct);
       // console.log("ct: " + ct.getDate());
       // console.log("today: " + today.getDate());
 
@@ -234,15 +251,55 @@ $(document).ready(function () {
       }
     },
     onSelectDate:function(ct,$i){
-      // console.log("onSelectDate");
       $("#time_window option").show();
       $("#time_window option:selected").prop("selected", false);
     },
   });
 
+  // Check if cookie exists
+  var delivery_cookie = getCookie("delivery_schedule");
+
   $('#toggle').on('click', function(){
+    console.log("calendar button clicked!");
     $(".delivery-popup").click();
   }); 
+
+  $(document).ready(function() {
+    let delDate = "<?= $order_data->delivery_schedule; ?>";
+    let delTime = "<?= $order_data->delivery_time; ?>";
+    delTime = delTime.toString().split("-");
+    let delFrom = tConvert(delTime[0]);
+    let delTo = tConvert(delTime[1]);
+
+    console.log("delTime: " + delTime);
+    console.log("delFrom: " + delFrom);
+    console.log("delTo: " + delTo);
+
+    $("#picker").val(delDate + " @ " + delFrom + " - " + delTo);
+  });
+
+  // Save Delivery Schedule
+  $(".save-delivery-schedule").click(function() {
+    let timePickerVal = $("#inline_picker").datetimepicker('getValue');
+    timePickerVal = JSON.stringify(timePickerVal).split("T");
+
+    let delsched = {};
+    delsched.d = timePickerVal[0].substring(1);
+    delsched.t = $("#time_window").find(":selected").val();
+
+    $("#delivery_date").val(delsched.d);
+    $("#delivery_time").val(delsched.t);
+
+    // setCookie("delivery_schedule", JSON.stringify(delsched), '1');
+
+    let delTime = delsched.t.split("-");
+    let delFrom = tConvert(delTime[0]);
+    let delTo = tConvert(delTime[1]);
+
+    $("#picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+    // console.log(delsched.d + " @ " + delsched.t);
+    $(".btn-link").click();
+  });
 
   $(document).on('click', '.add-more', function(e) {
     e.preventDefault();
@@ -330,6 +387,9 @@ $(document).ready(function () {
     data.pay_method = $("#payment_method").find(":selected").val();
     data.del_address = $("#delivery_address").val();
     data.notes = $("#order_notes").val();
+    data.del_date = $("#delivery_date").val();
+    data.del_time = $("#delivery_time").val();
+    data.del_type = $("#del_type").find(":selected").val();
 
     // data.products = $("#edit_order_form");
 
