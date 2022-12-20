@@ -86,6 +86,25 @@
                     <?php endforeach; ?>
                   </tbody>
                 </table>
+
+                <div class="row mt-3 mb-1">
+                  <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
+                  <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">Subtotal:</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold subtotal_temp">0</div>
+                </div>
+
+                <div class="row mt-3 mb-1">
+                  <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
+                  <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">Tax:</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold tax_temp">0</div>
+                </div>
+
+                <div class="row mt-3 mb-1">
+                  <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
+                  <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">TOTAL:</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold total_temp">0</div>
+                </div>
+
                 <div class="row mt-5 mb-3">
                   <div><strong>Add More Products to Cart</strong></div>
                   <div class="col-10 col-md-10 col-xs-10">
@@ -206,6 +225,7 @@
 // var jwt = $("[name='atoken']").attr('content');
 
 const order_pids = [<?= $order_pids; ?>];
+var tax = <?= $tax_rate; ?>
 
 $(document).ready(function () {
   jQuery.datetimepicker.setDateFormatter('moment');
@@ -276,6 +296,8 @@ $(document).ready(function () {
     console.log("delTo: " + delTo);
 
     $("#picker").val(delDate + " @ " + delFrom + " - " + delTo);
+
+    updateTotal(tax);
   });
 
   // Save Delivery Schedule
@@ -328,6 +350,9 @@ $(document).ready(function () {
 
           console.log(order_pids);
           $("#cart_products tbody").append(json.append_data);
+
+          updateTotal(tax);
+
           $(".no-products").addClass("d-none");
           $(".save-btn").removeAttr('disabled');
 
