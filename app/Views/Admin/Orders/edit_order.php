@@ -43,7 +43,7 @@
                     <div class="input-group-prepend">
                       <button type="button" id="toggle" class="input-group-text" style="width: 250px;">
                       <i class="fa fa-calendar-alt" style="color: black"></i>&nbsp;&nbsp; 
-                      <input style="color: black;" type="text" id="picker" value="<?= $order_data->delivery_schedule; ?>" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
+                      <input style="color: black;" type="text" id="picker" value="<?= $order_data->delivery_schedule; ?> @ <?= $order_data->delivery_time; ?>" placeholder="delivery schedule" name="delivery_schedule" class="form-control">
                       </button>
                       <input type="hidden" name="delivery_date" id="delivery_date" value="<?= $order_data->delivery_schedule; ?>">
                       <input type="hidden" name="delivery_time" id="delivery_time" value="<?= $order_data->delivery_time; ?>">
@@ -133,7 +133,7 @@
                     <div class="col-12 col-md-12">
                       <h5>Order Notes</h5>
                       <div class="input-group input-group-outline">
-                        <textarea class="form-control bg-light w-100 mb-4" id="order_notes" name="order_notes" style="height: 100px;"><?= $order_data->order_notes; ?></textarea>
+                        <textarea class="form-control bg-light w-100" id="order_notes" name="order_notes" style="height: 100px;"><?= $order_data->order_notes; ?></textarea>
                       </div>
                     </div>
                   </div>
@@ -141,7 +141,7 @@
                   <div class="row mt-4">
                     <div class="col-12 col-md-12">
                       <h5>Delivery Type</h5>
-                      <select id="del_type" name="del_type" class="w-100 px-2 py-2">
+                      <select id="del_type" name="del_type" class="w-100 px-2 py-2 mb-4">
                         <option value="0" <?= ($order_data->payment_method == 0) ? "selected" : ""; ?>>Scheduled</option>
                         <option value="1" <?= ($order_data->payment_method == 1) ? "selected" : ""; ?>>Fast-tracked</option>
                       </select>
