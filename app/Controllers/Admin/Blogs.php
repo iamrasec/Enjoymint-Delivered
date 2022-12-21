@@ -68,7 +68,7 @@ class Blogs extends BaseController {
     $imageIds = [];
 
     for($i = 0; $i < count($blog); $i++) {
-      if($blog[$i]->images != null) {
+      if($blog[$i]->images != null || $blog[$i]->images != '') {
         $imageIds = explode(',',$blog[$i]->images);
         $blog[$i]->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
