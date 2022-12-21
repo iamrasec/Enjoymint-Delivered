@@ -186,7 +186,10 @@ class Orders extends ResourceController
     $update_order = [
       'address' => $post['del_address'],
       'payment_method' => $post['pay_method'],
-      'order_notes' => $post['notes']
+      'order_notes' => $post['notes'],
+      'delivery_type' => $post['del_type'],
+      'delivery_schedule' => $post['del_date'],
+      'delivery_time' => $post['del_time'],
     ];
 
     if($new_subtotal > 0) {

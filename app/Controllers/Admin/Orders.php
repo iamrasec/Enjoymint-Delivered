@@ -18,6 +18,7 @@ class Orders extends BaseController {
         $this->customerverification_model = model('VerificationModel');
 
         $this->allowed_roles = [1,2,4];
+        $this->tax_rate = 1.35;  // 35%
 
         $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
@@ -95,6 +96,7 @@ class Orders extends BaseController {
         $this->data['order_products'] = $order_products;
         $this->data['all_products'] = $all_products;
         $this->data['order_pids'] = implode(',', $order_pids);
+        $this->data['tax_rate'] = $this->tax_rate;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
         if($this->data['currDate']->format('H') > '16') {
