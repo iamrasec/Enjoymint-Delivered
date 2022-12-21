@@ -12,7 +12,7 @@
       <img src="<?= $site_logo; ?>" alt="Enjoymint Delivered" style="margin: 0 auto 20px; width: 300px; background: rgba(38,50,48,0.95); padding: 10px; border-radius: 20px;">
       <br>
       <h3>ORDER NOTIFICATION</h3>
-      <p>Hi <strong><?= $order_data['first_name']; ?></strong>, your order has been edited by the admin.</p>
+      <p>Hi <strong><?= $order_data['first_name']; ?></strong>, your order has been updated by the admin.</p>
       <br><br>
     </div>
     <div style="padding: 20px 15px; max-width: 1080px; margin: 0 auto;">
