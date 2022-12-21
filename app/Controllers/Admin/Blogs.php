@@ -15,7 +15,7 @@ class Blogs extends BaseController {
     $this->blog_model = model('BlogModel');
     
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
-    $this->image_model = model('imageModel');
+    $this->image_model = model('ImageModel');
 
     if($this->isLoggedIn !== 1 && $this->role !== 1) {
       return redirect()->to('/');
