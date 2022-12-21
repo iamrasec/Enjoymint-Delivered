@@ -186,6 +186,7 @@ $(document).ready(function () {
           data: 'delivery_type',
           className: 'delivery-type text-xs',
           render: function(data, type, row) {
+            console.log(row);
             if(data == 0) {
               return 'Scheduled';
             }
