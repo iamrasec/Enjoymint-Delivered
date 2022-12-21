@@ -127,7 +127,7 @@ class Experience extends BaseController {
    
 
     $this->data['experience'] = $exp;
-    return view('admin/edit_experience', $this->data);
+    return view('Admin/edit_experience', $this->data);
 
 
     // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
