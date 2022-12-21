@@ -279,7 +279,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, order_notes");  // <-- working query
+    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, delivery_type, order_notes");  // <-- working query
 
     // $this->order_model->select("orders.id, CONCAT(orders.first_name, ' ', orders.last_name) AS customer_name, orders.address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, orders.total, orders.created, orders.status, orders.delivery_schedule, customer_verification.image_validID, customer_verification.image_profile, customer_verification.image_MMIC, customer_verification.status");
 
@@ -369,7 +369,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
+    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, delivery_type, order_notes");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -420,7 +420,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
+    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, delivery_type, order_notes");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -471,7 +471,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
+    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, delivery_type, order_notes");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
