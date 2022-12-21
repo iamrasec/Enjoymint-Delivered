@@ -23,7 +23,7 @@
                   
       <?php if($order_data['delivery_schedule'] != null): ?>
       <?php
-      $del_time = explode("-", $order_data[0]->delivery_time);
+      $del_time = explode("-", $order_data['delivery_time']);
       $del_time_from = $del_time[0];
       $del_time_to = $del_time[1];
 
