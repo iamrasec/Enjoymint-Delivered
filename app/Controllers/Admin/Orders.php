@@ -124,6 +124,7 @@ class Orders extends BaseController {
         ];
         $this->data['page_title'] = $page_title;
         $this->data['submit_url'] = base_url('/admin/orders/order');
+        $this->data['role'] = $this->role;
 
         $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
         
@@ -143,6 +144,7 @@ class Orders extends BaseController {
             ];
             $this->data['page_title'] = $page_title;
             $this->data['submit_url'] = base_url('/admin/orders/order');
+            $this->data['role'] = $this->role;
 
             $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
           
@@ -163,6 +165,7 @@ class Orders extends BaseController {
         ];
         $this->data['page_title'] = $page_title;
         $this->data['submit_url'] = base_url('/admin/orders/order');
+        $this->data['role'] = $this->role;
 
         $this->data['product_sale'] = $this->order_model->where('status', 1)->get()->getResult();
         
