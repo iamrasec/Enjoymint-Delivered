@@ -24,11 +24,16 @@ class Orders extends ResourceController
       $this->customerverification_model = model('VerificationModel');
       $this->image_model = model('ImageModel');
       $this->product_model = model('ProductModel');
+      $this->user_model = model('UserModel');
 
       $this->tax_rate = 1.35;  // 35%
 
+      
+
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
+      $this->sender_email = getenv('SMTP_EMAIL_USER');
+       $this->user_email = 'linal1991@rhyta.com';
       
     }
 
@@ -111,7 +116,9 @@ class Orders extends ResourceController
   }
 
   public function save_edit()
-  {
+  {  $sender_email = $this->sender_email;
+    $user_email = session()->get('email');
+    //$user = $this->user_model->where('guid',$this->guid)->select('email')->first();
     $post = $this->request->getPost();
 
     $cart_key = $post['order_key'];
@@ -164,6 +171,7 @@ class Orders extends ResourceController
         ];
 
         $this->order_products->save($to_save_new);
+        // $this->send_order_notification($sender_email, $user_email);
       }
     }
 
@@ -180,14 +188,47 @@ class Orders extends ResourceController
       $update_order['subtotal'] = $new_subtotal;
       $update_order['tax'] = $tax_cost;
       $update_order['total'] = $total_cost;
+      
+      $this->send_order_notification($update_order, $to_save_new);
+    }
+    
+   $this->order_model->where('id', $post['oid'])->set($update_order)->update();
+    
+    die(json_encode(array("success" => TRUE,"message" => 'Order Updated Successfully')));
+  }
+
+
+  public function send_order_notification($order, $products)
+  {
+    d($_SERVER);
+    $sender_email = $this->sender_email;
+    $user_email = $this->user_email;
+
+    $email = \Config\Services::email();
+		$email->setFrom($sender_email);
+		$email->setTo($user_email);
+		$email->setSubject('Order has been Edited');
+		
+
+    for($i = 0; $i < count($products); $i++) {
+      $products[$i]['images'] = getProductImage($products[$i]['product_id']);
     }
 
-    $this->order_model->where('id', $post['oid'])->set($update_order)->update();
+    $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
 
-    // echo "<pre>".print_r($post, 1)."</pre>";
-    // echo "<pre>".print_r($get_saved_cart, 1)."</pre>";die();
+    // echo "<pre>".print_r($sender_email, 1)."</pre>";
+    // echo "<pre>".print_r($user_email, 1)."</pre>";
+    // echo "<pre>".print_r($order_data, 1)."</pre>"; die();
 
-    die(json_encode(array("success" => TRUE,"message" => 'Order Updated Successfully')));
+		$template = view('email/edited_order_notification', $order_data);
+
+    $email->setMessage($template);
+    $email->setNewline("\r\n");
+
+		if($email->send()) {
+      return true;
+		}
+    trace();
   }
 
   public function complete() 
@@ -199,6 +240,10 @@ class Orders extends ResourceController
     $this->order_model->where('id', $post['pid'])->set('status', 2)->update();
 
     die(json_encode(array("success" => TRUE,"message" => 'Order Completed', "id" => $post['pid'])));
+  }
+
+  public function sendDeliveredNotification(){
+
   }
 
   public function list_all()
@@ -218,7 +263,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, order_notes, delivery_schedule, delivery_time, delivery_type");  // <-- working query
+    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_schedule");  // <-- working query
 
     // $this->order_model->select("orders.id, CONCAT(orders.first_name, ' ', orders.last_name) AS customer_name, orders.address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, orders.total, orders.created, orders.status, orders.delivery_schedule, customer_verification.image_validID, customer_verification.image_profile, customer_verification.image_MMIC, customer_verification.status");
 

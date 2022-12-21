@@ -191,7 +191,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 
 <script>
-var jwt = $("[name='atoken']").attr('content');
+//var jwt = $("[name='atoken']").attr('content');
 
 const order_pids = [<?= $order_pids; ?>];
 
