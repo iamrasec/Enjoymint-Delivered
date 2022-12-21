@@ -125,6 +125,7 @@
                 <!-- <a class="add-more btn btn-danger mt-3 py-3 px-5"><i class="far fa-plus-square"></i> Add Another Product</a> -->
                 <p class="text-lg text-danger fw-bold">Click on the Save button to commit all the changes done.</p>
                 <button class="btn save-btn bg-gradient-primary mt-3 py-3 px-5 d-inline-block">Save</button>
+                <div class="lds-hourglass d-none"></div>
               </div>
               <div class="col-12 col-md-4 col-xs-12">
                 <div class="order-user-data px-3 py-3 px-4 rounded-5">
@@ -211,6 +212,37 @@
 
   #add-product-select option {
     border: solid 1px #DDDDDD;
+  }
+  .lds-hourglass {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 30px;
+  }
+  .lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 10px solid #489989;
+    border-color: #489989 transparent #489989 transparent;
+    animation: lds-hourglass 1.2s infinite;
+  }
+  @keyframes lds-hourglass {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+      transform: rotate(900deg);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+      transform: rotate(1800deg);
+    }
   }
 </style>
 
@@ -407,6 +439,9 @@ $(document).ready(function () {
 
     console.log("save button clicked");
 
+    $(".save-btn").attr('disabled', true);
+    $(".lds-hourglass").removeClass('d-none');
+
     let data = {};
     data.order_key = $("#order_key").val();
     data.oid = $("#order_id").val();
@@ -445,9 +480,13 @@ $(document).ready(function () {
         console.log(json);
 
         enjoymintAlert('', json.message, 'success', 1);
+        $(".save-btn").removeAttr('disabled');
+        $(".lds-hourglass").addClass('d-none');
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);
+        $(".save-btn").removeAttr('disabled');
+        $(".lds-hourglass").addClass('d-none');
       },
       beforeSend: function(xhr) {
         xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
