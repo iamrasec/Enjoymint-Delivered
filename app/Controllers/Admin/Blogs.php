@@ -115,12 +115,18 @@ class Blogs extends BaseController {
    
     foreach($blogs as $blog){
       $start++;
+      if (strlen($blog->description) >= 200) {
+          $description = substr($blog->description, 0, 200). " ... ";
+      }
+      else {
+        $description = $blog->description;
+      }
       $data[] = array(
         $blog->id, 
         $blog->title, 
-        $blog->description,
+        $description,
         $blog->author,
-        "<a href=".base_url('blogs/'.$blog->url).">view</a> | <a href=".base_url('admin/blogs/edit_blog/'. $blog->id).">edit</a>",
+        '<a href='.base_url('blogs/'.$blog->url).' target="_blank">view</a> | <a href='.base_url('admin/blogs/edit_blog/'. $blog->id).'>edit</a>',
       );
     }
 
