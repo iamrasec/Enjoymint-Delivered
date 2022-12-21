@@ -226,7 +226,7 @@ $(document).ready(function () {
             // console.log(row);
             let actions = '';
             if(row.status == 0 || row.status == 1) {
-              actions += '<a href="<?= base_url('admin/orders/edit'); ?>/'+row.id+'"><i class="fas fa-edit"></i></a>';
+              // actions += '<a href="<?= base_url('admin/orders/edit'); ?>/'+row.id+'"><i class="fas fa-edit"></i></a>';
               // actions += '<a href="javascript;;"><i class="fas fa-trash"></i></a> | ';
               actions += '<a class="btn btn-link complete-order actions-'+row.id+' text-secondary ps-0 pe-2" data-id="'+row.id+'"><i class="fas fa-clipboard-check"></i> Complete Order</a> &nbsp;';
               actions += '<div class="dropdown d-inline actions-'+row.id+'"><button class="btn btn-link actions-'+row.id+' text-secondary ps-0 pe-2" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v text-lg" aria-hidden="true"></i></button>';
