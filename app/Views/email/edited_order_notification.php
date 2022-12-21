@@ -37,20 +37,20 @@
           <img src="http://fuegonetworxservices.com/products/images/<?= $product['images'][0]->filename; ?>" style="width: 100px">
           </td>
           <td>
-            <strong><?= $product['product_name']; ?></strong><br>
+            <strong><?= $product['name']; ?></strong><br>
             Qty: <?= $product['qty']; ?>
           </td>
-          <td style="padding: 5px; text-align: right;"><div style="vertical-align: top;">$<?= number_format($product['total'], 2, '.', ','); ?></div></td>
+          <td style="padding: 5px; text-align: right;"><div style="vertical-align: top;">$<?= number_format($product['qty'] * $product['price'], 2, '.', ','); ?></div></td>
         </tr>
         <?php endforeach; ?>
         <tr>
-          <td colspan="3" style="text-align: right;">Subtotal: <strong>$<?= number_format($order_data['order_costs']['subtotal'], 2, '.', ','); ?></strong></td>
+          <td colspan="3" style="text-align: right;">Subtotal: <strong>$<?= number_format($order_data['subtotal'], 2, '.', ','); ?></strong></td>
         </tr>
         <tr>
-          <td colspan="3" style="text-align: right;">Taxes: <strong>$<?= number_format($order_data['order_costs']['tax'], 2, '.', ','); ?></strong></td>
+          <td colspan="3" style="text-align: right;">Taxes: <strong>$<?= number_format($order_data['tax'], 2, '.', ','); ?></strong></td>
         </tr>
         <tr>
-          <td colspan="3" style="text-align: right;"><strong>TOTAL:</strong> <strong>$<?= number_format($order_data['order_costs']['total'], 2, '.', ','); ?></strong></td>
+          <td colspan="3" style="text-align: right;"><strong>TOTAL:</strong> <strong>$<?= number_format($order_data['total'], 2, '.', ','); ?></strong></td>
         </tr>
       </table>
     </div>

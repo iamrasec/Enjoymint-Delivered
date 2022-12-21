@@ -12,7 +12,7 @@ class Orders extends ResourceController
   use ResponseTrait;
     public function __construct() 
     {
-      helper(['jwt']);
+      helper(['jwt', 'edimage', 'date']);
 
       $this->data = [];
       $this->role = session()->get('role');
@@ -33,7 +33,8 @@ class Orders extends ResourceController
       helper(['form', 'functions']); // load helpers
       addJSONResponseHeader(); // set response header to json
       $this->sender_email = getenv('SMTP_EMAIL_USER');
-       $this->user_email = 'linal1991@rhyta.com';
+       // $this->user_email = 'linal1991@rhyta.com';
+       $this->user_email = 'cesaryamutajr+111@gmail.com';
       
     }
 
@@ -129,6 +130,10 @@ class Orders extends ResourceController
     // echo "<pre>".print_r($post, 1)."</pre>";die();
     // echo "<pre>".print_r($to_save, 1)."</pre>";die();
 
+    $get_order_data = $this->order_model->where('id', $post['oid'])->first();
+
+    // echo "<pre>".print_r($get_order_data, 1)."</pre>";die();
+
     $get_saved_cart = $this->order_products->select('product_id, qty')->where('order_id', $post['oid'])->get()->getResult();
 
     // echo "<pre>".print_r($get_saved_cart, 1)."</pre>";die();
@@ -188,19 +193,24 @@ class Orders extends ResourceController
       $update_order['subtotal'] = $new_subtotal;
       $update_order['tax'] = $tax_cost;
       $update_order['total'] = $total_cost;
-      
-      $this->send_order_notification($update_order, $to_save_new);
     }
     
-   $this->order_model->where('id', $post['oid'])->set($update_order)->update();
+    $this->order_model->where('id', $post['oid'])->set($update_order)->update();
+
+    $this->send_order_notification($post['oid'], $update_order, $to_save);
     
     die(json_encode(array("success" => TRUE,"message" => 'Order Updated Successfully')));
   }
 
 
-  public function send_order_notification($order, $products)
+  public function send_order_notification($oid, $order, $products)
   {
-    d($_SERVER);
+    // d($_SERVER);
+    
+    $get_order_data = $this->order_model->where('id', $oid)->first();
+
+    // echo "<pre>".print_r($get_order_data, 1)."</pre>";die();
+
     $sender_email = $this->sender_email;
     $user_email = $this->user_email;
 
@@ -208,13 +218,15 @@ class Orders extends ResourceController
 		$email->setFrom($sender_email);
 		$email->setTo($user_email);
 		$email->setSubject('Order has been Edited');
-		
+
+		// echo "<pre>".print_r($products, 1)."</pre>";die();
 
     for($i = 0; $i < count($products); $i++) {
-      $products[$i]['images'] = getProductImage($products[$i]['product_id']);
+      // $products[$i]['images'] = getProductImage($products[$i]['product_id']);
+      $products[$i]['images'] = getProductImage($products[$i]['id']);
     }
 
-    $order_data = ["order_data" => $order, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
+    $order_data = ["order_data" => $get_order_data, "order_products" => $products, "site_logo" => 'http://fuegonetworxservices.com/assets/img/Enjoymint-Logo-Landscape-White-2.png'];
 
     // echo "<pre>".print_r($sender_email, 1)."</pre>";
     // echo "<pre>".print_r($user_email, 1)."</pre>";
