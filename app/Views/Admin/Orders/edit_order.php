@@ -16,6 +16,7 @@
     <div class="row">
       <div class="col-lg-6">
         <h4><?php echo $page_title; ?></h4>
+        <div><a href="<?= base_url('admin/orders'); ?>" style="color: #489989;">< Go Back To All Orders List</a></div>
       </div>
       <div class="col-lg-1"></div>
       <div class="col-lg-5 text-right d-flex flex-row justify-content-center">
