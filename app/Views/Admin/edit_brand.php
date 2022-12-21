@@ -15,7 +15,7 @@
         <h4><?php echo $page_title; ?></h4>
       </div>
       <div class="col-lg-6 text-right d-flex flex-column justify-content-center">
-        <a class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2" href="<?php echo base_url('/admin/products/add_brand'); ?>">Add Brands</a>
+        <button type="button" class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2 form-submit">Save</a>
       </div>
     </div>
 
@@ -23,33 +23,30 @@
       <div class="col-lg-12 mt-lg-0 mt-4">
         <div class="card">
           <div class="card-body">
-            <?php if (session()->getFlashdata('success') !== NULL) : ?>
-              <div class="alert alert-success text-white alert-dismissible fade show" role="alert">
-                  <?php echo session()->getFlashdata('success'); ?>
+            <form role="form" id="add_experience_form" method="post" action="<?php echo $submit_url; ?>" >
+              <div class="row">
+                <div class="col-12 col-md-6 col-xs-12">
+                  <label class="form-label">Brand Name</label>
+                  <div class="input-group input-group-dynamic">
+                  <input type="text" class="form-control" name="id" value="<?= $brand_data['id'] ?>" id="id" hidden>
+                    <input type="text" class="form-control" name="name" value="<?= $brand_data['name'] ?>" id="name" required onfocus="focused(this)" onfocusout="defocused(this)">
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-xs-12">
+                  <div class="row">
+                      <label class="form-label">Brand URL</label>
+                      <div class="col-4 col-sm-4 pe-0">
+                        <p class="text-xs mt-3 float-end px-0"><?php echo base_url(); ?>/brand/</p>
+                      </div>
+                      <div class="col-8 col-md-8 col-xs-8 mb-3 ps-1">
+                        <div class="input-group input-group-dynamic">
+                          <input type="text" id="url" class="form-control w-100 border px-2" name="url" required onfocus="focused(this)" onfocusout="defocused(this)" value="<?= $brand_data['url'] ?>">
+                        </div>
+                      </div>
+                    </div>
+                </div>
               </div>
-            <?php endif; ?>
-            <div class="table-responsive">
-              <table class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach($brands as $brand): ?>
-                  <tr class="text-xs font-weight-bold mb-0">
-                    <td><?php echo $brand->id; ?></td>
-                    <td><?php echo $brand->name; ?></td>
-                    <td><?php echo $brand->url; ?></td>
-                    <td><a href="<?php echo base_url('admin/products/edit_brand') . "/" .$brand->id; ?>">edit</a></td>
-                  </tr>
-                  <?php endforeach; ?>
-                </tbody>
-              </table>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -86,7 +83,7 @@
 </main>
 
 <?php $this->endSection(); ?>
-
-<?php $this->section('scripts'); ?>
-<script src="<?php echo base_url(); ?>/assets/js/plugins/datatables.js"></script>
-<?php $this->endSection(); ?>
+<?php $this->section("scripts") ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?php echo base_url(); ?>/assets/js/edit_experience.js"></script>
+<?php $this->endSection() ?>

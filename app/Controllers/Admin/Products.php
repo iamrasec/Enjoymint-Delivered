@@ -171,6 +171,51 @@ class Products extends BaseController {
     }
   }
 
+  public function edit_brand($id) {
+    if($this->isLoggedIn == 1 && $this->role == 1) {
+      // $get_brand_data = $this->brand_model->where('id', $id)->first();
+      $page_title = 'Edit Brands';
+
+      $this->data['page_body_id'] = "product_brands";
+      $this->data['breadcrumbs'] = [
+        'parent' => [
+          ['parent_url' => base_url('/admin/products'), 'page_title' => 'Products'],
+        ],
+        'current' => $page_title,
+      ];
+      $this->data['page_title'] = $page_title;
+      $this->data['brand_data'] = $this->brand_model->where('id', $id)->first();
+      $this->data['submit_url'] = base_url('/admin/products/save_edit_brand');
+
+		  echo view('Admin/edit_brand', $this->data);
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
+  public function save_edit_brand() {
+    if($this->isLoggedIn == 1 && $this->role == 1) {
+      $post = $this->request->getPost();
+      
+      // print_r($post);die();
+
+      $update = [
+        'name' => $post['name'],
+        'url' => $post['url'],
+      ];
+
+      $this->brand_model->where('id', $post['id'])->set($update)->update();
+
+      $session = session();
+      $session->setFlashdata('success', 'Brand '. $post['name'] .' Modifications Saved!');
+      return redirect()->to('/admin/products/brands');
+    }
+    else {
+      return redirect()->to('/');
+    }
+  }
+
   public function add_brand() {
     helper(['form']);
 
