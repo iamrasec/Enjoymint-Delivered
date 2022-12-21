@@ -311,7 +311,7 @@ $(document).ready(function () {
   });
 
   // Check if cookie exists
-  var delivery_cookie = getCookie("delivery_schedule");
+  // var delivery_cookie = getCookie("delivery_schedule");
 
   $('#toggle').on('click', function(){
     console.log("calendar button clicked!");
