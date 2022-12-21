@@ -123,7 +123,8 @@
                   </div>
                 </div>
                 <!-- <a class="add-more btn btn-danger mt-3 py-3 px-5"><i class="far fa-plus-square"></i> Add Another Product</a> -->
-                <button class="btn save-btn bg-gradient-primary mt-3 py-3 px-5 d-inline-block" style="float:right;">Save</button>
+                <p class="text-lg text-danger fw-bold">Click on the Save button to commit all the changes done.</p>
+                <button class="btn save-btn bg-gradient-primary mt-3 py-3 px-5 d-inline-block">Save</button>
               </div>
               <div class="col-12 col-md-4 col-xs-12">
                 <div class="order-user-data px-3 py-3 px-4 rounded-5">
