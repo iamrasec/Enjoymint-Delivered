@@ -23,7 +23,7 @@
       <div class="col-lg-12 mt-lg-0 mt-4">
         <div class="card">
           <div class="card-body">
-            <div class="table-responsives">
+            <div class="table-responsives text-xs">
               <table id="blog-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>
