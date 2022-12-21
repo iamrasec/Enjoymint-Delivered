@@ -23,6 +23,11 @@
       <div class="col-lg-12 mt-lg-0 mt-4">
         <div class="card">
           <div class="card-body">
+            <?php if (session()->getFlashdata('success') !== NULL) : ?>
+              <div class="alert alert-success text-white alert-dismissible fade show" role="alert">
+                  <?php echo session()->getFlashdata('success'); ?>
+              </div>
+            <?php endif; ?>
             <div class="table-responsive">
               <table class="table align-items-center mb-0">
                 <thead>
