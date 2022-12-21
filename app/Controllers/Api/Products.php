@@ -24,7 +24,7 @@ class Products extends ResourceController
       $this->product_variant_model = model('ProductVariantModel');
       $this->category_model = model('CategoryModel');
       $this->product_category = model('ProductCategory');
-      $this->product_experience = model('productExperience');
+      $this->product_experience = model('ProductExperience');
       $this->compound_model = model('CompoundModel');
       // $this->experience_model = model('ExperienceModel');
 
