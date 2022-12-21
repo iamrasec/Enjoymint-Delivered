@@ -215,7 +215,8 @@ class Orders extends ResourceController
     // echo "<pre>".print_r($get_order_data, 1)."</pre>";die();
 
     $sender_email = $this->sender_email;
-    $user_email = $this->user_email;
+    // $user_email = $this->user_email;
+    $user_email = $get_order_data['email'];
 
     $email = \Config\Services::email();
 		$email->setFrom($sender_email);
@@ -368,7 +369,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, order_notes");  // <-- working query
+    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -389,37 +390,6 @@ class Orders extends ResourceController
     for($i = 0; $i < count($orders); $i++) {
       $products = $this->order_products->where('order_id', $orders[$i]->id)->get()->getResult();
       $orders[$i]->products = $products;
-
-      // Get customer verification
-      $customer_ids = $this->customerverification_model->where('user_id', $orders[$i]->customer_id)->whereIn('status', [0,1])->get()->getResult();
-
-      if(!empty($customer_ids)) {
-        foreach($customer_ids as $customer_id) {
-          if(!empty($customer_id->image_validID)) {
-            $valid_id = $this->image_model->where('id', $customer_id->image_validID)->get()->getResult();
-          }
-          if(!empty($customer_id->image_profile)) {
-            $proile_img = $this->image_model->where('id', $customer_id->image_profile)->get()->getResult();
-          }
-          if(!empty($customer_id->image_MMIC)) {
-            $mmic = $this->image_model->where('id', $customer_id->image_MMIC)->get()->getResult();
-          }
-        }
-        
-        // $orders[$i]->customer_ids = $customer_ids;
-
-        // <img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['validID'][0]->filename).'" style="width:120px; width: 90px;">
-        $orders[$i]->customer_ids = [
-          'status' => $customer_id->status,
-          'user_id' => $customer_id->user_id,
-          'valid_id' => (isset($valid_id)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$valid_id[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'profile_img' => (isset($proile_img)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$proile_img[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'mmic' => (isset($mmic)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$mmic[0]->filename).'"style="width:120px; width: 90px;">' : '',
-        ];
-      }
-      else {
-        $orders[$i]->customer_ids = [];
-      }
     }
 
     $output = array(
@@ -450,7 +420,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, order_notes");  // <-- working query
+    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -471,37 +441,6 @@ class Orders extends ResourceController
     for($i = 0; $i < count($orders); $i++) {
       $products = $this->order_products->where('order_id', $orders[$i]->id)->get()->getResult();
       $orders[$i]->products = $products;
-
-      // Get customer verification
-      $customer_ids = $this->customerverification_model->where('user_id', $orders[$i]->customer_id)->whereIn('status', [0,1])->get()->getResult();
-
-      if(!empty($customer_ids)) {
-        foreach($customer_ids as $customer_id) {
-          if(!empty($customer_id->image_validID)) {
-            $valid_id = $this->image_model->where('id', $customer_id->image_validID)->get()->getResult();
-          }
-          if(!empty($customer_id->image_profile)) {
-            $proile_img = $this->image_model->where('id', $customer_id->image_profile)->get()->getResult();
-          }
-          if(!empty($customer_id->image_MMIC)) {
-            $mmic = $this->image_model->where('id', $customer_id->image_MMIC)->get()->getResult();
-          }
-        }
-        
-        // $orders[$i]->customer_ids = $customer_ids;
-
-        // <img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['validID'][0]->filename).'" style="width:120px; width: 90px;">
-        $orders[$i]->customer_ids = [
-          'status' => $customer_id->status,
-          'user_id' => $customer_id->user_id,
-          'valid_id' => (isset($valid_id)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$valid_id[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'profile_img' => (isset($proile_img)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$proile_img[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'mmic' => (isset($mmic)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$mmic[0]->filename).'"style="width:120px; width: 90px;">' : '',
-        ];
-      }
-      else {
-        $orders[$i]->customer_ids = [];
-      }
     }
 
     $output = array(
@@ -532,7 +471,7 @@ class Orders extends ResourceController
     $count_all = $this->order_model->countAllResults();
 
     // 2nd Query that gets all the data
-    $this->order_model->select("id, customer_id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status, delivery_time, delivery_schedule, order_notes");  // <-- working query
+    $this->order_model->select("id, CONCAT(first_name, ' ', last_name) AS customer_name, address, (SELECT COUNT(id) FROM order_products WHERE order_id = orders.id) AS product_count, total, created, status");
 
     if(isset($post['search']['value']) && !empty($post['search']['value'])) {
       $search_value = strtolower($post['search']['value']);
@@ -553,37 +492,6 @@ class Orders extends ResourceController
     for($i = 0; $i < count($orders); $i++) {
       $products = $this->order_products->where('order_id', $orders[$i]->id)->get()->getResult();
       $orders[$i]->products = $products;
-
-      // Get customer verification
-      $customer_ids = $this->customerverification_model->where('user_id', $orders[$i]->customer_id)->whereIn('status', [0,1])->get()->getResult();
-
-      if(!empty($customer_ids)) {
-        foreach($customer_ids as $customer_id) {
-          if(!empty($customer_id->image_validID)) {
-            $valid_id = $this->image_model->where('id', $customer_id->image_validID)->get()->getResult();
-          }
-          if(!empty($customer_id->image_profile)) {
-            $proile_img = $this->image_model->where('id', $customer_id->image_profile)->get()->getResult();
-          }
-          if(!empty($customer_id->image_MMIC)) {
-            $mmic = $this->image_model->where('id', $customer_id->image_MMIC)->get()->getResult();
-          }
-        }
-        
-        // $orders[$i]->customer_ids = $customer_ids;
-
-        // <img class="id_verification_image" src="'.base_url('users/verification/'.$product_arr['validID'][0]->filename).'" style="width:120px; width: 90px;">
-        $orders[$i]->customer_ids = [
-          'status' => $customer_id->status,
-          'user_id' => $customer_id->user_id,
-          'valid_id' => (isset($valid_id)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$valid_id[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'profile_img' => (isset($proile_img)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$proile_img[0]->filename).'"style="width:120px; width: 90px;">' : '',
-          'mmic' => (isset($mmic)) ? '<img class="customer-valid-id" src="'.base_url('users/verification/'.$mmic[0]->filename).'"style="width:120px; width: 90px;">' : '',
-        ];
-      }
-      else {
-        $orders[$i]->customer_ids = [];
-      }
     }
 
     $output = array(
