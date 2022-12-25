@@ -44,8 +44,15 @@
           <a class="nav-link text-white" href="<?= base_url('admin/dispatch/test'); ?>">Dispatch Test</a>
         </li> -->
         <li class="nav-item">
+          <a href="<?= base_url('/admin/dashboard'); ?>" class="nav-link text-white " aria-controls="dashboard" role="button" aria-expanded="false">
+            <i class="material-icons-round">dashboard</i>
+            <span class="nav-link-text ms-2 ps-1">Dashboard</span>
+            <div></div>
+          </a>
+        </li>
+        <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="nav-link text-white active" aria-controls="dashboard" role="button" aria-expanded="false">
-            <i class="material-icons-round opacity-10">dashboard</i>
+            <i class="material-icons-round opacity-10">inventory</i>
             <span class="nav-link-text ms-2 ps-1">Products</span>
           </a>
           <div class="collapse  show " id="dashboard">
@@ -213,10 +220,6 @@
             <span class="nav-link-text ms-2 ps-1">Logout</span>
             <div></div>
           </a>
-
-          <!-- <a href="<?= base_url('/users/logout'); ?>" class="">
-            <span class="material-icons">logout</span> Logout
-          </a> -->
         </li>
 
       </ul>
