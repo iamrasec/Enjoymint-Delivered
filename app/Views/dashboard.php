@@ -132,13 +132,19 @@
         <div class="col-sm-3">
           <div class="card">
             <div class="card-body p-3 position-relative">
-              <di v class="row">
+              <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Daily Sales</p>
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($daily_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
-                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span> -->
+                  <?php if($daily_sales['total_sales'] == $daily_sales['yesterday_sales']): ?>
+                    <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">Same with yesterday</span></span>
+                  <?php elseif($daily_sales['diff'] > 0): ?>
+                    <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+<?= $daily_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since yesterday</span></span>
+                  <?php else: ?>
+                    <span class="text-sm text-end text-warning font-weight-bolder mt-auto mb-0"><?= $daily_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since yesterday</span></span>
+                  <?php endif; ?>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -154,8 +160,18 @@
                   </div>
                 </div>
               </div>
+              <div class="row mt-3">
+                <div class="col-7 text-start">
+                  <p class="text-xs mb-1 text-capitalize font-weight-bold">Yesterday</p>
+                  <h5 class="text-xs font-weight-bolder mb-0">
+                    $<?= number_format($daily_sales['yesterday_sales'], 2, ".", ","); ?>
+                  </h5>
+                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span> -->
+                </div>
+              </div>
             </div>
           </div>
+        </div>
         
         <div class="col-sm-3 mt-sm-0 mt-3">
           <div class="card">
@@ -166,7 +182,13 @@
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($monthly_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
-                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+12% <span class="font-weight-normal text-secondary">since last month</span></span> -->
+                  <?php if($monthly_sales['total_sales'] == $monthly_sales['last_month_sales']): ?>
+                    <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">Same with last month</span></span>
+                  <?php elseif($monthly_sales['diff'] > 0): ?>
+                  <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+<?= $monthly_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since last month</span></span>
+                  <?php else: ?>
+                    <span class="text-sm text-end text-warning font-weight-bolder mt-auto mb-0"><?= $monthly_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since last month</span></span>
+                  <?php endif; ?>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -182,6 +204,15 @@
                   </div>
                 </div>
               </div>
+              <div class="row mt-3">
+                <div class="col-7 text-start">
+                  <p class="text-xs mb-1 text-capitalize font-weight-bold">Last Month</p>
+                  <h5 class="text-xs font-weight-bolder mb-0">
+                    $<?= number_format($monthly_sales['last_month_sales'], 2, ".", ","); ?>
+                  </h5>
+                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span> -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -195,11 +226,27 @@
                   <h5 class="font-weight-bolder mb-0">
                     $<?= number_format($annual_sales['total_sales'], 2, ".", ","); ?>
                   </h5>
+                  <?php if($annual_sales['total_sales'] == $annual_sales['last_year_sales']): ?>
+                    <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">Same with last year</span></span>
+                  <?php elseif($annual_sales['diff'] > 0): ?>
+                    <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+<?= $annual_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since last year</span></span>
+                  <?php else: ?>
+                    <span class="text-sm text-end text-warning font-weight-bolder mt-auto mb-0"><?= $annual_sales['diff']; ?>% <span class="font-weight-normal text-secondary">since last year</span></span>
+                  <?php endif; ?>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
                     <span class="text-xs text-secondary"><?= $annual_sales['date']; ?></span>
                   </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-7 text-start">
+                  <p class="text-xs mb-1 text-capitalize font-weight-bold">Last Year</p>
+                  <h5 class="text-xs font-weight-bolder mb-0">
+                    $<?= number_format($annual_sales['last_year_sales'], 2, ".", ","); ?>
+                  </h5>
+                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span> -->
                 </div>
               </div>
             </div>
@@ -225,6 +272,15 @@
                   </div>
                 </div>
               </div>
+              <div class="row mt-5">
+                <div class="col-7 text-start">
+                  <p class="text-xs mb-1 text-capitalize font-weight-bold">Pending Users</p>
+                  <h5 class="text-xs font-weight-bolder mb-0">
+                    <?= $pending_users; ?>
+                  </h5>
+                  <!-- <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span> -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -235,10 +291,10 @@
         <div class="col-sm-3">
           <div class="card">
             <div class="card-body p-3 position-relative">
-              <di v class="row">
+              <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Daily Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">0</h5>
+                  <h5 class="font-weight-bolder mb-0"><?= $daily_product_sold; ?></h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -248,6 +304,7 @@
               </div>
             </div>
           </div>
+        </div>
         
         <div class="col-sm-3 mt-sm-0 mt-3">
           <div class="card">
@@ -255,7 +312,7 @@
               <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Monthly Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">0</h5>
+                  <h5 class="font-weight-bolder mb-0"><?= $monthly_products_sold; ?></h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -273,7 +330,7 @@
               <div class="row">
                 <div class="col-7 text-start">
                   <p class="text-sm mb-1 text-capitalize font-weight-bold">Annual Products Sold</p>
-                  <h5 class="font-weight-bolder mb-0">0</h5>
+                  <h5 class="font-weight-bolder mb-0"><?= $annual_products_sold; ?></h5>
                 </div>
                 <div class="col-5">
                   <div class="dropdown text-end">
@@ -290,9 +347,9 @@
             <div class="card-body p-3 position-relative">
               <div class="row">
                 <div class="col-7 text-start">
-                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Pending Users</p>
+                  <p class="text-sm mb-1 text-capitalize font-weight-bold">Products in Inventory</p>
                   <h5 class="font-weight-bolder mb-0">
-                    <?= $active_users; ?>
+                    <?= $products_count; ?>
                   </h5>
                 </div>
                 <div class="col-5">
