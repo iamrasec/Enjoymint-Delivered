@@ -464,7 +464,7 @@ class Dashboard extends BaseController {
   private function top_selling_prods($limit = 10) {
 
     $db = \Config\Database::connect();
-    $builder = $db->table('top_selling_products');
+    $builder = $db->table('v_top_selling_products');
     $return = $builder->limit($limit)->get()->getResult();
 
     return $return;
