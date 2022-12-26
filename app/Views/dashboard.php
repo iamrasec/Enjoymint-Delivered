@@ -535,7 +535,7 @@
                     <?php foreach($top_selling_prods as $top_prods): ?>
                       <tr class="text-xs">
                         <td class="ps-4"><a href="<?= base_url('/products/'.$top_prods->url); ?>" target="_blank"><?= $top_prods->product_name; ?></a></td>
-                        <td class="text-right">$<?= $top_prods->unit_price; ?></td>
+                        <td class="text-right">$<?= $top_prods->price; ?></td>
                         <td class="text-center"><?= round($top_prods->total_qty / $top_prods->order_count); ?></td>
                       </tr>
                     <?php endforeach; ?>
