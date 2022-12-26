@@ -419,7 +419,7 @@
           <div class="card">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
-                <h6 class="mb-0">Revenue</h6>
+                <h6 class="mb-0">Annual Sales by Month</h6>
                 <!-- <button type="button" class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="See which ads perform better">
                   <i class="material-icons text-sm">priority_high</i>
                 </button> -->
@@ -519,7 +519,7 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Top Selling Products</h6>
+              <h6>Top 10 Selling Products</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -527,12 +527,18 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Average Qty</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-right">Price</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ave. Qty. per Order</th>
                     </tr>
                   </thead>
                   <tbody>
-                    
+                    <?php foreach($top_selling_prods as $top_prods): ?>
+                      <tr class="text-xs">
+                        <td class="ps-4"><a href="<?= base_url($top_prods->url); ?>" target="_blank"><?= $top_prods->product_name; ?></a></td>
+                        <td class="text-right">$<?= $top_prods->unit_price; ?></td>
+                        <td class="text-center"><?= round($top_prods->total_qty / $top_prods->order_count); ?></td>
+                      </tr>
+                    <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
