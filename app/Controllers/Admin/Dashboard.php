@@ -257,7 +257,7 @@ class Dashboard extends BaseController {
     $maxDays = date("t", mktime(0,0,0, date("n") - 1));
 
     $startMonth = $currYear.'-'.($currMonth - 1).'-1 00:00:00';
-    $endMonth = $currYear.'-'.$currMonth.'-'.$maxDays.' 23:59:59';
+    $endMonth = $currYear.'-'.($currMonth - 1).'-'.$maxDays.' 23:59:59';
 
     $where1 = 'created >= "'. $startMonth .' 00:00:00"';
     $where2 = 'created <= "'. $endMonth .' 23:59:59"';
@@ -397,7 +397,7 @@ class Dashboard extends BaseController {
       // }
       
 
-      $date = date_create($data->delivery_schedule ?? '');
+      $date = date_create($data->created ?? '');
 
       switch(date_format($date, 'm')) {
         case 1:
