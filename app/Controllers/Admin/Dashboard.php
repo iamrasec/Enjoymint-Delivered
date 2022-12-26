@@ -65,8 +65,9 @@ class Dashboard extends BaseController {
     $this->data['products_count'] = $this->products_count();
 
     $this->data['sales_channels_pct'] = $this->sales_channels_pct();
+    $this->data['top_selling_prods'] = $this->top_selling_prods();
 
-    // $this->yesterday_sales();die();
+    // echo "<pre>".print_r($this->top_selling_prods(), 1)."</pre>";die();
 
     echo view('dashboard', $this->data);     
   }
@@ -458,5 +459,14 @@ class Dashboard extends BaseController {
     ];
 
     die(json_encode(array("success" => TRUE, "message" => $return)));
+  }
+
+  private function top_selling_prods($limit = 10) {
+
+    $db = \Config\Database::connect();
+    $builder = $db->table('top_selling_products');
+    $return = $builder->limit($limit)->get()->getResult();
+
+    return $return;
   }
 }
