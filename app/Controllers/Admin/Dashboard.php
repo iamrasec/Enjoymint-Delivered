@@ -64,6 +64,8 @@ class Dashboard extends BaseController {
 
     $this->data['products_count'] = $this->products_count();
 
+    $this->data['sales_channels_pct'] = $this->sales_channels_pct();
+
     // $this->yesterday_sales();die();
 
     echo view('dashboard', $this->data);     
@@ -282,8 +284,10 @@ class Dashboard extends BaseController {
     $raw_data = $this->checkout_model->where($where1)->where($where2)->where('status != 3')->get()->getResult();    
 
     $total_sales = 0;
+    $order_count = 0;
     foreach($raw_data as $data) {
       $total_sales += $data->subtotal;
+      $order_count++;
     }
 
     $last_year = $this->last_year_sales();
@@ -296,7 +300,8 @@ class Dashboard extends BaseController {
       'date' => $this->today->toLocalizedString('YYYY'),
       'total_sales' => $total_sales,
       'last_year_sales' => $last_year,
-      'diff' => $diff
+      'diff' => $diff,
+      'order_count' => $order_count,
     ];
 
     return $return;
@@ -341,5 +346,117 @@ class Dashboard extends BaseController {
     $count = $this->product_model->where('archived = 0')->countAllResults();
 
     return $count;
+  }
+
+  private function sales_channels_pct() {
+    $website_channel = $this->website_order_count();
+
+    $channels = [
+      'website' => $website_channel,
+    ];
+
+    return $channels;
+  }
+
+  private function website_order_count() {
+    $website_orders = $this->annual_sales();
+
+    return $website_orders['order_count'];
+  }
+
+  public function salesrev() {
+    // $date = date('m', strtotime('2022-12-11'));
+
+    $currYear = $this->today->year;
+
+    $startYear = $currYear.'-1-1 00:00:00';
+    $endYear = $currYear.'-12-31 23:59:59';
+
+    $where1 = 'created >= "'. $startYear .' 00:00:00"';
+    $where2 = 'created <= "'. $endYear .' 23:59:59"';
+
+    $raw_data = $this->checkout_model->where($where1)->where($where2)->where('status != 3')->get()->getResult();    
+
+    $jan = 0;
+    $feb = 0;
+    $mar = 0;
+    $apr = 0;
+    $may = 0;
+    $jun = 0;
+    $jul = 0;
+    $aug = 0;
+    $sep = 0;
+    $oct = 0;
+    $nov = 0;
+    $dec = 0;
+
+    foreach($raw_data as $data) {
+      // if($data->delivery_schedule != NULL || $data->delivery_schedule != "0000-00-00") {
+      //   $date = date_create($data->delivery_schedule ?? '');
+      //   print_r(date_format($date, 'm'));
+      // }
+      
+
+      $date = date_create($data->delivery_schedule ?? '');
+
+      switch(date_format($date, 'm')) {
+        case 1:
+          $jan += $data->subtotal;
+          break;
+        case 2:
+          $feb += $data->subtotal;
+          break;
+        case 3:
+          $mar += $data->subtotal;
+          break;
+        case 4:
+          $apr += $data->subtotal;
+          break;
+        case 5:
+          $may += $data->subtotal;
+          break;
+        case 6:
+          $jun += $data->subtotal;
+          break;
+        case 7:
+          $jul += $data->subtotal;
+          break;
+        case 8:
+          $aug += $data->subtotal;
+          break;
+        case 9:
+          $sep += $data->subtotal;
+          break;
+        case 10:
+          $oct += $data->subtotal;
+          break;
+        case 11:
+          $nov += $data->subtotal;
+          break;
+        case 12:
+          $dec += $data->subtotal;
+          break;
+      }
+
+      // $total_sales += $data->subtotal;
+      // $order_count++;
+    }
+
+    $return = [
+      'jan' => $jan,
+      'feb' => $feb,
+      'mar' => $mar,
+      'apr' => $apr,
+      'may' => $may,
+      'jun' => $jun,
+      'jul' => $jul,
+      'aug' => $aug,
+      'sep' => $sep,
+      'oct' => $oct,
+      'nov' => $nov,
+      'dec' => $dec
+    ];
+
+    die(json_encode(array("success" => TRUE, "message" => $return)));
   }
 }
