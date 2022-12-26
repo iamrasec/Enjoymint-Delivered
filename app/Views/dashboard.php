@@ -364,7 +364,7 @@
       </div>
 
       <div class="row mt-4">
-        <div class="col-lg-4 col-sm-6">
+        <!-- <div class="col-lg-4 col-sm-6">
           <div class="card h-100">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
@@ -412,17 +412,19 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-8 col-sm-6 mt-sm-0 mt-4">
+        </div> -->
+
+        <!-- <div class="col-lg-8 col-sm-6 mt-sm-0 mt-4"> -->
+        <div class="col-lg-12 col-sm-10 mt-sm-0 mt-4">
           <div class="card">
             <div class="card-header pb-0 p-3">
               <div class="d-flex justify-content-between">
                 <h6 class="mb-0">Revenue</h6>
-                <button type="button" class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="See which ads perform better">
+                <!-- <button type="button" class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="See which ads perform better">
                   <i class="material-icons text-sm">priority_high</i>
-                </button>
+                </button> -->
               </div>
-              <div class="d-flex align-items-center">
+              <!-- <div class="d-flex align-items-center">
                 <span class="badge badge-md badge-dot me-4">
                   <i class="bg-primary"></i>
                   <span class="text-dark text-xs">Facebook Ads</span>
@@ -431,7 +433,7 @@
                   <i class="bg-dark"></i>
                   <span class="text-dark text-xs">Google Ads</span>
                 </span>
-              </div>
+              </div> -->
             </div>
             <div class="card-body p-3">
               <div class="chart">
@@ -441,7 +443,8 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
+      
+      <!-- <div class="row mt-4">
         <div class="col-lg-8">
           <div class="card h-100">
             <div class="card-header pb-0 p-3">
@@ -509,7 +512,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
       </div>
       <div class="row mt-4">
         <div class="col-12">
@@ -560,234 +564,363 @@
 
   <script>
     var ctx1 = document.getElementById("chart-line").getContext("2d");
-    var ctx2 = document.getElementById("chart-pie").getContext("2d");
-    var ctx3 = document.getElementById("chart-bar").getContext("2d");
+    // var ctx2 = document.getElementById("chart-pie").getContext("2d");
+    // var ctx3 = document.getElementById("chart-bar").getContext("2d");
+
+    $(document).ready(function() {
+      $.ajax({
+        type: "POST",
+        url: '<?= base_url('/admin/dashboard/salesrev'); ?>',
+        // data: data,
+        dataType: "json",
+        success: function(json) {
+          console.log(json);
+
+          var data = json;
+          // var data = JSON.parse(json);
+
+          console.log(data.message.dec.toFixed(2));
+          
+          new Chart(ctx1, {
+            type: "line",
+            data: {
+              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              datasets: [{
+                  label: "Website",
+                  tension: 0,
+                  pointRadius: 5,
+                  pointBackgroundColor: "#3A416F",
+                  pointBorderColor: "transparent",
+                  borderColor: "#3A416F",
+                  borderWidth: 4,
+                  backgroundColor: "transparent",
+                  fill: true,
+                  data: [
+                    data.message.jan, 
+                    data.message.feb, 
+                    data.message.mar, 
+                    data.message.apr, 
+                    data.message.may, 
+                    data.message.jun, 
+                    data.message.jul, 
+                    data.message.aug, 
+                    data.message.sep, 
+                    data.message.oct, 
+                    data.message.nov, 
+                    data.message.dec
+                  ],
+                  maxBarThickness: 6
+                },
+                // {
+                //   label: "Google Ads",
+                //   tension: 0,
+                //   borderWidth: 0,
+                //   pointRadius: 5,
+                //   pointBackgroundColor: "#e91e63",
+                //   pointBorderColor: "transparent",
+                //   borderColor: "#e91e63",
+                //   borderWidth: 4,
+                //   backgroundColor: "transparent",
+                //   fill: true,
+                //   data: [10, 30, 40, 120, 150, 220, 280, 250, 280],
+                //   maxBarThickness: 6
+                // }
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                }
+              },
+              interaction: {
+                intersect: false,
+                mode: 'index',
+              },
+              scales: {
+                y: {
+                  grid: {
+                    drawBorder: false,
+                    display: true,
+                    drawOnChartArea: true,
+                    drawTicks: false,
+                    borderDash: [5, 5],
+                    color: '#c1c4ce5c'
+                  },
+                  ticks: {
+                    display: true,
+                    padding: 10,
+                    color: '#9ca2b7',
+                    font: {
+                      size: 14,
+                      weight: 300,
+                      family: "Roboto",
+                      style: 'normal',
+                      lineHeight: 2
+                    },
+                  }
+                },
+                x: {
+                  grid: {
+                    drawBorder: false,
+                    display: true,
+                    drawOnChartArea: true,
+                    drawTicks: true,
+                    borderDash: [5, 5],
+                    color: '#c1c4ce5c'
+                  },
+                  ticks: {
+                    display: true,
+                    color: '#9ca2b7',
+                    padding: 10,
+                    font: {
+                      size: 14,
+                      weight: 300,
+                      family: "Roboto",
+                      style: 'normal',
+                      lineHeight: 2
+                    },
+                  }
+                },
+              },
+            },
+          });
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.log(textStatus);
+        },
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+        }
+      });
+    });
 
     // Line chart
-    new Chart(ctx1, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-            label: "Facebook Ads",
-            tension: 0,
-            pointRadius: 5,
-            pointBackgroundColor: "#e91e63",
-            pointBorderColor: "transparent",
-            borderColor: "#e91e63",
-            borderWidth: 4,
-            backgroundColor: "transparent",
-            fill: true,
-            data: [50, 100, 200, 190, 400, 350, 500, 450, 700],
-            maxBarThickness: 6
-          },
-          {
-            label: "Google Ads",
-            tension: 0,
-            borderWidth: 0,
-            pointRadius: 5,
-            pointBackgroundColor: "#3A416F",
-            pointBorderColor: "transparent",
-            borderColor: "#3A416F",
-            borderWidth: 4,
-            backgroundColor: "transparent",
-            fill: true,
-            data: [10, 30, 40, 120, 150, 220, 280, 250, 280],
-            maxBarThickness: 6
-          }
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: '#c1c4ce5c'
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#9ca2b7',
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: true,
-              borderDash: [5, 5],
-              color: '#c1c4ce5c'
-            },
-            ticks: {
-              display: true,
-              color: '#9ca2b7',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
+    // new Chart(ctx1, {
+    //   type: "line",
+    //   data: {
+    //     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    //     datasets: [{
+    //         label: "Facebook Ads",
+    //         tension: 0,
+    //         pointRadius: 5,
+    //         pointBackgroundColor: "#e91e63",
+    //         pointBorderColor: "transparent",
+    //         borderColor: "#e91e63",
+    //         borderWidth: 4,
+    //         backgroundColor: "transparent",
+    //         fill: true,
+    //         data: [50, 100, 200, 190, 400, 350, 500, 450, 700],
+    //         maxBarThickness: 6
+    //       },
+    //       {
+    //         label: "Google Ads",
+    //         tension: 0,
+    //         borderWidth: 0,
+    //         pointRadius: 5,
+    //         pointBackgroundColor: "#3A416F",
+    //         pointBorderColor: "transparent",
+    //         borderColor: "#3A416F",
+    //         borderWidth: 4,
+    //         backgroundColor: "transparent",
+    //         fill: true,
+    //         data: [10, 30, 40, 120, 150, 220, 280, 250, 280],
+    //         maxBarThickness: 6
+    //       }
+    //     ],
+    //   },
+    //   options: {
+    //     responsive: true,
+    //     maintainAspectRatio: false,
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       }
+    //     },
+    //     interaction: {
+    //       intersect: false,
+    //       mode: 'index',
+    //     },
+    //     scales: {
+    //       y: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: true,
+    //           drawOnChartArea: true,
+    //           drawTicks: false,
+    //           borderDash: [5, 5],
+    //           color: '#c1c4ce5c'
+    //         },
+    //         ticks: {
+    //           display: true,
+    //           padding: 10,
+    //           color: '#9ca2b7',
+    //           font: {
+    //             size: 14,
+    //             weight: 300,
+    //             family: "Roboto",
+    //             style: 'normal',
+    //             lineHeight: 2
+    //           },
+    //         }
+    //       },
+    //       x: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: true,
+    //           drawOnChartArea: true,
+    //           drawTicks: true,
+    //           borderDash: [5, 5],
+    //           color: '#c1c4ce5c'
+    //         },
+    //         ticks: {
+    //           display: true,
+    //           color: '#9ca2b7',
+    //           padding: 10,
+    //           font: {
+    //             size: 14,
+    //             weight: 300,
+    //             family: "Roboto",
+    //             style: 'normal',
+    //             lineHeight: 2
+    //           },
+    //         }
+    //       },
+    //     },
+    //   },
+    // });
 
     // Pie chart
-    new Chart(ctx2, {
-      type: "pie",
-      data: {
-        labels: ['Facebook', 'Direct', 'Organic', 'Referral'],
-        datasets: [{
-          label: "Projects",
-          weight: 9,
-          cutout: 0,
-          tension: 0.9,
-          pointRadius: 2,
-          borderWidth: 1,
-          backgroundColor: ['#17c1e8', '#e91e63', '#3A416F', '#a8b8d8'],
-          data: [15, 20, 12, 60],
-          fill: false
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              color: '#c1c4ce5c'
-            },
-            ticks: {
-              display: false
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              color: '#c1c4ce5c'
-            },
-            ticks: {
-              display: false,
-            }
-          },
-        },
-      },
-    });
+    // new Chart(ctx2, {
+    //   type: "pie",
+    //   data: {
+    //     labels: ['Facebook', 'Direct', 'Organic', 'Referral'],
+    //     datasets: [{
+    //       label: "Projects",
+    //       weight: 9,
+    //       cutout: 0,
+    //       tension: 0.9,
+    //       pointRadius: 2,
+    //       borderWidth: 1,
+    //       backgroundColor: ['#17c1e8', '#e91e63', '#3A416F', '#a8b8d8'],
+    //       data: [15, 20, 12, 60],
+    //       fill: false
+    //     }],
+    //   },
+    //   options: {
+    //     responsive: true,
+    //     maintainAspectRatio: false,
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       }
+    //     },
+    //     interaction: {
+    //       intersect: false,
+    //       mode: 'index',
+    //     },
+    //     scales: {
+    //       y: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: false,
+    //           drawOnChartArea: false,
+    //           drawTicks: false,
+    //           color: '#c1c4ce5c'
+    //         },
+    //         ticks: {
+    //           display: false
+    //         }
+    //       },
+    //       x: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: false,
+    //           drawOnChartArea: false,
+    //           drawTicks: false,
+    //           color: '#c1c4ce5c'
+    //         },
+    //         ticks: {
+    //           display: false,
+    //         }
+    //       },
+    //     },
+    //   },
+    // });
 
     // Bar chart
-    new Chart(ctx3, {
-      type: "bar",
-      data: {
-        labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42-50', '50+'],
-        datasets: [{
-          label: "Sales by age",
-          weight: 5,
-          borderWidth: 0,
-          borderRadius: 4,
-          backgroundColor: '#3A416F',
-          data: [15, 20, 12, 60, 20, 15, 25],
-          fill: false
-        }],
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: '#c1c4ce5c'
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#c1c4ce5c',
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: true,
-              drawTicks: true,
-              color: '#9ca2b7'
-            },
-            ticks: {
-              display: true,
-              color: '#9ca2b7',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
+    // new Chart(ctx3, {
+    //   type: "bar",
+    //   data: {
+    //     labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42-50', '50+'],
+    //     datasets: [{
+    //       label: "Sales by age",
+    //       weight: 5,
+    //       borderWidth: 0,
+    //       borderRadius: 4,
+    //       backgroundColor: '#3A416F',
+    //       data: [15, 20, 12, 60, 20, 15, 25],
+    //       fill: false
+    //     }],
+    //   },
+    //   options: {
+    //     indexAxis: 'y',
+    //     responsive: true,
+    //     maintainAspectRatio: false,
+    //     plugins: {
+    //       legend: {
+    //         display: false,
+    //       }
+    //     },
+    //     scales: {
+    //       y: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: true,
+    //           drawOnChartArea: true,
+    //           drawTicks: false,
+    //           borderDash: [5, 5],
+    //           color: '#c1c4ce5c'
+    //         },
+    //         ticks: {
+    //           display: true,
+    //           padding: 10,
+    //           color: '#c1c4ce5c',
+    //           font: {
+    //             size: 14,
+    //             weight: 300,
+    //             family: "Roboto",
+    //             style: 'normal',
+    //             lineHeight: 2
+    //           },
+    //         }
+    //       },
+    //       x: {
+    //         grid: {
+    //           drawBorder: false,
+    //           display: false,
+    //           drawOnChartArea: true,
+    //           drawTicks: true,
+    //           color: '#9ca2b7'
+    //         },
+    //         ticks: {
+    //           display: true,
+    //           color: '#9ca2b7',
+    //           padding: 10,
+    //           font: {
+    //             size: 14,
+    //             weight: 300,
+    //             family: "Roboto",
+    //             style: 'normal',
+    //             lineHeight: 2
+    //           },
+    //         }
+    //       },
+    //     },
+    //   },
+    // });
 
     if (document.getElementById('edit-deschiption')) {
       var quill = new Quill('#edit-deschiption', {
