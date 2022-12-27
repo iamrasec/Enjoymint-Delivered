@@ -70,12 +70,81 @@ class Shop extends BaseController
                 // $all_products = $this->product_model->paginate(30);
                 $all_products = $this->product_model->getAllProducts();
             }else{
+            
+                if($searchData['availability'] == 2){
+            
+                    $category = $searchData['category'];
+                    $min_price = $searchData['min_price'];
+                    $max_price = $searchData['max_price'];
+                    $strain = $searchData['strain'];
+                    $brands = $searchData['brands'];
+                    $min_thc = $searchData['min_thc'];      
+                    $max_thc = $searchData['max_thc'];
+                    $min_cbd = $searchData['min_cbd'];
+                    $max_cbd = $searchData['max_cbd'];
+                    $availability = $searchData['availability'];
+                    $all_products = $this->product_model->getDataWithParamFast_Tracked($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+
+            // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+
+            $current_filter = [
+                'category' => $searchData['category'],
+                'strain' => $searchData['strain'],
+                'brands' => $searchData['brands'],
+                'min_price' => $searchData['min_price'],
+                'max_price' => $searchData['max_price'],
+                'min_thc' => $searchData['min_thc'],
+                'max_thc' => $searchData['max_thc'],
+                'min_cbd' => $searchData['min_cbd'],
+                'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
+            ];
+                
+          
+                    $this->data['current_filter'] = $current_filter;
+
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            // echo "<pre>".print_r($product, 1)."</pre>";
+             $product_arr[$count] = $product;
+            if(!empty($product['images'])) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+
+             $count++;
+        }
+
+        // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
+        
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+        if($searchData['availability'] == 2){
+            $this->data['fast_tracked'] = true;
+        }
+            return view('shop_view', $this->data);
+        
+        }else{           
+                
             $category = $searchData['category'];
             $min_price = $searchData['min_price'];
             $max_price = $searchData['max_price'];
             $strain = $searchData['strain'];
             $brands = $searchData['brands'];
-            $min_thc = $searchData['min_thc'];
+            $min_thc = $searchData['min_thc'];      
             $max_thc = $searchData['max_thc'];
             $min_cbd = $searchData['min_cbd'];
             $max_cbd = $searchData['max_cbd'];
@@ -97,15 +166,17 @@ class Shop extends BaseController
                 'availability' => $searchData['availability'],
             ];
                 
+            
             $this->data['current_filter'] = $current_filter;
-           
+
+        }
         }
     }
     }
         // $all_products = $this->product_model->paginate(30);
 
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
-
+        
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -136,14 +207,14 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
-
-        return view('shop_view', $this->data);
+       
+         return view('shop_view', $this->data);
     }
-
-    public function fast_tracked()
-    {
+        
+    public function fast_tracked()                 
+    {         
         $page_title = 'Shop';
-
+                     
         $this->data['page_body_id'] = "shop";
         $this->data['breadcrumbs'] = [
         'parent' => [],
@@ -163,11 +234,12 @@ class Shop extends BaseController
         $page = $searchData['page'];
        }else{
         $page = null;
-       }
+       }                                                                                                                                                                                                                                                                                                                               
          if(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getFastTracked();
         }else{
+            if($searchData['availability'] == 1){
             $category = $searchData['category'];
             $min_price = $searchData['min_price'];
             $max_price = $searchData['max_price'];
@@ -196,7 +268,72 @@ class Shop extends BaseController
             ];
                 
             $this->data['current_filter'] = $current_filter;
-           
+
+            $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            // echo "<pre>".print_r($product, 1)."</pre>";
+             $product_arr[$count] = $product;
+            if(!empty($product['images'])) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+
+             $count++;
+        }
+
+        // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
+
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        // $this->data['fast_tracked'] = true;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+        if($searchData['availability'] == 1){
+            $this->data['fast_tracked'] = false;
+        }
+        return view('shop_view', $this->data);
+
+            }else{
+
+                $category = $searchData['category'];
+                $min_price = $searchData['min_price'];
+                $max_price = $searchData['max_price'];
+                $strain = $searchData['strain'];
+                $brands = $searchData['brands'];
+                $min_thc = $searchData['min_thc'];
+                $max_thc = $searchData['max_thc'];
+                $min_cbd = $searchData['min_cbd'];
+                $max_cbd = $searchData['max_cbd'];
+                $availability = $searchData['availability'];
+                $all_products = $this->product_model->getDataWithParamFast_Tracked($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+    
+                // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+    
+                $current_filter = [
+                    'category' => $searchData['category'],
+                    'strain' => $searchData['strain'],
+                    'brands' => $searchData['brands'],
+                    'min_price' => $searchData['min_price'],
+                    'max_price' => $searchData['max_price'],
+                    'min_thc' => $searchData['min_thc'],
+                    'max_thc' => $searchData['max_thc'],
+                    'min_cbd' => $searchData['min_cbd'],
+                    'max_cbd' => $searchData['max_cbd'],
+                    'availability' => $searchData['availability'],
+                ];
+                    
+                $this->data['current_filter'] = $current_filter;
+                
+            }
         }
         // $all_products = $this->product_model->paginate(30);
 

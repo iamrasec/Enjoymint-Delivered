@@ -43,7 +43,6 @@
           ?>
           <p>Delivery Date: <strong><?= $order_data[0]->delivery_schedule; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
           <?php endif; ?>
-        <a href="<?= base_url('users/dashboard/_review'); ?>"> <button class="btn btn-primary" style="text-align: left;">Click here to Rate Order</button></a>
           <table id="order_products">
             <tbody>
               <?php foreach($order_products as $product): ?>
