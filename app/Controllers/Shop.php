@@ -32,6 +32,10 @@ class Shop extends BaseController
 
     public function index()
     {
+        if($this->request->getPost()) {
+            return $this->apply_filters($this->request->getPost());
+        }
+
         $page_title = 'Shop';
 
         $this->data['page_body_id'] = "shop";
@@ -233,4 +237,62 @@ class Shop extends BaseController
         return view('shop_view', $this->data);
     }
     
+    private function apply_filters($searchData)
+    {
+        $all_products = $this->product_model->getAllProducts();
+
+        $fast_tracked = false;
+
+        if(isset($searchData) && !empty($searchData)) {
+          $category = $searchData['category'];
+          $min_price = $searchData['min_price'];
+          $max_price = $searchData['max_price'];
+          $strain = $searchData['strain'];
+          $brands = $searchData['brands'];
+          $min_thc = $searchData['min_thc'];
+          $max_thc = $searchData['max_thc'];
+          $min_cbd = $searchData['min_cbd'];
+          $max_cbd = $searchData['max_cbd'];
+          $availability = $searchData['availability'];
+
+          if($availability == 2) {
+            $fast_tracked = true;
+          }
+    
+          $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+        }
+    
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+          $product_arr[$count] = $product;
+    
+          if(!empty($product['images'])) {
+            $imageIds = [];
+            $imageIds = explode(',',$product['images']);
+            $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+            $product_arr[$count]['images'] = $images;
+          }
+    
+          $count++;
+        }
+    
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = $fast_tracked;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+    
+        if($this->data['currDate']->format('H') > '18') {
+          $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+    
+        $products_list = view('sections/products_list', $this->data);
+    
+        // print_r($all_products);die();
+    
+        die(json_encode(array("success" => TRUE, "data" => $products_list)));
+    }
 }

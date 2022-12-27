@@ -37,6 +37,53 @@ console.log('Product Filter Online');
         $( ".cbd-range-display" ).text("CBD % Value: " + ui.values[ 0 ] + "% - " + ui.values[ 1 ] + "%");
       }
     });
+
+    // const filter_availability = 0;
+
+    // $(document).on('change', '#availability_filter', function() {
+    //   // console.log($(this).val());
+
+    //   filter_availability = $(this).val();
+    // });
+
+    $(document).on('click', '#searchFormSubmit', function(e) {
+      e.preventDefault();
+
+      let data = {};
+      data.availability = $('#availability option:selected').val();
+      data.category = $('#category option:selected').val();
+      data.strain = $('#strain option:selected').val();
+      data.brands = $('#brands option:selected').val();
+      data.min_price = $('#min_price').val();
+      data.max_price = $('#max_price').val();
+      data.min_thc = $('#min_thc').val();
+      data.max_thc = $('#max_thc').val();
+      data.min_cbd = $('#min_cbd').val();
+      data.max_cbd = $('#max_cbd').val();
+
+      $.ajax({
+        type: "POST",
+        url: baseUrl + '/shop?' + $.param(data),
+        data: data,
+        dataType: "json",
+        success: function(json) {
+          console.log(json);
+          console.log($.param(data));
+
+          $("#products-section").html(json.data);
+          window.history.replaceState(null, null, "?"+$.param(data));
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.log(textStatus);
+        },
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+        }
+      });
+
+      return false;
+    });
+    
   });
 
   $.support.touch = 'ontouchend' in document;
