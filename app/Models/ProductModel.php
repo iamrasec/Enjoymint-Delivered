@@ -84,7 +84,7 @@ class ProductModel extends Model {
     $this->set('orders', '(orders + 1)', FALSE);
     return $this->update();
   }
-
+  
   public function getDataWithParam($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0, $availability = 0){
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug, product_categories.cid');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
@@ -127,8 +127,65 @@ class ProductModel extends Model {
       $this->where('compounds.cbd_value <=', $max_cbd);
     } 
 
-    if($availability == 2) {
-      $this->where('products.delivery_type', 2);
+    // if($availability == 2) {
+    //   $this->where('products.delivery_type', 2);
+    // }
+
+    return $this->paginate(28);
+
+  }
+
+  public function getDataWithParamFast_Tracked($category = 0, $min_price = 0, $max_price = 0, $strain = 0, $brands = 0, $min_thc = 0, $max_thc = 0, $min_cbd = 0, $max_cbd = 0, $availability = 0){
+    $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.url_slug, product_categories.cid');
+    $this->join('compounds', 'compounds.pid = products.id', 'left');
+    $this->join('product_categories', 'product_categories.pid = products.id', 'left');
+    $this->join('strains', 'products.strain = strains.id', 'left');
+    $this->where('products.delivery_type', 1);
+    // Add Category filter if $category is greater than 0
+    if($category > 0) {
+      // $this->like('cid', $category);
+      $this->where('product_categories.cid', $category);
+      $this->where('products.delivery_type', 1);
+    }
+
+    // Add Strain Type filter if $strain is greater than 0
+    if($strain > 0) {
+      // $this->like('strain', $strain);
+      $this->where('products.strain', $strain);
+      $this->where('products.delivery_type', 1);
+    }
+
+    // Add Brand filter if $brands is greater than 0
+    if($brands > 0) {
+      // $this->like('brands', $brands);
+      $this->where('products.brands', $brands);
+      $this->where('products.delivery_type', 1);
+    }
+
+    if($min_price != 0) {
+      $this->where('products.price >=', $min_price);
+      $this->where('products.delivery_type', 1);
+    }
+
+    if($max_price != 0) {
+      $this->where('products.price <=', $max_price);
+      $this->where('products.delivery_type', 1);
+    }
+    
+    if($min_thc != 0 || $max_thc != 0) {
+      $this->where('compounds.thc_value >=', $min_thc);
+      $this->where('compounds.thc_value <=', $max_thc);
+      $this->where('products.delivery_type', 1);
+    }
+    
+    if($min_cbd != 0 || $max_cbd != 0) {
+      $this->where('compounds.cbd_value >=', $min_cbd);
+      $this->where('compounds.cbd_value <=', $max_cbd);
+      $this->where('products.delivery_type', 1);
+    } 
+
+    if($availability == 1) {
+      $this->where('products.delivery_type', 1);
     }
 
     return $this->paginate(28);
