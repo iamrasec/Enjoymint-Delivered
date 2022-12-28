@@ -293,6 +293,6 @@ class Shop extends BaseController
     
         // print_r($all_products);die();
     
-        die(json_encode(array("success" => TRUE, "data" => $products_list)));
+        die(json_encode(array("success" => TRUE, "data" => $products_list, 'fast_tracked' => $fast_tracked)));
     }
 }

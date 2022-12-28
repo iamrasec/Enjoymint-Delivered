@@ -1,3 +1,6 @@
+<div class="lds-hourglass waiting-large d-none"></div>
+<div class="loading-overlay d-none"></div>
+
 <?php if(!empty($products)): ?>
 <div id="products-list-view" class="row">
 

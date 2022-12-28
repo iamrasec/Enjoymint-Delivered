@@ -49,6 +49,9 @@ console.log('Product Filter Online');
     $(document).on('click', '#searchFormSubmit', function(e) {
       e.preventDefault();
 
+      $('.waiting-large').removeClass('d-none');
+      $('.loading-overlay').removeClass('d-none');
+
       let data = {};
       data.availability = $('#availability option:selected').val();
       data.category = $('#category option:selected').val();
@@ -61,6 +64,8 @@ console.log('Product Filter Online');
       data.min_cbd = $('#min_cbd').val();
       data.max_cbd = $('#max_cbd').val();
 
+      let delivery_cookie = getCookie("delivery_schedule");
+
       $.ajax({
         type: "POST",
         url: baseUrl + '/shop?' + $.param(data),
@@ -72,6 +77,15 @@ console.log('Product Filter Online');
 
           $("#products-section").html(json.data);
           window.history.replaceState(null, null, "?"+$.param(data));
+
+          if(delivery_cookie && json.fast_tracked == false) {
+            let delsched = JSON.parse(delivery_cookie);
+            let delTime = delsched.t.split("-");
+            let delFrom = tConvert(delTime[0]);
+            let delTo = tConvert(delTime[1]);
+            
+            $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+          }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           console.log(textStatus);

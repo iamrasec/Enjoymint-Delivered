@@ -17,13 +17,28 @@
   content: " ";
   display: block;
   border-radius: 50%;
-  width: 0;
-  height: 0;
+  width: 60px;
+  height: 60px;
   margin: 8px;
   box-sizing: border-box;
-  border: 10px solid #489989;
+  border: 70px solid #489989;
   border-color: #489989 transparent #489989 transparent;
   animation: lds-hourglass 1.2s infinite;
+}
+.waiting-large  {
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  top: 8%;
+  left: 50%;
+  z-index: 11111;
+}
+.loading-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: rgba(255,255,255,0.7);
+  z-index: 1;
 }
 @keyframes lds-hourglass {
   0% {
@@ -68,7 +83,6 @@
           <?php endif; ?>
           
           <div id="products-section">
-            <div class="lds-hourglass d-none"></div>
             <?php echo $this->include('sections/products_list.php'); ?>
           </div>  
 
@@ -200,7 +214,7 @@ optionsList.forEach(o => {
   // Check if cookie exists
   var delivery_cookie = getCookie("delivery_schedule");
 
-  $('#toggle').on('click', function(){
+  $(document).on('click', '#toggle', function(){
     $(".delivery-popup").click();
   });
 
