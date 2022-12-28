@@ -72,9 +72,6 @@ console.log('Product Filter Online');
         data: data,
         dataType: "json",
         success: function(json) {
-          console.log(json);
-          console.log($.param(data));
-
           $("#products-section").html(json.data);
           window.history.replaceState(null, null, "?"+$.param(data));
 
@@ -114,9 +111,6 @@ console.log('Product Filter Online');
         data: data,
         dataType: "json",
         success: function(json) {
-          console.log(json);
-          console.log($.param(data));
-
           $("#products-section").html(json.data);
 
           $('#availability').prop('selectedIndex', 0);
@@ -128,7 +122,7 @@ console.log('Product Filter Online');
 
             var options = $(this).slider('option');
           
-            $(this).slider( 'values', [ options.min, options.max ] );
+            $(this).slider('values', [options.min, options.max]);
           
           });
 
