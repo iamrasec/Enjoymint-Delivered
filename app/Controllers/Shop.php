@@ -243,7 +243,7 @@ class Shop extends BaseController
 
         $fast_tracked = false;
 
-        if(isset($searchData) && !empty($searchData)) {
+        if(isset($searchData) && !empty($searchData) && !isset($searchData['clear_filter'])) {
           $category = $searchData['category'];
           $min_price = $searchData['min_price'];
           $max_price = $searchData['max_price'];

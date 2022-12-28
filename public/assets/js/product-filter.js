@@ -97,6 +97,62 @@ console.log('Product Filter Online');
 
       return false;
     });
+
+    $(document).on('click', '#clear-product-filter', function(e) {
+      e.preventDefault();
+      $('.waiting-large').removeClass('d-none');
+      $('.loading-overlay').removeClass('d-none');
+
+      let data = {};
+      data.clear_filter = true;
+
+      let delivery_cookie = getCookie("delivery_schedule");
+
+      $.ajax({
+        type: "POST",
+        url: baseUrl + '/shop',
+        data: data,
+        dataType: "json",
+        success: function(json) {
+          console.log(json);
+          console.log($.param(data));
+
+          $("#products-section").html(json.data);
+
+          $('#availability').prop('selectedIndex', 0);
+          $('#category').prop('selectedIndex', 0);
+          $('#strain').prop('selectedIndex', 0);
+          $('#brands').prop('selectedIndex', 0);
+          
+          $('.ui-slider').each(function(){
+
+            var options = $(this).slider('option');
+          
+            $(this).slider( 'values', [ options.min, options.max ] );
+          
+          });
+
+          window.history.replaceState(null, null, location.protocol + '//' + location.host + location.pathname);
+
+          if(delivery_cookie && json.fast_tracked == false) {
+            let delsched = JSON.parse(delivery_cookie);
+            let delTime = delsched.t.split("-");
+            let delFrom = tConvert(delTime[0]);
+            let delTo = tConvert(delTime[1]);
+            
+            $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.log(textStatus);
+        },
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+        }
+      });
+
+      return false;
+    });
     
   });
 
