@@ -33,6 +33,7 @@
             <p>No Products available for this Experience.</p>
           </div>
           <?php else: ?>
+            <?php if($fast_tracked == true): ?>
           <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
             <div class="input-group-prepend">
               <button type="button" id="toggle" class="input-group-text">
@@ -41,7 +42,7 @@
               </button>
             </div>
           </div>
-
+        <?php endif; ?>
           <?php foreach($products as $product): ?>
           <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
             <div class="card product-featured">

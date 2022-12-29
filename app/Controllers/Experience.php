@@ -36,6 +36,17 @@ class Experience extends BaseController
     public function index($url)
     {  $session = session();
         $search= $this->request->getGet('inputdata');
+        $searchData = $this->request->getGet();
+        $data = $session->get('exp_id');
+        $this->data['current_filter'] = [];
+
+        // echo "<pre>".print_r($searchData, 1)."</pre>";
+        //$all_products = $this->product_model->paginate(30);
+       if(!empty($searchData['page'])){
+        $page = $searchData['page'];
+       }else{
+        $page = null;
+       }      
 
         $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
         $session->exp_id = $experience;
@@ -44,7 +55,56 @@ class Experience extends BaseController
             $all_products = $this->product_model->where('url', $experience->url)->experienceGetProducts($search);
             
         }else{
-        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+        $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
+        if(empty($searchData)){
+            $exp_id = $data->id;
+            // $all_products = $this->product_model->paginate(30);
+            //$all_products = $this->experience_model->experienceGetAllProduct($exp_id);
+            $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
+           
+        }else{
+            if($page != null){
+                $exp_id = $data->id;
+                // $all_products = $this->product_model->paginate(30);
+                //$all_products = $this->experience_model->experienceGetAllProduct($exp_id);
+                $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
+            
+                
+        }else{
+            $exp_id = $data->id;
+            $category = $searchData['category'];
+            $min_price = $searchData['min_price'];
+            $max_price = $searchData['max_price'];
+            $strain = $searchData['strain'];
+            $brands = $searchData['brands'];
+            $min_thc = $searchData['min_thc'];
+            $max_thc = $searchData['max_thc'];
+            $min_cbd = $searchData['min_cbd'];
+            $max_cbd = $searchData['max_cbd'];
+            $availability = $searchData['availability'];
+            $all_products = $this->experience_model->getDataWithParam($exp_id, $category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+
+            // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
+
+            $current_filter = [
+                'category' => $searchData['category'],
+                'strain' => $searchData['strain'],
+                'brands' => $searchData['brands'],
+                'min_price' => $searchData['min_price'],
+                'max_price' => $searchData['max_price'],
+                'min_thc' => $searchData['min_thc'],
+                'max_thc' => $searchData['max_thc'],
+                'min_cbd' => $searchData['min_cbd'],
+                'max_cbd' => $searchData['max_cbd'],
+                'availability' => $searchData['availability'],
+            ];
+                
+            $this->data['current_filter'] = $current_filter;
+
+           
+        }
+
+    } 
         
         $page_title = $experience->name;
         
@@ -57,7 +117,7 @@ class Experience extends BaseController
         // $this->data['products'] = $this->product_model->get()->getResult();
         // $this->data['products'] = $this->product_model->getAllProducts();
         
-        $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
+       // $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
     }
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
 
@@ -81,7 +141,17 @@ class Experience extends BaseController
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult(); 
         $this->data['guid'] = $this->guid;
+        $this->data['url'] = $experience->url;
 
+        if(!empty($searchData['availability'])){
+        if($searchData['availability'] == 2){
+        $this->data['fast_tracked'] = false;
+        }else{
+        $this->data['fast_tracked'] = true; 
+        }
+    }else{
+        $this->data['fast_tracked'] = true; 
+    }
         // Generate current date/time (PDT/PST)
         $currDate = new Time("now", "America/Los_Angeles", "en_EN");
 
@@ -144,7 +214,8 @@ class Experience extends BaseController
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult(); 
-        $this->data['currDate'] = $session->get('currDate');;
+        $this->data['currDate'] = $session->get('currDate');
+        $this->data['url'] = $data->url;
         return view('experience_view', $this->data);
      }
 
