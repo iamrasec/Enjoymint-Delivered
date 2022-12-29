@@ -51,8 +51,9 @@ class Experience extends BaseController
         $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
         $session->exp_id = $experience;
         if(!empty($search)){
-            
-            $all_products = $this->product_model->where('url', $experience->url)->experienceGetProducts($search);
+            $exp_id = $data->id;
+            $search= $this->request->getGet('inputdata');
+            $all_products = $this->experience_model->experienceGetProducts($exp_id, $search);
             
         }else{
         $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
@@ -106,6 +107,13 @@ class Experience extends BaseController
 
     } 
         
+        
+        // $this->data['products'] = $this->product_model->get()->getResult();
+        // $this->data['products'] = $this->product_model->getAllProducts();
+        
+       // $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
+    }
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
         $page_title = $experience->name;
         
         $this->data['page_body_id'] = "shop";
@@ -114,13 +122,7 @@ class Experience extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-        // $this->data['products'] = $this->product_model->get()->getResult();
-        // $this->data['products'] = $this->product_model->getAllProducts();
         
-       // $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
-    }
-        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
-
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {

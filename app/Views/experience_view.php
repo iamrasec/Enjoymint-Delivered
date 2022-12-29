@@ -18,16 +18,19 @@
 
       <div class="col-lg-10 col-sm-12 mt-5 text-center">
         <!--<span class="badge bg-primary mb-3">Get them while they're hot</span>-->
-        <h1><?= $page_title; ?></h1>
         <div class="row">
-        <form method="GET" action="<?= base_url('search1')?>">
+        <?php if($fast_tracked == false): ?>
+          <h1>Fast Tracked <?= $page_title; ?></h1>
+          <?php else: ?>
+        <h1><?= $page_title; ?></h1>  
+        <form method="GET" action="<?= base_url('experience/'. $url)?>">
             <div class="search" style="text-align: right ;">
-            <input type="text" name="inputdata1" placeholder="Search">
+            <input type="text" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
         </div>
         <br>
           </form>
-          
+          <?php endif; ?>
           <?php if($products == null): ?>
           <div class="col-12 col-md-12 pt-4 pb-4">
             <p>No Products available for this Experience.</p>
