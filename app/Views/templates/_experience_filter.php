@@ -1,6 +1,6 @@
 <div id="product_filter" class="product-filter-form card col-lg-2 mt-2 mt-lg-8 d-lg-flex">
   <h5>Filter By:</h5>
-  <form method='get' action="<?= base_url('filter')?>" id="searchForm">
+  <form method='get' action="<?= base_url('experience/'. $url)?>" id="searchForm">
     <div class="row">
 
       <div class="select-box" >
