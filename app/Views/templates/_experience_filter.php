@@ -3,7 +3,7 @@
   <form method='get' action="<?= base_url('experience/'. $url)?>" id="searchForm">
     <div class="row">
 
-      <div class="select-box" >
+      <div class="select-box">
         <label class="mt-3 py-0">Availability:</label>
         <select class="selected" name="availability">
           <option value="0">All</option>
@@ -72,7 +72,8 @@
           children[9].style.left=value+'%';children[13].style.left=value+'%';
           children[13].childNodes[1].innerHTML=this.value;" />
         </div> -->
-  
+ 
+
         <label class="mt-3 py-0 thc-range-display">THC % Value: <?= (isset($current_filter['min_thc'])) ? $current_filter['min_thc'] : 0; ?>% - <?= (isset($current_filter['max_thc'])) ? $current_filter['max_thc'] : 100; ?>%</label>
         <input type="hidden" value="<?= (isset($current_filter['min_thc'])) ? $current_filter['min_thc'] : 0; ?>" name="min_thc" id="min_thc">
         <input type="hidden" value="<?= (isset($current_filter['max_thc'])) ? $current_filter['max_thc'] : 100; ?>" name="max_thc" id="max_thc">
@@ -160,7 +161,7 @@
         <!-- <input type="text" id="search" class="form-control w-20 border px-2" name="search" placeholder="Search here"> -->
         
         <button id="searchFormSubmit" class="btn bg-primary-green mt-5">Search</button>
-        <div class="text-center mb-5"><a href="<?= base_url('clear'); ?>" id="clear-product-filter">Clear Filter</a></div>
+        <div class="text-center mb-5"><a href="<?= base_url('experience/'. $url); ?>" id="clear-product-filter">Clear Filter</a></div>
       </div>
     </div>
   </form>
