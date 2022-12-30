@@ -102,6 +102,7 @@ console.log('Product Filter Online');
 
       let data = {};
       data.clear_filter = true;
+      data.curr_page = $('#curr_page').val();
 
       let delivery_cookie = getCookie("delivery_schedule");
 

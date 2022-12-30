@@ -4,11 +4,19 @@
     <div class="row">
 
       <div class="select-box" >
-        <label class="mt-3 py-0">Availability:</label>
-        <select class="selected" name="availability" id="availability">
+        <input type="hidden" name="curr_page" id="curr_page" value="<?= $currPage; ?>">
+        <?php
+        $availability_show = ($currPage == 'fast_tracked') ? ' d-none' : '';
+        ?>
+        <label class="mt-3 py-0<?= $availability_show; ?>">Availability:</label>
+        <select class="selected<?= $availability_show; ?>" name="availability" id="availability">
+          <?php if($currPage == 'fast_tracked'): ?>
+            <option value="2" selected>Fast-tracked</option>
+          <?php else: ?>
           <option value="0">All</option>
           <option value="1">Scheduled</option>
           <option value="2" <?= ((isset($_GET['availability']) && $_GET['availability'] == 2) ? 'selected' : ''); ?>>Fast-tracked</option>
+          <?php endif; ?>
         </select>
 
         <label class="mt-3 py-0">Category:</label>

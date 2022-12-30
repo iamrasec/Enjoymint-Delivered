@@ -133,6 +133,7 @@ class Shop extends BaseController
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['fast_tracked'] = false;
+        $this->data['currPage'] = 'shop';
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
         if($this->data['currDate']->format('H') > '18') {
@@ -146,6 +147,10 @@ class Shop extends BaseController
 
     public function fast_tracked()
     {
+        if($this->request->getPost()) {
+            return $this->apply_filters($this->request->getPost());
+        }
+
         $page_title = 'Shop';
 
         $this->data['page_body_id'] = "shop";
@@ -229,6 +234,7 @@ class Shop extends BaseController
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['fast_tracked'] = true;
+        $this->data['currPage'] = 'fast_tracked';
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
         if($this->data['currDate']->format('H') > '18') {
@@ -239,9 +245,17 @@ class Shop extends BaseController
     
     private function apply_filters($searchData)
     {
-        $all_products = $this->product_model->getAllProducts();
+        // $all_products = $this->product_model->getAllProducts();
 
         $fast_tracked = false;
+
+        if(isset($searchData) && $searchData['curr_page'] == 'fast_tracked') {
+          $fast_tracked = true;
+          $all_products = $this->product_model->getFastTracked();
+        }
+        else {
+          $all_products = $this->product_model->getAllProducts();
+        }
 
         if(isset($searchData) && !empty($searchData) && !isset($searchData['clear_filter'])) {
           $category = $searchData['category'];
@@ -253,7 +267,7 @@ class Shop extends BaseController
           $max_thc = $searchData['max_thc'];
           $min_cbd = $searchData['min_cbd'];
           $max_cbd = $searchData['max_cbd'];
-          $availability = $searchData['availability'];
+          $availability = $searchData['availability'];          
 
           if($availability == 2) {
             $fast_tracked = true;
