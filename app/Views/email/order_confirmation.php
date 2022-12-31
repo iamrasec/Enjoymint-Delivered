@@ -23,7 +23,7 @@
       <p>Address: <strong><?= $order_data['address']; ?></strong></p>
       
       <?php if($order_data['delivery_schedule'] != null): ?>
-      <p>Selected Schedule: <strong><?= $order_data['delivery_schedule']; ?></strong></p>
+      <p>Selected Schedule: Thank you for placing your<strong>SCHEDULED ORDER FOR<?= $order_data['delivery_schedule']; ?></strong> between <strong><?= $order_data['delivery_time']; ?></strong> </p>
       <?php else: ?>
       <p>Selected Schedule:</p>
       <?php endif; ?>
