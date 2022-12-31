@@ -14,6 +14,8 @@ class Cart extends ResourceController
     $this->cart_model = model('CartModel');
     $this->user_model = model('UserModel');
     $this->product_model = model('ProductModel');
+    
+    $this->data['service_charge'] = 5.00;
   }
 
   public function index()
@@ -134,6 +136,7 @@ class Cart extends ResourceController
       'item_count' => ($item_count > 1) ? $item_count." Items" : $item_count." Item",
       'subtotal' => "$".number_format($subtotal, 2, '.', ','),
       'tax' => "$".number_format($tax_cost, 2, '.', ','),
+      'service_charge' => "$".($subtotal < 50) ? $this->data['service_charge'] : 0,
       'total' => "$".number_format($total_cost, 2, '.', ','),
     ];
 

@@ -52,7 +52,7 @@
                             </div><br>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
+                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                             <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
                             <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
@@ -114,6 +114,10 @@
             <div class="row mt-3">
               <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
+            </div>
+            <div class="row mt-3 service-charge d-none">
+              <div class="col-8 col-md-8 col-xs-8">Service Charge*</div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="service-charge-cost">$<?= $service_charge; ?></span></div>
             </div>
             <div class="row mt-3">
               <div class="col-8 col-md-8 col-xs-8">Total</div>
@@ -337,6 +341,7 @@ update_cart_count();
 });
 
   var tax_rate = <?= $tax_rate; ?>;  // 35%
+  var service_charge = <?= $service_charge; ?>;
 
   // Create our number formatter.
   var formatter = new Intl.NumberFormat('en-US', {
@@ -363,7 +368,16 @@ update_cart_count();
 
     // Calculate Total
     var total_cost = 0;
-    total_cost = subtotal.toFixed(2) * tax_rate;
+
+    if(subtotal < 50) {
+      total_cost = (subtotal.toFixed(2) * tax_rate) + service_charge;
+      $('.service-charge').removeClass('d-none');
+    }
+    else {
+      total_cost = subtotal.toFixed(2) * tax_rate;
+      $('.service-charge').addClass('d-none');
+    }
+    
     $(".total-cost").html(formatter.format(total_cost));
   });
   
