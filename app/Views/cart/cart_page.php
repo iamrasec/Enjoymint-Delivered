@@ -52,7 +52,7 @@
                             </div><br>
                           </div>
                           <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>">
+                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                             <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
                             <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
@@ -340,6 +340,7 @@ update_cart_count();
 });
 
   var tax_rate = <?= $tax_rate; ?>;  // 35%
+  var service_charge = <?= $service_charge; ?>;
 
   // Create our number formatter.
   var formatter = new Intl.NumberFormat('en-US', {
@@ -368,7 +369,7 @@ update_cart_count();
     var total_cost = 0;
 
     if(subtotal < 50) {
-      total_cost = (subtotal.toFixed(2) * tax_rate) + <?= $service_charge; ?>;
+      total_cost = (subtotal.toFixed(2) * tax_rate) + service_charge;
       $('.service-charge').removeClass('d-none');
     }
     else {

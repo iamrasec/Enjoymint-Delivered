@@ -222,11 +222,11 @@ function delete_cart_item(guid, toRemove)
 {
   // console.log('deleting item '+ toRemove);
   // console.log('JWT: '+ jwt);
-  if(jwt != "") {
+  if(jwt != "" && guid != 0) {
     let data = {};
     data.pid = toRemove;
     data.guid = guid;
-  
+    
     $.ajax({
       type: "POST",
       url: baseUrl + '/api/cart/delete_cart_item',
@@ -234,8 +234,8 @@ function delete_cart_item(guid, toRemove)
       dataType: "json",
       success: function(json) {
         // console.log(json);
-        console.log("guid: "+guid);
-        update_cart_summary(guid);
+        // console.log("guid: "+guid);
+        // update_cart_summary(guid);
         $("tr.pid-"+toRemove).fadeOut(300, function() { 
           $(this).remove();
         });
@@ -274,6 +274,8 @@ function delete_cart_item(guid, toRemove)
     }
   // }
 
+  console.log("guid: "+guid);
+  update_cart_summary(guid, toRemove);
   update_cart_count();
   
   // If there are no more items in the cookie, redirect back to cart.
@@ -288,44 +290,110 @@ function delete_cart_item(guid, toRemove)
   // return cookie_products.length;
 }
 
-function update_cart_summary(guid)
+function update_cart_summary(guid, toRemove = 0)
 {
   console.log("updating cart summary");
 
-  let data = {};
-  data.guid = guid;
+  if(guid != 0) {
+    let data = {};
+    data.guid = guid;
+  
+    $(".cart-summary").hide();
+    $(".spinner-wrap").removeClass('d-none').show();
+  
+    $.ajax({
+      type: "POST",
+      url: baseUrl + '/api/cart/update_cart_summary',
+      data: data,
+      dataType: "json",
+      success: function(json) {
+        // console.log(json);
+        $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
+        $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
+        $(".cart-summary .tax-cost").html(json.order_costs.tax);
+        if(json.order_costs.service_charge > 0) {
+          $(".cart-summary .service-charge-cost").html(json.order_costs.tax);
+          $(".cart-summary .service-charge").removeClass('d-none');
+        }
+        else {
+          $(".cart-summary .service-charge").addClass('d-none');
+        }
+        $(".cart-summary .total-cost").html(json.order_costs.total);
+        $(".cart-summary").show();
+        $(".spinner-wrap").hide().addClass('d-none');
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        // console.log(textStatus);
+      },
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+      }
+    });
+  }
+  else {
+    if(toRemove != 0) {
+      let new_subtotal = 0;
+      let new_total = 0;
+      let new_item_count = 0;
+      
+      $("input.product-qty").each(function() {
+        if($(this).data('pid') != toRemove) {
+          new_subtotal += $(this).data('unit-price') * $(this).val();
+          new_item_count++;
+        }
+        
+        // if(toRemove == $(this).data('pid')) {
+        //   console.log("To Remove: "+$(this).data('pid'));
+        // }
+        // else {
+        //   console.log($(this).data('pid'));
+        // }
+      });
 
-  $(".cart-summary").hide();
-  $(".spinner-wrap").removeClass('d-none').show();
+      let new_tax = new_subtotal.toFixed(2) * (tax_rate - 1);
 
-  $.ajax({
-    type: "POST",
-    url: baseUrl + '/api/cart/update_cart_summary',
-    data: data,
-    dataType: "json",
-    success: function(json) {
-      // console.log(json);
-      $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
-      $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
-      $(".cart-summary .tax-cost").html(json.order_costs.tax);
-      if(json.order_costs.service_charge > 0) {
-        $(".cart-summary .service-charge-cost").html(json.order_costs.tax);
-        $(".cart-summary .service-charge").removeClass('d-none');
+      if(new_subtotal < 50) {
+        new_total = (new_subtotal.toFixed(2) * tax_rate) + service_charge;
+        $(".service-charge").removeClass("d-none");
       }
       else {
-        $(".cart-summary .service-charge").addClass('d-none');
+        new_total = new_subtotal.toFixed(2) * tax_rate;
+        $(".service-charge").addClass("d-none");
       }
-      $(".cart-summary .total-cost").html(json.order_costs.total);
-      $(".cart-summary").show();
-      $(".spinner-wrap").hide().addClass('d-none');
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      // console.log(textStatus);
-    },
-    beforeSend: function(xhr) {
-      xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
+
+      if(new_item_count > 1) {
+        $("#cart-checkout .cart-item-count").html(new_item_count + " items");
+      }
+      else {
+        $("#cart-checkout .cart-item-count").html(new_item_count + " item");
+      }
+
+      $("#cart-checkout .subtotal-cost").html("$"+new_subtotal.toFixed(2));
+      $("#cart-checkout .tax-cost").html("$"+new_tax.toFixed(2));
+      $("#cart-checkout .total-cost").html("$"+new_total.toFixed(2));
+      
     }
-  });
+
+    // let get_cookie = getCookie('cart_data');
+
+    // // console.log(get_cookie);
+
+    // if(get_cookie) {
+    //   // Parse JSON data into readable array
+    //   cookie_products = JSON.parse(get_cookie);
+
+    //   // console.log(cookie_products);
+
+    //   for(var i = 0; i < cookie_products.length; i++) {
+    //     console.log(cookie_products[i]);
+    //     // console.log(cookie_products[i]['pid']);
+    //     // if(cookie_products[i]['pid'] == toRemove) {
+    //     //   cookie_products.splice(i, 1);
+    //     //   $("tr.pid-"+toRemove).hide('slow', function(){ $("tr.pid-"+toRemove).remove(); });
+    //     // }
+    //   }
+    // }
+  }
 }
 
 function enjoymintAlert(title, text, icon, is_reload = 0, redirect, update_cart)
