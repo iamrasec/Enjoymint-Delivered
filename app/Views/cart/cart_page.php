@@ -4,6 +4,14 @@
 
 <?php echo $this->include('templates/__navigation.php'); ?>
 
+<style>
+  .alert-primary {
+    background-color: #fff3cd;
+    background-image: none !important;
+    color: #856404;
+  }
+</style>
+
 <?php $fast_tracked = true; ?>
 
 <main class="main-content position-relative border-radius-lg mt-9">
@@ -17,6 +25,8 @@
       <div class="col-12 col-md-8 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
+
+          <div class="subtotal_short_alert alert alert-primary d-none" role="alert">You're only $<span class="subtotal_short_amount">0</span> away from waiving the service fee!  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
                 
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
@@ -358,6 +368,15 @@ update_cart_count();
     $(".product-total-price").each(function() {
       subtotal += parseFloat($(this).val());
     });
+
+    if(subtotal >= 40 && subtotal < 50) {
+      let subtotal_short_amount = 50 - subtotal;
+      $(".subtotal_short_amount").html(subtotal_short_amount.toFixed(2));
+      $(".subtotal_short_alert").removeClass("d-none");
+    }
+    else {
+      $(".subtotal_short_alert").addClass("d-none");
+    }
 
     $(".subtotal-cost").html(formatter.format(subtotal));
 
