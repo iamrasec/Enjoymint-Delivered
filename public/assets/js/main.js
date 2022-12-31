@@ -355,6 +355,15 @@ function update_cart_summary(guid, toRemove = 0)
       if(new_subtotal < 50) {
         new_total = (new_subtotal.toFixed(2) * tax_rate) + service_charge;
         $(".service-charge").removeClass("d-none");
+        
+        if(new_subtotal >= 40) {
+          let subtotal_short_amount = 50 - new_subtotal;
+          $(".subtotal_short_amount").html(subtotal_short_amount.toFixed(2));
+          $(".subtotal_short_alert").removeClass("d-none");
+        }
+        else {
+          $(".subtotal_short_alert").addClass("d-none");
+        }
       }
       else {
         new_total = new_subtotal.toFixed(2) * tax_rate;
