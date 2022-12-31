@@ -26,6 +26,7 @@ class Cart extends BaseController
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
+    $this->data['service_charge'] = 5.00;
 
     $this->sender_email = getenv('SMTP_EMAIL_USER');
 

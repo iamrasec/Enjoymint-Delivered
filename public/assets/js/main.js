@@ -234,13 +234,14 @@ function delete_cart_item(guid, toRemove)
       dataType: "json",
       success: function(json) {
         // console.log(json);
+        console.log("guid: "+guid);
+        update_cart_summary(guid);
         $("tr.pid-"+toRemove).fadeOut(300, function() { 
           $(this).remove();
-          update_cart_summary(guid);
         });
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        // console.log(textStatus);
+        console.log(textStatus);
       },
       beforeSend: function(xhr) {
         xhr.setRequestHeader("Authorization", 'Bearer '+ jwt);
@@ -289,6 +290,8 @@ function delete_cart_item(guid, toRemove)
 
 function update_cart_summary(guid)
 {
+  console.log("updating cart summary");
+
   let data = {};
   data.guid = guid;
 
@@ -305,6 +308,13 @@ function update_cart_summary(guid)
       $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
       $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
       $(".cart-summary .tax-cost").html(json.order_costs.tax);
+      if(json.order_costs.service_charge > 0) {
+        $(".cart-summary .service-charge-cost").html(json.order_costs.tax);
+        $(".cart-summary .service-charge").removeClass('d-none');
+      }
+      else {
+        $(".cart-summary .service-charge").addClass('d-none');
+      }
       $(".cart-summary .total-cost").html(json.order_costs.total);
       $(".cart-summary").show();
       $(".spinner-wrap").hide().addClass('d-none');

@@ -114,6 +114,10 @@
               <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
             </div>
+            <div class="row mt-3 service-charge d-none">
+              <div class="col-8 col-md-8 col-xs-8">Service Charge*</div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="service-charge-cost">$<?= $service_charge; ?></span></div>
+            </div>
             <div class="row mt-3">
               <div class="col-8 col-md-8 col-xs-8">Total</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="total-cost">0</span></div>
@@ -362,7 +366,16 @@ update_cart_count();
 
     // Calculate Total
     var total_cost = 0;
-    total_cost = subtotal.toFixed(2) * tax_rate;
+
+    if(subtotal < 50) {
+      total_cost = (subtotal.toFixed(2) * tax_rate) + <?= $service_charge; ?>;
+      $('.service-charge').removeClass('d-none');
+    }
+    else {
+      total_cost = subtotal.toFixed(2) * tax_rate;
+      $('.service-charge').addClass('d-none');
+    }
+    
     $(".total-cost").html(formatter.format(total_cost));
   });
   
