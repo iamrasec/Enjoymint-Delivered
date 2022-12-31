@@ -36,11 +36,14 @@
           <div id="products-list-view" class="row">
 
             <?php if($fast_tracked == false): ?>
-            <div class="input-group" style="float: right; margin-top:-45px; margin-right:-45px;">
+            <div class="input-group" style="float: right; margin-top:-27px; margin-left: -73px;">
               <div class="input-group-prepend">
-                <button type="button" id="toggle" class="input-group-text">
-                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
-                <input style="width: 240px;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                <button type="button" id="toggle" class="input-group-text">    
+                <label class="text-black" style="font-weight: bold; font-size: 16px; margin-top: -30px; margin-right: -128px;">
+                Delivery Schedule</label> 
+                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;
+                <input type="hidden" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+                <span class="del_date_display text-black">Delivery Schedule</span>
                 </button>
               </div>
            </div>
@@ -244,7 +247,8 @@ optionsList.forEach(o => {
       let delFrom = tConvert(delTime[0]);
       let delTo = tConvert(delTime[1]);
       
-      $("input.datetime_picker").val(delsched.d + " @ " + delFrom + " - " + delTo);
+      $("input.datetime_picker").val(delsched.d);
+    $(".del_date_display").text(delsched.d + " @ " + delFrom + " - " + delTo);
     }
 
     // Save Delivery Schedule

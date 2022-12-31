@@ -91,11 +91,12 @@
 
             <div>
               <?php if($fast_tracked == false): ?>
-              <button type="button" id="toggle" class="input-group-text w-100 border-0">
+              <label class="text-white" style="font-size: 16px;">Delivery Schedule</label>
+              <button type="button" id="toggle" class="input-group-text w-100 border-0" style="margin-top: -15px;">
               <i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
               <input style="color: white;" type="hidden" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-              <span class="del_date_display text-white">Delivery Schedule</span>
-              </button>
+              <span class="del_date_display" style="color: #aeb0b5">Delivery Schedule</span>
+              </button>   
               <input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
               <?php else: ?>
               <input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
