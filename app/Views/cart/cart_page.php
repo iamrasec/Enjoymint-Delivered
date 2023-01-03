@@ -376,7 +376,7 @@ update_cart_count();
 
     console.log("subtotal: "+ subtotal);
 
-    if(subtotal <= 25) {
+    if(subtotal <= 25 && subtotal > 0) {
       $(".subtotal_below_min").removeClass("d-none");
       $(".checkout-btn").prop("disabled", true);
     }
