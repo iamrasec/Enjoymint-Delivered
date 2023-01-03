@@ -133,11 +133,12 @@ class Cart extends ResourceController
     $total_cost = $subtotal * $this->data['tax_rate'];
 
     $order_costs = [
-      'item_count' => ($item_count > 1) ? $item_count." Items" : $item_count." Item",
-      'subtotal' => "$".number_format($subtotal, 2, '.', ','),
-      'tax' => "$".number_format($tax_cost, 2, '.', ','),
-      'service_charge' => "$".($subtotal < 50) ? $this->data['service_charge'] : 0,
-      'total' => "$".number_format($total_cost, 2, '.', ','),
+      // 'item_count' => ($item_count > 1) ? $item_count." Items" : $item_count." Item",
+      'item_count' => $item_count,
+      'subtotal' => number_format($subtotal, 2, '.', ','),
+      'tax' => number_format($tax_cost, 2, '.', ','),
+      'service_charge' => ($subtotal < 50) ? $this->data['service_charge'] : 0,
+      'total' => number_format($total_cost, 2, '.', ','),
     ];
 
     echo json_encode(["status" => 'updated', "order_costs" => $order_costs]);

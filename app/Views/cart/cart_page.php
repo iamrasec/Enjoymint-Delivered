@@ -10,6 +10,9 @@
     background-image: none !important;
     color: #856404;
   }
+  .btn:disabled {
+    background-color: #cccccc !important;
+  }
 </style>
 
 <?php $fast_tracked = true; ?>
@@ -27,6 +30,7 @@
           <h1 class="pagetitle">Your Cart</h1>
 
           <div class="subtotal_short_alert alert alert-primary d-none" role="alert">You're only $<span class="subtotal_short_amount">0</span> away from waiving the service fee!  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
+          <div class="subtotal_below_min alert alert-primary d-none" role="alert">A minimum of $25 subtotal is required.  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
                 
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
@@ -127,7 +131,7 @@
             </div>
             <div class="row mt-3 service-charge d-none">
               <div class="col-8 col-md-8 col-xs-8">Service Charge*</div>
-              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="service-charge-cost">$<?= $service_charge; ?></span></div>
+              <div class="col-4 col-md-4 col-xs-4 text-right"><span class="service-charge-cost">$<?= number_format($service_charge, 2); ?></span></div>
             </div>
             <div class="row mt-3">
               <div class="col-8 col-md-8 col-xs-8">Total</div>
@@ -135,7 +139,7 @@
             </div>
             <div class="row mt-5">
               <div class="col-12 col-md-12 col-xs-12 d-grid">
-                <button class="btn bg-primary-green btn-lg checkout-btn" type="submit">Proceed to Checkout</button>
+                <button class="btn bg-primary-green btn-lg checkout-btn" type="submit" disabled>Proceed to Checkout</button>
               </div>
             </div>
           </div>
@@ -370,13 +374,23 @@ update_cart_count();
       subtotal += parseFloat($(this).val());
     });
 
-    if(subtotal >= 40 && subtotal < 50) {
+    console.log("subtotal: "+ subtotal);
+
+    if(subtotal <= 25) {
+      $(".subtotal_below_min").removeClass("d-none");
+      $(".checkout-btn").prop("disabled", true);
+    }
+    else if(subtotal >= 40 && subtotal < 50) {
       let subtotal_short_amount = 50 - subtotal;
       $(".subtotal_short_amount").html(subtotal_short_amount.toFixed(2));
       $(".subtotal_short_alert").removeClass("d-none");
+      $(".subtotal_below_min").addClass("d-none");
+      $(".checkout-btn").prop("disabled", false);
     }
     else {
       $(".subtotal_short_alert").addClass("d-none");
+      $(".subtotal_below_min").addClass("d-none");
+      $(".checkout-btn").prop("disabled", false);
     }
 
     $(".subtotal-cost").html(formatter.format(subtotal));
