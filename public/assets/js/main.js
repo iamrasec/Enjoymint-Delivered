@@ -222,6 +222,8 @@ function delete_cart_item(guid, toRemove)
 {
   // console.log('deleting item '+ toRemove);
   // console.log('JWT: '+ jwt);
+  var itemDeleted = false;
+
   if(jwt != "" && guid != 0) {
     let data = {};
     data.pid = toRemove;
@@ -238,7 +240,12 @@ function delete_cart_item(guid, toRemove)
         // update_cart_summary(guid);
         $("tr.pid-"+toRemove).fadeOut(300, function() { 
           $(this).remove();
+          itemDeleted = true;
         });
+
+        if(itemDeleted == true) {
+          update_cart_summary(guid, toRemove);
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         console.log(textStatus);
@@ -265,7 +272,10 @@ function delete_cart_item(guid, toRemove)
         // console.log(cookie_products[i]['pid']);
         if(cookie_products[i]['pid'] == toRemove) {
           cookie_products.splice(i, 1);
-          $("tr.pid-"+toRemove).hide('slow', function(){ $("tr.pid-"+toRemove).remove(); });
+          $("tr.pid-"+toRemove).hide('slow', function(){ 
+            $("tr.pid-"+toRemove).remove(); 
+          });
+          itemDeleted = true;
         }
       }
 
@@ -275,7 +285,11 @@ function delete_cart_item(guid, toRemove)
   // }
 
   console.log("guid: "+guid);
-  update_cart_summary(guid, toRemove);
+  console.log("itemDeleted: "+itemDeleted);
+  if(itemDeleted == true && jwt == "") {
+    update_cart_summary(guid, toRemove);
+  }
+  
   update_cart_count();
   
   // If there are no more items in the cookie, redirect back to cart.
@@ -293,6 +307,7 @@ function delete_cart_item(guid, toRemove)
 function update_cart_summary(guid, toRemove = 0)
 {
   console.log("updating cart summary");
+  console.log("toRemove: " + toRemove);
 
   if(guid != 0) {
     let data = {};
@@ -307,20 +322,56 @@ function update_cart_summary(guid, toRemove = 0)
       data: data,
       dataType: "json",
       success: function(json) {
-        // console.log(json);
-        $(".cart-summary .cart-item-count").html(json.order_costs.item_count);
-        $(".cart-summary .subtotal-cost").html(json.order_costs.subtotal);
-        $(".cart-summary .tax-cost").html(json.order_costs.tax);
+        console.log(json);
+        if(json.order_costs.item_count >= 1) {
+          $(".cart-summary .cart-item-count").html(json.order_costs.item_count + " item");
+        }
+        else {
+          $(".cart-summary .cart-item-count").html(json.order_costs.item_count + " items");
+        }
+        
+        $(".cart-summary .subtotal-cost").html("$"+json.order_costs.subtotal);
+        $(".cart-summary .tax-cost").html("$"+json.order_costs.tax);
+        
         if(json.order_costs.service_charge > 0) {
-          $(".cart-summary .service-charge-cost").html(json.order_costs.tax);
+          // console.log("service charge cost: " + json.order_costs.service_charge);
+          $(".cart-summary .service-charge-cost").html("$"+json.order_costs.service_charge.toFixed(2));
           $(".cart-summary .service-charge").removeClass('d-none');
         }
         else {
           $(".cart-summary .service-charge").addClass('d-none');
         }
-        $(".cart-summary .total-cost").html(json.order_costs.total);
+        
+        $(".cart-summary .total-cost").html("$"+json.order_costs.total);
         $(".cart-summary").show();
         $(".spinner-wrap").hide().addClass('d-none');
+
+        if(json.order_costs.subtotal < 25) {
+          $(".subtotal_below_min").removeClass("d-none");
+          $(".checkout-btn").prop("disabled", true);
+        }
+        else if(json.order_costs.subtotal >= 25) {
+          $(".service-charge").removeClass("d-none");
+          
+          if(json.order_costs.subtotal < 50) {
+            let subtotal_short_amount = 50 - json.order_costs.subtotal;
+            $(".subtotal_short_amount").html(subtotal_short_amount.toFixed(2));
+            $(".subtotal_short_alert").removeClass("d-none");
+            $(".subtotal_below_min").addClass("d-none");
+            $(".checkout-btn").prop("disabled", false);
+          }
+          else {
+            $(".subtotal_short_alert").addClass("d-none");
+            $(".subtotal_below_min").addClass("d-none");
+            $(".checkout-btn").prop("disabled", false);
+          }
+        }
+        else {
+          $(".service-charge").addClass("d-none");
+          $(".subtotal_short_alert").addClass("d-none");
+          $(".subtotal_below_min").addClass("d-none");
+          $(".checkout-btn").prop("disabled", false);
+        }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         // console.log(textStatus);
@@ -352,22 +403,30 @@ function update_cart_summary(guid, toRemove = 0)
 
       let new_tax = new_subtotal.toFixed(2) * (tax_rate - 1);
 
-      if(new_subtotal < 50) {
+      if(new_subtotal < 25) {
+        $(".subtotal_below_min").removeClass("d-none");
+        $(".checkout-btn").prop("disabled", true);
+      }
+      else if(new_subtotal >= 25 && new_subtotal < 50) {
         new_total = (new_subtotal.toFixed(2) * tax_rate) + service_charge;
         $(".service-charge").removeClass("d-none");
         
-        if(new_subtotal >= 40) {
+        if(new_subtotal >= 25 && new_subtotal < 50) {
           let subtotal_short_amount = 50 - new_subtotal;
           $(".subtotal_short_amount").html(subtotal_short_amount.toFixed(2));
           $(".subtotal_short_alert").removeClass("d-none");
+          $(".subtotal_below_min").addClass("d-none");
         }
         else {
           $(".subtotal_short_alert").addClass("d-none");
+          $(".subtotal_below_min").addClass("d-none");
         }
       }
       else {
         new_total = new_subtotal.toFixed(2) * tax_rate;
         $(".service-charge").addClass("d-none");
+        $(".subtotal_short_alert").addClass("d-none");
+        $(".subtotal_below_min").addClass("d-none");
       }
 
       if(new_item_count > 1) {
