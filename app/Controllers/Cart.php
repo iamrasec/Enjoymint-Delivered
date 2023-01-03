@@ -75,6 +75,7 @@ class Cart extends BaseController
     
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = ($this->guid > 0) ? $this->guid : 0;
+    $this->data['guid'] = $this->guid;
 
     // Generate current date/time (PDT/PST)
     $currDate = new Time("now", "America/Los_Angeles", "en_EN");
