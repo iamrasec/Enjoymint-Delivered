@@ -16,9 +16,31 @@
       <p>Phone number: <strong><?= $order_data['phone']; ?></strong></p>
       <p>Payment Method: <strong><?= ucfirst($order_data['payment_method']); ?></strong></p>
       <p>Address: <strong><?= $order_data['address']; ?></strong></p>
-      <?php if($order_data['delivery_schedule'] != null): ?>
-      <p>Selected Schedule: Thank you for placing your<strong>SCHEDULED ORDER FOR<?= $order_data['delivery_schedule']; ?> between <?= $order_data['delivery_time']; ?></strong></p>
-      <?php else: ?>
+      <?php if($order_data['delivery_schedule'] != '' && $order_data['delivery_time'] != ''): ?>
+          <?php
+                $del_time = explode("-", $order_data['delivery_time']);
+                $del_time_from = $del_time[0];
+                $del_time_to = $del_time[1];
+
+                if($del_time_from > 1200) {
+                  $del_time_from = ($del_time_from - 1200) . ' PM';
+                }
+                else {
+                  $del_time_from = $del_time_from . ' AM';
+                }
+
+                if($del_time_to > 1200) {
+                  $del_time_to = ($del_time_to - 1200) . ' PM';
+                }
+                else {
+                  $del_time_to = $del_time_to . ' AM';
+                }
+
+                $del_time_from = substr_replace($del_time_from, ':', -5, 0);
+                $del_time_to = substr_replace($del_time_to, ':', -5, 0);
+              ?>
+               <p>Selected Schedule: <strong> <?= $order_data['delivery_schedule']; ?> between <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
+      <?php else: ?> 
       <p>Selected Schedule:</p>
       <?php endif; ?>
       <p>Order Notes: <strong><?= $order_data['order_notes']; ?></strong></p>
