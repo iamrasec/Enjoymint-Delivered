@@ -257,8 +257,11 @@ class Dashboard extends BaseController {
 
     $maxDays = date("t", mktime(0,0,0, date("n") - 1));
 
-    $startMonth = $currYear.'-'.($currMonth - 1).'-1 00:00:00';
-    $endMonth = $currYear.'-'.($currMonth - 1).'-'.$maxDays.' 23:59:59';
+    $prevMonth = ($currMonth == 1) ? 12 : ($currMonth - 1);
+    $prevMonthYear = ($currMonth == 1) ? $currYear - 1 : $currYear;
+
+    $startMonth = $prevMonthYear.'-'.$prevMonth.'-1 00:00:00';
+    $endMonth = $prevMonthYear.'-'.$prevMonth.'-'.$maxDays.' 23:59:59';
 
     $where1 = 'created >= "'. $startMonth .' 00:00:00"';
     $where2 = 'created <= "'. $endMonth .' 23:59:59"';
