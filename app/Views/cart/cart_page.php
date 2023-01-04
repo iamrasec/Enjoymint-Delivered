@@ -421,7 +421,7 @@ update_cart_count();
     // console.log($("input[name=guid]").val());
     // console.log(sched);
 
-    if($("input[name=guid]").val() == '') {
+    if($("input[name=guid]").val() == 0) {
       $("#loginRegisterModal").modal('show');
     }
     else if(sched == "") {
