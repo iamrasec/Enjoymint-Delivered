@@ -18,6 +18,18 @@
       placeholder: "Select Delivery Type",
       // allowClear: true
     });
+
+    $('#sale_start_date').datetimepicker({
+      timepicker: false,
+      datepicker: true,
+      format: 'Y-m-d',
+    });
+
+    $('#sale_end_date').datetimepicker({
+      timepicker: false,
+      datepicker: true,
+      format: 'Y-m-d',
+    });
   });
 
   $(document).on('keyup', '#product_name', function() {
@@ -192,6 +204,11 @@
     formData.append('tags', $('#tags').val());
     formData.append('delivery_type', $('#del_type').val());
     formData.append('lowstock_threshold', $('#lowstock_threshold').val());
+
+    if($(".discount_val").val() != 0) {
+      formData.append('discount_val', $('.discount_val').val());
+      formData.append('discount_type', $('.discount_type').val());
+    }
 
     fetch('/api/products/add',  {
       method: 'POST',
