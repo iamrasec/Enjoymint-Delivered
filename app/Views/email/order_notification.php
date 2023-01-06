@@ -20,7 +20,7 @@
           <?php
                 $del_time = explode("-", $order_data['delivery_time']);
                 $del_time_from = $del_time[0];
-                $del_time_to = $del_time[1];
+                $del_time_to = $del_time[1];        
 
                 if($del_time_from > 1200) {
                   $del_time_from = ($del_time_from - 1200) . ' PM';
@@ -39,7 +39,7 @@
                 $del_time_from = substr_replace($del_time_from, ':', -5, 0);
                 $del_time_to = substr_replace($del_time_to, ':', -5, 0);
               ?>
-               <p>Selected Schedule: <strong> <?= $order_data['delivery_schedule']; ?> between <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
+               <p>Selected Schedule: <strong style="font-size: 16px; color: black;"> <?= $order_data['delivery_schedule']; ?> between <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
       <?php else: ?> 
       <p>Selected Schedule:</p>
       <?php endif; ?>
