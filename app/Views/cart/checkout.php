@@ -79,7 +79,8 @@
 .checkbox-tools:checked + label,
 .checkbox-tools:not(:checked) + label{
 	position: relative;
-	display: inline-block;
+	/* display: inline-block; */
+	display: inline-flex;
 	padding: 20px;
 	width: 150px;
 	font-size: 14px;
@@ -97,6 +98,10 @@
 	color: var(--white);
 	-webkit-transition: all 300ms linear;
 	transition: all 300ms linear; 
+	min-height: 80px;
+	justify-content: center;
+	align-content: center;
+	flex-wrap: wrap;
 }
 .checkbox-tools:not(:checked) + label{
 	background-color: var(--dark-light);
@@ -155,9 +160,9 @@
                 <h5>Payment Method</h5>
 
                 <div class="row justify-content-center pb-5">
-                  <div class="col-12 pb-1">
-                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-1" value="zelle" checked>
-                    <label class="for-checkbox-tools" for="tool-1">Zelle</label>
+                  <div class="col-12 pb-1 d-flex">
+										<input class="checkbox-tools" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
+                    <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
                     
                     <input class="checkbox-tools" type="radio" name="payment_method" id="tool-2" value="paytender">
                     <label class="for-checkbox-tools" for="tool-2">PayTender</label>
