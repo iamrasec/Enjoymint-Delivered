@@ -41,7 +41,7 @@
           $del_time_from = substr_replace($del_time_from, ':', -5, 0);
           $del_time_to = substr_replace($del_time_to, ':', -5, 0);
           ?>
-          <p>Delivery Date: <strong><?= $order_data[0]->delivery_schedule; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
+          <p>Delivery Date: <strong style="font-size: 20px;"><?= $order_data[0]->delivery_schedule; ?> @ <?= $del_time_from; ?> - <?= $del_time_to; ?></strong></p>
           <?php endif; ?>
           <table id="order_products">
             <tbody>
