@@ -6,7 +6,7 @@
   <!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
   <?php $this->endSection() ?>
-
+    
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
@@ -24,7 +24,7 @@
           <h1>Fast Tracked Shop</h1>
           <?php else: ?>
           <h1>Shop</h1>
-          <form method="GET" action="<?= base_url('/shop/')?>">
+          <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <div class="search" style="text-align: right ;">
             <input type="text" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
@@ -34,7 +34,7 @@
           <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
-
+          
             <?php if($fast_tracked == false): ?>
             <div class="input-group" style="float: right; margin-top:-27px; margin-left: -73px;">
               <div class="input-group-prepend">

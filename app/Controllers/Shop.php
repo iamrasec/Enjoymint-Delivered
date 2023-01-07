@@ -42,7 +42,7 @@ class Shop extends BaseController
         $this->data['page_title'] = $page_title;
         // $this->data['products'] = $this->product_model->get()->getResult();
         $searchData = $this->request->getGet();
-        $search= $this->request->getGet('inputdata');
+        //$search= $this->request->getGet('inputdata');
         // $search = "";
 
         $this->data['current_filter'] = [];
@@ -54,14 +54,7 @@ class Shop extends BaseController
        }else{
         $page = null;
        }
-       if(!empty($search)){
-        $search = $this->request->getGet('inputdata');
-        $all_products = $this->product_model->getProducts($search);
-        
-    }else{
-            // $all_products = $this->product_model->paginate(30);
-            $all_products = $this->product_model->getAllProducts();
-        
+      
        if(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getAllProducts();
@@ -172,7 +165,7 @@ class Shop extends BaseController
         }
         }
     }
-    }
+    
         // $all_products = $this->product_model->paginate(30);
 
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
@@ -368,6 +361,66 @@ class Shop extends BaseController
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
         return view('shop_view', $this->data);
+    }
+
+    public function searchProduct(){
+
+        $session = session();
+        $search= $this->request->getGet('inputdata');
+       
+
+        if(!empty($search)){
+            $search = $this->request->getGet('inputdata');
+            $all_products = $this->product_model->getProducts($search);
+            
+        }else{
+                // $all_products = $this->product_model->paginate(30);
+                $all_products = $this->product_model->getAllProducts();
+            }
+       
+        // $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+       
+        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+        $page_title = 'Shop';
+        
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product['images']) {
+                $imageIds = [];
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+            
+            $count++;
+        }
+
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = false;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+       
+         return view('shop_view', $this->data);
+      
+        
     }
     
 }
