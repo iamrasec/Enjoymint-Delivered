@@ -31,7 +31,9 @@ class Shop extends BaseController
     }
 
     public function index()
-    {
+    { 
+        $session = session();
+        $search_data = $session->get('search');
         $page_title = 'Shop';
 
         $this->data['page_body_id'] = "shop";
@@ -186,6 +188,11 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
+        if(empty($search)){
+            $this->data['search_keyword'] = null;
+            }else{  
+            $this->data['search_keyword'] = $search_data;
+            }
         
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -348,7 +355,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-
+                                    
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -368,7 +375,7 @@ class Shop extends BaseController
         $session = session();
         $search= $this->request->getGet('inputdata');
        
-
+        
         if(!empty($search)){
             $search = $this->request->getGet('inputdata');
             $all_products = $this->product_model->getProducts($search);
@@ -378,9 +385,15 @@ class Shop extends BaseController
                 $all_products = $this->product_model->getAllProducts();
             }
        
-        // $experience = $this->experience_model->where('url', $url)->get()->getResult()[0]; 
+            
+           
+            if(empty($search)){
+            $this->data['search_keyword'] = null;
+            }else{  
+            $this->data['search_keyword'] = $search;
+            }
+             $session->search = $this->data['search_keyword'];
        
-        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
         $page_title = 'Shop';
         
         $this->data['page_body_id'] = "shop";

@@ -26,7 +26,7 @@
           <h1>Shop</h1>
           <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <div class="search" style="text-align: right ;">
-            <input type="text" name="inputdata" placeholder="Search">
+            <input type="text" value="<?= $search_keyword ;?>" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
             </div>
           </form>
