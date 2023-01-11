@@ -196,7 +196,7 @@ class Shop extends BaseController
         
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
-        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['categories'] = $this->category_model->getAllCategory();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['fast_tracked'] = false;

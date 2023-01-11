@@ -29,4 +29,14 @@ class CategoryModel extends Model {
     $this->where('categories.id', $cid);
     return $this->paginate(28);
   }
+
+  public function getAllCategory(){
+     $this->select('categories.*');
+     $this->join('product_categories', 'product_categories.cid = categories.id', 'left');
+     $this->join('products', 'products.id = product_categories.pid', 'left');
+     $this->groupBy('product_categories.cid');
+    
+     return $this->get()->getResult();
+    }
+   
 }
