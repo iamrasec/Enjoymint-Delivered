@@ -204,6 +204,7 @@ class Products extends ResourceController
             'discount_attribute' => $this->request->getVar('discount_type'),
             'start_date' => $sale_start_date,
             'end_date' => $sale_end_date,
+            'status' => 1,
           ];
 
           $this->discount_model->save($saveDiscount);
@@ -350,6 +351,37 @@ class Products extends ResourceController
         $this->compound_model->save($saveCompounds);
 
         // print_r($this->product_category->getLastQuery());
+
+        // Save Sale/Discount
+        if($this->request->getVar('discount_val') > 0) {
+          $sale_start_date = "";
+          $sale_end_date = "";
+          $variant_id = 0;
+          
+          if($this->request->getVar('sale_start_date')) {
+            $sale_start_date_raw = $this->request->getVar('sale_start_date');
+            $get_start_time = explode(" ", $sale_start_date_raw);
+            $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]." ".$get_start_time[2]));
+          }
+
+          if($this->request->getVar('sale_end_date')) {
+            $sale_end_date_raw = $this->request->getVar('sale_end_date');
+            $get_end_time = explode(" ", $sale_end_date_raw);
+            $sale_end_date = $get_end_time[0] ." ". date('H:i:s', strtotime($get_end_time[1]." ".$get_end_time[2]));
+          }
+
+          $saveDiscount = [
+            'pid' => $pid,
+            'variant_id' => $variant_id,
+            'discount_value' => $this->request->getVar('discount_val'),
+            'discount_attribute' => $this->request->getVar('discount_type'),
+            'start_date' => $sale_start_date,
+            'end_date' => $sale_end_date,
+            'status' => 1,
+          ];
+
+          $this->discount_model->save($saveDiscount);
+        }
 
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {

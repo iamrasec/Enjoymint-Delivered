@@ -20,6 +20,7 @@ class Products extends BaseController {
     $this->product_experience = model('ProductExperience');
     $this->order_model = model('CheckoutModel');
     $this->experience_model = model('ExperienceModel');
+    $this->discount_model = model('DiscountModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -298,6 +299,7 @@ class Products extends BaseController {
     $this->data['categories'] = $this->category_model->get()->getResult();
     $this->data['experiences'] = $this->experience_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
+    $this->data['discount'] = $this->discount_model->where('pid', $pid)->get()->getResult();
 
     $product = $this->product_model->getProductData($pid);
 

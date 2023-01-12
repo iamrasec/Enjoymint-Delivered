@@ -5,6 +5,9 @@
   .breaker {
     margin-top: 10px;
   }
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+    width: 600px !important;
+  }
 </style>
 <?php echo $this->include('templates/__dash_navigation.php'); ?>
 
@@ -305,13 +308,13 @@
                       <div class="col-md-6 col-xs-6">
                         <label class="form-label w-100">Start Date</label>
                         <div class="input-group input-group-dynamic">
-                          <input type="text" id="sale_start_date" name="sale_start_date" value="" class="form-control datetime_picker">
+                          <input type="text" id="sale_start_date" name="sale_start_date" value="" class="form-control datetime_picker" autocomplete="off">
                         </div>
                       </div>
                       <div class="col-md-6 col-xs-6">
                         <label class="form-label w-100">End Date</label>
                         <div class="input-group input-group-dynamic">
-                          <input type="text" id="sale_end_date" name="sale_end_date" value="" class="form-control datetime_picker">
+                          <input type="text" id="sale_end_date" name="sale_end_date" value="" class="form-control datetime_picker" autocomplete="off">
                         </div>
                       </div>
                     </div>
