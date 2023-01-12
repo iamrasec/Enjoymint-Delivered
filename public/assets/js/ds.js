@@ -41,15 +41,17 @@
 
   // Check if cookie exists
   var delivery_cookie = getCookie("delivery_schedule");
+  var delivery_timeout = getCookie("scheduler-timeout");
 
   $('#toggle').on('click', function(){
     $(".delivery-popup").click();
   });
 
   $(document).ready(function() {
-    if(!delivery_cookie) {
+    if(!delivery_cookie|| !delivery_timeout) {
       // Show delivery schedule popup if no cookie is found.
       $(".delivery-popup").click();
+      console.log(delivery_timeout);
     }
     else {
       let delsched = JSON.parse(delivery_cookie);
@@ -75,5 +77,12 @@
       $("input.datetime_picker").val(delsched.d);
       $(".btn-link").click();
     });
+    $(".btn-link").click(function () {
+      let date = new Date();
+    date.setTime(date.getTime()+(1*24*60*60*1000));
+    let expires = date.toGMTString();
+      setCookie('scheduler-timeout', 1, expires);
+      console.log("cookie");
+    })
   });
 })(jQuery);
