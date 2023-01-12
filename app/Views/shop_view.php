@@ -229,6 +229,7 @@ optionsList.forEach(o => {
 
   // Check if cookie exists
   var delivery_cookie = getCookie("delivery_schedule");
+  var delivery_timeout = getCookie("scheduler-timeout");
 
   $('#toggle').on('click', function(){
     $(".delivery-popup").click();
@@ -237,7 +238,7 @@ optionsList.forEach(o => {
   $(document).ready(function() {
 
     <?php if($fast_tracked == false): ?>
-    if(!delivery_cookie) {
+    if(!delivery_cookie && !delivery_timeout) {
       // Show delivery schedule popup if no cookie is found.
       $(".delivery-popup").click();
     }
@@ -270,6 +271,14 @@ optionsList.forEach(o => {
       // console.log(delsched.d + " @ " + delsched.t);
       $(".btn-link").click();
     });
+
+    $(".btn-link").click(function () {
+      let date = new Date();
+      date.setTime(date.getTime()+(1*24*60*60*1000));
+      let expires = date.toGMTString();
+      setCookie('scheduler-timeout', 1, expires);
+      // console.log("cookie");
+    })
     <?php endif; ?>
   });
 
