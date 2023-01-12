@@ -40,5 +40,5 @@ class EnjoymintUtils {
 		}
 		return $randomString;
 	}
-  
+    
 }

@@ -26,6 +26,7 @@ class Products extends ResourceController
       $this->product_category = model('ProductCategory');
       $this->product_experience = model('ProductExperience');
       $this->compound_model = model('CompoundModel');
+      $this->discount_model = model('DiscountModel');
       // $this->experience_model = model('ExperienceModel');
 
 
@@ -48,6 +49,28 @@ class Products extends ResourceController
     addJSONResponseHeader(); // set response header to json
 
     // print_r($this->request->getPost());
+
+    /** Start Testing Discounts */
+    // echo "<pre>".print_r($this->request->getPost(), 1)."</ pre>";
+
+    // if($this->request->getVar('discount_val') > 0) {
+
+    //   if($this->request->getVar('sale_start_date')) {
+    //     $sale_start_date_raw = $this->request->getVar('sale_start_date');
+    //     $get_start_time = explode(" ", $sale_start_date_raw);
+    //     $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]." ".$get_start_time[2]));
+    //     echo "<pre>".print_r($sale_start_date, 1)."</ pre>";
+    //   }
+    //   else {
+    //     echo "<pre>No Start Date</pre>";
+    //   }
+      
+    // }
+    // else {
+    //   echo "<pre>Product Not On Sale</pre>";
+    // }
+    // die();
+    /** END testing discounts */
 
     if($this->request->getPost()) {
       $rules = [
@@ -155,6 +178,36 @@ class Products extends ResourceController
         //   ];
         //   $this->product_variant_model->save($variantData); // try to save product variant
         // }
+
+        // Save Sale/Discount
+        if($this->request->getVar('discount_val') > 0) {
+          $sale_start_date = "";
+          $sale_end_date = "";
+          $variant_id = 0;
+          
+          if($this->request->getVar('sale_start_date')) {
+            $sale_start_date_raw = $this->request->getVar('sale_start_date');
+            $get_start_time = explode(" ", $sale_start_date_raw);
+            $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]." ".$get_start_time[2]));
+          }
+
+          if($this->request->getVar('sale_end_date')) {
+            $sale_end_date_raw = $this->request->getVar('sale_end_date');
+            $get_end_time = explode(" ", $sale_end_date_raw);
+            $sale_end_date = $get_end_time[0] ." ". date('H:i:s', strtotime($get_end_time[1]." ".$get_end_time[2]));
+          }
+
+          $saveDiscount = [
+            'pid' => $productId,
+            'variant_id' => $variant_id,
+            'discount_value' => $this->request->getVar('discount_val'),
+            'discount_attribute' => $this->request->getVar('discount_type'),
+            'start_date' => $sale_start_date,
+            'end_date' => $sale_end_date,
+          ];
+
+          $this->discount_model->save($saveDiscount);
+        }
 
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {
