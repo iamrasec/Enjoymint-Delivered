@@ -301,6 +301,12 @@ class Products extends BaseController {
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
     $this->data['discount'] = $this->discount_model->where('pid', $pid)->get()->getResult();
 
+    if(!empty($this->data['discount'])) {
+      for($i = 0; $i < count($this->data['discount']); $i++) {
+        
+      }
+    }
+
     $product = $this->product_model->getProductData($pid);
 
     $this->data['product_data'] = $product;

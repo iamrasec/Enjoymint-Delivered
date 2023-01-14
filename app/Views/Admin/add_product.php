@@ -281,7 +281,7 @@
           <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
             <div class="card">
               <div class="card-body">
-                <h6>Sale</h6>
+                <h6>Sale & Promotion</h6>
                 <div class="row mt-4">
                   <div class="col-md-6 col-xs-12">
                     <label class="form-label w-100">Discount</label>

@@ -289,7 +289,7 @@
           <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
             <div class="card">
               <div class="card-body">
-                <h6>Sale</h6>
+                <h6>Sale & Promotion</h6>
                 <div class="row mt-4">
                   <div class="col-md-6 col-xs-12">
                     <label class="form-label w-100">Discount</label>
@@ -329,34 +329,75 @@
                   </div>
 
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="row mt-4">
+          <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h6>Active Promotions</h6>
                 <div class="row mt-4">
-                  <div><strong>Active Promotions</strong></div>
                   <?php if(!empty($discount)): ?>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Variation ID</th>
-                        <th>Discount</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php foreach($discount as $active_discount): ?>
-                      <tr>
-                        <td><?= $active_discount->variant_id; ?></td>
-                        <td><?= $active_discount->variant_id; ?></td>
-                      </tr>
-                      <?php endforeach; ?>
-                    </tbody>
-                  </table>
+                  <div class="col-md-12 col-xs-12">
+                    <table class="w-100">
+                      <thead>
+                        <tr>
+                          <th>Promo ID</th>
+                          <th>Variation ID</th>
+                          <th>Discount</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach($discount as $active_discount): ?>
+                        <?php
+                        $start_date = "";
+                        $end_date = "";
+
+                        if($active_discount->start_date != "") {
+                          $start_raw = explode(" ", $active_discount->start_date);
+                          $start_time = date('h:i a', strtotime($start_raw[1]));
+                          $start_date = $start_raw[0] ." ". $start_time;
+                        }
+
+                        if($active_discount->end_date != "") {
+                          $end_raw = explode(" ", $active_discount->end_date);
+                          $end_time = date('h:i a', strtotime($end_raw[1]));
+                          $end_date = $end_raw[0] ." ". $end_time;
+                        }
+                        
+                        ?>
+                        <tr>
+                          <td><?= $active_discount->id; ?></td>
+                          <td><?= $active_discount->variant_id; ?></td>
+                          <?php if($active_discount->discount_attribute == 'percent'): ?>
+                            <td><?= $active_discount->discount_value; ?>%</td>
+                          <?php elseif($active_discount->discount_attribute == 'fixed'): ?>
+                            <td>$<?= $active_discount->discount_value; ?> Off</td>
+                          <?php else: ?>
+                            <td>$<?= $active_discount->discount_value; ?></td>
+                          <?php endif; ?>
+                          <td><?= $start_date; ?></td>
+                          <td><?= $end_date; ?></td>
+                          <td>
+                            <button type="button" class="btn btn-warning edit-promo-<?= $active_discount->id; ?>"><span class="material-icons">edit</span> Edit</button>
+                            <button type="button" class="btn btn-danger end-promo-<?= $active_discount->id; ?>"><span class="material-icons">block</span> End</button>
+                          </td>
+                        </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
                   <?php else: ?>
                     <p>No Active Sale/Promotions Available</p>
                   <?php endif; ?>
                 </div>
-                <pre><?= print_r($discount, 1); ?></pre>
+                <!-- <pre><?= print_r($discount, 1); ?></pre> -->
               </div>
             </div>
           </div>
