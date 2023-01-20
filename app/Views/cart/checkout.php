@@ -323,16 +323,30 @@ var serverDate = '<?php echo $currDate; ?>';
 
 var today = new Date(serverDate);
 
-var dateNow = today.toISOString().slice(0, 10);
+// var dateNow = today.toISOString().slice(0, 10);
+
+var maxDate = moment().add(6, 'day');
+
+var enabledDates = [
+moment(today, serverDate)
+];
+
+for (var i = 1; i <= 6; i++) {
+  var date = moment().add(i, 'day').format(serverDate);
+  enabledDates.push(moment(date, serverDate));
+}
+
 
 <?php if($del_type == 'nfs'): ?>
 $('#inline_picker').datetimepicker({
-	timepicker: false,
+  timepicker: false,
   datepicker: true,
   inline: true,
   format: 'YYYY-MM-DD',
   minDate: serverDate,
-  defaultDate: dateNow,
+  maxDate: maxDate,
+  enabledDates: enabledDates,
+//   defaultDate: dateNow,
   defaultSelect: true,
 	onGenerate:function(ct) {
 		console.log("onGenerate");
