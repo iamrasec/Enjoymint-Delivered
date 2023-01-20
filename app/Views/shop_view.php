@@ -185,7 +185,18 @@ optionsList.forEach(o => {
 
   var today = new Date(serverDate);
 
-  var dateNow = today.toISOString().slice(0, 10);
+  // var dateNow = today.toISOString().slice(0, 10);
+
+  var maxDate = moment().add(6, 'day');
+
+  var enabledDates = [
+  moment(today, serverDate)
+  ];
+
+  for (var i = 1; i <= 6; i++) {
+    var date = moment().add(i, 'day').format(serverDate);
+    enabledDates.push(moment(date, serverDate));
+  }
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -193,7 +204,9 @@ optionsList.forEach(o => {
     inline: true,
     format: 'YYYY-MM-DD',
     minDate: serverDate,
-    defaultDate: dateNow,
+    maxDate: maxDate,
+    enabledDates: enabledDates,
+    // defaultDate: dateNow,
     defaultSelect: true,
     onGenerate:function(ct) {
       console.log("onGenerate");

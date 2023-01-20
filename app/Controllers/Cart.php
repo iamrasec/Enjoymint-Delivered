@@ -78,7 +78,7 @@ class Cart extends BaseController
     // $this->data['guid'] = $this->guid;
 
     // Generate current date/time (PDT/PST)
-    $currDate = new Time("now", "America/Los_Angeles", "en_EN");
+    $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
 
     // If current time is more than 6PM, generate tomorrow's date/time (PDT/PST)
     if($currDate->format('H') > '18') {
@@ -165,7 +165,7 @@ class Cart extends BaseController
     // Generate unique order token
     $this->data['checkout_token'] = $enjoymint_utils->generateRandomString(20);
 
-    $currDate = new Time("now", "America/Los_Angeles", "en_EN");
+    $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
 
 
     if($currDate->format('H') > '18') {
