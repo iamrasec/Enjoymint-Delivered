@@ -46,12 +46,12 @@
             <div class="card-body">
              <h5 class="mb-4">Product Details</h5>
               <div class="row">
-
+                                                  
                 <div class="col-xl-5 col-lg-6 text-center">
                   <?php if($images): ?>
                   <img class="w-100 border-radius-lg shadow-lg mx-auto" src="<?= base_url('products/images/'.$images[0]->filename); ?>" alt="">
                   <?php endif; ?>
-
+                      
                   <div class="my-gallery d-flex mt-4 pt-2" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php if($images): ?>
                     <?php foreach($images as $image): ?>

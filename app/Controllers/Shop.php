@@ -13,6 +13,7 @@ class Shop extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
@@ -21,6 +22,7 @@ class Shop extends BaseController
         $this->image_model = model('ImageModel');
         $this->brand_model = model('BrandModel');
         $this->strain_model = model('StrainModel');
+        $this->location_model = model('LocationModel');
         $this->productcategory_model = model('ProductCategory');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
@@ -34,6 +36,7 @@ class Shop extends BaseController
     { 
         $session = session();
         $search_data = $session->get('search');
+        $location = $session->get('search1');
         $page_title = 'Shop';
 
         $this->data['page_body_id'] = "shop";
@@ -115,7 +118,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-        
+        $this->data['location_keyword'] = $location;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -187,13 +190,23 @@ class Shop extends BaseController
              $count++;
         }
 
+        $search_location = $this->request->getPost('location');
+                      
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         if(empty($search)){
             $this->data['search_keyword'] = null;
             }else{  
             $this->data['search_keyword'] = $search_data;
             }
-        
+
+            // if(empty($search1)){
+            //     $this->data['location_keyword'] = null;
+            //     }else{  
+            //     $this->data['location_keyword'] = $search1;
+            //     }
+            //     $this->data['location_keyword'] = null;
+            //      $session->search_location = $this->data['location_keyword'];
+        $this->data['location_keyword'] = $location;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->getAllCategory();
@@ -213,6 +226,8 @@ class Shop extends BaseController
         
     public function fast_tracked()                 
     {         
+        $session = session();
+        $location = $session->get('search1');
         $page_title = 'Shop';
                      
         $this->data['page_body_id'] = "shop";
@@ -232,9 +247,9 @@ class Shop extends BaseController
         //$all_products = $this->product_model->paginate(30);
        if(!empty($searchData['page'])){
         $page = $searchData['page'];
-       }else{
+       }else{           
         $page = null;
-       }                                                                                                                                                                                                                                                                                                                               
+       }                                                                                                                                                                                                                                                                                                                                     
          if(empty($searchData)){
             // $all_products = $this->product_model->paginate(30);
             $all_products = $this->product_model->getFastTracked();
@@ -285,7 +300,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-
+        $this->data['location_keyword'] = $location;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -339,6 +354,10 @@ class Shop extends BaseController
 
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
 
+        
+
+        
+
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -355,7 +374,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-                                    
+        $this->data['location_keyword'] = $location;                         
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -367,13 +386,15 @@ class Shop extends BaseController
         if($this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
-        return view('shop_view', $this->data);
-    }
+        return view('shop_view', $this->data);          
+    }     
 
     public function searchProduct(){
 
         $session = session();
-        $search= $this->request->getGet('inputdata');
+        $location = $session->get('search1');
+        $search = $this->request->getGet('inputdata');
+        $search_location = $this->request->getPost('location');
        
         
         if(!empty($search)){
@@ -388,11 +409,20 @@ class Shop extends BaseController
             
            
             if(empty($search)){
-            $this->data['search_keyword'] = null;
+                $this->data['search_keyword'] = null;
             }else{  
-            $this->data['search_keyword'] = $search;
+                $this->data['search_keyword'] = $search;
             }
              $session->search = $this->data['search_keyword'];
+ 
+            //  if(empty($search_location)){
+            //     $this->data['location_keyword'] = null;
+            //     }else{  
+            //     $this->data['location_keyword'] = $search_location;
+            //     }
+            //     $this->data['location_keyword'] = null;
+            //     $session->search_location = $this->data['location_keyword'];
+             
        
         $page_title = 'Shop';
         
@@ -402,13 +432,13 @@ class Shop extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-
+        
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
             $product_arr[$count] = $product;
             if($product['images']) {
-                $imageIds = [];
+                $imageIds = [];                  
                 $imageIds = explode(',',$product['images']);
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
                 $product_arr[$count]['images'] = $images;
@@ -416,7 +446,7 @@ class Shop extends BaseController
             
             $count++;
         }
-
+        $this->data['location_keyword'] = $location;   
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -435,5 +465,83 @@ class Shop extends BaseController
       
         
     }
+
+    public function location($id = null){
+
+        $session = session();
+        $search= $this->request->getPost('location');
+        $user_id = $this->uid;
+       
+    //    $location = $this->location_model->getLocation($user_id);
+    
+        if(!empty($search)){
+            $to_save = [
+                'address' => $this->request->getVar('location'),
+                'user_id' => $user_id,
+            ];
+          
+            if($to_save['user_id'] == $user_id){
+              
+                $this->location_model->update($id, ['address' => $to_save['address']]);
+            }else{
+        
+
+        $this->location_model->save($to_save); 
+    }
+        // return view('templates/_navigation', $this->data);
+    }
+     
+    $location = $this->location_model->where('user_id',$user_id)->get()->getResult();
+        $all_products = $this->product_model->getAllProducts();
+        
+        if(empty($location)){
+            $this->data['location_keyword'] = null;
+            }else{  
+            $this->data['location_keyword'] = $location;
+            //return view('shop_view', $this->data);
+            }
+            $this->data['search_keyword'] = null;
+             $session->search1 = $location;
+      
+        $page_title = 'Shop';
+        
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        
+        $product_arr = [];
+        $count = 0;
+        foreach($all_products as $product) {
+            $product_arr[$count] = $product;
+            if($product['images']) {
+                $imageIds = [];                  
+                $imageIds = explode(',',$product['images']);
+                $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                $product_arr[$count]['images'] = $images;
+            }
+            
+            $count++;
+        }           
+
+        $this->data['products'] = $product_arr;
+        $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = false;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+       
+         return redirect()->to('shop');
+
+    }               
     
 }

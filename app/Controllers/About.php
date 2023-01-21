@@ -18,6 +18,8 @@ class About extends BaseController
 
   public function index()
   {
+    $session = session();
+    
     $page_title = 'About Us';
 
     $this->data['page_body_id'] = "faq";
@@ -26,6 +28,8 @@ class About extends BaseController
     'current' => $page_title,
     ];
     $this->data['page_title'] = $page_title;
+    $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
 
     return view('about_page', $this->data);
   }

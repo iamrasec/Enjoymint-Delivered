@@ -532,7 +532,7 @@ class Users extends BaseController
 	}
 
 	public function dashboard($tab = "_orders_tab")
-	{
+	{   $session =session();
 		$page_title = "Dashboard";
 
 		// print_r($categories);
@@ -573,7 +573,8 @@ class Users extends BaseController
 		else {
 			$this->data['active_tab'] = '_orders_tab';  // If tab specified is not found, default back to order tab
 		}
-		             
+		$location = $session->get('search1');
+		$this->data['location_keyword'] = $location;    
 		return view('customer_dashboard/index', $this->data);
 	}
 
