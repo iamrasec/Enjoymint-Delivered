@@ -154,8 +154,8 @@
           <?php echo $this->include('templates/_delivery_popup.php'); ?>
           <?php endif; ?>
           <?php foreach($location as $loc): ?>
-            <?= $location = $loc->address; ?>
-    <?php endforeach; ?>
+            <input type="hidden" value="<?= $location = $loc->address; ?>">
+         <?php endforeach; ?>
         </form>
       </div>
       <?php endif; ?>
@@ -394,7 +394,6 @@ update_cart_count();
     $(".product-total-price").each(function() {
       subtotal += parseFloat($(this).val());
     });
-    console.log("subtotal: "+ location);
     
   if(location.match("Hollister") || location.match("Half Moon Bay") || location.match("Moss Beach")) {
     if(subtotal <= 50 && subtotal > 0) {
