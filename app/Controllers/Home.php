@@ -30,7 +30,10 @@ class Home extends BaseController
     }
 
     public function index()
-    {
+    {   
+        $session = session();
+        $location = $session->get('search1');
+        $this->data['location_keyword'] = $location; 
         $page_title = 'Home';
 
         $this->data['page_body_id'] = "home";

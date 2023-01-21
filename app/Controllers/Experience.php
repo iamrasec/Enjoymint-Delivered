@@ -35,6 +35,8 @@ class Experience extends BaseController
 
     public function index($url)
     {  $session = session();
+        $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
         $search= $this->request->getGet('inputdata');
         $searchData = $this->request->getGet();
         $data = $session->get('exp_id');
@@ -169,6 +171,8 @@ class Experience extends BaseController
 
      public function searchProduct(){
         $session = session();
+        $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
         $search= $this->request->getGet('inputdata1');
         $data = $session->get('exp_id');
        
@@ -223,6 +227,8 @@ class Experience extends BaseController
 
      public function filterProduct(){
         $session = session();
+        $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
         $searchData = $this->request->getGet();
         $data = $session->get('exp_id');
         

@@ -10,7 +10,7 @@
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
-
+  
 <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-6">
   <section class="pt-3 pb-4" id="popular-products">
     <div class="container">
@@ -26,7 +26,7 @@
           <h1>Shop</h1>
           <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <div class="search" style="text-align: right ;">
-            <input type="text" value="<?= $search_keyword ;?>" name="inputdata" placeholder="Search">
+            <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
             </div>
           </form>
@@ -34,7 +34,7 @@
           <?php endif; ?>
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
-          
+              
             <?php if($fast_tracked == false): ?>
             <div class="input-group" style="float: right; margin-top:-27px; margin-left: -73px;">
               <div class="input-group-prepend">
@@ -46,14 +46,14 @@
                 <span class="del_date_display text-black">Delivery Schedule</span>
                 </button>
               </div>
-           </div>
-           <?php endif; ?>
+           </div> 
+           <?php endif; ?>      
 
             <?php foreach($products as $product): ?>
               <!-- <pre><?php print_r($product); ?></pre> -->
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
-                <div class="img-wrap">
+                <div class="img-wrap">          
                   <?php 
                     $url = !empty($searchData) ? $product['url'] : $product['url'];
                     if(isset($product['images'][0])):
@@ -109,6 +109,7 @@
 </div>
 
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
+
 <div class="py-5">
   <div class="container">
     <div class="row">
@@ -130,6 +131,7 @@
     </div>
   </div>
 </div>
+
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
 
 </div>
@@ -149,16 +151,16 @@ optionsList.forEach(o => {
   o.addEventListener("click", () => {
     selected.innerHTML = o.querySelector("label").innerHTML;
     optionsContainer.classList.remove("active");
-  });
+  });             
 });
 
 </script>  -->
 
 <div class="d-none">
   <button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
-</div>
+</div>  
 <?php echo $this->include('templates/_delivery_popup.php'); ?>
-
+  
 <?php $this->endSection() ?>
 
 <?php 
@@ -177,7 +179,7 @@ optionsList.forEach(o => {
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
-<script>
+ <script>
 
   jQuery.datetimepicker.setDateFormatter('moment');
 
@@ -197,6 +199,7 @@ optionsList.forEach(o => {
     var date = moment().add(i, 'day').format(serverDate);
     enabledDates.push(moment(date, serverDate));
   }
+
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -293,7 +296,7 @@ optionsList.forEach(o => {
       // console.log("cookie");
     })
     <?php endif; ?>
-  });
+  }); 
 
   var cookie_cart = 'cart_data';
 

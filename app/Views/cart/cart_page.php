@@ -32,6 +32,9 @@
           <div class="subtotal_short_alert alert alert-primary d-none" role="alert">You're only $<span class="subtotal_short_amount">0</span> away from waiving the service fee!  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
           <div class="subtotal_below_min alert alert-primary d-none" role="alert">A minimum of $25 subtotal is required.  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
                 
+          <div class="subtotal_short_alert1 alert alert-primary d-none" role="alert">You're only $<span class="subtotal_short_amount1">0</span> away from waiving the service fee!  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
+          <div class="subtotal_below_min1 alert alert-primary d-none" role="alert">A minimum of $50 subtotal is required.  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
+                
           <?php if(empty($cart_products)): ?>
           <p>There are no products in your cart.  <a class="text-primary text-gradient font-weight-bold" href="<?= base_url('shop'); ?>">Click here</a> to continue shopping.</p>
           <?php else: ?>
@@ -150,7 +153,9 @@
           </div>
           <?php echo $this->include('templates/_delivery_popup.php'); ?>
           <?php endif; ?>
-          
+          <?php foreach($location as $loc): ?>
+            <?= $location = $loc->address; ?>
+    <?php endforeach; ?>
         </form>
       </div>
       <?php endif; ?>
@@ -366,10 +371,10 @@ else {
 // Update the cart counter
 update_cart_count();
 });
-
+ 
   var tax_rate = <?= $tax_rate; ?>;  // 35%
   var service_charge = <?= $service_charge; ?>;
-
+  
   // Create our number formatter.
   var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -383,12 +388,54 @@ update_cart_count();
   $(document).ready(function() {
     // Compute for subtotal cost
     var subtotal = 0;
+  
+    var location = "<?= $location; ?>";
+   
     $(".product-total-price").each(function() {
       subtotal += parseFloat($(this).val());
     });
+    console.log("subtotal: "+ location);
+    
+  if(location.match("Hollister") || location.match("Half Moon Bay") || location.match("Moss Beach")) {
+    if(subtotal <= 50 && subtotal > 0) {
+      $(".subtotal_below_min1").removeClass("d-none");
+      $(".checkout-btn").prop("disabled", true);
+    }
+    else if(subtotal >= 90 && subtotal < 100) {
+      let subtotal_short_amount = 100 - subtotal;
+      $(".subtotal_short_amount1").html(subtotal_short_amount.toFixed(2));
+      $(".subtotal_short_alert1").removeClass("d-none");
+      $(".subtotal_below_min1").addClass("d-none");
+      $(".checkout-btn").prop("disabled", false);
+    }
+    else {
+      $(".subtotal_short_alert1").addClass("d-none");
+      $(".subtotal_below_min1").addClass("d-none");
+      $(".checkout-btn").prop("disabled", false);
+    }
 
-    console.log("subtotal: "+ subtotal);
+    $(".subtotal-cost").html(formatter.format(subtotal));
 
+// Subtotal + tax
+var with_tax = subtotal.toFixed(2) * (tax_rate - 1);
+$(".tax-cost").html(formatter.format(with_tax));
+
+// Calculate Total
+var total_cost = 0;
+
+if(subtotal < 99) {
+  total_cost = (subtotal.toFixed(2) * tax_rate) + service_charge;
+  $('.service-charge').removeClass('d-none');
+}
+else{
+  total_cost = subtotal.toFixed(2) * tax_rate;
+  $('.service-charge').addClass('d-none');
+}
+
+$(".total-cost").html(formatter.format(total_cost));
+  }
+   else {
+  
     if(subtotal <= 25 && subtotal > 0) {
       $(".subtotal_below_min").removeClass("d-none");
       $(".checkout-btn").prop("disabled", true);
@@ -405,7 +452,7 @@ update_cart_count();
       $(".subtotal_below_min").addClass("d-none");
       $(".checkout-btn").prop("disabled", false);
     }
-
+  
     $(".subtotal-cost").html(formatter.format(subtotal));
 
     // Subtotal + tax
@@ -419,14 +466,15 @@ update_cart_count();
       total_cost = (subtotal.toFixed(2) * tax_rate) + service_charge;
       $('.service-charge').removeClass('d-none');
     }
-    else {
+    else{
       total_cost = subtotal.toFixed(2) * tax_rate;
       $('.service-charge').addClass('d-none');
     }
     
     $(".total-cost").html(formatter.format(total_cost));
+   }
   });
-  
+
   $(document).on("click", ".checkout-btn", function(e) {
     e.preventDefault();
     var sched = $('.datetime_picker').val();

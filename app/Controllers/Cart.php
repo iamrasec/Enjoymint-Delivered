@@ -14,6 +14,7 @@ class Cart extends BaseController
 
 		$this->data = [];
 		$this->role = session()->get('role');
+    $this->location = session()->get('search1');
     $this->isLoggedIn = session()->get('isLoggedIn');
 		$this->guid = session()->get('guid');
     $this->uid = session()->get('id');
@@ -27,7 +28,7 @@ class Cart extends BaseController
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
     $this->data['service_charge'] = 5.00;
-
+    $this->data['location'] = $this->location;
     $this->sender_email = getenv('SMTP_EMAIL_USER');
 
     date_default_timezone_set('America/Los_Angeles');
@@ -35,6 +36,10 @@ class Cart extends BaseController
 
   public function index()
   {
+    $session = session();
+   
+    $location = $session->get('search1');
+    $this->data['location_keyword'] = $this->location;
     $cart_products = [];
 
     // Fetch items in cart
@@ -97,14 +102,18 @@ class Cart extends BaseController
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
 
+             $this->data['location_keyword'] = $location; 
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
+    
 
     return view('cart/cart_page', $this->data);
   }
 
   public function checkout()
   {
+    $session = session();
+    $location = $session->get('search1');
     $postData = $this->request->getPost();
 
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
@@ -184,6 +193,7 @@ class Cart extends BaseController
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
 
+    $this->data['location_keyword'] = $location; 
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
 
@@ -192,12 +202,15 @@ class Cart extends BaseController
 
   public function place_order()
   {
+    $session = session();
+
     $data = $this->request->getPost();
 
     // echo "<pre>".print_r($data)."</pre>"; die();
 
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
+
 
     $delivery_type = 0; // Defaults to Not Fast-Tracked
     if($data['del_type'] == 'fs') {
@@ -262,7 +275,7 @@ class Cart extends BaseController
     $tax_cost = $subtotal * ($this->data['tax_rate'] - 1);
     $total_cost = $subtotal * $this->data['tax_rate'];
 
-    $order_costs = [
+    $order_costs = [    
       'subtotal' => $subtotal,
       'tax' => $tax_cost,
       'total' => $total_cost,
@@ -352,6 +365,8 @@ class Cart extends BaseController
 
   public function success($oid = false)
   {
+    $session = session();
+    $location = $session->get('search1');
     if($oid != false) {
       $success = $oid;
     }
@@ -390,7 +405,8 @@ class Cart extends BaseController
           'images' => $images,
         ];
       }
-      
+
+      $this->data['location_keyword'] = $location; 
       $this->data['order_data'] = $order;
       $this->data['order_products'] = $cart_products;
       $this->data['order_completed'] = 1;

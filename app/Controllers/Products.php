@@ -49,7 +49,8 @@ class Products extends BaseController
     //   }else{
     //       $this->data['isRating'] = 'none';
     //   }
-
+    $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
 
@@ -73,6 +74,7 @@ class Products extends BaseController
         //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
         //     $this->pagecounter_model->save($newData);
         // }
+
         $session->product_id = $product;
         
         $page_title = $product->name;
@@ -154,6 +156,8 @@ class Products extends BaseController
         // print_r($this->image_model->getLastQuery());
 
         // print_r($this->data['images']);die();
+        $location = $session->get('search1');
+        $this->data['location_keyword'] = $location; 
 
         echo view('product_view', $this->data);
     }
@@ -224,7 +228,7 @@ class Products extends BaseController
           'star' => $this->request->getPost('ratings'),
           'customer_id' => $this->request->getPost('customer_id'),    
        ];
-    print_r($id);
+    // print_r($id);
        $this->rating_model->save($ratings);
        $this->order_model->update($id, ['is_rated' => 1]);
        return redirect()->to('/users/dashboard/_review'); 

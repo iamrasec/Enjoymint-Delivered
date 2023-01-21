@@ -218,7 +218,7 @@
       delsched.t = $("#time_window").find(":selected").val();
 
       setCookie("delivery_schedule", JSON.stringify(delsched), '1');
-
+  
       let delTime = delsched.t.split("-");
       let delFrom = tConvert(delTime[0]);
       let delTo = tConvert(delTime[1]);

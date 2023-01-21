@@ -31,6 +31,8 @@ class Blogs extends BaseController
 
   public function view_blog($url)
   {
+    $session = session();
+
     $blog = $this->blog_model->getBlogByUrl($url); 
 
     // echo "<pre>".print_r($blog, 1)."</pre>"; die();
@@ -45,12 +47,15 @@ class Blogs extends BaseController
     }
 
     $this->data['blog'] = $blog;
+    $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
 
     return view('Blogs/view_blog', $this->data);
   }
 
   public function view_all_blogs() 
   {
+    $session = session();
 
     $blog = $this->blog_model->orderBy('created', 'DESC')->get()->getResult(); 
 
@@ -65,9 +70,12 @@ class Blogs extends BaseController
 
     $this->data['blogs'] = $blog;
 
+    
     // echo "<pre>".print_r($blog, 1)."</pre>"; die();
 
     // print_r($this->data['blogs']);
+    $location = $session->get('search1');
+    $this->data['location_keyword'] = $location; 
 
     return view('Blogs/index', $this->data);
 }
