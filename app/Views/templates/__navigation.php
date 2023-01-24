@@ -9,17 +9,13 @@
         </a>
         <!-- <input type="text" class="location" id="location" name="location" placeholder="Enter Location"> -->
         <div class="searchbar" id="location-toggle">
-        
-<?php if($location_keyword == null): ?>
-  <input class="search_input" type="text"  name="location" readonly placeholder="Enter Location...">          
-            <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>
-            <?php else: ?>
-          <input class="search_input" type="text" value="<?= $location_keyword['address'] ;?>" name="location" readonly placeholder="Enter Location...">          
-            <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>   
-            
-           <?php endif; ?>
-           
-          
+      <?php if($location_keyword == null): ?>
+        <input class="search_input" type="text"  name="location" readonly placeholder="Enter Location...">          
+          <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>
+      <?php else: ?>
+        <input class="search_input" type="text" value="<?= $location_keyword['address'] ;?>" name="location" readonly placeholder="Enter Location...">          
+          <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>   
+      <?php endif; ?> 
           </div>
         <a class="d-flex d-md-none flex-row text-white opacity-6 me-2 py-4 py-md-2" href="<?= base_url('users'); ?>"><i class="material-icons me-2 text-xl" id="user_login">person</i></a>
         <a href="<?= base_url('cart'); ?>"><i class="d-flex d-md-none flex-row material-icons opacity-6 text-xl py-4 py-md-2" id="cart_icon">shopping_cart</i></a>

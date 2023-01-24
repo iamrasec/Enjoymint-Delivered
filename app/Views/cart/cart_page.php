@@ -389,7 +389,7 @@ update_cart_count();
     // Compute for subtotal cost
     var subtotal = 0;
     <?php if($location_keyword == null): ?>
-      var location = null;
+      var location = "";
     <?php else: ?>
     var location = "<?= $location_keyword['address'] ?>";
     <?php endif; ?>  

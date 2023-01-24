@@ -483,6 +483,11 @@ class Shop extends BaseController
         $user_id = $this->uid;
        
       $location = $this->location_model->verifyUser($user_id);
+      if($user_id = null){
+        echo("Login first!");
+      }
+      else
+      {
         if(!empty($search)){
            
             if($location == null){
@@ -500,6 +505,7 @@ class Shop extends BaseController
                 $this->location_model->update($id, ['address' => $to_save['address']]);
     }
         // return view('templates/_navigation', $this->data);
+    }
     }
      
         $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
