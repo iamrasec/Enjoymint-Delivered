@@ -13,8 +13,10 @@ class Blogs extends BaseController
     $this->role = session()->get('role');
     $this->isLoggedIn = session()->get('isLoggedIn');
     $this->guid = session()->get('guid');
+    $this->uid = session()->get('id');
     $this->image_model = model('ImageModel');
     $this->blog_model = model('BlogModel');
+    $this->location_model = model('LocationModel');
 
     $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
   }
@@ -47,8 +49,8 @@ class Blogs extends BaseController
     }
 
     $this->data['blog'] = $blog;
-    $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+    $user_id = $this->uid;
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
     return view('Blogs/view_blog', $this->data);
   }
@@ -56,7 +58,7 @@ class Blogs extends BaseController
   public function view_all_blogs() 
   {
     $session = session();
-
+    $user_id = $this->uid;
     $blog = $this->blog_model->orderBy('created', 'DESC')->get()->getResult(); 
 
     $imageIds = [];
@@ -74,8 +76,8 @@ class Blogs extends BaseController
     // echo "<pre>".print_r($blog, 1)."</pre>"; die();
 
     // print_r($this->data['blogs']);
-    $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+    
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
     return view('Blogs/index', $this->data);
 }

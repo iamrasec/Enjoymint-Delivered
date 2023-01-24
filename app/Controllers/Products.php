@@ -16,6 +16,7 @@ class Products extends BaseController
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->id = session()->get('id');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
@@ -25,6 +26,7 @@ class Products extends BaseController
         $this->rating_model = model('RatingModel');
         $this->order_products_model = model('OrderProductsModel');
         $this->user_model = model('UserModel');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -49,8 +51,8 @@ class Products extends BaseController
     //   }else{
     //       $this->data['isRating'] = 'none';
     //   }
-    $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+    $user_id = $this->uid;
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
 
@@ -156,8 +158,7 @@ class Products extends BaseController
         // print_r($this->image_model->getLastQuery());
 
         // print_r($this->data['images']);die();
-        $location = $session->get('search1');
-        $this->data['location_keyword'] = $location; 
+       
 
         echo view('product_view', $this->data);
     }

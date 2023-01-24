@@ -11,11 +11,15 @@
           <form method='post' action="<?= base_url('/shop/location')?>" id="searchForm">
               <div class="row">
                 <div class="col-12">
-                <?php foreach( $location_keyword as $location) : ?>
+                  <?php if($location_keyword == null): ?>
                     <div id="location">                                     
-                    <input type="text" value="<?= $location->address ;?>"  id="searchLocation" required name="location" class="form-control" placeholder="Enter Location...">             
+                    <input type="text"  id="searchLocation" required name="location" class="form-control" placeholder="Enter Location...">             
                     </div>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <div id="location">                                     
+                    <input type="text" value="<?= $location_keyword['address'] ;?>"  id="searchLocation" required name="location" class="form-control" placeholder="Enter Location...">             
+                    </div>
+                   <?php endif; ?>
                 </div>
               </div>
           </div>                       

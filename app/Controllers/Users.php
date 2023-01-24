@@ -24,6 +24,7 @@ class Users extends BaseController
 		$this->forgotpassword_model = model('ForgotpasswordModel');
 		$this->image_model = model('ImageModel');
 		$this->rating_model = model('RatingModel');
+		$this->location_model = model('LocationModel');
 
         $this->order_model = model('CheckoutModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
@@ -573,8 +574,8 @@ class Users extends BaseController
 		else {
 			$this->data['active_tab'] = '_orders_tab';  // If tab specified is not found, default back to order tab
 		}
-		$location = $session->get('search1');
-		$this->data['location_keyword'] = $location;    
+		$user_id = $this->uid;
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();   
 		return view('customer_dashboard/index', $this->data);
 	}
 

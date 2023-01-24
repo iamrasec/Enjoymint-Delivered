@@ -15,12 +15,14 @@ class Experience extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
         $this->experience_model = model('ExperienceModel');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -35,13 +37,14 @@ class Experience extends BaseController
 
     public function index($url)
     {  $session = session();
-        $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+      
         $search= $this->request->getGet('inputdata');
         $searchData = $this->request->getGet();
         $data = $session->get('exp_id');
         $this->data['current_filter'] = [];
-
+        
+        $user_id = $this->uid;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         // echo "<pre>".print_r($searchData, 1)."</pre>";
         //$all_products = $this->product_model->paginate(30);
        if(!empty($searchData['page'])){
