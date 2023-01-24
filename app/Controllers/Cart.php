@@ -24,6 +24,7 @@ class Cart extends BaseController
     $this->checkout_model = model('CheckoutModel');
     $this->order_products_model = model('OrderProductsModel');
     $this->user_model = model('UserModel');
+    $this->location_model = model('LocationModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -101,8 +102,8 @@ class Cart extends BaseController
     else {
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
-
-             $this->data['location_keyword'] = $location; 
+    $user_id = $this->uid;
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
     
@@ -193,7 +194,8 @@ class Cart extends BaseController
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
 
-    $this->data['location_keyword'] = $location; 
+    $user_id = $this->uid;
+    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
 

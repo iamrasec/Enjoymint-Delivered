@@ -13,6 +13,8 @@ class Terms extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
     
@@ -31,7 +33,8 @@ class Terms extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-
+        $user_id = $this->uid;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
 
         return view('terms_view', $this->data);

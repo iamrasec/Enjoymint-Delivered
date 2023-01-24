@@ -13,12 +13,14 @@ class Home extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
         $this->experience_model = model('ExperienceModel');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');

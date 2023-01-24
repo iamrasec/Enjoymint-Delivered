@@ -153,9 +153,9 @@
           </div>
           <?php echo $this->include('templates/_delivery_popup.php'); ?>
           <?php endif; ?>
-          <?php foreach($location as $loc): ?>
-            <input type="hidden" value="<?= $location = $loc->address; ?>">
-         <?php endforeach; ?>
+          
+           
+         
         </form>
       </div>
       <?php endif; ?>
@@ -388,9 +388,11 @@ update_cart_count();
   $(document).ready(function() {
     // Compute for subtotal cost
     var subtotal = 0;
-  
-    var location = "<?= $location; ?>";
-   
+    <?php if($location_keyword == null): ?>
+      var location = null;
+    <?php else: ?>
+    var location = "<?= $location_keyword['address'] ?>";
+    <?php endif; ?>  
     $(".product-total-price").each(function() {
       subtotal += parseFloat($(this).val());
     });

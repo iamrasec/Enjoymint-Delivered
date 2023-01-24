@@ -24,6 +24,7 @@ class Shop extends BaseController
         $this->strain_model = model('StrainModel');
         $this->location_model = model('LocationModel');
         $this->productcategory_model = model('ProductCategory');
+        $this->user_model = model('UserModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -37,6 +38,7 @@ class Shop extends BaseController
         $session = session();
         $search_data = $session->get('search');
         $location = $session->get('search1');
+        $user_id = $this->uid;
         $page_title = 'Shop';
 
         $this->data['page_body_id'] = "shop";
@@ -118,7 +120,15 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-        $this->data['location_keyword'] = $location;
+        $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
+       
+        
+        if(empty($location)){
+            $this->data['location_keyword'] = "";
+            }else{  
+            $this->data['location_keyword'] = $location;
+            //return view('shop_view', $this->data);
+            }
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -206,7 +216,7 @@ class Shop extends BaseController
             //     }
             //     $this->data['location_keyword'] = null;
             //      $session->search_location = $this->data['location_keyword'];
-        $this->data['location_keyword'] = $location;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->getAllCategory();
@@ -220,7 +230,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
-       
+         $this->location();
          return view('shop_view', $this->data);
     }
         
@@ -472,26 +482,27 @@ class Shop extends BaseController
         $search= $this->request->getPost('location');
         $user_id = $this->uid;
        
-    //    $location = $this->location_model->getLocation($user_id);
-    
+      $location = $this->location_model->verifyUser($user_id);
         if(!empty($search)){
-            $to_save = [
-                'address' => $this->request->getVar('location'),
-                'user_id' => $user_id,
-            ];
-          
-            if($to_save['user_id'] == $user_id){
-              
-                $this->location_model->update($id, ['address' => $to_save['address']]);
-            }else{
-        
+           
+            if($location == null){
+                $to_save = [
+                    'address' => $this->request->getVar('location'),
+                    'user_id' => $this->uid,
+                ];
 
         $this->location_model->save($to_save); 
+                
+            }elseif($location['user_id'] == $user_id){
+                $to_save = [
+                    'address' => $this->request->getVar('location'),
+                ];
+                $this->location_model->update($id, ['address' => $to_save['address']]);
     }
         // return view('templates/_navigation', $this->data);
     }
      
-    $location = $this->location_model->where('user_id',$user_id)->get()->getResult();
+        $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
         $all_products = $this->product_model->getAllProducts();
         
         if(empty($location)){
@@ -501,7 +512,7 @@ class Shop extends BaseController
             //return view('shop_view', $this->data);
             }
             $this->data['search_keyword'] = null;
-             $session->search1 = $location;
+            //  $session->search1 = $location;
       
         $page_title = 'Shop';
         

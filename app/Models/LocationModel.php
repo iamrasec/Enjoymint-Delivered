@@ -14,7 +14,7 @@ class Location extends Model {
       
     ];
 
-    public function getLocation($user_id) 
+    public function getLocation($id, $user_id) 
     {
       $this->select('location.address');
       $this->where('location.user_id', $user_id);
@@ -22,5 +22,19 @@ class Location extends Model {
       return $this->get()->getResult();
     }
   
+    public function verifyUser($user_id)
+    {
+      $builder = $this->db->table('location');
+      $builder->select("user_id");
+      $builder->where('user_id', $user_id);
+      $result = $builder->get();
+      if(count($result->getResultArray())==1)
+      {
+        return $result->getRowArray();
+      }
+      else{
+        return false;
+    }
+  }
 }
 ?>
