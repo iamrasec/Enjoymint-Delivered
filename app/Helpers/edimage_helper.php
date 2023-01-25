@@ -13,9 +13,9 @@ function getProductImage($pid)
   $imageModel = new ImageModel();
 
   $images = array();
-
+ 
   $imageIds = [];
-  if($product['images']) {
+  if(!empty($product['images'])) {
       $imageIds = explode(',',$product['images']);
       $images = $imageModel->whereIn('id', $imageIds)->get()->getResult();
   }

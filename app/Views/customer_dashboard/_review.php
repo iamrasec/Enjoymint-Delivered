@@ -51,6 +51,7 @@
               <?php endif; ?>
             </div>
             <?php foreach($review_orders['products'] as $products): ?>
+              <?php if(isset($products->images[0])): ?>
             <div class="row p-2 d-flex d-md-none">
               <div class="col-4 col-sm-4 text-center">
                 <img class="prod_image" src="<?= base_url('products/images/'.$products->images[0]->filename); ?>" />
@@ -95,9 +96,13 @@
               </form>
                 </div>
             </div>
+              <?php else: ?>
+               <img class="prod_image" src="" /></a>
+              <?php endif; ?>
             <?php endforeach; ?>
             <div class="row p-2 d-none d-md-block">
             <?php foreach($review_orders['products'] as $products): ?>
+              <?php if(isset($products->images[0])): ?>
               <table>
                 <thead>
                   <td></td>
@@ -150,6 +155,9 @@
               </form>
                 </div>  
                 <hr> 
+                  <?php else: ?>
+                  <img class="prod_image" src="" /></a>
+                  <?php endif; ?>
                 <?php endforeach; ?>
                 
             </div>
