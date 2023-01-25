@@ -102,7 +102,7 @@ class Users extends BaseController
 				return redirect()->to('/users');
 			}
 		}
-
+		
 		$this->data['page_body_id'] = "user_login";
 		
 		echo view('login', $this->data);
@@ -575,6 +575,7 @@ class Users extends BaseController
 			$this->data['active_tab'] = '_orders_tab';  // If tab specified is not found, default back to order tab
 		}
 		$user_id = $this->uid;
+		$this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();   
 		return view('customer_dashboard/index', $this->data);
 	}
@@ -682,6 +683,7 @@ class Users extends BaseController
 			}
 		}
 		 $this->data['data'] = $all_products;
+		 $this->data['uid'] = $user_id;
 		 $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 		return view('User/id_upload', $this->data);
 	   

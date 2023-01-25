@@ -37,7 +37,7 @@ class Shop extends BaseController
     { 
         $session = session();
         $search_data = $session->get('search');
-        $location = $session->get('search1');
+        // $location = $session->get('search1');
         $user_id = $this->uid;
         $page_title = 'Shop';
 
@@ -129,6 +129,7 @@ class Shop extends BaseController
             $this->data['location_keyword'] = $location;
             //return view('shop_view', $this->data);
             }
+        $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -216,6 +217,7 @@ class Shop extends BaseController
             //     }
             //     $this->data['location_keyword'] = null;
             //      $session->search_location = $this->data['location_keyword'];
+        $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -483,11 +485,13 @@ class Shop extends BaseController
         $user_id = $this->uid;
        
       $location = $this->location_model->verifyUser($user_id);
-      if($user_id = null){
-        echo("Login first!");
+      $this->data['uid'] = $user_id;
+      if($user_id == null){
+        $session->setFlashdata('message', 'Login first!');
+        return redirect()->to('/shop');
       }
       else
-      {
+      { 
         if(!empty($search)){
            
             if($location == null){
@@ -507,7 +511,7 @@ class Shop extends BaseController
         // return view('templates/_navigation', $this->data);
     }
     }
-     
+        
         $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
         $all_products = $this->product_model->getAllProducts();
         
