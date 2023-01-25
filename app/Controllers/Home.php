@@ -34,8 +34,6 @@ class Home extends BaseController
     public function index()
     {   
         $session = session();
-        $location = $session->get('search1');
-        $this->data['location_keyword'] = $location; 
         $page_title = 'Home';
 
         $this->data['page_body_id'] = "home";
@@ -66,7 +64,8 @@ class Home extends BaseController
         }
 
          
-   
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
         // $this->data['experience'] = $experiences;
         $this->data['images'] = $image;

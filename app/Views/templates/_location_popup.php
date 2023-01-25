@@ -6,9 +6,10 @@
         <div class="card card-plain">
           <div class="card-header pb-0 text-left">
             <h5 class="">Enter your Location</h5>
+           
           </div>
           <div class="card-body">
-          <form method='post' action="<?= base_url('/shop/location')?>" id="searchForm">
+          <form method='post' action="<?= base_url('/shop/location')?>" id="locationForm">
               <div class="row">
                 <div class="col-12">
                   <?php if($location_keyword == null): ?>
@@ -20,14 +21,24 @@
                     <input type="text" value="<?= $location_keyword['address'] ;?>"  id="searchLocation" required name="location" class="form-control" placeholder="Enter Location...">             
                     </div>
                    <?php endif; ?>
+
                 </div>
               </div>
+              <?php if (session()->getFlashdata('message') !== NULL) : ?>
+                    <div id="restrict" class="alert alert-danger text-white alert-dismissible fade show" role="alert">
+                        <?php echo session()->getFlashdata('message'); ?>
+                    </div>
+              <?php endif; ?>
           </div>                       
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">Later, let me browse products for now</button>
-        <button type="submit"   class="btn bg-gradient-primary">Shop</button>
+        <?php if($uid == null) : ?>
+        <button type="submit"   class="btn bg-gradient-primary shop-btn" disabled>Shop</button>
+        <?php else: ?>
+        <button type="submit"   class="btn bg-gradient-primary shop-btn" >Shop</button>
+        <?php endif; ?>
       </div>
     </div>
   </div>
@@ -37,6 +48,12 @@
 
     #searchLocation{
     border: 1px solid gray;
+    width: 500px;
+    margin-left: 28px;
+    border-radius: 2px;
+    }
+
+    #restrict{
     width: 500px;
     margin-left: 28px;
     border-radius: 2px;
@@ -104,5 +121,31 @@
             $section.classList.add("active-section");
         }
     });
+
+    $(document).on("click", ".shop-btn", function(e) {
+    
+
+    // console.log($("input[name=guid]").val());
+    // console.log(sched);
+
+    if($("input[name=guid]").val() == 0) {
+      $("#loginRegisterModal").modal('show');
+    }
+    else {
+    //   const fd = new FormData();
+    //   fd.append('delivery_schedule', sched);
+    //   fetch('<?= base_url('cart/checkout'); ?>',{
+    //     method: 'POST',
+    //     body: fd
+    //   })
+    //   .then()
+    //   .catch((error) => {
+    //     console.log('Error:', error);
+    // });
+
+      // window.location.replace("<?= base_url('cart/checkout/'); ?>");
+      $("#locationForm").submit();
+    }
+  });
  </script>
 <?php $this->endSection() ?>

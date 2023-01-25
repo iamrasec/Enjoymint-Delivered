@@ -103,6 +103,7 @@ class Cart extends BaseController
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
     $user_id = $this->uid;
+    $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
@@ -195,6 +196,7 @@ class Cart extends BaseController
     }
 
     $user_id = $this->uid;
+    $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
@@ -407,8 +409,8 @@ class Cart extends BaseController
           'images' => $images,
         ];
       }
-
-      $this->data['location_keyword'] = $location; 
+      $this->data['uid'] = $user_id;
+      $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
       $this->data['order_data'] = $order;
       $this->data['order_products'] = $cart_products;
       $this->data['order_completed'] = 1;

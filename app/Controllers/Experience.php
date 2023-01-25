@@ -44,6 +44,7 @@ class Experience extends BaseController
         $this->data['current_filter'] = [];
         
         $user_id = $this->uid;
+        $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         // echo "<pre>".print_r($searchData, 1)."</pre>";
         //$all_products = $this->product_model->paginate(30);
@@ -63,7 +64,7 @@ class Experience extends BaseController
         }else{
         $experience = $this->experience_model->where('url', $url)->get()->getResult()[0];
         if(empty($searchData)){
-            $exp_id = $data->id;
+            // $exp_id = $data->id;
             // $all_products = $this->product_model->paginate(30);
             //$all_products = $this->experience_model->experienceGetAllProduct($exp_id);
             $all_products = $this->experience_model->experienceGetProductsPaginate($experience->id);
@@ -217,7 +218,7 @@ class Experience extends BaseController
             
             $count++;
         }
-        
+        $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
@@ -325,7 +326,7 @@ class Experience extends BaseController
             
             $count++;
         }
-        
+        $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();

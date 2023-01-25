@@ -13,6 +13,7 @@ class Privacy extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
     
@@ -23,15 +24,17 @@ class Privacy extends BaseController
 
     public function index()
     {
+        $user_id = $this->guid;
         $page_title = 'Privacy Policy';
-
+        
         $this->data['page_body_id'] = "privacy_policy";
         $this->data['breadcrumbs'] = [
         'parent' => [],
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
-
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
 
         return view('privacy_policy_view', $this->data);

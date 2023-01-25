@@ -31,6 +31,7 @@ class About extends BaseController
     ];
     $this->data['page_title'] = $page_title;
     $user_id = $this->uid;
+    $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     
 
