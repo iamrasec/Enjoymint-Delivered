@@ -682,6 +682,7 @@ class Users extends BaseController
 			}
 		}
 		 $this->data['data'] = $all_products;
+		 $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 		return view('User/id_upload', $this->data);
 	   
 }

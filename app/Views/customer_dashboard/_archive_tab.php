@@ -50,6 +50,7 @@
               <?php endif; ?>
             </div>
             <?php foreach($previous_orders['products'] as $products): ?>
+              <?php if(isset($products->images[0])): ?>
             <div class="row p-2 d-flex d-md-none">
               <div class="col-4 col-sm-4 text-center">
                 <img class="prod_image" src="<?= base_url('products/images/'.$products->images[0]->filename); ?>" />
@@ -67,6 +68,9 @@
                 <strong>Total:</strong><br><?= $products->total; ?>
               </div>
             </div>
+              <?php else: ?>
+                <img class="prod_image" src="" /></a>
+              <?php endif; ?>
             <?php endforeach; ?>
             <div class="row p-2 d-none d-md-block">
               <table>
@@ -79,6 +83,7 @@
                 </thead>
                 <tbody>
                   <?php foreach($previous_orders['products'] as $products): ?>
+                    <?php if(isset($products->images[0])): ?>
                   <tr>
                     <td class="px-2 text-center"><img class="prod_image" src="<?= base_url('products/images/'.$products->images[0]->filename); ?>" /></td>
                     <td><?= $products->product_name; ?></td>
@@ -86,6 +91,9 @@
                     <td>$<?= $products->unit_price; ?></td>
                     <td>$<?= $products->total; ?></td>
                   </tr>
+                    <?php else: ?>
+                      <img class="prod_image" src="" /></a>
+                    <?php endif; ?>
                   <?php endforeach; ?>
                 </tbody>
               </table>
