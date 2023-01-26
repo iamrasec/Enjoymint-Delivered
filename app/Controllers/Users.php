@@ -462,7 +462,9 @@ class Users extends BaseController
 
 		else if($validate['is_active'] == 1){
 			$this->data['status'] = 'Account is already activated';
-
+			$user_id = $this->uid;
+			$this->data['uid'] = $user_id;
+			$this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 			return redirect()->to('/users/customerverification');
 		}
 
@@ -587,14 +589,16 @@ class Users extends BaseController
 		$page_title = "Upload ID";
 
 		// print_r($categories);
-
+		$user_id = $this->uid;
+		$this->data['uid'] = $user_id;
+		$this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 		$this->data['page_body_id'] = "customer Verification";
 		$this->data['breadcrumbs'] = [
 		'parent' => [],
 		'current' => $page_title,
 		];
 		$this->data['page_title'] = $page_title;
-		$user_id = $this->uid;
+		
 		$upload2 = $this->customerverification_model->get()->getResult();
 		$verify = $this->customerverification_model->verifyUser($user_id);
 
@@ -683,8 +687,7 @@ class Users extends BaseController
 			}
 		}
 		 $this->data['data'] = $all_products;
-		 $this->data['uid'] = $user_id;
-		 $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+		
 		return view('User/id_upload', $this->data);
 	   
 }

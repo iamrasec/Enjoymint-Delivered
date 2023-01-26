@@ -63,7 +63,7 @@ class Home extends BaseController
             $count++;
         }
 
-         
+        $user_id = $this->uid;
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
