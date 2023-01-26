@@ -458,6 +458,8 @@ class Shop extends BaseController
             
             $count++;
         }
+        $user_id = $this->uid;
+        $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $location;   
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
