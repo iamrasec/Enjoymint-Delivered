@@ -419,7 +419,7 @@ class Shop extends BaseController
             }
        
             
-           
+
             if(empty($search)){
                 $this->data['search_keyword'] = null;
             }else{  
@@ -489,7 +489,7 @@ class Shop extends BaseController
       $location = $this->location_model->verifyUser($user_id);
       $this->data['uid'] = $user_id;
       if($user_id == null){
-        $session->setFlashdata('message', 'Login first!');
+        $session->setFlashdata('message', 'Please login first');
         return redirect()->to('/shop');
       }
       else

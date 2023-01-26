@@ -12,6 +12,13 @@
           <form method='post' action="<?= base_url('/shop/location')?>" id="locationForm">
               <div class="row">
                 <div class="col-12">
+                <p class="text-danger restrict">
+                <?php if (session()->getFlashdata('message') !== NULL) : ?>
+                   
+                        <?php echo session()->getFlashdata('message'); ?>
+                   
+              <?php endif; ?>
+              </p>
                   <?php if($location_keyword == null): ?>
                     <div id="location">                                     
                     <input type="text"  id="searchLocation" required name="location" class="form-control" placeholder="Enter Location...">             
@@ -24,11 +31,6 @@
 
                 </div>
               </div>
-              <?php if (session()->getFlashdata('message') !== NULL) : ?>
-                    <div id="restrict" class="alert alert-danger text-white alert-dismissible fade show" role="alert">
-                        <?php echo session()->getFlashdata('message'); ?>
-                    </div>
-              <?php endif; ?>
           </div>                       
         </div>
       </div>
@@ -51,13 +53,19 @@
     width: 500px;
     margin-left: 28px;
     border-radius: 2px;
+    position: absolute;
     }
 
-    #restrict{
-    width: 500px;
-    margin-left: 28px;
-    border-radius: 2px;
+    .modal-footer{
+      margin-top: 20px;
     }
+
+    .restrict{
+    margin-top: -30px;
+    margin-left: 31px;
+    font-weight: normal;
+    float: left;
+  } 
 
     .pac-container {
     z-index: 1051 !important;
