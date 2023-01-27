@@ -33,6 +33,9 @@ class Privacy extends BaseController
         'current' => $page_title,
         ];
         $this->data['page_title'] = $page_title;
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+          }
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 

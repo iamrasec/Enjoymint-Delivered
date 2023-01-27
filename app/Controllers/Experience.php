@@ -44,6 +44,9 @@ class Experience extends BaseController
         $this->data['current_filter'] = [];
         
         $user_id = $this->uid;
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+          }
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         // echo "<pre>".print_r($searchData, 1)."</pre>";
@@ -326,7 +329,8 @@ class Experience extends BaseController
             
             $count++;
         }
-        $this->data['uid'] = $user_id;
+        
+        // $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->experience_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
