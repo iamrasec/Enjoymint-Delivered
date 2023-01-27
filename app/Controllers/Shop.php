@@ -103,7 +103,6 @@ class Shop extends BaseController
           
                     $this->data['current_filter'] = $current_filter;
 
-
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -241,7 +240,7 @@ class Shop extends BaseController
         $session = session();
         $location = $session->get('search1');
         $page_title = 'Shop';
-                     
+        $user_id = $this->uid;        
         $this->data['page_body_id'] = "shop";
         $this->data['breadcrumbs'] = [
         'parent' => [],
@@ -312,7 +311,8 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-        $this->data['location_keyword'] = $location;
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -329,7 +329,7 @@ class Shop extends BaseController
         }
         return view('shop_view', $this->data);
 
-            }else{
+            }else{ 
 
                 $category = $searchData['category'];
                 $min_price = $searchData['min_price'];
@@ -386,7 +386,8 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-        $this->data['location_keyword'] = $location;                         
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();                       
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -395,7 +396,7 @@ class Shop extends BaseController
         $this->data['fast_tracked'] = true;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
 
-        if($this->data['currDate']->format('H') > '18') {
+        if( $this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
         return view('shop_view', $this->data);          
@@ -406,19 +407,21 @@ class Shop extends BaseController
         $session = session();
         $location = $session->get('search1');
         $search = $this->request->getGet('inputdata');
-        $search_location = $this->request->getPost('location');
-       
+        $search_location = $this->request->getPost('location');  
+        $user_id = $this->uid;
+        $this->data['uid'] = $user_id;
         
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+        }
+
         if(!empty($search)){
             $search = $this->request->getGet('inputdata');
-            $all_products = $this->product_model->getProducts($search);
-            
+            $all_products = $this->product_model->getProducts($search);         
         }else{
                 // $all_products = $this->product_model->paginate(30);
                 $all_products = $this->product_model->getAllProducts();
             }
-       
-            
 
             if(empty($search)){
                 $this->data['search_keyword'] = null;
@@ -434,8 +437,7 @@ class Shop extends BaseController
             //     }
             //     $this->data['location_keyword'] = null;
             //     $session->search_location = $this->data['location_keyword'];
-             
-       
+        
         $page_title = 'Shop';
         
         $this->data['page_body_id'] = "shop";
@@ -459,6 +461,9 @@ class Shop extends BaseController
             $count++;
         }
         $user_id = $this->uid;
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+          }
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $location;   
         $this->data['products'] = $product_arr;

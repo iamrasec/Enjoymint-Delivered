@@ -50,6 +50,9 @@ class Blogs extends BaseController
 
     $this->data['blog'] = $blog;
     $user_id = $this->uid;
+    if($user_id == null){
+      $session->setFlashdata('message', 'Please login first');
+    }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
@@ -61,6 +64,10 @@ class Blogs extends BaseController
     $session = session();
     $user_id = $this->uid;
     $blog = $this->blog_model->orderBy('created', 'DESC')->get()->getResult(); 
+
+    if($user_id == null){
+      $session->setFlashdata('message', 'Please login first');
+    }
 
     $imageIds = [];
 

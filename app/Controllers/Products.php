@@ -52,6 +52,9 @@ class Products extends BaseController
     //       $this->data['isRating'] = 'none';
     //   }
     $user_id = $this->uid;
+    if($user_id == null){
+        $session->setFlashdata('message', 'Please login first');
+      }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         if($url != '') {
@@ -166,7 +169,7 @@ class Products extends BaseController
 
     public function increment_product_views($pid) {
         $this->product_model->incrementViews($pid);
-        
+
         $cookie_value = '';
         if(isset($_COOKIE['pvid'])) {
             $cookie_value = $_COOKIE['pvid'] . ',' . $pid;
@@ -174,7 +177,7 @@ class Products extends BaseController
         else {
             $cookie_value = $pid;
         }
-
+        
         setcookie('pvid', $cookie_value, time() + 86400);
     }
 

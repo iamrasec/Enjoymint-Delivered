@@ -32,8 +32,7 @@
               <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url(); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">home</i> Home
               </a>
-            </li> 
-                          
+            </li>               
             <li class="nav-item mx-2 has-child">
               <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('shop'); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">shop</i> Shop
@@ -47,7 +46,6 @@
                 </li>
                </ul>
             </li>
-
             <li class="nav-item mx-2">
               <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url('about'); ?>">
               <i class="material-icons opacity-6 me-2 text-md">eco</i> About Us
@@ -68,7 +66,7 @@
             </li>
             
             <li class="d-none d-md-flex nav-item my-auto ms-3 ms-lg-0 d-flex flex-row">
-              <div class="cart-box" >
+              <div   class="cart-box" >
                 <div class="cart-icon">
                   <a href="<?= base_url('cart'); ?>"><i class="material-icons opacity-6 text-xl py-4 py-md-2" id="cart_icon">shopping_cart</i></a>
                 </div> 
