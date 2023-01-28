@@ -130,7 +130,7 @@ class Shop extends BaseController
             $this->data['location_keyword'] = $location;
             //return view('shop_view', $this->data);
             }
-        print_r($all_products);
+            
         $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -328,7 +328,7 @@ class Shop extends BaseController
         if($searchData['availability'] == 1){
             $this->data['fast_tracked'] = false;
         }
-        return view('/shop', $this->data);
+        return view('shop_view', $this->data);
 
             }else{ 
 
@@ -402,7 +402,7 @@ class Shop extends BaseController
         if( $this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
-        return view('/shop', $this->data);          
+        return view('shop_view', $this->data);          
     }     
 
     public function searchProduct(){
@@ -483,7 +483,7 @@ class Shop extends BaseController
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
        
-         return view('/shop', $this->data);
+         return view('shop_view', $this->data);
       
         
     }
