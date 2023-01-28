@@ -8,7 +8,7 @@
           <img src="/assets/img/Enjoymint-Logo-Landscape-White-2.png" class="logo" />
         </a>
         <!-- <input type="text" class="location" id="location" name="location" placeholder="Enter Location"> -->
-        <div class="searchbar" id="location-toggle">
+        <!-- <div class="searchbar" id="location-toggle">
       <?php if($location_keyword == null): ?>
         <input class="search_input" type="text"  name="location" readonly placeholder="Enter Location...">          
           <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>
@@ -16,7 +16,7 @@
         <input class="search_input" type="text" value="<?= $location_keyword['address'] ;?>" name="location" readonly placeholder="Enter Location...">          
           <a href="#" class="search_icon"><i class="fas fa-search fa-1x" id="fas"></i></a>   
       <?php endif; ?> 
-          </div>
+          </div> -->
         <a class="d-flex d-md-none flex-row text-white opacity-6 me-2 py-4 py-md-2" href="<?= base_url('users'); ?>"><i class="material-icons me-2 text-xl" id="user_login">person</i></a>
         <a href="<?= base_url('cart'); ?>"><i class="d-flex d-md-none flex-row material-icons opacity-6 text-xl py-4 py-md-2" id="cart_icon">shopping_cart</i></a>
         <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,7 +28,22 @@
         </button>
         <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0 w-100" id="navigation">
           <ul class="navbar-nav navbar-nav-hover ms-auto d-flex">
-            <li class="nav-item mx-2">
+          <li class="nav-item mx-2" id="location-toggle">
+              <!-- <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center">
+                <i class="material-icons opacity-6 me-2 text-md">search</i> Search Location
+              </a> -->
+              <?php if($location_keyword == null): ?>    
+                <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center">
+                  <i class="material-icons opacity-6 me-2 text-md">search</i> Search Location
+                </a>
+              <?php else: ?>    
+                <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center">
+                  <i class="material-icons opacity-6 me-2 text-md">search</i>
+                  <input class="search_input" type="text" value="<?= $location_keyword['address'] ;?>" name="location" readonly>
+                </a>
+              <?php endif; ?> 
+            </li>
+          <li class="nav-item mx-2">
               <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" href="<?= base_url(); ?>">
                 <i class="material-icons opacity-6 me-2 text-md">home</i> Home
               </a>
@@ -56,7 +71,6 @@
               <i class="material-icons opacity-6 me-2 text-md">rss_feed</i> Blog
               </a>
             </li>       
-            
             <li class="nav-item my-auto ms-3 ms-lg-0 py-4 py-md-2">
               <a href="tel:+14084844644" class="nav-cta btn btn-sm bg-primary-green mb-0 me-1 mt-2 mt-md-0">Call Now (408) 484-4644</a>
             </li>
@@ -97,6 +111,10 @@
    opacity: 1; /* Firefox */
   }
 
+  #location-icon{
+    margin-right: 49px;
+  }
+
   .searchbar{
    margin-bottom: auto;
    margin-top: auto;
@@ -111,7 +129,7 @@
    border: 0;
    outline: 0;
    background: none;
-   width: 250px;
+   width: 200px;
    caret-color:transparent;
    line-height: 30px;
    transition: width 0.4s linear;
