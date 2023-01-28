@@ -181,6 +181,25 @@ class Shop extends BaseController
             $this->data['current_filter'] = $current_filter;
             
 
+        // $search_location = $this->request->getPost('location');
+                      
+        // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
+       
+        }
+        }
+    }
+    
+        // $all_products = $this->product_model->paginate(30);
+    // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+
+        //a echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+
+        if(empty($search)){
+            $this->data['search_keyword'] = null;
+            }else{  
+            $this->data['search_keyword'] = $search_data;
+            }  
+
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -195,24 +214,6 @@ class Shop extends BaseController
 
              $count++;
         }
-
-        // $search_location = $this->request->getPost('location');
-                      
-        // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-        if(empty($search)){
-            $this->data['search_keyword'] = null;
-            }else{  
-            $this->data['search_keyword'] = $search_data;
-            }
-        
-        }
-        }
-    }
-    
-        // $all_products = $this->product_model->paginate(30);
-    // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
-
-        //a echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
          
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
