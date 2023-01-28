@@ -50,14 +50,19 @@
 
     #searchLocation{
     border: 1px solid gray;
-    width: 500px;
-    margin-left: 28px;
+    margin-left: -13%;
     border-radius: 2px;
     position: absolute;
+    width: 80%;
+    margin-top: -10px;
     }
 
     .modal-footer{
       margin-top: 20px;
+    }
+
+    #location{
+      padding-left: 20%;
     }
 
     .restrict{

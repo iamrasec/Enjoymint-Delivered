@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use DateTime;
+
 class Shop extends BaseController
 {
     var $view_data = array();
@@ -101,7 +103,7 @@ class Shop extends BaseController
             ];
                 
           
-                    $this->data['current_filter'] = $current_filter;
+        $this->data['current_filter'] = $current_filter;
 
         $product_arr = [];
         $count = 0;
@@ -128,6 +130,7 @@ class Shop extends BaseController
             $this->data['location_keyword'] = $location;
             //return view('shop_view', $this->data);
             }
+        print_r($all_products);
         $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -176,15 +179,8 @@ class Shop extends BaseController
                 
             
             $this->data['current_filter'] = $current_filter;
+            
 
-        }
-        }
-    }
-    
-        // $all_products = $this->product_model->paginate(30);
-
-        // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
-        
         $product_arr = [];
         $count = 0;
         foreach($all_products as $product) {
@@ -200,7 +196,7 @@ class Shop extends BaseController
              $count++;
         }
 
-        $search_location = $this->request->getPost('location');
+        // $search_location = $this->request->getPost('location');
                       
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         if(empty($search)){
@@ -208,14 +204,16 @@ class Shop extends BaseController
             }else{  
             $this->data['search_keyword'] = $search_data;
             }
+        
+        }
+        }
+    }
+    
+        // $all_products = $this->product_model->paginate(30);
+    // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
 
-            // if(empty($search1)){
-            //     $this->data['location_keyword'] = null;
-            //     }else{  
-            //     $this->data['location_keyword'] = $search1;
-            //     }
-            //     $this->data['location_keyword'] = null;
-            //      $session->search_location = $this->data['location_keyword'];
+        //a echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+         
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
@@ -231,7 +229,7 @@ class Shop extends BaseController
         }
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
-         $this->location();
+        //  $this->location();
          return view('shop_view', $this->data);
     }
         
@@ -309,7 +307,9 @@ class Shop extends BaseController
 
              $count++;
         }
-
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+          }
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
@@ -327,7 +327,7 @@ class Shop extends BaseController
         if($searchData['availability'] == 1){
             $this->data['fast_tracked'] = false;
         }
-        return view('shop_view', $this->data);
+        return view('/shop', $this->data);
 
             }else{ 
 
@@ -384,7 +384,9 @@ class Shop extends BaseController
 
              $count++;
         }
-
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+          }
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();                       
@@ -399,7 +401,7 @@ class Shop extends BaseController
         if( $this->data['currDate']->format('H') > '18') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
-        return view('shop_view', $this->data);          
+        return view('/shop', $this->data);          
     }     
 
     public function searchProduct(){
@@ -480,7 +482,7 @@ class Shop extends BaseController
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
        
-         return view('shop_view', $this->data);
+         return view('/shop', $this->data);
       
         
     }
@@ -507,7 +509,7 @@ class Shop extends BaseController
                     'user_id' => $this->uid,
                 ];
 
-        $this->location_model->save($to_save); 
+             $this->location_model->save($to_save); 
                 
             }elseif($location['user_id'] == $user_id){
                 $to_save = [
