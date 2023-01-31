@@ -13,11 +13,13 @@ class Categories extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->uid = session()->get('id');
         $this->product_model = model('ProductModel');
         $this->strain_model = model('StrainModel');
         $this->brand_model = model('BrandModel');
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -33,6 +35,8 @@ class Categories extends BaseController
         $categories = $this->category_model->where('url', $url)->get()->getResult()[0];
 
         $page_title = $categories->name;
+
+        $user_id = $this->uid;
 
         // print_r($categories);
 
@@ -63,11 +67,13 @@ class Categories extends BaseController
             $count++;
         }
 
+        $this->data['uid'] = $user_id;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->category_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult();
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         return view('categories_view', $this->data);
     }
 }
