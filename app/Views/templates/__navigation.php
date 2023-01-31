@@ -37,9 +37,9 @@
                   <i class="material-icons opacity-6 me-2 text-md">search</i> Search Location
                 </a>
               <?php else: ?>    
-                <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center">
+                <a class="nav-link ps-2 py-4 py-md-2 d-flex cursor-pointer align-items-center" style="width: 181px; margin-top: 1px;">
                   <i class="material-icons opacity-6 me-2 text-md">search</i>
-                  <input class="search_input" type="text" value="<?= $location_keyword['address'] ;?>" name="location" readonly>
+                  <input type="text" style="margin-top:-3px;width: 161px; background: none; color:white;border: 0;outline: 0;" value="<?= $location_keyword['address'] ;?>">
                 </a>
               <?php endif; ?> 
             </li>
@@ -148,13 +148,13 @@
   }
 
   .search_icon{
-   height: 35px;
-   width: 35px;
-   margin-top: -32px;
-   float: right;
+   /* height: 35px;
+   width: 35px; */
+   /* margin-top: -32px; */
+   /* float: right; */
    display: flex;
    justify-content: center;
-   color:white;
+   color:white; 
    align-items: center;
    border-radius: 50%;
    text-decoration:none;

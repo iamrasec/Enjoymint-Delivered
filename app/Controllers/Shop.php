@@ -200,7 +200,7 @@ class Shop extends BaseController
             $this->data['search_keyword'] = $search_data;
             }  
 
-        $product_arr = [];
+        $product_arr = [];             
         $count = 0;
         foreach($all_products as $product) {
             // echo "<pre>".print_r($product, 1)."</pre>";
@@ -213,6 +213,10 @@ class Shop extends BaseController
             }
 
              $count++;
+        }
+
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
         }
          
         $this->data['uid'] = $user_id;

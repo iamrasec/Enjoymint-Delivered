@@ -67,7 +67,7 @@
 
     .restrict{
     margin-top: -30px;
-    margin-left: 31px;
+    margin-left: 6%;
     font-weight: normal;
     float: left;
   } 
