@@ -185,7 +185,7 @@ class Shop extends BaseController
                       
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
        
-        }
+        }   
         }
     }
     
@@ -492,7 +492,7 @@ class Shop extends BaseController
         
     }
 
-    public function location($id = null){
+    public function location(){
 
         $session = session();
         $search= $this->request->getPost('location');
@@ -504,11 +504,11 @@ class Shop extends BaseController
         $session->setFlashdata('message', 'Please login first');
         return redirect()->to('/shop');
       }
-      else
-      { 
-        if(!empty($search)){
+      else  
+      {                 
+        if(!empty($search)){   
            
-            if($location == null){
+            if(empty($location['user_id'])){
                 $to_save = [
                     'address' => $this->request->getVar('location'),
                     'user_id' => $this->uid,
@@ -520,10 +520,11 @@ class Shop extends BaseController
                 $to_save = [
                     'address' => $this->request->getVar('location'),
                 ];
-                $this->location_model->update($id, ['address' => $to_save['address']]);
+                // $this->location_model->update($id, ['address' => $to_save['address']]);
+                $this->location_model->set($to_save)->where('user_id', $user_id)->update();
     }
         // return view('templates/_navigation', $this->data);
-    }
+    }   
     }
         
         $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
