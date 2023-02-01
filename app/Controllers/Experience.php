@@ -164,7 +164,7 @@ class Experience extends BaseController
         $this->data['fast_tracked'] = true; 
     }
         // Generate current date/time (PDT/PST)
-        $currDate = new Time("now", "America/Los_Angeles", "en_EN");
+        $currDate = new Time("tomorrow", "America/Los_Angeles", "en_EN");
 
         // If current time is more than 6PM, generate tomorrow's date/time (PDT/PST)
         if($currDate->format('H') > '18') {
@@ -179,7 +179,7 @@ class Experience extends BaseController
      public function searchProduct(){
         $session = session();
         $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+        $this->data['location_keyword'] = $location; 
         $search= $this->request->getGet('inputdata1');
         $data = $session->get('exp_id');
        
@@ -235,7 +235,7 @@ class Experience extends BaseController
      public function filterProduct(){
         $session = session();
         $location = $session->get('search1');
-    $this->data['location_keyword'] = $location; 
+        $this->data['location_keyword'] = $location; 
         $searchData = $this->request->getGet();
         $data = $session->get('exp_id');
         

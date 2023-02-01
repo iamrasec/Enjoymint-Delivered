@@ -11,7 +11,7 @@
 <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-6">
 
 <section class="pt-3 pb-4" id="popular-products">
-  <div class="container">
+  <div class="container">         
     <div class="row">
    <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
     <?php echo $this->include('templates/_experience_filter.php'); ?>
@@ -43,8 +43,8 @@
               <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp; 
               <input style="width: 240px;" type="text" id="picker" value="" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
               </button>
-            </div>
-          </div>
+            </div>                
+          </div>      
         <?php endif; ?>
           <?php foreach($products as $product): ?>
           <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
@@ -145,7 +145,18 @@
 
   var today = new Date(serverDate);
 
-  var dateNow = today.toISOString().slice(0, 10);
+  // var dateNow = today.toISOString().slice(0, 10);
+
+  var maxDate = moment().add(6, 'day');
+
+  var enabledDates = [
+  moment(today, serverDate)
+  ];
+
+  for (var i = 1; i <= 6; i++) {
+    var date = moment().add(i, 'day').format(serverDate);
+    enabledDates.push(moment(date, serverDate));
+  }
 
   $('#inline_picker').datetimepicker({
     timepicker: false,
@@ -153,7 +164,9 @@
     inline: true,
     format: 'YYYY-MM-DD',
     minDate: serverDate,
-    defaultDate: dateNow,
+    maxDate: maxDate,
+    enabledDates: enabledDates,
+    // defaultDate: dateNow,
     defaultSelect: true,
     onGenerate:function(ct) {
       console.log("onGenerate");
