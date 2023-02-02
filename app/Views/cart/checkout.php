@@ -81,9 +81,8 @@
 	position: relative;
 	/* display: inline-block; */
 	display: inline-flex;
-	padding: 20px;
-	width: 150px;
-	font-size: 14px;
+	width: 100%;
+	font-size: 13px;
 	line-height: 20px;
 	letter-spacing: 1px;
 	margin: 0 auto;
@@ -98,7 +97,7 @@
 	color: var(--white);
 	-webkit-transition: all 300ms linear;
 	transition: all 300ms linear; 
-	min-height: 80px;
+	min-height: 39px;
 	justify-content: center;
 	align-content: center;
 	flex-wrap: wrap;
@@ -159,7 +158,7 @@
               <div class="col-12 col-md-12 col-xs-12 mt-3">
                 <h5>Payment Method</h5>
 
-                <div class="row justify-content-center pb-5">
+                <!-- <div class="row justify-content-center pb-5">
                   <div class="col-12 pb-1 d-flex">
 										<input class="checkbox-tools" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
                     <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
@@ -174,56 +173,77 @@
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
                   </div>
 									<span class="text-sm">Payments will be collected upon delivery.</span>
-                </div>
-
+                </div> -->
+				<div class="row mb-2">
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools w-100 border px-2" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
+                    <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
+					</div>
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-2" value="paytender">
+                    <label class="for-checkbox-tools" for="tool-2">PayTender</label>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-3" value="cash">
+                    <label class="for-checkbox-tools" for="tool-3">Cash</label>
+					</div>
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-4" value="debit_card">
+                    <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
+					</div>
+				</div>	
               </div>
             </div>
-						
 						<div class="row mb-4">
 							<div class="col-12 col-md-12 col-xs-12 mt-3">
 								<h5>Delivery Address</h5>
 								<div class="row mb-4">
-									<div class="col-4 col-md-4 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">Apartment/Suite Number</label>
-											<input type="text" name="apt_no" class="form-control">
+									<div class="col-5 col-md-5 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">Apartment/Suite Number</label> -->
+											<input type="text" name="apt_no" class="form-control  w-100 border px-2" placeholder="Apartment/Suite Number">
 										</div>
 									</div>
-									<div class="col-8 col-md-8 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">Street Address</label>
-											<input type="text" name="street" class="form-control">
+									<div class="col-7 col-md-7 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">Street Address</label> -->
+											<input type="text" name="street" class="form-control  w-100 border px-2" placeholder="Street Address">
 										</div>
 									</div>
 								</div>
 								<div class="row mb-4">
-									<div class="col-3 col-md-3 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">City</label>
-											<input type="text" name="city" class="form-control">
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">City</label> -->
+											<input type="text" name="city" class="form-control w-100 border px-2" placeholder="City">
 										</div>
 									</div>
-									<div class="col-3 col-md-3 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">State</label>
-											<input type="text" name="state" class="form-control">
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">State</label> -->
+											<input type="text" name="state" class="form-control w-100 border px-2" placeholder="State">
 										</div>
 									</div>
-									<div class="col-3 col-md-3 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">Zipcode</label>
-											<input type="text" name="zipcode" class="form-control">
+									<div class="col-4 col-md-4 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">Zipcode</label> -->
+											<input type="text" name="zipcode" class="form-control w-100 border px-2" placeholder="Zipcode">
 										</div>
 									</div>
-									<div class="col-3 col-md-3 col-xs-12">
-										<div class="input-group input-group-outline">
-											<label class="form-label">Phone Number</label>
-											<input type="number" name="phone" class="form-control">
+								</div>
+								<div class="row mb-4">							
+									<div class="col-12 col-md-12 col-xs-12">
+										<div class="input-group input-group-dynamic">
+											<!-- <label class="form-label">Phone Number</label> -->
+											<input type="number" name="phone" class="form-control w-100 border px-2" placeholder="Phone Number">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						
 
 						<div class="row">
 							<div class="col-12 col-md-12 col-xs-12 mt-3">
