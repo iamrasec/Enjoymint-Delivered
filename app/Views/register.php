@@ -68,7 +68,7 @@
                     <div class="form-check form-check-info text-left">
                       <input class="form-check-input" type="checkbox" value="1" name="accept_terms" id="flexCheckDefault" checked>
                       <label class="form-check-label" for="flexCheckDefault">
-                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder" data-bs-toggle="modal" data-bs-target="#modal-notification">Terms and Conditions</a>
+                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder" data-bs-toggle="modal" data-bs-target="#modal-notification">Terms of Agreement</a>
                       </label>
                     </div>
                     <div class="text-center">
@@ -95,15 +95,15 @@
 	  <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h6 class="modal-title font-weight-normal" id="modal-title-notification">Terms and Conditions</h6>
+			<h6 class="modal-title font-weight-normal" id="modal-title-notification">Terms of Agreement</h6>
 			<button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">×</span>
 			</button>
 		  </div>
 		  <div class="modal-body">
 			<div class="py-3 text-center">
-			  <h4 class="text-gradient text-danger mt-4">EnjoymintDelivered Terms and Conditions</h4>
-			  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie laoreet mauris, vitae sodales elit luctus quis. Suspendisse quis nunc lectus. Vestibulum feugiat malesuada nibh, et elementum lorem tincidunt sed. Quisque tincidunt sagittis velit, at pulvinar dolor. Donec placerat nec dolor in varius. Sed vitae orci aliquam, interdum felis a, auctor ex. Quisque eget lorem sem. Nullam volutpat iaculis dolor ut cursus. Donec ultrices eu nisi at condimentum. Proin non sollicitudin turpis, id cursus est. Aenean posuere lacinia tempus. Suspendisse potenti. Cras ut orci augue. Pellentesque ut finibus ante. Aenean ac nisl mi. Vivamus vehicula sapien at lectus cursus, vel aliquam lorem mattis.</p>
+			  <h4 class="text-gradient text-danger mt-4">Terms of Agreement</h4>
+			  <?php echo $this->include('terms_content.php'); ?>
 			</div>
 		  </div>
 		  <div class="modal-footer">
