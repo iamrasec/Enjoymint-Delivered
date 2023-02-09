@@ -14,6 +14,7 @@ class Privacy extends BaseController
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
         $this->uid = session()->get('id');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
     
