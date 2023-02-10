@@ -186,7 +186,7 @@ class Users extends BaseController
 				'accept_terms' => [
 					'rules' => 'required',
 					'errors' => [
-						'required' => 'Please read and accept our Terms and Conditions.'
+						'required' => 'Please read and accept our Terms of Agreement.'
 					],
 				],
 			];
