@@ -302,6 +302,9 @@ class Products extends BaseController {
     $product = $this->product_model->getProductData($pid);
 
     $this->data['product_data'] = $product;
+
+    $this->data['variants_data'] = $this->product_variant_model->where('pid', $pid)->get()->getResult();
+
     $this->data['images'] = [];
 
     $imageIds = [];

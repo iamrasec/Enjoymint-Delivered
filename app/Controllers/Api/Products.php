@@ -171,7 +171,14 @@ class Products extends ResourceController
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
 
-    // print_r($this->request->getPost());
+    // $variants = json_decode($this->request->getVar('variants'));
+    // if(empty($variants)) {
+    //   echo "<pre>No Variants Added</pre>";
+    // }
+    // else {
+    //   echo "<pre>".print_r($variants, 1)."</pre>";
+    // }
+    // die();
 
     // print_r($this->request->getPost()); die();
 
@@ -263,7 +270,7 @@ class Products extends ResourceController
           }
         }
 
-        // Save Experience
+        /** SAVE EXPERIENCE */
         if($this->request->getVar('experiences') != "") {
           $experience = explode(",", $this->request->getVar('experiences'));
 
@@ -281,7 +288,7 @@ class Products extends ResourceController
           }
         }
 
-        //Save Compounds
+        /** SAVE COMPOUNDS */
         $saveCompounds = [
           'pid' => $pid,
           'thc_unit' => $this->request->getVar('thc_measure'),
@@ -297,6 +304,27 @@ class Products extends ResourceController
         $this->compound_model->save($saveCompounds);
 
         // print_r($this->product_category->getLastQuery());
+
+        /** SAVE VARIANTS */
+        $variants = json_decode($this->request->getVar('variants'));
+
+        if(!empty($variants)) {
+          $this->product_variant_model->where('pid', $pid)->delete();
+
+          foreach($variants as $variant) {
+            $save_variant = [
+              'pid' => $pid,
+              'unit' => $variant->variant_unit,
+              'unit_value' => $variant->variant_unit_value,
+              'price' => $variant->variant_price,
+              'stock' => $variant->variant_qty,
+            ];
+
+            $this->product_variant_model->save($save_variant);
+          }
+
+          // echo "<pre>".print_r($variants, 1)."</pre>";
+        }
 
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {

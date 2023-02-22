@@ -222,40 +222,8 @@
             </div>
           </div>
         </div>
+
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <!-- <h6>Variants</h6>                
-          <div class="row" id='variants'>
-            <div class="row">
-              <div class="col-lg-10">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label>Unit</label>
-                    <input type="text" name="unit[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Unit Value</label>
-                    <input type="number" name="value[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Price</label>
-                    <input type="number" name="price[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Stocks/Qty</label>
-                    <input type="number" name="qty[]" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2">
-                <br><br>
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
-              </div>
-            </div><hr class='breaker'>
-          </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
-
-          <br><br><br> -->
-
           <h6>Images</h6>
           <div class="row" id='image_lists'>
             <?php foreach($images as $image): ?>
@@ -280,7 +248,49 @@
             </div>
           </div>
           <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
+
+          <hr>
+
+          <h6>Variants</h6>                
+          <div class="row" id='variants'>
+            <?php foreach($variants_data as $variant): ?>
+            <div class="row added_variant">
+              <div class="col-lg-10">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label>Unit</label>
+                    <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
+                      <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
+                      <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
+                      <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
+                      <option value="oz"<?= ($variant->unit == 'oz') ? " selected" : ""; ?>>Ounces (oz)</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-6">
+                    <label>Unit Value</label>
+                    <input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2" value="<?= $variant->unit_value; ?>">
+                  </div>
+                  <div class="col-lg-6">
+                    <label>Price</label>
+                    <input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2" value="<?= $variant->price; ?>">
+                  </div>
+                  <div class="col-lg-6">
+                    <label>Stocks/Qty</label>
+                    <input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2" value="<?= $variant->stock; ?>">
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2"><br><br>
+                <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
+              </div>
+            </div>
+            <hr class="breaker">
+            <?php endforeach; ?>
+          </div>
+          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span>Add Variant</button>
+          <hr class='breaker mb-5'>
         </div>
+
       </div>
     </form>
   </div>
@@ -342,4 +352,11 @@
 <?php $this->section("scripts") ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
+
+<!-- <script>
+$(document).on('click', '#add_variant', function() {
+  console.log("Add Variant Button Clicked!");
+});
+</script> -->
+
 <?php $this->endSection() ?>
