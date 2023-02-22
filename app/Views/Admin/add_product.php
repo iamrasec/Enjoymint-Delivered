@@ -219,44 +219,8 @@
           </div>
         </div>
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <!-- <h6>Variants</h6>                
-          <div class="row" id='variants'>
-            <div class="row">
-              <div class="col-lg-10">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <label>Unit</label>
-                    <input type="text" name="unit[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Unit Value</label>
-                    <input type="number" name="value[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Price</label>
-                    <input type="number" name="price[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Stocks/Qty</label>
-                    <input type="number" name="qty[]" class="form-control">
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2">
-                <br><br>
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
-              </div>
-            </div><hr class='breaker'>
-          </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button> -->
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
-              <!-- <h6> Tags </h6>
-              <div class="row">
-                <div class="bootstrap-tagsinput">
-                <input type="text" id="tags" name="tags" class="form-control" data-role="tagsinput" > 
-                </div>
-              </div> -->
               <h6>Images</h6>
               <div class="row" id='image_lists'>
                 <div class="row">
@@ -271,6 +235,16 @@
               <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
             </div>  
           </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h6>Variants</h6>                
+              <div class="row" id='variants'></div>
+              <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span>Add Variant</button>
+              <hr class='breaker mb-5'>
+            </div>
+          </div>
+
         </div>
       </div>
     </form>

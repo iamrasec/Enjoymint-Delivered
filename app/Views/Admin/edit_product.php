@@ -224,71 +224,78 @@
         </div>
 
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <h6>Images</h6>
-          <div class="row" id='image_lists'>
-            <?php foreach($images as $image): ?>
-            <div class="row current_images mb-5">
-              <div class="col-lg-5">
-                <input type="hidden" name="current_images[]" value="<?= $image->id; ?>">
-                <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
-              </div>
-              <div class="col-lg-5"></div>
-              <div class="col-lg-2">
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
-              </div>
-            </div>
-            <?php endforeach; ?>
-            <div class="row">
-              <div class="col-lg-10">
-                <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
-              </div>
-              <div class="col-lg-2">
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
-              </div>
-            </div>
-          </div>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
-
-          <hr>
-
-          <h6>Variants</h6>                
-          <div class="row" id='variants'>
-            <?php foreach($variants_data as $variant): ?>
-            <div class="row added_variant">
-              <div class="col-lg-10">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h6>Images</h6>
+              <div class="row" id='image_lists'>
+                <?php foreach($images as $image): ?>
+                <div class="row current_images mb-5">
+                  <div class="col-lg-5">
+                    <input type="hidden" name="current_images[]" value="<?= $image->id; ?>">
+                    <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
+                  </div>
+                  <div class="col-lg-5"></div>
+                  <div class="col-lg-2">
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
+                  </div>
+                </div>
+                <?php endforeach; ?>
                 <div class="row">
-                  <div class="col-lg-6">
-                    <label>Unit</label>
-                    <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
-                      <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
-                      <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
-                      <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
-                      <option value="oz"<?= ($variant->unit == 'oz') ? " selected" : ""; ?>>Ounces (oz)</option>
-                    </select>
+                  <div class="col-lg-10">
+                    <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
                   </div>
-                  <div class="col-lg-6">
-                    <label>Unit Value</label>
-                    <input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2" value="<?= $variant->unit_value; ?>">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Price</label>
-                    <input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2" value="<?= $variant->price; ?>">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Stocks/Qty</label>
-                    <input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2" value="<?= $variant->stock; ?>">
+                  <div class="col-lg-2">
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2"><br><br>
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
-              </div>
+              <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
             </div>
-            <hr class="breaker">
-            <?php endforeach; ?>
           </div>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span>Add Variant</button>
-          <hr class='breaker mb-5'>
+
+          <div class="card">
+            <div class="card-body">
+              <h6>Variants</h6>                
+              <div class="row" id='variants'>
+                <?php foreach($variants_data as $variant): ?>
+                <div class="row added_variant">
+                  <div class="col-lg-10">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label>Unit</label>
+                        <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
+                          <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
+                          <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
+                          <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
+                          <option value="oz"<?= ($variant->unit == 'oz') ? " selected" : ""; ?>>Ounces (oz)</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Unit Value</label>
+                        <input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2" value="<?= $variant->unit_value; ?>">
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Price</label>
+                        <input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2" value="<?= $variant->price; ?>">
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Stocks/Qty</label>
+                        <input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2" value="<?= $variant->stock; ?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2"><br><br>
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
+                  </div>
+                </div>
+                <hr class="breaker">
+                <?php endforeach; ?>
+              </div>
+              <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span>Add Variant</button>
+              <hr class='breaker mb-5'>
+            </div>
+          </div>
+
         </div>
 
       </div>

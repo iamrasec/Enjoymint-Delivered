@@ -199,7 +199,7 @@
 
     var added_variants = JSON.stringify(variants_arr);
 
-    console.log(variants_arr);
+    // console.log(variants_arr);
 
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());

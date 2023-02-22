@@ -47,6 +47,15 @@ class Products extends ResourceController
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
 
+    // $variants = json_decode($this->request->getVar('variants'));
+    // if(empty($variants)) {
+    //   echo "<pre>No Variants Added</pre>";
+    // }
+    // else {
+    //   echo "<pre>".print_r($variants, 1)."</pre>";
+    // }
+    // die();
+
     // print_r($this->request->getPost());
 
     if($this->request->getPost()) {
@@ -143,18 +152,24 @@ class Products extends ResourceController
 
         $this->compound_model->save($saveCompounds);
 
-        // Save Variants
-        // $variantCount = count($this->request->getVar('prices[]'));
-        // for($x=0;$x<$variantCount;$x++){
-        //   $variantData = [
-        //     'pid' => $productId,
-        //     'unit	' => $_POST['units'][$x],
-        //     'unit_value' => $_POST['unit_values'][$x],
-        //     'price' => $_POST['prices'][$x],
-        //     'stock' => $_POST['stocks'][$x]
-        //   ];
-        //   $this->product_variant_model->save($variantData); // try to save product variant
-        // }
+        /** SAVE VARIANTS */
+        $variants = json_decode($this->request->getVar('variants'));
+
+        if(!empty($variants)) {
+          foreach($variants as $variant) {
+            $save_variant = [
+              'pid' => $productId,
+              'unit' => $variant->variant_unit,
+              'unit_value' => $variant->variant_unit_value,
+              'price' => $variant->variant_price,
+              'stock' => $variant->variant_qty,
+            ];
+
+            $this->product_variant_model->save($save_variant);
+          }
+
+          // echo "<pre>".print_r($variants, 1)."</pre>";
+        }
 
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
       } else {
