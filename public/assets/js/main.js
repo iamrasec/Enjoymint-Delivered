@@ -69,13 +69,14 @@ function eraseCookie(key) {
   setCookie(key, keyValue, '-1');
 }
 
-function add_to_cart(uid, pid, qty)
+function add_to_cart(uid, pid, qty, vid = 0)
 {
   // let jwt = $("[name='atoken']").attr('content');
 
   let data = {};
   data.uid = uid;
   data.pid = pid;
+  data.vid = vid;
   data.qty = qty;
 
   $.ajax({

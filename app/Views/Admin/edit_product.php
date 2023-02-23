@@ -74,10 +74,11 @@
                   <label class="form-label" for="name">Unit</label>
                   <div class="input-group input-group-dynamic">
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="pct" <?= ($product_data->unit_measure == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
                     <option value="mg" <?= ($product_data->unit_measure == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
                     <option value="g <?= ($product_data->unit_measure == 'g') ? 'selected' : ''; ?>">Grams (g)</option>
                     <option value="oz <?= ($product_data->unit_measure == 'oz') ? 'selected' : ''; ?>">Ounces (oz)</option>
+                    <option value="piece" <?= ($product_data->unit_measure == 'piece') ? 'selected' : ''; ?>>Per Piece</option>
+                    <option value="pct" <?= ($product_data->unit_measure == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
                   </select>
                   </div>
                 </div>
@@ -264,10 +265,11 @@
                       <div class="col-lg-6">
                         <label>Unit</label>
                         <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
-                          <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
                           <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
                           <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
                           <option value="oz"<?= ($variant->unit == 'oz') ? " selected" : ""; ?>>Ounces (oz)</option>
+                          <option value="piece" <?= ($product_data->unit_measure == 'piece') ? 'selected' : ''; ?>>Per Piece</option>
+                          <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
                         </select>
                       </div>
                       <div class="col-lg-6">
