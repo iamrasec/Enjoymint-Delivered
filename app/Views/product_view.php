@@ -36,6 +36,20 @@
     transform: rotate(1800deg);
   }
 }
+.product-variation {
+  border: 2px solid #8debd8;
+  cursor: pointer;
+}
+
+.product-variation.selected {
+  border: 2px solid #489989;
+}
+
+.product-variation .variant_price {
+  color: #d71b5d;
+  font-size: 1.3em;
+  font-weight: bold;
+}
 </style>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -97,6 +111,61 @@
                     <?= $product->description; ?>
                     </div>
                   </div>
+
+                  <div class="row mb-5">
+                    <div class="col-4 col-md-4 col-sm-12">
+                      <div class="product-variation selected card m-2" data-variant-id="0">
+                        <div class="card-body p-1 text-center">
+                          <?php 
+                          switch($product->unit_measure){
+                            case 'pct':
+                              $base_product_unit = "%";
+                              break;
+                            case 'mg':
+                              $base_product_unit = "mg.";
+                              break;
+                            case 'g':
+                              $base_product_unit = "grams";
+                              break;
+                            case 'oz':
+                              $base_product_unit = "ounces";
+                              break;
+                          } 
+                          ?>
+                          <span class="variant_price d-block w-100">$<?= $product->price; ?></span>
+                          <span class="variant_measure small d-block w-100"><?= $product->unit_value; ?> <?= $base_product_unit; ?></span>
+                        </div>
+                      </div>
+                    </div>
+                    <?php if($variants): ?>
+                      <?php foreach($variants as $variant): ?>
+                      <div class="col-4 col-md-4 col-sm-12">
+                        <div class="product-variation card m-2" data-variant-id="<?= $variant->id; ?>">
+                          <div class="card-body p-1 text-center">
+                            <?php 
+                            switch($variant->unit){
+                              case 'pct':
+                                $variant_unit = "%";
+                                break;
+                              case 'mg':
+                                $variant_unit = "mg.";
+                                break;
+                              case 'g':
+                                $variant_unit = "grams";
+                                break;
+                              case 'oz':
+                                $variant_unit = "ounces";
+                                break;
+                            } 
+                            ?>
+                            <span class="variant_price d-block w-100">$<?= $variant->price; ?></span>
+                            <span class="variant_measure small d-block w-100"><?= $variant->unit_value; ?> <?= $variant_unit; ?></span>
+                          </div>
+                        </div>
+                      </div>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </div>
                   
                   <div class="row mt-4">
                     <div class="col-lg-2">
@@ -114,6 +183,9 @@
                   </div>
                 </div>
               </div>
+
+              <pre><?php print_r($variants); ?></pre>
+              <pre><?php print_r($product); ?></pre>
 
               <?php if(!empty($rate) && $rate[0]->total_ratings != 0): ?>
               <div class="row mt-5">
@@ -278,6 +350,12 @@
 <?php $this->section("script") ?>
 <script>
   console.log("scripts section");
+  $(document).on('click', '.product-variation', function() {
+    $(".product-variation").removeClass("selected");
+    $(this).addClass("selected");
+
+    console.log($(".product-variation.selected").data("variant-id"));
+  });
 
   var cookie_cart = 'cart_data';
 
@@ -291,6 +369,7 @@
 
     let pid = $(this).data('pid');  
     let qty = $("input[name=qty]").val();
+    let vid = $(".product-variation.selected").data("variant-id");  // Variant ID.  0 if it is base variant
     let get_cookie = '';
     let cookie_products = [];
 
