@@ -118,22 +118,30 @@
                         <div class="card-body p-1 text-center">
                           <?php 
                           switch($product->unit_measure){
-                            case 'pct':
-                              $base_product_unit = "%";
-                              break;
                             case 'mg':
-                              $base_product_unit = "mg.";
+                              $base_product_unit = $product->unit_value . " mg.";
                               break;
                             case 'g':
-                              $base_product_unit = "grams";
+                              $base_product_unit = $product->unit_value . " grams";
                               break;
                             case 'oz':
-                              $base_product_unit = "ounces";
+                              $base_product_unit = $product->unit_value . " ounces";
+                              break;
+                            case 'piece':
+                              if($product->unit_value == 1) {
+                                $base_product_unit = "each";
+                              }
+                              else {
+                                $base_product_unit = round($product->unit_value) . " pieces";
+                              }
+                              break;
+                            case 'pct':
+                              $base_product_unit = $product->unit_value . "%";
                               break;
                           } 
                           ?>
                           <span class="variant_price d-block w-100">$<?= $product->price; ?></span>
-                          <span class="variant_measure small d-block w-100"><?= $product->unit_value; ?> <?= $base_product_unit; ?></span>
+                          <span class="variant_measure small d-block w-100"><?= $base_product_unit; ?></span>
                         </div>
                       </div>
                     </div>
@@ -144,22 +152,30 @@
                           <div class="card-body p-1 text-center">
                             <?php 
                             switch($variant->unit){
-                              case 'pct':
-                                $variant_unit = "%";
-                                break;
                               case 'mg':
-                                $variant_unit = "mg.";
+                                $variant_unit = $variant->unit_value . " mg.";
                                 break;
                               case 'g':
-                                $variant_unit = "grams";
+                                $variant_unit = $variant->unit_value . " grams";
                                 break;
                               case 'oz':
-                                $variant_unit = "ounces";
+                                $variant_unit = $variant->unit_value . "ounces";
+                                break;
+                              case 'piece':
+                                if($variant->unit_value == 1) {
+                                  $variant_unit = "each";
+                                }
+                                else {
+                                  $variant_unit = round($variant->unit_value) . " pieces";
+                                }
+                                break;
+                              case 'pct':
+                                $variant_unit = $variant->unit_value . "%";
                                 break;
                             } 
                             ?>
                             <span class="variant_price d-block w-100">$<?= $variant->price; ?></span>
-                            <span class="variant_measure small d-block w-100"><?= $variant->unit_value; ?> <?= $variant_unit; ?></span>
+                            <span class="variant_measure small d-block w-100"><?= $variant_unit; ?></span>
                           </div>
                         </div>
                       </div>
