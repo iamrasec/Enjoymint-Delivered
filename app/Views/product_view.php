@@ -200,9 +200,6 @@
                 </div>
               </div>
 
-              <pre><?php print_r($variants); ?></pre>
-              <pre><?php print_r($product); ?></pre>
-
               <?php if(!empty($rate) && $rate[0]->total_ratings != 0): ?>
               <div class="row mt-5">
                 <h6>Ratings</h5>
@@ -404,7 +401,7 @@
         console.log('cart_data cookie not set.');
     
         // Set value to add to the cookie
-        cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
+        cookie_products = [{"pid": pid, "qty": parseInt(qty), "vid": parseInt(vid)}];  // Create an array of the product data
 
         // Create cookie
         setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
@@ -425,7 +422,7 @@
           console.log(product);
 
           // If a match is found, add the new qty to the existing qty.
-          if(product.pid == pid) {
+          if(product.pid == pid && product.vid == vid) {
             console.log("product "+pid+" found");
             product.qty = parseInt(product.qty) + parseInt(qty);
 
