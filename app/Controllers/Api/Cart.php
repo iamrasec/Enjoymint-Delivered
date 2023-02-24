@@ -34,20 +34,20 @@ class Cart extends ResourceController
 
     // If user is currently logged in
     if($data['uid'] > 0) {
-      $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid']);
+      $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid'], $data['vid']);
       $new_item_count = 0;
 
       if(!empty($product_in_cart)) {
-        $saveCart = $this->cart_model->updateCartProduct($data['uid'], $data['pid'], $data['qty']);
+        $saveCart = $this->cart_model->updateCartProduct($data['uid'], $data['pid'], $data['qty'], $data['vid']);
 
-        echo json_encode(["status" => 'updated', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+        echo json_encode(["status" => 'updated', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty'], "vid" => $data['vid']]);
         exit;
       }
       else {
         $saveCart = $this->cart_model->insert($data);
         $new_item_count++;
 
-        echo json_encode(["status" => 'added', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty']]);
+        echo json_encode(["status" => 'added', "newItemCount" => $new_item_count, "pid" => $data['pid'], "qty" => $data['qty'], "vid" => $data['vid']]);
         exit;
       }
     }

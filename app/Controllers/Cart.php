@@ -25,6 +25,7 @@ class Cart extends BaseController
     $this->order_products_model = model('OrderProductsModel');
     $this->user_model = model('UserModel');
     $this->location_model = model('LocationModel');
+    $this->product_variant_model = model('ProductVariantModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -46,10 +47,28 @@ class Cart extends BaseController
     // Fetch items in cart
     $cart_raw = $this->get_cart_data();
 
+    // echo "<pre>".print_r($cart_raw, 1)."</pre>"; die();
+
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
+      $product_data->vid = 0;  // Base Variant
+
+      // Check if Variant ID is not 0
+      if($product->vid != 0) {
+        $variant_data = $this->product_variant_model->where('id', $product->vid)->get()->getResult();
+        
+        // echo "<pre>".print_r($variant_data, 1)."</pre>";
+
+        $product_data->vid = $variant_data[0]->id;
+        $product_data->price = $variant_data[0]->price;
+        $product_data->unit_measure = $variant_data[0]->unit;
+        $product_data->unit_value = $variant_data[0]->unit_value;
+        $product_data->stocks = $variant_data[0]->stock;
+      }
+
+      // echo "<pre>".print_r($product_data, 1)."</pre>";die();
       
       // initialize images
       $images = [];
