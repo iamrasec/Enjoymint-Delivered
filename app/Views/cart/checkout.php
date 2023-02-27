@@ -138,6 +138,11 @@
 	color: var(--dark-blue);
 	box-shadow: 0 1x 4px 0 rgba(0, 0, 0, 0.05);
 }
+.prom{
+	font-size: 15px;
+	font-weight: 500;
+	color:#000000;
+}
 </style>
 
 <main class="main-content position-relative border-radius-lg mt-9">
@@ -147,34 +152,44 @@
         <!-- <div class="continue_shopping px-3"><a href="<?= base_url('shop'); ?>"><i class="fas fa-chevron-left"></i> Continue Shoppping</a></div> -->
       </div>
     </div>
-	<form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
+	
     <div class="row">
       <div class="col-12 col-md-8 col-xs-7">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Checkout</h1>
-						<input type="hidden" name="guid" value="<?= $guid; ?>">
-						<input type="hidden" name="cart_key" value="<?= $checkout_token; ?>">
-            <div class="row">
+						
+
+            <div class="row mb-4">
               <div class="col-12 col-md-12 col-xs-12 mt-3">
-                <h5>Payment Method</h5>
+			<form id="pro_code" method="POST" action="<?= base_url('cart/promo_add'); ?>">
+			  <label class="for-checkbox-tools prom" for="tool-2">Promo Code</label>
+			  <input type="text" name="promo_code" id="promo_code" class="border px-2" style="width: 31%;" placeholder="Promo Code">
+			  <button type="submit">Submit</button>		
+			  
+			</form>
+			
+			  <h5>Payment Method</h5>
+				<form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
+					<input type="hidden" name="guid" value="<?= $guid; ?>">
+					<input type="hidden" name="cart_key" value="<?= $checkout_token; ?>">
 
                 <!-- <div class="row justify-content-center pb-5">
                   <div class="col-12 pb-1 d-flex">
-										<input class="checkbox-tools" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
+					<input class="checkbox-tools w-100 border px-2" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
                     <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
                     
-                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-2" value="paytender">
+                    <input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-2" value="paytender">
                     <label class="for-checkbox-tools" for="tool-2">PayTender</label>
                     
-                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-3" value="cash">
+                    <input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-3" value="cash">
                     <label class="for-checkbox-tools" for="tool-3">Cash</label>
                     
-                    <input class="checkbox-tools" type="radio" name="payment_method" id="tool-4" value="debit_card">
+                    <input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-4" value="debit_card">
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
                   </div>
-									<span class="text-sm">Payments will be collected upon delivery.</span>
+					<span class="text-sm">Payments will be collected upon delivery.</span>
                 </div> -->
-				<div class="row mb-2">
+				<div class="row mb-4">
 					<div class="col-6 col-md-6 col-xs-12">
 					<input class="checkbox-tools w-100 border px-2" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
                     <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
@@ -184,7 +199,7 @@
                     <label class="for-checkbox-tools" for="tool-2">PayTender</label>
 					</div>
 				</div>	
-				<div class="row">
+				<div class="row mb-4">
 					<div class="col-6 col-md-6 col-xs-12">
 					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-3" value="cash">
                     <label class="for-checkbox-tools" for="tool-3">Cash</label>
@@ -193,7 +208,7 @@
 					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-4" value="debit_card">
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
 					</div>
-				</div>	
+				</div>						
               </div>
             </div>
 						<div class="row mb-4">
@@ -253,13 +268,15 @@
 								</div>
 							</div>
 						</div>
+			
           
         </div>
       </div>
 
 			<?php if(!empty($cart_products)): ?>
-			<?php
-				$subtotal = 0;
+				
+			<?php 
+				$subtotal = 0;	
 				foreach($cart_products as $product) {
 					// echo "<pre>".print_r($product, 1)."</pre>";
 					$subtotal += ($product['product_data']->price * $product['qty']);
@@ -286,9 +303,9 @@
 						<?php endif; ?>
 						<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
 					</div>
-
+							
           <div class="cart-item-count"><?= count($cart_products); ?> <?= (count($cart_products) > 1) ? "Items" : "Item"; ?></div>
-
+			
           <div class="row mt-4">
             <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
             <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">$<?= number_format($subtotal, 2, '.', ','); ?></span></div>
@@ -331,6 +348,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script>
 $(document).on("click", ".place-order", function() {
@@ -350,7 +368,7 @@ var maxDate = moment().add(6, 'day');
 var enabledDates = [
 moment(today, serverDate)
 ];
-
+	
 for (var i = 1; i <= 6; i++) {
   var date = moment().add(i, 'day').format(serverDate);
   enabledDates.push(moment(date, serverDate));
@@ -441,5 +459,57 @@ $(document).ready(function() {
   });
 });
 <?php endif; ?>
-</script>
+
+// const form = document.getElementById('pro_code');
+//   const submitBtn = document.getElementById('submitProm');
+//   const message = document.getElementById('message');
+
+//   form.addEventListener('submit', function(event) {
+//     event.preventDefault();
+
+//     const promo_code = document.getElementById('promo_code').value;
+
+//     fetch('/submit-promo', {
+//       method: 'POST',
+//       body: JSON.stringify({ promo_code: promo_code }),
+//       headers: {
+//         'Content-Type': 'application/json'
+//       }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       message.innerHTML = data.message;
+//       form.reset();
+//     });
+//   }); 
+
+// Get the form element
+// $(document).on("click", "#submit_promo", function(e) {
+//     e.preventDefault();
+//     // if(jwt == '') {
+//       // let pid = $(this).data('pid');
+//       // let qty = $(this).val();
+
+//       // console.log("qty: "+qty);
+
+//       get_cookie = getCookie(cookie_cart);
+
+//       cookie_products = JSON.parse(get_cookie);
+
+//       cookie_products.forEach(function(product) {
+//         $(".product-qty").each(function() {
+//           if(product.pid == $(this).data('pid')) {
+//             product.qty = parseInt($(this).val());
+//           }
+//         });
+//       });
+
+//       // console.log(cookie_products);
+
+//       setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
+//     // }
+
+//     $("#update-cart-form").submit();
+//   });
+
 <?php $this->endSection(); ?>
