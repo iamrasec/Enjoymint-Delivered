@@ -324,7 +324,7 @@ class Products extends ResourceController
           $this->product_experience->where('pid', $pid)->delete();
 
           // print_r($this->product_category->getLastQuery());
-
+                  
           foreach($experience as $exps) {
             $saveExp = [
               'pid' => $pid,
@@ -345,7 +345,7 @@ class Products extends ResourceController
         ];
 
         $this->compound_model->where('pid', $pid)->delete();
-
+        
         // print_r($this->product_category->getLastQuery());
 
         $this->compound_model->save($saveCompounds);

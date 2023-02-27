@@ -14,6 +14,9 @@
     display: block !important;
     width: 100% !important;
   }
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+    width: 600px !important;
+  }
 </style>
 <?php $this->endSection() ?>
 
@@ -55,9 +58,12 @@
                 <div class="col-md-12 col-xs-12">
                   <div class="row">
                     <label class="form-label">Promo URL</label>
-                    <div class="col-md-12 col-xs-12 mb-3">
+                    <div class="col-2 col-sm-2 pe-0">
+                        <p class="text-xs mt-3 float-end px-0"><?php echo base_url(); ?>/promotion/</p>
+                    </div>
+                    <div class="col-10 col-md-10 col-xs-8 mb-3 ps-1">
                       <div class="input-group input-group-dynamic">
-                        <p class="text-xs mt-3 float-end px-0"><?php echo base_url(); ?>/promotion/</p>&nbsp;<input type="text" id="promo_url" class="form-control border px-2" name="promo_url" required>
+                        <input type="text" id="promo_url" class="form-control w-100 border px-2" name="promo_url" required>
                       </div>
                     </div>
                   </div>
@@ -101,7 +107,36 @@
                   </div>
                 </div>
               </div>
-
+                 <div class="row mt-4">
+                  <div class="col-md-12 col-xs-12">
+                    <div class="row">
+                    <div class="col-md-3 col-xs-3">
+                        <label class="form-label w-100">Prome Code</label>
+                        <div class="input-group input-group-dynamic">
+                        <input type="number" id="promo_code" name="promo_code" value="" class="form-control w-100 border px-2" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-xs-3">
+                        <label class="form-label w-100">Usage Limit</label>
+                        <div class="input-group input-group-dynamic">
+                        <input type="number" id="usage_limit" name="usage_limit" value="0" class="form-control w-100 border px-2" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-xs-3">
+                        <label class="form-label w-100">Start Date</label>
+                        <div class="input-group input-group-dynamic">
+                        <input type="text" id="sale_start_date" name="sale_start_date" value="" class="form-control datetime_picker w-100 border px-2" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-md-3 col-xs-3">
+                        <label class="form-label w-100">End Date</label>
+                        <div class="input-group input-group-dynamic">
+                          <input type="text" id="sale_end_date" name="sale_end_date" value="" class="form-control datetime_picker w-100 border px-2" autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               <div class="row mt-4">
                 <div class="col-12 col-md-12 col-xs-12 mb-3">
                   <div class="input-group input-group-dynamic">
@@ -141,7 +176,7 @@
                               <div class="form-check me-4">
                                 <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_specific" value="promo_products_specific" data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_specific">Specific Product(s)</label>
-                              </div>
+                                </div>
                               <div class="form-check me-4">
                                 <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_cat" value="promo_products_cat" data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_cat">Products in Category</label>
@@ -151,7 +186,7 @@
                             <div class="row mt-4 promo_products_select_products d-none">
                               <div class="col-12 col-md-12 col-xs-12 mb-3">
                               <label class="form-label" for="promo_products_selected">Select Product(s) Included in the Promo</label>
-                              <select class="select2-field promo_products_select_products_select" id="promo_products_select_products_select" name="promo_products_selected[]" multiple="multiple">
+                              <select class="select2-field promo_products_select_products_select" id="promo_products_select_products_select" name="all_products[]" multiple="multiple">
                                 <?php foreach($all_products as $product): ?>
                                 <option value="<?= $product->id;?>"><?= $product->name; ?></option>
                                 <?php endforeach; ?>
@@ -162,7 +197,7 @@
                             <div class="row mt-4 promo_products_select_cat d-none">
                               <div class="col-12 col-md-12 col-xs-12 mb-3">
                               <label class="form-label" for="promo_products_selected">Select Category Included in the Promo</label>
-                              <select class="select2-field promo_products_select_cat_select" id="promo_products_select_cat_select" name="promo_products_selected[]" multiple="multiple">
+                              <select class="select2-field promo_products_select_cat_select" id="promo_products_select_cat_select" name="all_categories[]" multiple="multiple">
                                 <?php foreach($all_categories as $category): ?>
                                 <option value="<?= $category->id;?>"><?= $category->name; ?></option>
                                 <?php endforeach; ?>
@@ -201,7 +236,7 @@
                         <div class="row mt-4 product_required_purchase d-none">
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                           <label class="form-label fw-bold" for="required_product">Required Purchase: Select Product(s)</label>
-                          <select class="select2-field required_product_select" id="required_product_select" name="required_product[]" multiple="multiple">
+                          <select class="select2-field required_product_select" id="required_product_select" name="all_products[]" multiple="multiple">
                             <?php foreach($all_products as $product): ?>
                             <option value="<?= $product->id; ?>"><?= $product->name; ?></option>
                             <?php endforeach; ?>
@@ -212,7 +247,7 @@
                         <div class="row mt-4 category_required_purchase d-none">
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                           <label class="form-label fw-bold" for="required_product">Required Purchase: Select Category</label>
-                          <select class="select2-field required_category_select" id="required_category_select" name="required_product[]" multiple="multiple">
+                          <select class="select2-field required_category_select" id="required_category_select" name="all_categories[]" multiple="multiple">
                             <?php foreach($all_categories as $category): ?>
                             <option value="<?= $category->id;?>"><?= $category->name; ?></option>
                             <?php endforeach; ?>
@@ -276,6 +311,8 @@
 
 <?php $this->endSection(); ?>
 <?php $this->section("scripts") ?>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="<?php echo base_url(); ?>/assets/js/add_promo.js"></script>
@@ -324,5 +361,66 @@
     [{"id": <?= $category->id; ?>}, {"name": "<?= addslashes($category->name); ?>"}],
     <?php endforeach; ?>
   ];
+  
 </script>
 <?php $this->endSection() ?>
+<style>
+.bootstrap-tagsinput {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  display: inline-block;
+  padding: 4px 6px;
+  color: #555;
+  vertical-align: middle;
+  border-radius: 4px;
+  max-width: 100%;
+  line-height: 22px;
+  cursor: text;
+}
+.bootstrap-tagsinput input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 6px;
+  margin: 0;
+  width: auto;
+  max-width: inherit;
+}
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+  color: #777;
+}
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+  color: #777;
+}
+.bootstrap-tagsinput input:focus {
+  border: none;
+  box-shadow: none;
+}
+.bootstrap-tagsinput .tag {
+  margin-right: 2px;
+  color:black;
+}
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  margin-left: 8px;
+  cursor: pointer;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: "x";
+  padding: 0px 2px;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+
+
+</style>

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\UserModel;
 use App\Libraries\EnjoymintUtils;
 use CodeIgniter\I18n\Time;
+use PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer;
 
 class Cart extends BaseController
 {
@@ -25,6 +26,8 @@ class Cart extends BaseController
     $this->order_products_model = model('OrderProductsModel');
     $this->user_model = model('UserModel');
     $this->location_model = model('LocationModel');
+    $this->promo_model = model('PromoModel');
+    $this->promoProducts_model = model('P romoProductsModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -50,7 +53,7 @@ class Cart extends BaseController
     foreach($cart_raw as $product) {
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-      
+     
       // initialize images
       $images = [];
       $imageIds = [];
@@ -103,10 +106,14 @@ class Cart extends BaseController
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
     $user_id = $this->uid;
+    if($user_id == null){
+      $session->setFlashdata('message', 'Please login first');
+    }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
+    
     
 
     return view('cart/cart_page', $this->data);
@@ -119,7 +126,7 @@ class Cart extends BaseController
     $postData = $this->request->getPost();
 
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
-    
+
     if(!empty($postData)){
       $this->data['del_type'] = $postData['del_type'];    // Delivery Type.  fs for Fast-Tracked, nfs for Standard or  Non Fast-Tracked
       $this->data['delivery_schedule'] = $postData['delivery_schedule'];    // Delivery Date
@@ -148,7 +155,10 @@ class Cart extends BaseController
 
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-      
+      $session->product_cart = $product_data;
+
+      print_r($session->product_cart);
+
       // initialize images
       $images = [];
       $imageIds = [];
@@ -167,7 +177,11 @@ class Cart extends BaseController
         'images' => $images,
       ];
     }
+    // $data_id = $session('product_id');
+    // $discounted = $session('percent_discount');
+    // if(in_array($cart_products, $data_id)){
 
+    // }
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
 
@@ -196,6 +210,9 @@ class Cart extends BaseController
     }
 
     $user_id = $this->uid;
+    if($user_id == null){
+      $session->setFlashdata('message', 'Please login first');
+    }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
@@ -238,7 +255,7 @@ class Cart extends BaseController
     ];
     
     // echo "<pre>".print_r($data, 1)."</pre>";die();
-
+   
     // Insert initial order record and grab the order id
     $order_id = $this->checkout_model->insert($order_data);
 
@@ -250,10 +267,10 @@ class Cart extends BaseController
 
     // Loop through all the products and fetch all the product info
     foreach($db_cart as $product) {
-
+    
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-
+      
       $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
 
       $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
@@ -287,7 +304,7 @@ class Cart extends BaseController
 
     // $update_order = $this->checkout_model->where('id', $order_id)->update($order_costs);
     $update_order = $this->checkout_model->update($order_id, $order_costs);
-
+    
     if($update_order > 0) {
       $order_data['id'] = $order_id;
       $order_data['order_costs'] = $order_costs;
@@ -408,6 +425,10 @@ class Cart extends BaseController
           'product_data' => $product,
           'images' => $images,
         ];
+      }
+      $user_id = $this->uid;
+      if($user_id == null){
+        $session->setFlashdata('message', 'Please login first');
       }
       $this->data['uid'] = $user_id;
       $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
@@ -561,7 +582,7 @@ class Cart extends BaseController
 			unset($_COOKIE['cart_data']);
       setcookie('cart_data', '', time() - 3600, "/");
 		}
-    
+           
     $this->cart_model->where('uid', $user_id)->delete();
 
     return true;
@@ -570,7 +591,7 @@ class Cart extends BaseController
   private function _cookie_to_db($cookie_cart)
   {
     foreach($cookie_cart as $cart_product) {
-      $toSave = [
+      $toSave = [ 
         'uid' => $this->uid,
         'pid' => $cart_product->pid,
         'qty' => $cart_product->qty,
@@ -581,4 +602,208 @@ class Cart extends BaseController
 
     return true;
   }
+  
+  public function promo_add(){
+    $session = session();
+    $promo = $this->request->getVar('promo_code');
+    $this->data['prom_code'] = $promo;
+    //$this->data['location_keyword'] = $this->location;
+
+    // $db_cart = $this->_fetch_cart_items();
+
+    // if(!empty($db_cart)) {
+    //   $cart_raw = $db_cart;
+    // }
+    $cart_raw = $this->get_cart_data();
+    // Loop through all the products and fetch all the product info
+    foreach($cart_raw as $product) {
+      // Get products from the database using pid
+      $product_data = $this->product_model->getProductData($product->pid);
+      
+      // initialize images
+      $images = [];
+      $imageIds = [];
+
+      // Fetch product images
+      if($product_data->images) {
+        $imageIds = explode(',',$product_data->images);
+        $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+      }
+
+      // Output array
+      $cart_products[] = [
+        'pid' => $product->pid,
+        'qty' => $product->qty,
+        'product_data' => $product_data,
+        'images' => $images,
+      ];
+    }  
+      
+    $promo_data = $this->promo_model->getPromo($promo);
+   
+    // $this->data['prom_data'] = $promo_data;         
+    // $test = json_encode($promo_data);
+    
+    if(!empty($promo_data)){
+
+        //percent_off
+       if($promo_data[0]->promo_type == "percent_off"){
+
+        // Check if the promotion type is specific products
+      if($promo_data[0]->promo_product == "promo_products_specific"){
+        $totalVal = 0;
+
+        // Get the list of specific product IDs for the promotion
+        $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
+
+        // Loop through each product in the cart
+        foreach($cart_products as $value){
+
+          // Output the product price and ID
+          // print_r($promo_data).'<br>';
+          // echo $value['product_data']->id.'<br>---';
+          
+          // if()
+          $req_purchase = $promo_data['mechanics']->req_purchase;
+
+          print_r($req_purchase).'<br>';
+          // If the product is in the list of discounted products
+          if(in_array($value['product_data']->id, $promo_prod)){
+            echo 'in array <br>';
+
+            // Calculate the discount and net total price
+            $productPrice = $value['product_data']->price;
+            $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+            $netTotal = $productPrice -  $discount;
+            echo $discount.' <br>';
+            echo $netTotal.' <br> ------------ <br>';
+
+            // Update the product's price to the net total
+            $value['product_data']->price = $netTotal;
+          }
+          
+          // Output a separator
+          echo' <br> ------------ <br>';
+
+      // Add the updated price to the total value
+      $totalVal += $value['product_data']->price;
+    }
+  
+    // Output the total value
+    echo 'Total Value: '.$totalVal;
+  }
+
+   // Check if the promo product is a category
+  if($promo_data[0]->promo_product == "promo_products_cat"){
+
+  // Get discounted categories
+  $promo_cat = explode(',' , $promo_data[0]->discounted_category_id);
+  $totalVal = 0;
+  print_r($promo_cat); 
+  // Loop through cart products
+  foreach($cart_products as $value){
+    
+    // Output product price and category
+    echo $value['product_data']->price.'<br>';
+    echo $value['product_data']->category.'<br>---';
+
+    // Check if product category is in discounted categories
+    if(in_array($value['product_data']->category, $promo_cat)){
+
+      // Output "in array" message
+      echo 'in array <br>';
+
+      // Calculate discount and net total
+      $productPrice = $value['product_data']->price;
+      $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+      $netTotal = $productPrice  - $discount;
+      echo $discount.' <br>';
+      echo $netTotal.' <br> ------------ <br>';
+
+      // Set new price for product
+      $value['product_data']->price = $netTotal;
+    }
+    
+    // Output separator
+
+      // Add the updated price to the total value
+      $totalVal += $value['product_data']->price;
+     
+    }
+  
+    // Output the total value
+    echo 'Total Value: '.$totalVal;
 }
+     }
+
+      // $exclude = $value['product_data']->id;
+            // // $exclude1 = (array)$exclude;
+             
+            // $updatedData = array_replace($value, array_diff_key($data1, array_flip($exclude)));
+            
+            // $this->data['product_id'] = $array_promo;
+            // $cart_products[] = [
+            //   'pid' => $product->pid,
+            //   'qty' => $product->qty,
+            //   'product_data' => $product_data,
+            //   'images' => $images,
+            // ];
+            // return redirect()->to('/cart/checkout')->with($this->data);
+            // print_r($total_discount);
+            // print_r($value['product_data']->id);
+   
+// //       foreach( $promo_data['mechanics'] as $prom => $val){ 
+// //       if($val->promo_products == "promo_products_specific"){
+// //         $promo_prod = $prom['mechanics']['promo_products']->id;
+// //         if($promo_data[0]->promo_type == "percent_off"){
+
+// //        if($promo_data[0]->require_purchase == 1){
+        
+// //         if($promo_data[0]->promo_product == 'promo_products_specific'){
+// //             // foreach($promo_data[0]->products_specific as $product_spec){
+// //               $price = $this->product_model->select('price')->where('id', $promo_data[0]->required_product_id)->first();
+
+// //               // $total = $price - ($price * ($promo_data[0]->discount_value / 100));
+
+// //             // }
+// //         }
+// //         elseif($promo_data[0]->promo_product == 'promo_products_cat'){
+
+// //         }           
+// //         else{ 
+
+// //         }
+// //       }
+// //       $discount = $promo_data[0]->discount_value;
+      
+// //     }
+// //   }
+// // } 
+// //   //   // if($promo_data->promo_type == "fixed"){
+    
+// //   //   // }
+// //   //   // if($promo_data->promo_type == "sale_price"){
+     
+// //   //   // }
+// //   //   // if($promo_data->promo_type == "bxgx"){
+     
+// //   //   // }
+// //   //   // if($promo_data->promo_type == "bundle"){
+      
+// //   //   // }
+// //     // $data_arr = array("success" => TRUE,"message" => 'Promotion Saved!'.$prod_data);
+// //     // // print_r($promo_code);
+// //     // die(json_encode($data_arr));
+// //   // }
+// //   // print_r($prom_data);
+// //   // return redirect()->to('/cart/checkout');
+  }else{
+    echo "Invalid promo code. Please try again.";    
+ }
+
+  // print_r($data_prod);
+  // return view('/cart/checkout');
+}
+}
+
+

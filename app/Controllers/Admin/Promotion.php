@@ -57,11 +57,52 @@ class Promotion extends BaseController {
     ];
     $this->data['page_title'] = $page_title;
     $this->data['all_products'] = $this->product_model->getAllProductsNoPaginate();
+    $this->data['all_req_products'] = $this->product_model->getAllProductsNoPaginate();
     $this->data['all_categories'] = $this->category_model->get()->getResult();
+    $this->data['all_req_categories'] = $this->category_model->get()->getResult();
 
     // echo "<pre>".print_r($this->data)."</pre>"; die();
     
     return view('Promotions/admin_add_promo', $this->data);
+  }
+
+  public function getPromoList()
+  {
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+
+    $promotion = $this->promo_model->select('*')
+      ->like('title',$_POST['search']['value'])
+      ->orLike('url',$_POST['search']['value'])
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+   
+    foreach($promotion as $promo){
+      $start++;
+      $data[] = array(
+        $promo->id,
+        $promo->title, 
+        $promo->url,
+        $promo->description,
+        $promo->promo_type,
+        $promo->start_date,
+        $promo->end_date,
+        $promo->status,     
+        "<a href=".base_url('admin/promotion/edit_promotion/').">edit</a>",
+      );
+    }
+
+    $output = array(
+      "draw" => $_POST['draw'],
+      "recordsTotal" => $this->promo_model->countAll(),
+      "recordsFiltered" => $this->promo_model->countAll(),
+      "data" => $data,
+    );
+    
+    echo json_encode($output);
+
   }
 
 }

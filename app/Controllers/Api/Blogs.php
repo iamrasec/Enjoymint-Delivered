@@ -111,7 +111,7 @@ class Blogs extends ResourceController
         'content' => 'required|min_length[10]',
         'author' => 'required|min_length[1]',
       ];
-
+        
       if($this->validate($rules)) {
         $data['validation'] = $this->validator;
         
@@ -152,7 +152,7 @@ class Blogs extends ResourceController
           'author' => $this->request->getVar('author'),
           'images' => implode(',', $images),
         ];
-
+        
         // print_r($to_save);
 
         $this->blog_model->set($to_save)->where('id', $id)->update(); // trying to update blog to database

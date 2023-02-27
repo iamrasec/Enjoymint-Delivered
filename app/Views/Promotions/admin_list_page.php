@@ -55,25 +55,25 @@
 
 <!-- Product List page js -->
 <script>
-  // $(document).ready(function () {
-  //     $('#promo-table').DataTable({
-  //       // Processing indicator
-  //       "processing": true,
-  //       // DataTables server-side processing mode
-  //       "serverSide": true,
-  //       // Initial no order.
-  //       "order": [],
-  //       // Load data from an Ajax source
-  //       "ajax": {
-  //           "url": "<?= base_url('admin/promotion/getPromoList'); ?>",
-  //           "type": "POST"
-  //       },
-  //       //Set column definition initialisation properties
-  //       "columnDefs": [{ 
-  //           "targets": [0],
-  //           "orderable": false
-  //       }]
-  //   });
-  // });
+  $(document).ready(function () {
+      $('#promo-table').DataTable({
+        // Processing indicator
+        "processing": true,
+        // DataTables server-side processing mode
+        "serverSide": true,
+        // Initial no order.
+        "order": [],
+        // Load data from an Ajax source
+        "ajax": {
+            "url": "<?= base_url('admin/promotion/getPromoList'); ?>",
+            "type": "POST"
+        },
+        //Set column definition initialisation properties
+        "columnDefs": [{ 
+            "targets": [0],
+            "orderable": false
+        }]
+    });
+  });
 </script>
 <?php $this->endSection(); ?>

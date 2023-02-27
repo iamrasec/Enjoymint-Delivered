@@ -95,7 +95,7 @@ class Products extends BaseController
         $this->data['images'] = [];
 
         $imageIds = [];
-        if($product->images) {  ``
+        if($product->images) {
             $imageIds = explode(',',$product->images);
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
