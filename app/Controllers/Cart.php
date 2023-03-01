@@ -156,6 +156,8 @@ class Cart extends BaseController
 
     $db_cart = $this->_fetch_cart_items();
 
+    // echo "<pre>".print_r($db_cart, 1)."</pre>";die();
+
     if(!empty($db_cart)) {
       $cart_raw = $db_cart;
     }
@@ -178,14 +180,30 @@ class Cart extends BaseController
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
 
+      // Check if Variant ID is not 0
+      if($product->vid != 0) {
+        $variant_data = $this->product_variant_model->where('id', $product->vid)->get()->getResult();
+        
+        // echo "<pre>".print_r($variant_data, 1)."</pre>";
+
+        $product_data->vid = $variant_data[0]->id;
+        $product_data->price = $variant_data[0]->price;
+        $product_data->unit_measure = $variant_data[0]->unit;
+        $product_data->unit_value = $variant_data[0]->unit_value;
+        $product_data->stocks = $variant_data[0]->stock;
+      }
+
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
+        'vid' => $product->vid,
         'qty' => $product->qty,
         'product_data' => $product_data,
         'images' => $images,
       ];
     }
+
+    // echo "<pre>".print_r($cart_products, 1)."</pre>";die();
 
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
@@ -229,7 +247,7 @@ class Cart extends BaseController
 
     $data = $this->request->getPost();
 
-    // echo "<pre>".print_r($data)."</pre>"; die();
+    // echo "<pre>".print_r($data, 1)."</pre>"; die();
 
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
@@ -264,6 +282,8 @@ class Cart extends BaseController
     // Fetch products in cart
     $db_cart = $this->_fetch_cart_items();
 
+    // echo "<pre>".print_r($db_cart, 1)."</pre>";die();
+
     // Initialize subtotal cost
     $subtotal = 0;
 
@@ -273,9 +293,27 @@ class Cart extends BaseController
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
 
-      $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
+      // Check if Variant ID is not 0
+      if($product->vid != 0) {
+        $variant_data = $this->product_variant_model->where('id', $product->vid)->get()->getResult();
+        
+        // echo "<pre>".print_r($variant_data, 1)."</pre>";
 
-      $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
+        $product_data->vid = $variant_data[0]->id;
+        $product_data->price = $variant_data[0]->price;
+        $product_data->unit_measure = $variant_data[0]->unit;
+        $product_data->unit_value = $variant_data[0]->unit_value;
+        $product_data->stocks = $variant_data[0]->stock;
+
+        $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
+
+        $update_stocks = $this->product_variant_model->where('id', $product->vid)->set('stock', '(stock - '.$product->qty.')', false)->update();
+      }
+      else {
+        $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
+
+        $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
+      }
 
       // Compute for subtotal cost
       $subtotal += $product_data->price * $product->qty;
@@ -290,8 +328,11 @@ class Cart extends BaseController
         'is_sale' => 0,  // For now explicitly set to 0 because we don't have sale function as of the moment.  Will update this soon.
         'regular_price' => $product_data->price,  // The regular (normal) price of the product.
         'total' => $product_data->price * $product->qty,
+        'vid' => $product->vid,
       ];
     }
+
+    // echo "<pre>".print_r($cart_products, 1)."</pre>";die();
 
     $save_products = $this->order_products_model->insertBatch($cart_products);
 
@@ -405,6 +446,8 @@ class Cart extends BaseController
 
       // Fetch Order Products
       $order_products = $this->checkout_model->fetchOrderDetails($success);
+
+      // echo "<pre>".print_r($order_products, 1)."</pre>";die();
 
       foreach($order_products as $product) {
 

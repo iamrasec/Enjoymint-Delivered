@@ -67,7 +67,7 @@
                       </div>
                     </div>
                     <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                      <strong>$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                      <strong>$<?= number_format($product['product_data']->unit_price * $product['qty'], 2, '.', ','); ?></strong>
                     </div>
                   </div>
                 </td>
