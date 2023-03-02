@@ -70,7 +70,7 @@
 
               <div class="row mt-4">
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit</label>
+                  <label class="form-label" for="name">Unit (Sold By)</label>
                   <div class="input-group input-group-dynamic">
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
                     <option value="mg">Milligrams (mg)</option>
@@ -82,7 +82,7 @@
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit value</label>
+                  <label class="form-label" for="name">Unit (Sold By) value</label>
                   <div class="input-group input-group-dynamic">
                     <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" value="0" step="0.01" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>

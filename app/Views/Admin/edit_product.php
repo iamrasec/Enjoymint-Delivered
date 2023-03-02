@@ -71,7 +71,7 @@
 
               <div class="row mt-4">
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit</label>
+                  <label class="form-label" for="name">Unit (Sold By)</label>
                   <div class="input-group input-group-dynamic">
                   <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
                     <option value="mg" <?= ($product_data->unit_measure == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
@@ -83,7 +83,7 @@
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit value</label>
+                  <label class="form-label" for="name">Unit (Sold By) value</label>
                   <div class="input-group input-group-dynamic">
                     <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
@@ -263,7 +263,7 @@
                   <div class="col-lg-10">
                     <div class="row">
                       <div class="col-lg-6">
-                        <label>Unit</label>
+                        <label>Unit (Sold By)</label>
                         <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
                           <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
                           <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
@@ -273,7 +273,7 @@
                         </select>
                       </div>
                       <div class="col-lg-6">
-                        <label>Unit Value</label>
+                        <label>Unit (Sold By) Value</label>
                         <input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2" value="<?= $variant->unit_value; ?>">
                       </div>
                       <div class="col-lg-6">
