@@ -50,7 +50,7 @@
            <?php endif; ?>      
 
             <?php foreach($products as $product): ?>
-              <!-- <pre><?php print_r($product); ?></pre> -->
+            <!-- <pre><?php print_r($product); ?></pre> -->
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
                 <div class="img-wrap">          
@@ -77,7 +77,96 @@
                       <?php endif; ?>
                     </p>
                     <hr id="color" class="mt-0">
-                    <p class="price">$<span><?= $product['price']; ?></span></p>
+
+                    <?php 
+                    switch($product['unit_measure']){
+                      case 'mg':
+                        $base_product_unit = $product['unit_value'] . " mg.";
+                        break;
+                      case 'g':
+                        if($product['unit_value'] > 1) {
+                          $base_product_unit = $product['unit_value'] . " grams";
+                        }
+                        else {
+                          $base_product_unit = $product['unit_value'] . " gram";
+                        }
+                        
+                        break;
+                      case 'oz':
+                        $base_product_unit = $product['unit_value'] . " ounces";
+                        break;
+                      case 'piece':
+                        if($product['unit_value'] == 1) {
+                          $base_product_unit = "each";
+                        }
+                        else {
+                          $base_product_unit = round($product['unit_value']) . " pieces";
+                        }
+                        break;
+                      case 'pct':
+                        // $base_product_unit = $product['unit_value'] . "%";
+                        if($product['unit_value'] == 1) {
+                          $base_product_unit = "each";
+                        }
+                        else {
+                          $base_product_unit = round($product['unit_value']) . " pieces";
+                        }
+                        break;
+                    } 
+                    ?>
+
+                    <?php if($product['has_variant'] == 1): ?>
+                      <div class="product-variants dropdown">
+                        <a class="btn dropdown-toggle w-100" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                          <span class="price">$<?= $product['price']; ?></span> - <span class="unit"><?= $base_product_unit; ?></span>
+                        </a>
+
+                        <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                          <?php foreach($product['variants'] as $variant): ?>
+                          <?php 
+                          switch($variant->unit){
+                            case 'mg':
+                              $variant_unit = $variant->unit_value . " mg.";
+                              break;
+                            case 'g':
+                              if($variant->unit_value > 1) {
+                                $base_product_unit = $variant->unit_value . " grams";
+                              }
+                              else {
+                                $base_product_unit = $variant->unit_value . " gram";
+                              }
+                              break;
+                            case 'oz':
+                              $variant_unit = $variant->unit_value . "ounces";
+                              break;
+                            case 'piece':
+                              if($variant->unit_value == 1) {
+                                $variant_unit = "each";
+                              }
+                              else {
+                                $variant_unit = round($variant->unit_value) . " pieces";
+                              }
+                              break;
+                            case 'pct':
+                              // $variant_unit = $variant->unit_value . "%";
+                              if($variant->unit_value == 1) {
+                                $base_product_unit = "each";
+                              }
+                              else {
+                                $base_product_unit = round($variant->unit_value) . " pieces";
+                              }
+                              break;
+                          } 
+                          ?>
+                          <li><a class="dropdown-item" href="#"><span class="price">$<?= $variant->price; ?></span> - <span class="unit"><?= $base_product_unit; ?></span></a></li>
+                          <?php endforeach; ?>
+                        </ul>
+                        
+                      </div>
+                    <?php else: ?>
+                      <p class="price">$<span><?= $product['price']; ?></span> - <span class="unit"><?= $base_product_unit; ?></span></p>
+                    <?php endif; ?>
+                    
                     <hr id="color" class="mt-0">
                     <?php if($product['stocks'] > 0): ?>
                     <?php if($product['stocks'] <= 5): ?>  

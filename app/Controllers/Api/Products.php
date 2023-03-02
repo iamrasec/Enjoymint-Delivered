@@ -93,6 +93,11 @@ class Products extends ResourceController
             }
           }
         }
+
+        // Check if there are variants submitted
+        $variants = json_decode($this->request->getVar('variants'));
+
+        $has_variant = (!empty($variants)) ? 1 : 0;
         
         // data mapping for PRODUCTS table save
         $to_save = [
@@ -107,6 +112,7 @@ class Products extends ResourceController
           'sku' => $this->request->getVar('sku'),
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
+          'has_variant' => $has_variant,
           'delivery_type' => $this->request->getVar('delivery_type'),
           'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
           'images' => implode(',', $images),
@@ -153,8 +159,6 @@ class Products extends ResourceController
         $this->compound_model->save($saveCompounds);
 
         /** SAVE VARIANTS */
-        $variants = json_decode($this->request->getVar('variants'));
-
         if(!empty($variants)) {
           foreach($variants as $variant) {
             $save_variant = [
@@ -242,6 +246,11 @@ class Products extends ResourceController
             }
           }
         }
+
+        // Check if there are variants submitted
+        $variants = json_decode($this->request->getVar('variants'));
+
+        $has_variant = (!empty($variants)) ? 1 : 0;
         
         // data mapping for PRODUCTS table save
         $to_save = [
@@ -256,6 +265,7 @@ class Products extends ResourceController
           'sku' => $this->request->getVar('sku'),
           'unit_measure' => $this->request->getVar('unit_measure'),
           'unit_value' => $this->request->getVar('unit_value'),
+          'has_variant' => $has_variant,
           'delivery_type' => $this->request->getVar('delivery_type'),
           'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
           'images' => implode(',', $images),
@@ -321,8 +331,6 @@ class Products extends ResourceController
         // print_r($this->product_category->getLastQuery());
 
         /** SAVE VARIANTS */
-        $variants = json_decode($this->request->getVar('variants'));
-
         if(!empty($variants)) {
           $this->product_variant_model->where('pid', $pid)->delete();
 

@@ -231,7 +231,7 @@ padding: 5%;
   display: block;
 }
 .price {
- display: block;
+ display: inline-block;
 }
 .cancel {
   text-align: right;
