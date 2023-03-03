@@ -73,13 +73,13 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Unit (Sold By)</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="mg" <?= ($product_data->unit_measure == 'mg') ? ' selected' : ''; ?>>Milligrams (mg)</option>
-                    <option value="g" <?= ($product_data->unit_measure == 'g') ? ' selected' : ''; ?>>Grams (g)</option>
-                    <option value="oz" <?= ($product_data->unit_measure == 'oz') ? ' selected' : ''; ?>>Ounces (oz)</option>
-                    <option value="piece" <?= ($product_data->unit_measure == 'piece') ? ' selected' : ''; ?>>Per Piece</option>
-                    <option value="pct" <?= ($product_data->unit_measure == 'pct') ? ' selected' : ''; ?>>Percent (%)</option>
-                  </select>
+                    <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
+                      <option value="mg" <?= ($product_data->unit_measure == 'mg') ? ' selected' : ''; ?>>Milligrams (mg)</option>
+                      <option value="g" <?= ($product_data->unit_measure == 'g') ? ' selected' : ''; ?>>Grams (g)</option>
+                      <option value="oz" <?= ($product_data->unit_measure == 'oz') ? ' selected' : ''; ?>>Ounces (oz)</option>
+                      <option value="piece" <?= ($product_data->unit_measure == 'piece') ? ' selected' : ''; ?>>Per Piece</option>
+                      <option value="pct" <?= ($product_data->unit_measure == 'pct') ? ' selected' : ''; ?>>Percent (%)</option>
+                    </select>
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
@@ -100,34 +100,34 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Category</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <?php foreach($categories as $category): ?>
-                    <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
-                    <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                    <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <?php foreach($categories as $category): ?>
+                      <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                      <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                   </div>
                 </div>
 
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Experience</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="experience-class form-control w-100 border px-2" name="experience[]" id="experience" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <?php foreach($experiences as $experience): ?>
-                    <?php $selected = (in_array($experience->id, $product_experience)) ? ' selected' : ''; ?>
-                    <option value="<?php echo $experience->id; ?>"<?= $selected; ?>><?php echo $experience->name; ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                    <select class="experience-class form-control w-100 border px-2" name="experience[]" id="experience" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <?php foreach($experiences as $experience): ?>
+                      <?php $selected = (in_array($experience->id, $product_experience)) ? ' selected' : ''; ?>
+                      <option value="<?php echo $experience->id; ?>"<?= $selected; ?>><?php echo $experience->name; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                   </div>
                 </div>
 
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Delivery Type</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="delivery-type form-control w-100 border px-2" name="del_type[]" id="del_type" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="1" <?= ($product_data->delivery_type == 1) ? 'selected' : ''; ?>>Scheduled</option>
-                    <option value="2" <?= ($product_data->delivery_type == 2) ? 'selected' : ''; ?>>Fast Tracked</option>
-                  </select>
+                    <select class="delivery-type form-control w-100 border px-2" name="del_type[]" id="del_type" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <option value="1" <?= ($product_data->delivery_type == 1) ? 'selected' : ''; ?>>Scheduled</option>
+                      <option value="2" <?= ($product_data->delivery_type == 2) ? 'selected' : ''; ?>>Fast Tracked</option>
+                    </select>
                   </div>
                 </div>
               </div>
