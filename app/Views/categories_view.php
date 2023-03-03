@@ -96,12 +96,16 @@
                   <?php endif; ?>
 
                   <hr id="color" class="mt-0">
-                  <?php if($product['stocks'] <= 5 && $product['stocks'] > 0): ?>  
-                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $product['stocks']; ?> left!</div>
-                  <?php endif; ?>
-                  <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled; ?>>
+                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
+                  <?php if($product['stocks'] > 0): ?>  
+                  <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0">
                     <span class="material-icons">add_shopping_cart</span> Add to Cart
                   </button>
+                  <?php elseif($product['stocks'] <= 0): ?>
+                    <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
+                    <span class="material-icons">add_shopping_cart</span> Add to Cart
+                  </button>
+                  <?php endif; ?>
                   <div class="lds-hourglass d-none"></div>
                 </div>
               </div>
