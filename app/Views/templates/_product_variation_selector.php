@@ -11,16 +11,16 @@
     </li>
     <?php foreach($product['variants'] as $variant): ?>
     <?php 
-    switch(trim($variant->unit)){
+    switch(trim($variant->unit)) {
       case 'mg':
         $variant_unit = $variant->unit_value . " mg.";
         break;
       case 'g':
         if($variant->unit_value > 1) {
-          $base_product_unit = $variant->unit_value . " grams";
+          $variant_unit = $variant->unit_value . " grams";
         }
         else {
-          $base_product_unit = $variant->unit_value . " gram";
+          $variant_unit = $variant->unit_value . " gram";
         }
         break;
       case 'oz':
@@ -38,10 +38,10 @@
       case 'pct':
         $variant_unit = $variant->unit_value . "%";
         // if($variant->unit_value == 1) {
-        //   $base_product_unit = "each";
+        //   $variant_unit = "each";
         // }
         // else {
-        //   $base_product_unit = round($variant->unit_value) . " pieces";
+        //   $variant_unit = round($variant->unit_value) . " pieces";
         // }
         break;
     } 
