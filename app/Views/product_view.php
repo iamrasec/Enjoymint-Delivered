@@ -117,7 +117,8 @@
                       <div class="product-variation selected card m-2" data-variant-id="0">
                         <div class="card-body p-1 text-center">
                           <?php 
-                          switch($product->unit_measure){
+                          $base_product_unit = "";
+                          switch(trim($product->unit_measure)){
                             case 'mg':
                               $base_product_unit = $product->unit_value . " mg.";
                               break;
@@ -151,7 +152,7 @@
                         <div class="product-variation card m-2" data-variant-id="<?= $variant->id; ?>">
                           <div class="card-body p-1 text-center">
                             <?php 
-                            switch($variant->unit){
+                            switch(trim($variant->unit)){
                               case 'mg':
                                 $variant_unit = $variant->unit_value . " mg.";
                                 break;

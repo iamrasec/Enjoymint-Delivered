@@ -11,7 +11,7 @@
     </li>
     <?php foreach($product['variants'] as $variant): ?>
     <?php 
-    switch($variant->unit){
+    switch(trim($variant->unit)){
       case 'mg':
         $variant_unit = $variant->unit_value . " mg.";
         break;

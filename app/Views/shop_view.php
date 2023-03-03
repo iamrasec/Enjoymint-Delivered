@@ -5,14 +5,6 @@
 <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.css" /> -->
 <!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-
-<style>
-  .dropdown .dropdown-toggle:after {
-    position: absolute;
-    right: 5%;
-    top: 33%;
-  }
-</style>
 <?php $this->endSection() ?>
     
 <?php $this->section("content") ?>
@@ -87,7 +79,7 @@
                     <hr id="color" class="mt-0">
 
                     <?php 
-                    switch($product['unit_measure']){
+                    switch(trim($product['unit_measure'])){
                       case 'mg':
                         $base_product_unit = $product['unit_value'] . " mg.";
                         break;

@@ -50,7 +50,51 @@
                     <?php endif; ?>
                   </p>
                   <hr id="color" class="mt-0">
-                  <p class="price">$<span><?= $product['price']; ?></span></p>
+
+                  <?php 
+                    switch(trim($product['unit_measure'])){
+                      case 'mg':
+                        $base_product_unit = $product['unit_value'] . " mg.";
+                        break;
+                      case 'g':
+                        if($product['unit_value'] > 1) {
+                          $base_product_unit = $product['unit_value'] . " grams";
+                        }
+                        else {
+                          $base_product_unit = $product['unit_value'] . " gram";
+                        }
+                        
+                        break;
+                      case 'oz':
+                        $base_product_unit = $product['unit_value'] . " ounces";
+                        break;
+                      case 'piece':
+                        if($product['unit_value'] == 1) {
+                          // $base_product_unit = "each";
+                          $base_product_unit = round($product['unit_value']) . " piece";
+                        }
+                        else {
+                          $base_product_unit = round($product['unit_value']) . " pieces";
+                        }
+                        break;
+                      case 'pct':
+                        $base_product_unit = $product['unit_value'] . "%";
+                        // if($product['unit_value'] == 1) {
+                        //   $base_product_unit = "each";
+                        // }
+                        // else {
+                        //   $base_product_unit = round($product['unit_value']) . " pieces";
+                        // }
+                        break;
+                    } 
+                  ?>
+
+                  <?php if($product['has_variant'] == 1): ?>
+                    <?php include('templates/_product_variation_selector.php'); ?>
+                  <?php else: ?>
+                    <div class="price p-2 mb-3 fw-bold">$<span><?= $product['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+                  <?php endif; ?>
+
                   <hr id="color" class="mt-0">
                   <?php if($product['stocks'] <= 5 && $product['stocks'] > 0): ?>  
                   <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $product['stocks']; ?> left!</div>
@@ -127,12 +171,13 @@
     console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
+    let vid = $(this).data('vid');
     let qty = 1;
     let get_cookie = '';
     let cookie_products = [];
 
     if($("[name='atoken']").attr('content') != "") {
-      add_to_cart(<?= $uid; ?>, pid, qty);
+      add_to_cart(<?= $uid; ?>, pid, qty, vid);
     }
     else {
       // Current user is not logged in
