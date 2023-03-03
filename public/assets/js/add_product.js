@@ -133,7 +133,7 @@
             + '<input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2">' 
           + '</div>' 
           + '<div class="col-lg-6">' 
-            + '<label>  </label>' 
+            + '<label>Stocks/Qty</label>' 
             + '<input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2">' 
           + '</div>' 
         + '</div>' 
