@@ -97,12 +97,6 @@
                         break;
                       case 'pct':
                         $base_product_unit = $product['unit_value'] . "%";
-                        // if($product['unit_value'] == 1) {
-                        //   $base_product_unit = "each";
-                        // }
-                        // else {
-                        //   $base_product_unit = round($product['unit_value']) . " pieces";
-                        // }
                         break;
                     } 
                   ?>
