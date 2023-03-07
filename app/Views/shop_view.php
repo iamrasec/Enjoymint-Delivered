@@ -94,7 +94,7 @@
                     <div class="lds-hourglass d-none"></div>
                   </div>
                 </div>
-              </div> 
+              </div>
             </div>
             <?php endforeach; ?>
           </div>

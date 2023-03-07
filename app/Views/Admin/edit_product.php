@@ -5,6 +5,9 @@
   .breaker {
     margin-top: 10px;
   }
+  .xdsoft_datetimepicker .xdsoft_datepicker {
+    width: 600px !important;
+  }
 </style>
 <?php echo $this->include('templates/__dash_navigation.php'); ?>
 
@@ -281,6 +284,130 @@
           </div>
           <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
         </div>
+
+        <div class="row mt-4">
+          <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h6>Sale & Promotion</h6>
+                <div class="row mt-4">
+                  <div class="col-md-6 col-xs-12">
+                    <label class="form-label w-100">Discount</label>
+                    <div class="row">
+                      <div class="col-md-6 col-xs-6">
+                        <div class="input-group input-group-dynamic">
+                          <input type="number" name="discount_val" id="discount_val" placeholder="0.00" min="0" value="0" step="0.01" class="form-control w-100 border px-2" onfocus="focused(this)" onfocusout="defocused(this)">
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-6">
+                        <div class="input-group input-group-dynamic">
+                          <select name="discount_type" id="discount_type" class="form-control w-100 border px-2">
+                            <option value="percent">Percent (%)</option>
+                            <option value="fixed">Fixed deduction</option>
+                            <option value="sale_price">Sale Price</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-xs-12">
+                    <div class="row">
+                      <div class="col-md-6 col-xs-6">
+                        <label class="form-label w-100">Start Date</label>
+                        <div class="input-group input-group-dynamic">
+                          <input type="text" id="sale_start_date" name="sale_start_date" value="" class="form-control datetime_picker" autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-6">
+                        <label class="form-label w-100">End Date</label>
+                        <div class="input-group input-group-dynamic">
+                          <input type="text" id="sale_end_date" name="sale_end_date" value="" class="form-control datetime_picker" autocomplete="off">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h6>Active Promotions</h6>
+                <div class="row mt-4">
+                  <?php if(!empty($discount)): ?>
+                  <div class="col-md-12 col-xs-12">
+                    <table class="w-100">
+                      <thead>
+                        <tr>
+                          <th>Promo ID</th>
+                          <th>Variation ID</th>
+                          <th>Discount</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach($discount as $active_discount): ?>
+                        <?php
+                        $start_date = "";
+                        $end_date = "";
+
+                        if($active_discount->start_date != "") {
+                          $start_raw = explode(" ", $active_discount->start_date);
+                          $start_time = date('h:i a', strtotime($start_raw[1]));
+                          $start_date = $start_raw[0] ." ". $start_time;
+                        }
+
+                        if($active_discount->end_date != "") {
+                          $end_raw = explode(" ", $active_discount->end_date);
+                          $end_time = date('h:i a', strtotime($end_raw[1]));
+                          $end_date = $end_raw[0] ." ". $end_time;
+                        }
+                        
+                        ?>
+                        <tr>
+                          <td><?= $active_discount->id; ?></td>
+                          <td><?= $active_discount->variant_id; ?></td>
+                          <?php if($active_discount->discount_attribute == 'percent'): ?>
+                            <td><?= $active_discount->discount_value; ?>%</td>
+                          <?php elseif($active_discount->discount_attribute == 'fixed'): ?>
+                            <td>$<?= $active_discount->discount_value; ?> Off</td>
+                          <?php else: ?>
+                            <td>$<?= $active_discount->discount_value; ?></td>
+                          <?php endif; ?>
+                          <td><?= $start_date; ?></td>
+                          <td><?= $end_date; ?></td>
+                          <td>
+                            <button type="button" class="btn btn-warning edit-promo-<?= $active_discount->id; ?>"><span class="material-icons">edit</span> Edit</button>
+                            <button type="button" class="btn btn-danger end-promo-<?= $active_discount->id; ?>"><span class="material-icons">block</span> End</button>
+                          </td>
+                        </tr>
+                        <?php endforeach; ?>
+                      </tbody>
+                    </table>
+                  </div>
+                  <?php else: ?>
+                    <p>No Active Sale/Promotions Available</p>
+                  <?php endif; ?>
+                </div>
+                <!-- <pre><?= print_r($discount, 1); ?></pre> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-xs-12">
+            <button type="submit" class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -340,6 +467,8 @@
 
 <?php $this->endSection(); ?>
 <?php $this->section("scripts") ?>
+<script src="https://cdn.jsdelivr.net/bootstrap.tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
 <?php $this->endSection() ?>
