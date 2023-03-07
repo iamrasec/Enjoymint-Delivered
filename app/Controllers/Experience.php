@@ -142,6 +142,11 @@ class Experience extends BaseController
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
                 $product_arr[$count]['images'] = $images;
             }
+
+            // If product has variants, get variants data
+            if($product['has_variant'] == 1) {
+                $product_arr[$count]['variants'] = $this->product_variant_model->where('pid', $product['id'])->get()->getResult();
+            }
             
             $count++;
         }
