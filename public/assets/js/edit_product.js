@@ -14,6 +14,19 @@
       placeholder: "Select Delivery Type",
       // allowClear: true
     });
+
+    $('#sale_start_date').datetimepicker({
+      timepicker: true,
+      datepicker: true,
+      format: 'Y-m-d h:i a',
+    });
+
+    $('#sale_end_date').datetimepicker({
+      timepicker: true,
+      datepicker: true,
+      format: 'Y-m-d h:i a',
+      formatTime:'h:mm a',
+    });
   });
 
   $(document).on('keyup', '#product_name', function() {
@@ -185,6 +198,16 @@
     formData.append('unit_value', $('#unit_value').val());
     formData.append('delivery_type', $('#del_type').val());
     formData.append('lowstock_threshold', $('#lowstock_threshold').val());
+
+    if($(".discount_val").val() != 0) {
+      formData.append('discount_val', $('#discount_val').val());
+      formData.append('discount_type', $('#discount_type').val());
+
+      if($("#sale_start_date").val() != "") {
+        formData.append('sale_start_date', $('#sale_start_date').val());
+        formData.append('sale_end_date', $('#sale_end_date').val());
+      }
+    }
 
     // console.log(formData);
 

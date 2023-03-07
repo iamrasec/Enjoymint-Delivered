@@ -41,4 +41,7 @@ class EnjoymintUtils {
 		return $randomString;
 	}
   
+  public function time_to_12hour_format($time) {
+    
+  }
 }
