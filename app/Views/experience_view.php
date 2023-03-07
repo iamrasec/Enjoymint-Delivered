@@ -108,7 +108,7 @@
                   <?php endif; ?>
 
                   <hr id="color" class="mt-0">
-                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
+                  <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] > 0 && $product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
                   <?php if($product['stocks'] > 0): ?>  
                   <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0">
                     <span class="material-icons">add_shopping_cart</span> Add to Cart
