@@ -466,7 +466,7 @@ class Products extends BaseController {
 
   public function getPromoLists()
   {
-    $session = session();
+   
     $data  = array();
     $start = $_POST['start'];
     $length = $_POST['length'];
