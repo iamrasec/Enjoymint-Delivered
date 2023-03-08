@@ -66,6 +66,34 @@ class Promotion extends BaseController {
     return view('Promotions/admin_add_promo', $this->data);
   }
 
+  public function edit_promotion($id){
+    $page_title = 'Edit Promo';
+    $this->data['page_body_id'] = "edit_promo";
+    $this->data['breadcrumbs'] = [
+      'parent' => [
+        ['parent_url' => base_url('/admin/promotion'), 'page_title' => 'Promotion'],
+      ],
+      'current' => $page_title,
+    ];
+    $this->data['page_title'] = $page_title;
+    $promo = $this->promo_model->where('id', $id)->get()->getResult();
+    $promo_decode = json_decode($promo['mechanics'], true);
+    // $imageIds = [];
+
+    // for($i = 0; $i < count($blog); $i++) {
+    //   if($blog[$i]->images != null || $blog[$i]->images != '') {
+    //     $imageIds = explode(',',$blog[$i]->images);
+    //     $blog[$i]->images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+    //   }
+    // }
+
+    $this->data['promo_data'] = $promo_decode;
+
+    // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
+    print_r( $this->data['promo_data']);
+    return view('Promotions/edit_promotion', $this->data);
+  }
+
   public function getPromoList()
   {
     $data  = array();
@@ -90,7 +118,7 @@ class Promotion extends BaseController {
         $promo->start_date,
         $promo->end_date,
         $promo->status,     
-        "<a href=".base_url('admin/promotion/edit_promotion/').">edit</a>",
+        "<a href=".base_url('admin/promotion/edit_promotion/'.$promo->id).">edit</a>",
       );
     }
 

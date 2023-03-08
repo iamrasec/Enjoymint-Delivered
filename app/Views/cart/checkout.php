@@ -161,12 +161,6 @@
 
             <div class="row mb-4">
               <div class="col-12 col-md-12 col-xs-12 mt-3">
-			<form id="pro_code" method="POST" action="<?= base_url('cart/promo_add'); ?>">
-			  <label class="for-checkbox-tools prom" for="tool-2">Promo Code</label>
-			  <input type="text" name="promo_code" id="promo_code" class="border px-2" style="width: 31%;" placeholder="Promo Code">
-			  <button type="submit">Submit</button>		
-			  
-			</form>
 			
 			  <h5>Payment Method</h5>
 				<form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
