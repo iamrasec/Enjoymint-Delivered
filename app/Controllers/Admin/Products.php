@@ -486,7 +486,7 @@ class Products extends BaseController {
   //  $data = $this->promo_products_model->get()->getResults();
   //  foreach($data as $pid){
   //   if(in_array($pid))
-  //  }
+
     $prodSpec = $this->promo_model->select('*')
     ->where('JSON_CONTAINS(mechanics, \'{"products_specific": "'.$segments.'"}\')')
     ->limit($length, $start)
