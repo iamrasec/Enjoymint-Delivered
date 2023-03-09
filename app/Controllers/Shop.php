@@ -27,6 +27,8 @@ class Shop extends BaseController
         $this->location_model = model('LocationModel');
         $this->productcategory_model = model('ProductCategory');
         $this->user_model = model('UserModel');
+        $this->promo_model = model('PromoModel');
+        $this->promo_products_model = model('PromoProductsModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -578,6 +580,45 @@ class Shop extends BaseController
        
          return redirect()->to('shop');
 
-    }               
+    }  
+    
+    public function promoPage(){
+        $session = session();
+        $search_data = $session->get('search');
+        // $location = $session->get('search1');
+        $user_id = $this->uid;
+        $page_title = 'Shop';
+
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        // $this->data['products'] = $this->product_model->get()->getResult();
+
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+        }
+         
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['products'] = $this->promo_model->get()->getResult();
+        // $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->getAllCategory();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = false;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+        //  $this->location();
+         return view('promo_page', $this->data);
+
+    }
     
 }
