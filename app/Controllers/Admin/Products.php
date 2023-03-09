@@ -506,8 +506,8 @@ class Products extends BaseController {
 
     $output = array(
       // "draw" => $_POST['draw'],
-      // "recordsTotal" => $this->promo_model->countAll(),
-      // "recordsFiltered" => $this->promo_model->countAll(),
+      "recordsTotal" => $this->promo_model->countAll(),
+       "recordsFiltered" => $this->promo_model->countAll(),
       "data" => $data,
     );
     
