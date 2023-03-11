@@ -75,10 +75,14 @@
                     <div class="col-12 col-sm-12">
                       <h6 class="mb-2">Products include with this promo</h6>
                       <ul>
+          
                       <?php if($product_data != null): ?>
-                        <?php foreach($product_data as $product) : ?>
-                        <li><a href="<?= base_url('products/'. $product[0]->url); ?>"><?= $product[0]->name; ?></a></li>
-                        <?php endforeach; ?>
+                        
+                        <?php
+                          for($x=0; $x<count($product_data); $x++):
+                        ?>
+                        <li><a href="<?= base_url('products/'. $product_data[$x]->url); ?>"><?= $product_data[$x]->name; ?></a></li>
+                        <?php endfor; ?>
                       </ul>
                     </div>
                   </div><?php else: ?>

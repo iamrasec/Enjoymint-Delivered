@@ -38,9 +38,7 @@ class Products extends BaseController
         $this->product_model = model('productModel');
        
         $this->db = db_connect();
-    }
-
-    
+    } 
 
     public function index($url = '')
     {
@@ -59,7 +57,7 @@ class Products extends BaseController
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
-
+            
             if(!empty($product)) {
                 $product = $product[0];
             }
@@ -119,7 +117,6 @@ class Products extends BaseController
                 $cookie_cart[] = (array)['pid' => $cart_product->pid, 'qty' => (int)$cart_product->qty];
             }
             
-
             // print_r(json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE));die();
 
             $json_encoded = json_encode($cookie_cart, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);

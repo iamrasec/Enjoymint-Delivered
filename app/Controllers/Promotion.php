@@ -16,8 +16,10 @@ class Promotion extends BaseController
         $this->uid = session()->get('id');
         $this->location_model = model('LocationModel');
         $this->promo_model = model('PromoModel');
+        $this->cart_model = model('CartModel');
         $this->promo_products_model = model('PromoProductsModel');
         $this->product_model = model('ProductModel');
+        $this->product_category = model('ProductCategory');
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
     
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
@@ -125,14 +127,6 @@ class Promotion extends BaseController
             }
         }
 
-        // if($record_view == true) {
-        //     $this->increment_product_views($product->id);
-        // }
-        
-        // print_r($imageIds);die();
-
-        // print_r($this->image_model->getLastQuery());
-
         // print_r($this->data['images']);die();
         $prod_id = $this->promo_model->select('id')->where('url', $url)->get()->getResult();
        
@@ -142,33 +136,55 @@ class Promotion extends BaseController
         if(!empty($product_list)){
             $data = [];
          if($product_list[0]->promo_product == "promo_products_all"){
-             $data = $this->product_model->paginate();
+             $data = $this->product_model->get()->getResult();
+            
          }elseif($product_list[0]->promo_product == "promo_products_specific"){
             $delimiter = ",";
              $data_exp = explode($delimiter, $product_list[0]->discounted_specific_product);
              if($data_exp > 1){
              foreach($data_exp as $id){
-                $data[] = $this->product_model->where('id', $id)->get()->getResult();
+                // array_push($data,  $this->product_model->where('id', $id)->get()->getResult());
+                $d = $this->product_model->where('id', $id)->get()->getResult();
+                $data = array_merge((array) $data, (array) $d);
              }
             }else{
               $data = $this->product_model->where('id', $id)->get()->getResult();
             }
+            if($product_list[0]->require_purchase == 1){
+                $delimiter = ",";
+                $data_req = explode($delimiter, $product_list[0]->discounted_specific_product);
+                if($data_req > 1){
+                    foreach($data_req as $id){
+                       $data1[] = $this->product_model->where('id', $id)->get()->getResult();
+                    }
+                   }else{
+                     $data1 = $this->product_model->where('id', $id)->get()->getResult();
+                   }
+                $data = array_merge($data, $data1);
+            }
          }elseif($product_list[0]->promo_product == "promo_products_cat"){
             $data_cat = $this->product_category->select('pid')->where('cid', $product_list[0]->discounted_category_id)->get()->getResult();
-            if($data_cat > 1){
+            // if($data_cat > 1){
             foreach($data_cat as $category){
-              $data[] = $this->product_model->where('id', $category->pid)->get()->getResult();
+              $data_cat = $this->product_model->where('id', $category->pid)->get()->getResult();
+              $data = json_decode(json_encode($data_cat));
             }
-            }else{
-              $data = $this->product_model->where('id', $category->pid)->get()->getResult();
-            }
+            // }else{
+            //   $data = $this->product_model->where('id', $category->pid)->get()->getResult();
+            // }
          }
-         $this->data['product_data'] = $data;
+         if (array_key_exists('url', $data)) {
+            // Accessing the array element
+            $this->data['product_data'] = $data;
+        }else{
+            $this->data['product_data'] = $data;
+        }
+         
          $this->data['pager'] = $this->product_model->paginate();
         }else{
           $this->data['product_data'] = null;
         }
-        //print_r($data);
+       //print_r($this->data['product_data'] );
         echo view('promo_view', $this->data);
     }
 }
