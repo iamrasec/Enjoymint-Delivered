@@ -69,13 +69,14 @@ function eraseCookie(key) {
   setCookie(key, keyValue, '-1');
 }
 
-function add_to_cart(uid, pid, qty)
+function add_to_cart(uid, pid, qty, vid = 0)
 {
   // let jwt = $("[name='atoken']").attr('content');
 
   let data = {};
   data.uid = uid;
   data.pid = pid;
+  data.vid = vid;
   data.qty = qty;
 
   $.ajax({
@@ -108,14 +109,14 @@ function add_to_cart(uid, pid, qty)
         cookie_products.forEach(function(product) {
           // console.log(product);
 
-          if(product.pid == json.pid) {
+          if(product.pid == json.pid && product.vid == json.vid) {
             product.qty = parseInt(product.qty) + parseInt(json.qty);
             pid_added = true;
           }
         });
 
         if(pid_added == false) {
-          cookie_products.push({'pid': json.pid, 'qty': parseInt(json.qty)});
+          cookie_products.push({'pid': json.pid, 'qty': parseInt(json.qty), 'vid': parseInt(json.vid)});
         }
 
         setCookie('cart_data',JSON.stringify(cookie_products),'1');
@@ -123,7 +124,7 @@ function add_to_cart(uid, pid, qty)
         // console.log(cookie_products);
       }
       else {
-        cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty)}];
+        cookie_products = [{'pid': json.pid, 'qty': parseInt(json.qty), 'vid': parseInt(json.vid)}];
 
         // console.log(cookie_products);
 

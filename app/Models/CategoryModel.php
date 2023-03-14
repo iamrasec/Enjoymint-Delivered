@@ -27,6 +27,7 @@ class CategoryModel extends Model {
     $this->join('products', 'products.id = product_categories.pid', 'inner');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
     $this->where('categories.id', $cid);
+    // $this->orderBy('id', 'ASC');
     return $this->paginate(28);
   }
 

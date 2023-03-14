@@ -6,12 +6,13 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model {
   protected $table = 'products';
-  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'category', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags', 'delivery_type', 'views', 'orders', 'lowstock_threshold'];
+  protected $allowedFields = ['name', 'url', 'description', 'price', 'stocks', 'strain', 'brands', 'sku', 'unit_measure', 'unit_value',  'images', 'archived', 'tags', 'delivery_type', 'views', 'orders', 'lowstock_threshold'];
  
   public function getAllProducts() {
     $this->select('products.*, compounds.thc_unit, compounds.thc_value, compounds.cbd_unit, compounds.cbd_value, strains.name AS strain_name, strains.url_slug AS strain_url');
     $this->join('strains', 'strains.id = products.strain', 'left');
     $this->join('compounds', 'compounds.pid = products.id', 'left');
+    // $this->orderBy('id', 'ASC');
     return $this->paginate(28);
   }
   public function getProducts($search) {

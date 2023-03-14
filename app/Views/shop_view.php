@@ -3,9 +3,9 @@
 <?php $this->section("styles") ?>
 <link id="pagestyle" href="<?php echo base_url('assets/css/shop-view.css'); ?>" rel="stylesheet" />
 <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.css" /> -->
-  <!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
+<!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-  <?php $this->endSection() ?>
+<?php $this->endSection() ?>
     
 <?php $this->section("content") ?>
 
@@ -50,7 +50,7 @@
            <?php endif; ?>      
 
             <?php foreach($products as $product): ?>
-              <!-- <pre><?php print_r($product); ?></pre> -->
+            <!-- <pre><?php print_r($product); ?></pre> -->
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
                 <div class="img-wrap">          
@@ -77,17 +77,59 @@
                       <?php endif; ?>
                     </p>
                     <hr id="color" class="mt-0">
-                    <p class="price">$<span><?= $product['price']; ?></span></p>
-                    <hr id="color" class="mt-0">
-                    <?php if($product['stocks'] > 0): ?>
-                    <?php if($product['stocks'] <= 5): ?>  
-                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $product['stocks']; ?> left!</div>
+
+                    <?php 
+                    switch(trim($product['unit_measure'])){
+                      case 'mg':
+                        $base_product_unit = $product['unit_value'] . " mg.";
+                        break;
+                      case 'g':
+                        if($product['unit_value'] > 1) {
+                          $base_product_unit = $product['unit_value'] . " grams";
+                        }
+                        else {
+                          $base_product_unit = $product['unit_value'] . " gram";
+                        }
+                        
+                        break;
+                      case 'oz':
+                        $base_product_unit = $product['unit_value'] . " ounces";
+                        break;
+                      case 'piece':
+                        if($product['unit_value'] == 1) {
+                          // $base_product_unit = "each";
+                          $base_product_unit = round($product['unit_value']) . " piece";
+                        }
+                        else {
+                          $base_product_unit = round($product['unit_value']) . " pieces";
+                        }
+                        break;
+                      case 'pct':
+                        $base_product_unit = $product['unit_value'] . "%";
+                        // if($product['unit_value'] == 1) {
+                        //   $base_product_unit = "each";
+                        // }
+                        // else {
+                        //   $base_product_unit = round($product['unit_value']) . " pieces";
+                        // }
+                        break;
+                    } 
+                    ?>
+
+                    <?php if($product['has_variant'] == 1): ?>
+                      <?php include('templates/_product_variation_selector.php'); ?>
+                    <?php else: ?>
+                      <div class="price p-2 mb-3 fw-bold">$<span><?= $product['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
                     <?php endif; ?>
-                    <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" >
+                    
+                    <hr id="color" class="mt-0">
+                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] > 0 && $product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
+                    <?php if($product['stocks'] > 0): ?>  
+                    <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0">
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
                     <?php elseif($product['stocks'] <= 0): ?>
-                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled = 'disabled'; ?>>
+                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
                     <?php endif; ?>
@@ -174,6 +216,7 @@ optionsList.forEach(o => {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
+<script src="<?= base_url('assets/js/product-variation-selector.js'); ?>"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -309,12 +352,16 @@ optionsList.forEach(o => {
     // console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
+    let vid = $(this).data('vid');
     let qty = 1;
     let get_cookie = '';
     let cookie_products = [];
 
+    // console.log("add to cart: PID: " + pid);
+    // console.log("add to cart: VID: " + vid);
+
     if($("[name='atoken']").attr('content') != "") {
-      add_to_cart(<?= $uid; ?>, pid, qty);
+      add_to_cart(<?= $uid; ?>, pid, qty, vid);
     }
     else {
       // Current user is not logged in

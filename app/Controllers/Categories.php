@@ -64,6 +64,11 @@ class Categories extends BaseController
                 $product_arr[$count]['images'] = $images;
             }
 
+            // If product has variants, get variants data
+            if($product['has_variant'] == 1) {
+                $product_arr[$count]['variants'] = $this->product_variant_model->where('pid', $product['id'])->get()->getResult();
+            }
+
             $count++;
         }
 

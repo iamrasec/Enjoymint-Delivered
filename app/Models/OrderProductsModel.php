@@ -17,7 +17,7 @@ class OrderProductsModel extends Model {
         'is_sale',
         'regular_price',
         'total',
-        
+        'vid',
     ];
 
     public function getProductData($pid)
