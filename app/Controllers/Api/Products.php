@@ -323,6 +323,7 @@ class Products extends ResourceController
           'has_variant' => $has_variant,
           'delivery_type' => $this->request->getVar('delivery_type'),
           'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
+          'on_sale' => $this->request->getVar('on_sale'),
           'images' => implode(',', $images),
         ];
 
