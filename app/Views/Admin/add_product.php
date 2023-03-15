@@ -251,11 +251,14 @@
 
         </div>
 
-        <div class="row mt-4">
+        <div class="row mt-4" id="sale">
           <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
             <div class="card">
               <div class="card-body">
                 <h6>Sale & Promotion</h6>
+                <div class="input-group input-group-dynamic">
+                              <input type="checkbox" id="on_sale" class="on_sale" name="on_sale" data-promo-cond-id="1"> &nbsp; <strong>On Sale</strong>
+                </div>
                 <div class="row mt-4">
                   <div class="col-md-6 col-xs-12">
                     <label class="form-label w-100">Discount</label>

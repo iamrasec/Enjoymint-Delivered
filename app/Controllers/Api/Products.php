@@ -138,6 +138,7 @@ class Products extends ResourceController
           'has_variant' => $has_variant,
           'delivery_type' => $this->request->getVar('delivery_type'),
           'lowstock_threshold' => $this->request->getVar('lowstock_threshold'),
+          'on_sale' => $this->request->getVar('on_sale'),
           'images' => implode(',', $images),
         ];
         $this->product_model->save($to_save); // trying to save product to database
@@ -333,7 +334,7 @@ class Products extends ResourceController
 
         // Save Categories
         if($this->request->getVar('categories') != "") {
-          $categories = explode(",", $this->request->getVar('categories'));
+           $categories = explode(",", $this->request->getVar('categories'));
 
           $this->product_category->where('pid', $pid)->delete();
 
@@ -384,7 +385,6 @@ class Products extends ResourceController
 
         // print_r($this->product_category->getLastQuery());
 
-<<<<<<< HEAD
         // Save Sale/Discount
         if($this->request->getVar('discount_val') > 0) {
           $sale_start_date = "";
@@ -414,7 +414,6 @@ class Products extends ResourceController
           ];
 
           $this->discount_model->save($saveDiscount);
-=======
         /** SAVE VARIANTS */
         if(!empty($variants)) {
           $this->product_variant_model->where('pid', $pid)->delete();
@@ -432,7 +431,6 @@ class Products extends ResourceController
           }
 
           // echo "<pre>".print_r($variants, 1)."</pre>";
->>>>>>> 62f0e347a6c357734c66ce906e5349b08d93c8f2
         }
 
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
@@ -444,7 +442,7 @@ class Products extends ResourceController
     }
     die(json_encode($data_arr));
   }
-
+  }
     /**
    * This function will update order status completed
    * @param  int    id  The id of order

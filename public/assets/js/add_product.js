@@ -214,7 +214,7 @@
       // variant_count++;
       // console.log(variant_unit);
     });
-
+    var sale = ($("#sale #on_sale").prop('checked')) ? 1 : 0;
     var added_variants = JSON.stringify(variants_arr);
 
     formData.append('name', $('#product_name').val());
@@ -236,9 +236,11 @@
     // formData.append('tags', $('#tags').val());
     formData.append('delivery_type', $('#del_type').val());
     formData.append('lowstock_threshold', $('#lowstock_threshold').val());
+    formData.append('on_sale', sale);
     formData.append('variants', added_variants);
 
     if($(".discount_val").val() != 0) {
+
       formData.append('discount_val', $('#discount_val').val());
       formData.append('discount_type', $('#discount_type').val());
 

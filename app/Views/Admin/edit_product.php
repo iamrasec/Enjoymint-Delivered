@@ -303,7 +303,6 @@
 
         </div>
 
-<<<<<<< HEAD
         <div class="row mt-4">
           <div class="col-lg-8 col-xs-12 mt-lg-0 mt-4">
             <div class="card">
@@ -385,8 +384,6 @@
             <button type="submit" class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>
           </div>
         </div>
-=======
->>>>>>> 62f0e347a6c357734c66ce906e5349b08d93c8f2
       </div>
     </form>
   </div>
