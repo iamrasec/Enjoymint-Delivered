@@ -94,7 +94,14 @@
                   <div class="row mb-5">
                     <div class="col-12 col-sm-12">
                       <h6 class="mb-0 mt-3">Price</h6>
+                      <?php if($product->on_sale == 1) : ?>
+                        <div style="display: inline;">
+                      <h5 style="text-decoration: line-through; display: inline;">$<span class="price d-inline"><?= $product->price; ?></span></h5>
+                      <h5 style="color: green;">$<span class="price d-inline"><?= $sale_price; ?></span></h5>
+                      </div>
+                      <?php else: ?>
                       <h5>$<span class="price d-inline"><?= $product->price; ?></span></h5>
+                      <?php endif; ?>
                       <?php if($product->stocks > 0): ?>
                       <span class="badge text-bg-success">In Stock</span>
                       <?php else: ?>
