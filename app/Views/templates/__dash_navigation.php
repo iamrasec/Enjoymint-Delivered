@@ -53,7 +53,7 @@
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#dashboard" class="nav-link text-white active" aria-controls="dashboard" role="button" aria-expanded="false">
             <i class="material-icons-round opacity-10">inventory</i>
-            <span class="nav-link-text ms-2 ps-1">Products</span>
+            <span class="nav-link-text ms-2 ps-1">Inventory</span>
           </a>
           <div class="collapse  show " id="dashboard">
             <ul class="nav ">
@@ -132,6 +132,31 @@
             </ul>
           </div>
         </li>
+
+        <hr class="horizontal light mt-0">
+        <li class="nav-item">
+          <a data-bs-toggle="collapse" href="#promotion" class="nav-link text-white" aria-controls="promotion" role="button" aria-expanded="false">
+            <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">star</i>
+            <span class="nav-link-text ms-2 ps-1">Promotions</span>
+          </a>
+          <div class="collapse" id="promotion">
+            <ul class="nav ">
+              <li class="nav-item <?php if( $uri->getSegment(2) === 'promotion' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
+                <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'promotion' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/promotion'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> List Promotions </span>
+                </a>
+              </li>
+              <li class="nav-item <?= $uri->getSegment(3) == 'add_promo' ? 'active' : '' ?>">
+                <a class="nav-link text-white <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>" href="<?php echo base_url('/admin/promotion/add_promo'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Add Promotion </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
         <hr class="horizontal light mt-0">
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#blog_pages" class="nav-link text-white" aria-controls="blog_pages" role="button" aria-expanded="false">
@@ -156,6 +181,7 @@
           </div>
         </li>
         
+        <hr class="horizontal light mt-0">
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#ecommerce" class="nav-link text-white " aria-controls="ecommerce" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">shopping_basket</i>
@@ -173,6 +199,7 @@
           </div>
         </li>
 
+        <hr class="horizontal light mt-0">
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#settings_pages" class="nav-link text-white" aria-controls="settings_pages" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">settings</i>
@@ -214,6 +241,7 @@
           </div>
         </li> -->
 
+        <hr class="horizontal light mt-0">
         <li class="nav-item">
           <a href="<?= base_url('/users/logout'); ?>" class="nav-link text-white " aria-controls="logout" role="button" aria-expanded="false">
             <i class="material-icons-round">logout</i>
