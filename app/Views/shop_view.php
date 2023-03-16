@@ -119,8 +119,13 @@
                     <?php if($product['has_variant'] == 1): ?>
                       <?php include('templates/_product_variation_selector.php'); ?>
                     <?php else: ?>
+                      <?php if($product['on_sale'] == 1) : ?>   
+                      <div class="price p-2 mb-3 fw-bold" style="text-decoration: line-through;">$<?= $product['price']; ?></div>
+                      <div class="price p-2 mb-3 fw-bold">$<span><?= $sale_price; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+                      <?php else: ?>
                       <div class="price p-2 mb-3 fw-bold">$<span><?= $product['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
-                    <?php endif; ?>
+                      <?php endif; ?>
+                      <?php endif; ?>
                     
                     <hr id="color" class="mt-0">
                     <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] > 0 && $product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
