@@ -15,91 +15,29 @@
   <section class="pt-3 pb-4" id="popular-products">
     <div class="container">
       <div class="row">
-        <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
         
-        <?php echo $this->include('templates/_product_filter.php'); ?>
-        
-        <div class="col-lg-10 col-sm-12 mt-5 text-center">
-          <?php if($fast_tracked == true): ?>
-          <h1>Fast Tracked Shop</h1>
-          <?php else: ?>
-          <h1>Shop</h1>
-            <div class="search" style="text-align: right ;">
-            <button type="submit" class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage')?>">Products Promo</a></button>
-            <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
-            <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
-            <button type="submit" class="btn bg-primary-green">Search</button>
+        <div class="col-lg-12 col-sm-12 mt-5 text-center">
+          <h1>Promo Page</h1>
+            <div class="search" style="text-align: left ;">
+            <button type="submit" class="btn bg-primary-green"><a href="<?= base_url('/shop/')?>">Back</a></button>
             </div>
-          </form>
           <br>
-          <?php endif; ?>
+          
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
               
-            <?php if($fast_tracked == false): ?>
-            <div class="input-group" style="float: right; margin-top:-27px; margin-left: -73px;">
-              <div class="input-group-prepend">
-                <button type="button" id="toggle" class="input-group-text">    
-                <label class="text-black" style="font-weight: bold; font-size: 16px; margin-top: -30px; margin-right: -128px;">
-                Delivery Schedule</label> 
-                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;
-                <input type="hidden" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-                <span class="del_date_display text-black">Delivery Schedule</span>
-                </button>
-              </div>
-           </div> 
-           <?php endif; ?>      
-
             <?php foreach($products as $product): ?>
               <!-- <pre><?php print_r($product); ?></pre> -->
-            <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
-              <div class="card product-featured">
-                <div class="img-wrap">          
-                  <?php 
-                    $url = !empty($searchData) ? $product['url'] : $product['url'];
-                    if(isset($product['images'][0])):
-                  ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
-                  <?php else: ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
-                  <?php endif; ?>
-                </div>
+            <div class="col-lg-2 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
+              <div class="card" style="height: 100px;">
                 <div class="product-info d-flex flex-column px-2">
-                  <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?=  $product['name']; ?></h5></a>
-                  <div class="product-info-bottom d-flex flex-column mt-auto">
-                    <p>
-                      <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $product['thc_value'] . (($product['thc_unit'] == 'pct') ? '%' : $product['thc_unit']); ?></span> 
-                      <?php if($product['stocks'] > 0): ?>
-                      <?php $btn_disabled = ''; ?>
-                      <span class="badge text-bg-success">In Stock</span>
-                      <?php else: ?>
-                      <?php $btn_disabled = 'disabled'; ?>
-                      <span class="badge text-bg-danger">Out Of Stock</span>
-                      <?php endif; ?>
-                    </p>
-                    <hr id="color" class="mt-0">
-                    <p class="price">$<span><?= $product['price']; ?></span></p>
-                    <hr id="color" class="mt-0">
-                    <?php if($product['stocks'] > 0): ?>
-                    <?php if($product['stocks'] <= 5): ?>  
-                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold">Only <?= $product['stocks']; ?> left!</div>
-                    <?php endif; ?>
-                    <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" >
-                      <span class="material-icons">add_shopping_cart</span> Add to Cart
-                    </button>
-                    <?php elseif($product['stocks'] <= 0): ?>
-                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" <?= $btn_disabled = 'disabled'; ?>>
-                      <span class="material-icons">add_shopping_cart</span> Add to Cart
-                    </button>
-                    <?php endif; ?>
-                    <div class="lds-hourglass d-none"></div>
-                  </div>
+                  <a href="<?= base_url('promotion/index/'. $product->url); ?>"><h5><?=  $product->title; ?></h5></a>
                 </div>
               </div>
             </div>
             <?php endforeach; ?>
           </div>
-          <div><?= $pager->links() ?></div>
+          
           <?php else: ?>
           <div class="mt-5"><p>No Products Available.</p></div>
           <?php endif; ?>
