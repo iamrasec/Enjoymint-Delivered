@@ -120,32 +120,41 @@
 
   /** this event will serve as adding of new variant of product */
   $("#add_variant").click(function () {
+    console.log("Add Variant Button Clicked!");
+
     var fileInputForm = 
-    "<div class=\"row\">" +
-      "<div class=\"col-lg-10\">"+
-        "<div class=\"row\">"+
-          "<div class=\"col-lg-6\">"+
-            "<label>Unit</label>"+
-            "<input type=\"text\" name=\"unit[]\" class=\"form-control\">"+
-          "</div>"+
-          "<div class=\"col-lg-6\">"+
-            "<label>Unit Value</label>"+
-            "<input type=\"number\" name=\"value[]\" class=\"form-control\">"+
-          "</div>"+
-          "<div class=\"col-lg-6\">"+
-            "<label>Price</label>"+
-            "<input type=\"number\" name=\"price[]\" class=\"form-control\">"+
-          "</div>"+
-          "<div class=\"col-lg-6\">"+
-            "<label>Stocks/Qty</label>"+
-            "<input type=\"number\" name=\"qty[]\" class=\"form-control\">"+
-          "</div>"+
-        "</div>"+
-      "</div>"+
-      "<div class=\"col-lg-2\"><br><br>"+
-        "<button type=\"button\" class=\"btn bg-gradient-danger btn-sm remove_variant\"><span class=\"material-icons\">delete</span></button>"+
-      "</div>"+
-    "</div><hr class=\'breaker\'>";
+    '<div class="row added_variant">' 
+      + '<div class="col-lg-10">' 
+        + '<div class="row">' 
+          + '<div class="col-lg-6">' 
+            + '<label>Unit (Sold By)</label>' 
+            + '<select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">' 
+              + '<option value="mg">Milligrams (mg)</option>' 
+              + '<option value="g">Grams (g)</option>' 
+              + '<option value="oz">Ounces (oz)</option>' 
+              + '<option value="piece">Per Piece</option>' 
+              + '<option value="pct">Percent (%)</option>' 
+            + '</select>' 
+          + '</div>' 
+          + '<div class="col-lg-6">' 
+            + '<label>Unit (Sold By) Value</label>' 
+            + '<input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2">' 
+          + '</div>' 
+          + '<div class="col-lg-6">' 
+            + '<label>Price</label>' 
+            + '<input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2">' 
+          + '</div>' 
+          + '<div class="col-lg-6">' 
+            + '<label>Stocks/Qty</label>' 
+            + '<input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2">' 
+          + '</div>' 
+        + '</div>' 
+      + '</div>' 
+      + '<div class="col-lg-2"><br><br>' 
+        + '<button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>' 
+      + '</div>' 
+    + '</div><hr class="breaker">';
+
     $("#variants").append(fileInputForm); 
   });
 
@@ -185,6 +194,29 @@
     //   formData.append('stocks[]', $(this).val());
     // });
 
+    var variants_arr = [];
+    $(".added_variant").each(function() {
+
+      // variants_arr[variant_count].variant_unit = $(this).find(".variant_unit").find(":selected").val();
+      // variants_arr.variant_count.variant_unit_value = $(this).find(".variant_unit_value").val();
+      // variants_arr.variant_count.variant_price = $(this).find(".variant_price").val();
+      // variants_arr.variant_count.variant_qty = $(this).find(".variant_qty").val();
+
+      let variant = {
+        variant_unit : $(this).find(".variant_unit").find(":selected").val(),
+        variant_unit_value : $(this).find(".variant_unit_value").val(),
+        variant_price : $(this).find(".variant_price").val(),
+        variant_qty : $(this).find(".variant_qty").val(),
+      };
+
+      variants_arr.push(variant);
+
+      // variant_count++;
+      // console.log(variant_unit);
+    });
+    var sale = ($("#sale #on_sale").prop('checked')) ? 1 : 0;
+    var added_variants = JSON.stringify(variants_arr);
+
     formData.append('name', $('#product_name').val());
     formData.append('sku', $('#sku').val());
     formData.append('purl', $('#purl').val());
@@ -204,8 +236,11 @@
     // formData.append('tags', $('#tags').val());
     formData.append('delivery_type', $('#del_type').val());
     formData.append('lowstock_threshold', $('#lowstock_threshold').val());
+    formData.append('on_sale', sale);
+    formData.append('variants', added_variants);
 
     if($(".discount_val").val() != 0) {
+
       formData.append('discount_val', $('#discount_val').val());
       formData.append('discount_type', $('#discount_type').val());
 

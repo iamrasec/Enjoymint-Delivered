@@ -74,18 +74,19 @@
 
               <div class="row mt-4">
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit</label>
+                  <label class="form-label" for="name">Unit (Sold By)</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="pct" <?= ($product_data->unit_measure == 'pct') ? 'selected' : ''; ?>>Percent (%)</option>
-                    <option value="mg" <?= ($product_data->unit_measure == 'mg') ? 'selected' : ''; ?>>Milligrams (mg)</option>
-                    <option value="g <?= ($product_data->unit_measure == 'g') ? 'selected' : ''; ?>">Grams (g)</option>
-                    <option value="oz <?= ($product_data->unit_measure == 'oz') ? 'selected' : ''; ?>">Ounces (oz)</option>
-                  </select>
+                    <select class="form-control w-100 border px-2" name="unit" id="unit" onfocus="focused(this)" onfocusout="defocused(this)">
+                      <option value="mg" <?= ($product_data->unit_measure == 'mg') ? ' selected' : ''; ?>>Milligrams (mg)</option>
+                      <option value="g" <?= ($product_data->unit_measure == 'g') ? ' selected' : ''; ?>>Grams (g)</option>
+                      <option value="oz" <?= ($product_data->unit_measure == 'oz') ? ' selected' : ''; ?>>Ounces (oz)</option>
+                      <option value="piece" <?= ($product_data->unit_measure == 'piece') ? ' selected' : ''; ?>>Per Piece</option>
+                      <option value="pct" <?= ($product_data->unit_measure == 'pct') ? ' selected' : ''; ?>>Percent (%)</option>
+                    </select>
                   </div>
                 </div>
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
-                  <label class="form-label" for="name">Unit value</label>
+                  <label class="form-label" for="name">Unit (Sold By) value</label>
                   <div class="input-group input-group-dynamic">
                     <input type="number" class="form-control w-100 border px-2" id="unit_value" name="unit_value" placeholder="0.00" min="0" step="0.01" value="<?= $product_data->unit_value; ?>" onfocus="focused(this)" required onfocusout="defocused(this)">
                   </div>
@@ -102,34 +103,34 @@
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Category</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <?php foreach($categories as $category): ?>
-                    <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
-                    <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                    <select class="product-category form-control w-100 border px-2" name="category[]" id="category" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <?php foreach($categories as $category): ?>
+                      <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                      <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $category->name; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                   </div>
                 </div>
 
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Experience</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="experience-class form-control w-100 border px-2" name="experience[]" id="experience" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <?php foreach($experiences as $experience): ?>
-                    <?php $selected = (in_array($experience->id, $product_experience)) ? ' selected' : ''; ?>
-                    <option value="<?php echo $experience->id; ?>"<?= $selected; ?>><?php echo $experience->name; ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                    <select class="experience-class form-control w-100 border px-2" name="experience[]" id="experience" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <?php foreach($experiences as $experience): ?>
+                      <?php $selected = (in_array($experience->id, $product_experience)) ? ' selected' : ''; ?>
+                      <option value="<?php echo $experience->id; ?>"<?= $selected; ?>><?php echo $experience->name; ?></option>
+                      <?php endforeach; ?>
+                    </select>
                   </div>
                 </div>
 
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Delivery Type</label>
                   <div class="input-group input-group-dynamic">
-                  <select class="delivery-type form-control w-100 border px-2" name="del_type[]" id="del_type" multiple onfocus="focused(this)" onfocusout="defocused(this)">
-                    <option value="1" <?= ($product_data->delivery_type == 1) ? 'selected' : ''; ?>>Scheduled</option>
-                    <option value="2" <?= ($product_data->delivery_type == 2) ? 'selected' : ''; ?>>Fast Tracked</option>
-                  </select>
+                    <select class="delivery-type form-control w-100 border px-2" name="del_type[]" id="del_type" multiple onfocus="focused(this)" onfocusout="defocused(this)">
+                      <option value="1" <?= ($product_data->delivery_type == 1) ? 'selected' : ''; ?>>Scheduled</option>
+                      <option value="2" <?= ($product_data->delivery_type == 2) ? 'selected' : ''; ?>>Fast Tracked</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -225,64 +226,81 @@
             </div>
           </div>
         </div>
+
         <div class="col-lg-4 col-xs-12 mt-lg-4 mt-4">
-          <!-- <h6>Variants</h6>                
-          <div class="row" id='variants'>
-            <div class="row">
-              <div class="col-lg-10">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h6>Images</h6>
+              <div class="row" id='image_lists'>
+                <?php foreach($images as $image): ?>
+                <div class="row current_images mb-5">
+                  <div class="col-lg-5">
+                    <input type="hidden" name="current_images[]" value="<?= $image->id; ?>">
+                    <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
+                  </div>
+                  <div class="col-lg-5"></div>
+                  <div class="col-lg-2">
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
+                  </div>
+                </div>
+                <?php endforeach; ?>
                 <div class="row">
-                  <div class="col-lg-6">
-                    <label>Unit</label>
-                    <input type="text" name="unit[]" class="form-control">
+                  <div class="col-lg-10">
+                    <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
                   </div>
-                  <div class="col-lg-6">
-                    <label>Unit Value</label>
-                    <input type="number" name="value[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Price</label>
-                    <input type="number" name="price[]" class="form-control">
-                  </div>
-                  <div class="col-lg-6">
-                    <label>Stocks/Qty</label>
-                    <input type="number" name="qty[]" class="form-control">
+                  <div class="col-lg-2">
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-2">
-                <br><br>
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
-              </div>
-            </div><hr class='breaker'>
-          </div><br>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span></button>
-
-          <br><br><br> -->
-
-          <h6>Images</h6>
-          <div class="row" id='image_lists'>
-            <?php foreach($images as $image): ?>
-            <div class="row current_images mb-5">
-              <div class="col-lg-5">
-                <input type="hidden" name="current_images[]" value="<?= $image->id; ?>">
-                <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
-              </div>
-              <div class="col-lg-5"></div>
-              <div class="col-lg-2">
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
-              </div>
-            </div>
-            <?php endforeach; ?>
-            <div class="row">
-              <div class="col-lg-10">
-                <input type="file" name="images[]" accept="image/png, image/jpeg, image/jpg" class="form-control">
-              </div>
-              <div class="col-lg-2">
-                <button type="button" class="btn bg-gradient-danger btn-sm remove_image"><span class="material-icons">delete</span></button>
-              </div>
+              <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
             </div>
           </div>
-          <button type="button" class="btn bg-gradient-success btn-sm" id='add_image'><span class="material-icons">add</span></button>
+
+          <div class="card">
+            <div class="card-body">
+              <h6>Variants</h6>                
+              <div class="row" id='variants'>
+                <?php foreach($variants_data as $variant): ?>
+                <div class="row added_variant">
+                  <div class="col-lg-10">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label>Unit (Sold By)</label>
+                        <select class="variant_unit form-control w-100 border px-2" name="variant_unit[]" onfocus="focused(this)" onfocusout="defocused(this)">
+                          <option value="mg"<?= ($variant->unit == 'mg') ? " selected" : ""; ?>>Milligrams (mg)</option>
+                          <option value="g"<?= ($variant->unit == 'g') ? " selected" : ""; ?>>Grams (g)</option>
+                          <option value="oz"<?= ($variant->unit == 'oz') ? " selected" : ""; ?>>Ounces (oz)</option>
+                          <option value="piece" <?= ($product_data->unit_measure == 'piece') ? 'selected' : ''; ?>>Per Piece</option>
+                          <option value="pct"<?= ($variant->unit == 'pct') ? " selected" : ""; ?>>Percent (%)</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Unit (Sold By) Value</label>
+                        <input type="number" name="variant_unit_value[]" class="variant_unit_value form-control w-100 border px-2" value="<?= $variant->unit_value; ?>">
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Price</label>
+                        <input type="number" name="variant_price[]" class="variant_price form-control w-100 border px-2" value="<?= $variant->price; ?>">
+                      </div>
+                      <div class="col-lg-6">
+                        <label>Stocks/Qty</label>
+                        <input type="number" name="variant_qty[]" class="variant_qty form-control w-100 border px-2" value="<?= $variant->stock; ?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2"><br><br>
+                    <button type="button" class="btn bg-gradient-danger btn-sm remove_variant"><span class="material-icons">delete</span></button>
+                  </div>
+                </div>
+                <hr class="breaker">
+                <?php endforeach; ?>
+              </div>
+              <button type="button" class="btn bg-gradient-success btn-sm" id='add_variant'><span class="material-icons">add</span>Add Variant</button>
+              <hr class='breaker mb-5'>
+            </div>
+          </div>
+
         </div>
 
         <div class="row mt-4">
@@ -430,6 +448,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
 
+<<<<<<< HEAD
 <!-- Load Data Table JS -->
 <script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
 
@@ -456,5 +475,12 @@
     });
   });
 </script>
+=======
+<!-- <script>
+$(document).on('click', '#add_variant', function() {
+  console.log("Add Variant Button Clicked!");
+});
+</script> -->
+>>>>>>> 62f0e347a6c357734c66ce906e5349b08d93c8f2
 
 <?php $this->endSection() ?>

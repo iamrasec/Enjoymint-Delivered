@@ -66,6 +66,33 @@
                               <a href="<?= base_url('products/'. $product['product_data']->url); ?>"><?= $product['product_data']->name; ?></a>
                             </h6>
                             <div class="text-sm mb-3">
+                              <?php 
+                              switch($product['product_data']->unit_measure){
+                                case 'mg':
+                                  $variant_unit = $product['product_data']->unit_value . " mg.";
+                                  break;
+                                case 'g':
+                                  $variant_unit = $product['product_data']->unit_value . " grams";
+                                  break;
+                                case 'oz':
+                                  $variant_unit = $product['product_data']->unit_value . "ounces";
+                                  break;
+                                case 'piece':
+                                  if($product['product_data']->unit_value == 1) {
+                                    $variant_unit = round($product['product_data']->unit_value) . " piece";
+                                  }
+                                  else {
+                                    $variant_unit = round($product['product_data']->unit_value) . " pieces";
+                                  }
+                                  break;
+                                case 'pct':
+                                  $variant_unit = $product['product_data']->unit_value . "%";
+                                  break;
+                              } 
+                              ?>
+                              <?= $variant_unit; ?>
+                            </div>
+                            <div class="text-sm mb-3">
                               <span class="badge text-bg-warning me-3"><?= $product['product_data']->strain_name; ?></span>
                               <span class="badge text-bg-dark ms-3">THC <?= $product['product_data']->thc_value; ?><?= ($product['product_data']->thc_unit == 'pct') ? '%' : $product['product_data']->thc_unit;?></span>
                             </div>
@@ -95,6 +122,7 @@
                             <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
                         </div>
+                        <!-- <pre><?php print_r($product); ?></pre> -->
                       </td>
                     </tr>
                     <?php endforeach; ?>

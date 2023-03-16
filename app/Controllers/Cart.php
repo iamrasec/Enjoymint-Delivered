@@ -27,7 +27,7 @@ class Cart extends BaseController
     $this->user_model = model('UserModel');
     $this->location_model = model('LocationModel');
     $this->promo_model = model('PromoModel');
-    $this->promoProducts_model = model('PromoProductsModel');
+    $this->promoProducts_model = model('P romoProductsModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -65,11 +65,13 @@ class Cart extends BaseController
     // Fetch items in cart
     $cart_raw = $this->get_cart_data();
 
+    // echo "<pre>".print_r($cart_raw, 1)."</pre>"; die();
+
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-    //  print_r($product_data);
+     
       // initialize images
       $images = [];
       $imageIds = [];
@@ -171,6 +173,8 @@ class Cart extends BaseController
 
     $db_cart = $this->_fetch_cart_items();
 
+    // echo "<pre>".print_r($db_cart, 1)."</pre>";die();
+
     if(!empty($db_cart)) {
       $cart_raw = $db_cart;
     }
@@ -194,9 +198,23 @@ class Cart extends BaseController
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
 
+      // Check if Variant ID is not 0
+      if($product->vid != 0) {
+        $variant_data = $this->product_variant_model->where('id', $product->vid)->get()->getResult();
+        
+        // echo "<pre>".print_r($variant_data, 1)."</pre>";
+
+        $product_data->vid = $variant_data[0]->id;
+        $product_data->price = $variant_data[0]->price;
+        $product_data->unit_measure = $variant_data[0]->unit;
+        $product_data->unit_value = $variant_data[0]->unit_value;
+        $product_data->stocks = $variant_data[0]->stock;
+      }
+
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
+        'vid' => $product->vid,
         'qty' => $product->qty,
         'product_data' => $product_data,
         'images' => $images,
@@ -204,9 +222,6 @@ class Cart extends BaseController
 
       ];
     }
-    // $data_id = $session('product_id');
-    // $discounted = $session('percent_discount');
-    // if(in_array($cart_products, $data_id)){
 
     // }
     $this->data['cart_products'] = $cart_products;
@@ -256,7 +271,7 @@ class Cart extends BaseController
 
     $data = $this->request->getPost();
 
-    // echo "<pre>".print_r($data)."</pre>"; die();
+    // echo "<pre>".print_r($data, 1)."</pre>"; die();
 
     $user = $this->user_model->getUserByGuid($data['guid']);
     // $token = $data['cart_key'];
@@ -291,6 +306,8 @@ class Cart extends BaseController
     // Fetch products in cart
     $db_cart = $this->_fetch_cart_items();
 
+    // echo "<pre>".print_r($db_cart, 1)."</pre>";die();
+
     // Initialize subtotal cost
     $subtotal = 0;
 
@@ -299,10 +316,11 @@ class Cart extends BaseController
     
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-      
+
       $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
 
-      $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
+        $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
+      }
 
       // Compute for subtotal cost
       // $subtotal += $product_data->price * $product->qty;
@@ -325,8 +343,11 @@ class Cart extends BaseController
         'is_sale' => 0,  // For now explicitly set to 0 because we don't have sale function as of the moment.  Will update this soon.
         'regular_price' => $product_data->price,  // The regular (normal) price of the product.
         'total' => $product_data->price * $product->qty,
+        'vid' => $product->vid,
       ];
     }
+
+    // echo "<pre>".print_r($cart_products, 1)."</pre>";die();
 
     $save_products = $this->order_products_model->insertBatch($cart_products);
 
@@ -440,6 +461,8 @@ class Cart extends BaseController
 
       // Fetch Order Products
       $order_products = $this->checkout_model->fetchOrderDetails($success);
+
+      // echo "<pre>".print_r($order_products, 1)."</pre>";die();
 
       foreach($order_products as $product) {
 

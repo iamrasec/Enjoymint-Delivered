@@ -57,9 +57,10 @@ class Products extends BaseController
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         if($url != '') {
             $product = $this->product_model->getProductFromUrl($url);
-            
+
             if(!empty($product)) {
                 $product = $product[0];
+                $this->data['variants'] = $this->product_variant_model->where('pid', $product->id)->get()->getResult();
             }
         }
         else {
