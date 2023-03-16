@@ -27,6 +27,7 @@ class Products extends BaseController
         $this->order_products_model = model('OrderProductsModel');
         $this->user_model = model('UserModel');
         $this->location_model = model('LocationModel');
+        $this->discount_model = model('DiscountModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -91,6 +92,18 @@ class Products extends BaseController
         ];
         $this->data['page_title'] = $page_title;
         $this->data['product'] = $product;
+        if($product->on_sale == 1){
+            $discount = $this->discount_model->where('pid', $product->id)->get()->getResult();
+            if($discount[0]->discount_attribute == "percent"){
+            $new_price = $product->price * ($discount[0]->discount_value /100);
+            $this->data['sale_price'] = $product->price - $new_price;
+            // print_r($this->data['sale_price']);
+            }elseif($discount[0]->discount_attribute == "fixed"){
+                $this->data['sale_price'] = $product->price - $discount[0]->discount_value;
+            }elseif($discount[0]->discount_attribute == "sale_price"){
+                $this->data['sale_price'] = $discount[0]->discount_value;
+            }
+        }
         $this->data['images'] = [];
 
         $imageIds = [];
