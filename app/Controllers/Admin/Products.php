@@ -435,7 +435,7 @@ class Products extends BaseController {
       $this->product_model->where("stocks <= lowstock_threshold");
       $this->product_model->where("stocks > 0");
     }
-
+ 
     if($state == 'out-of-stock') {
       $this->product_model->where("stocks = 0");
     }
@@ -507,7 +507,11 @@ class Products extends BaseController {
     $output = array(
       // "draw" => $_POST['draw'],
       "recordsTotal" => $this->promo_model->countAll(),
+<<<<<<< HEAD
        "recordsFiltered" => $this->promo_model->countAll(),
+=======
+      "recordsFiltered" => $this->promo_model->countAll(),
+>>>>>>> 81a88f1ebdd36d565358bc9d0745630c909adff5
       "data" => $data,
     );
     
