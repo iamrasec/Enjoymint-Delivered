@@ -111,7 +111,6 @@
                     </select>
                   </div>
                 </div>
-
                 <div class="col-4 col-md-4 col-xs-12 mb-3">
                   <label class="form-label" for="name">Experience</label>
                   <div class="input-group input-group-dynamic">
@@ -308,6 +307,9 @@
             <div class="card">
               <div class="card-body">
                 <h6>Sale & Promotion</h6>
+                <div class="input-group input-group-dynamic">
+                              <input type="checkbox" id="on_sale" class="on_sale" name="on_sale" data-promo-cond-id="1"> &nbsp; <strong>On Sale</strong>
+                </div>
                 <div class="row mt-4">
                   <div class="col-md-6 col-xs-12">
                     <label class="form-label w-100">Discount</label>
@@ -345,7 +347,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -448,7 +449,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
 
-<<<<<<< HEAD
 <!-- Load Data Table JS -->
 <script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
 
@@ -475,12 +475,10 @@
     });
   });
 </script>
-=======
 <!-- <script>
 $(document).on('click', '#add_variant', function() {
   console.log("Add Variant Button Clicked!");
 });
 </script> -->
->>>>>>> 62f0e347a6c357734c66ce906e5349b08d93c8f2
 
 <?php $this->endSection() ?>
