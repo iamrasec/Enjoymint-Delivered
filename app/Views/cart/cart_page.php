@@ -28,7 +28,12 @@
       <div class="col-12 col-md-8 col-xs-12">
         <div class="card card-body blur shadow-blur mx-3 mx-md-4">
           <h1 class="pagetitle">Your Cart</h1>
-
+          <form id="pro_code" class="enjoymint-form" enctype="multipart/form-data">
+            <label class="for-checkbox-tools prom" for="tool-2">Promo Code</label>
+            <input type="text" name="promo_code" id="promo_code" class="border px-2" style="width: 31%;" placeholder="Promo Code">
+            <!-- <button type="submit">Submit</button>	 -->
+            <button type="submit" class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>		 
+          </form>	
           <div class="subtotal_short_alert alert alert-primary d-none" role="alert">You're only $<span class="subtotal_short_amount">0</span> away from waiving the service fee!  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
           <div class="subtotal_below_min alert alert-primary d-none" role="alert">A minimum of $25 subtotal is required.  Click <a href="<?= base_url('/shop'); ?>">HERE</a> to add another product.</div>
                 
@@ -56,7 +61,7 @@
                             <img src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" style="width: 100px;">
                             <?php endif; ?>
                           </div>
-                          <div class="col-12 col-md-8 col-xs-12 product-details">
+                          <div class="col-12 col-md-6 col-xs-12 product-details">
                             <h6 class="product-title">
                               <a href="<?= base_url('products/'. $product['product_data']->url); ?>"><?= $product['product_data']->name; ?></a>
                             </h6>
@@ -93,11 +98,27 @@
                             </div>
                             <div class="product-qty">
                               <span>QTY: </span><input type="number" name="cart[<?= $product['pid']; ?>][qty]" class="product-qty product-<?= $product['pid']; ?>-qty" min="1" max="100" value="<?= $product['qty']; ?>" data-pid="<?= $product['pid']; ?>" data-unit-price="<?= $product['product_data']->price; ?>">
-                            </div><br>
+                            </div><br>  
                           </div>
-                          <div class="col-12 col-md-2 col-xs-12 price text-right pe-4">
-                            <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
-                            <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                          <div class="col-12 col-md-4 col-xs-12 price text-right pe-4">
+                              <?php if (in_array($product['pid'], $discount_id)){ ?>
+                                <?php for($x = 0; $x<count($discount_data); $x++){
+                                  if($discount_data[$x]['id'] === $product['pid']){
+                                    ?>
+                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">$<?= $discount_data[$x]['discounted_price'] * $product['qty']; ?></strong><br>
+                                   <strong class="total-price-display" style="color:red;">$<?= $discount_data[$x]['total_cost'] * $product['qty']; ?></strong><br>
+                                  <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
+                                  <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                                <?php
+                                  }
+                                } ?>
+                                
+                                <?php }else{ ?>
+                                  <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
+                                  <strong class="total-price-display">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                              
+                                  <?php } ?>
+                            
                             <div class="mt-3 d-flex align-items-end align-content-end"><a href="#" class="remove-item ms-auto" data-pid="<?= $product['pid']; ?>"><i class="fas fa-trash"></i></a></div>
                           </div>
                         </div>
@@ -210,6 +231,7 @@
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
+   <script src="<?php echo base_url(); ?>/assets/js/promo_code.js"></script>	
 <script>
 
 jQuery.datetimepicker.setDateFormatter('moment');
@@ -412,17 +434,27 @@ update_cart_count();
     //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   });
-  
+  console.log(service_charge);
   $(document).ready(function() {
     // Compute for subtotal cost
     var subtotal = 0;
+    var subtotalprice = 0;
+    var priceSub = <?= $pricesubtotal ?>;
     <?php if($location_keyword == null): ?>
       var location = "";
     <?php else: ?>
     var location = "<?= $location_keyword['address'] ?>";
     <?php endif; ?>  
     $(".product-total-price").each(function() {
-      subtotal += parseFloat($(this).val());
+
+      if(!priceSub){  
+        subtotal += parseFloat($(this).val());
+        console.log(subtotal);
+      }else{
+        subtotalprice += parseFloat($(this).val());
+        subtotal = subtotalprice - priceSub;
+      }
+     
     });
     
   if(location.match("Hollister") || location.match("Half Moon Bay") || location.match("Moss Beach")) {
@@ -502,8 +534,11 @@ $(".total-cost").html(formatter.format(total_cost));
     
     $(".total-cost").html(formatter.format(total_cost));
    }
+   console.log(priceSub);
+   console.log(subtotalprice);
+    console.log(subtotal);
   });
-
+  
   $(document).on("click", ".checkout-btn", function(e) {
     e.preventDefault();
     var sched = $('.datetime_picker').val();

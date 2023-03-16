@@ -16,5 +16,15 @@ class PromoModel extends Model
     $this->where('promotion.promo_code', $promo);
     return $this->get()->getResult();
   }
+  public function getAllPromo() {
+    $this->select('promotion.*');
+    return $this->paginate(28);
+  }
+
+  public function getProductFromUrl($url) {
+    $this->select('promotion.*');
+    $this->where('promotion.url', $url);
+    return $this->get()->getResult();
+  }
     
 }

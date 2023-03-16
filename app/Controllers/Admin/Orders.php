@@ -16,6 +16,7 @@ class Orders extends BaseController {
         $this->product_model = model('ProductModel');
         $this->drivers_model = model('Drivers');
         $this->customerverification_model = model('VerificationModel');
+        $this->promo_model = model('PromoModel');
 
         $this->allowed_roles = [1,2,4];
         $this->tax_rate = 1.35;  // 35%
@@ -47,9 +48,13 @@ class Orders extends BaseController {
 
     public function edit($id)
     {
+        $session = session();
+        $distotal = $session->get('distotal');
+        print_r($distotal);
         $order = $this->order_model->where('id', $id)->get()->getRow();
         $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
-
+        $session->order_products = $order_products;
+        print_r($session->order_products = $order_products);
         $all_products = $this->product_model->getAllProductsNoPaginate('asc');
 
         $order_pids = [];
@@ -98,6 +103,9 @@ class Orders extends BaseController {
         $this->data['order_pids'] = implode(',', $order_pids);
         $this->data['tax_rate'] = $this->tax_rate;
         $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
+        $this->data['all_promo'] = $this->promo_model->get()->getResult();
+
+        $this->data['pricesubtotal'] = $distotal;
 
         if($this->data['currDate']->format('H') > '16') {
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
