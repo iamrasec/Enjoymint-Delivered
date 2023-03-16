@@ -16,6 +16,7 @@ class CheckoutModel extends Model {
         'email',
         'phone',
         'address',
+        'promo_code',
         'subtotal',
         'tax',
         'total',

@@ -161,12 +161,6 @@
 
             <div class="row mb-4">
               <div class="col-12 col-md-12 col-xs-12 mt-3">
-			<form id="pro_code" method="POST" action="<?= base_url('cart/promo_add'); ?>">
-			  <label class="for-checkbox-tools prom" for="tool-2">Promo Code</label>
-			  <input type="text" name="promo_code" id="promo_code" class="border px-2" style="width: 31%;" placeholder="Promo Code">
-			  <button type="submit">Submit</button>		
-			  
-			</form>
 			
 			  <h5>Payment Method</h5>
 				<form id="checkout" action="<?= base_url('cart/place_order'); ?>" method="POST">
@@ -187,6 +181,28 @@
                     <input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-4" value="debit_card">
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
                   </div>
+					<span class="text-sm">Payments will be collected upon delivery.</span>
+                </div> -->
+				<div class="row mb-4">
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools w-100 border px-2" type="radio" name="payment_method" id="tool-1" value="ledgergreen" checked>
+                    <label class="for-checkbox-tools" for="tool-1">Ledger Green</label>
+					</div>
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-2" value="paytender">
+                    <label class="for-checkbox-tools" for="tool-2">PayTender</label>
+					</div>
+				</div>	
+				<div class="row mb-4">
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-3" value="cash">
+                    <label class="for-checkbox-tools" for="tool-3">Cash</label>
+					</div>
+					<div class="col-6 col-md-6 col-xs-12">
+					<input class="checkbox-tools  w-100 border px-2" type="radio" name="payment_method" id="tool-4" value="debit_card">
+                    <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
+					</div>
+				</div>						
 									<span class="text-sm">Payments will be collected upon delivery.</span>
                 </div>
 
@@ -258,9 +274,15 @@
 				
 			<?php 
 				$subtotal = 0;	
+				$subtotalprice = 0;
 				foreach($cart_products as $product) {
-					// echo "<pre>".print_r($product, 1)."</pre>";
+					// echo "<pre>".print_r($product, 1)."</pre>";					
+					if(!empty($product['priceTotal'])){
+						$subtotalprice += ($product['product_data']->price * $product['qty']);
+						$subtotal = $subtotalprice - $product['priceTotal'];
+					}else{
 					$subtotal += ($product['product_data']->price * $product['qty']);
+					}
 				}
 				$tax_cost = $subtotal * ($tax_rate - 1);
 				$total_cost = $subtotal * $tax_rate;

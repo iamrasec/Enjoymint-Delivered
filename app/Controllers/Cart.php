@@ -27,7 +27,7 @@ class Cart extends BaseController
     $this->user_model = model('UserModel');
     $this->location_model = model('LocationModel');
     $this->promo_model = model('PromoModel');
-    $this->promoProducts_model = model('P romoProductsModel');
+    $this->promoProducts_model = model('PromoProductsModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -41,6 +41,22 @@ class Cart extends BaseController
   public function index()
   {
     $session = session();
+    $priceTotal = $session->get('totalSub');
+    $discount_product = $session->get('discountSub');
+    $testtest = $session->get('promo_edit');
+    print_r($testtest);
+    $discount_data = [];
+    if (!empty($discount_product)) {
+    foreach($discount_product as $discount_prod){
+      $discount_data[] = [
+        'id' => $discount_prod['id'],
+        'discounted_price' => $discount_prod['discounted_price'],
+        'total_cost' => $discount_prod['total_cost'],
+      ];
+    }
+  } 
+
+    // print_r($discount_data);
    
     $location = $session->get('search1');
     $this->data['location_keyword'] = $this->location;
@@ -53,7 +69,7 @@ class Cart extends BaseController
     foreach($cart_raw as $product) {
       // Get products from the database using pid
       $product_data = $this->product_model->getProductData($product->pid);
-     
+    //  print_r($product_data);
       // initialize images
       $images = [];
       $imageIds = [];
@@ -83,6 +99,15 @@ class Cart extends BaseController
    }
     
     $this->data['cart_products'] = $cart_products;
+    $this->data['discount_data'] = $discount_data;
+    print_r($this->data['discount_data']);
+    $discount_id = [];
+    if(!empty($discount_product)){
+    foreach ($discount_product as $dd) {
+      $discount_id[] = $dd["id"]; // add the age value to the new array
+    }
+  }
+    $this->data['discount_id'] = $discount_id;
     $this->data['guid'] = ($this->guid > 0) ? $this->guid : 0;
     // $this->data['guid'] = $this->guid;
 
@@ -113,8 +138,9 @@ class Cart extends BaseController
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
-    
-    
+    $this->data['pricesubtotal'] = $priceTotal;
+    $this->data['pricesub'] = $discount_product;
+    // print_r($this->data['pricesub']);
 
     return view('cart/cart_page', $this->data);
   }
@@ -124,6 +150,7 @@ class Cart extends BaseController
     $session = session();
     $location = $session->get('search1');
     $postData = $this->request->getPost();
+    $priceTotal = $session->get('totalSub');
 
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
 
@@ -136,7 +163,7 @@ class Cart extends BaseController
       // Go back to cart page when there are no post data
       return redirect()->to('/cart');
     }
-
+    
     // If not logged-in redirect back to cart
     if($this->isLoggedIn != 1) {
       return redirect()->to('/cart');
@@ -157,8 +184,6 @@ class Cart extends BaseController
       $product_data = $this->product_model->getProductData($product->pid);
       $session->product_cart = $product_data;
 
-      print_r($session->product_cart);
-
       // initialize images
       $images = [];
       $imageIds = [];
@@ -175,6 +200,8 @@ class Cart extends BaseController
         'qty' => $product->qty,
         'product_data' => $product_data,
         'images' => $images,
+        'priceTotal' => $priceTotal,
+
       ];
     }
     // $data_id = $session('product_id');
@@ -184,7 +211,6 @@ class Cart extends BaseController
     // }
     $this->data['cart_products'] = $cart_products;
     $this->data['guid'] = $this->guid;
-
     $enjoymint_utils = new EnjoymintUtils();
 
     // Generate unique order token
@@ -208,7 +234,7 @@ class Cart extends BaseController
     else {
       $fsDelTime = $fsDelTime[0]. $fsDelTime[1] ." - ". ($fsDelTime[0] + 3) . $fsDelTime[1];
     }
-
+    
     $user_id = $this->uid;
     if($user_id == null){
       $session->setFlashdata('message', 'Please login first');
@@ -224,6 +250,9 @@ class Cart extends BaseController
   public function place_order()
   {
     $session = session();
+
+    $priceTotal = $session->get('totalSub');
+    print_r( $priceTotal);
 
     $data = $this->request->getPost();
 
@@ -276,7 +305,15 @@ class Cart extends BaseController
       $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
 
       // Compute for subtotal cost
-      $subtotal += $product_data->price * $product->qty;
+      // $subtotal += $product_data->price * $product->qty;
+
+      if(!empty($priceTotal)){
+        $subtotalprice = $product_data->price * $product->qty;
+        $subtotal = $product['priceTotal'] + $subtotalprice;
+      }
+      else{
+        $subtotal += $product_data->price * $product->qty;
+      }
 
       // Order products array
       $cart_products[] = [
@@ -420,7 +457,7 @@ class Cart extends BaseController
 
         // Output array
         $cart_products[] = [
-          'pid' => $product->product_id,
+          'pid' => $product->product_id, 
           'qty' => $product->qty,
           'product_data' => $product,
           'images' => $images,
@@ -605,6 +642,10 @@ class Cart extends BaseController
   
   public function promo_add(){
     $session = session();
+
+    if($this->request->getPost()) {
+      $validation =  \Config\Services::validation();
+
     $promo = $this->request->getVar('promo_code');
     $this->data['prom_code'] = $promo;
     //$this->data['location_keyword'] = $this->location;
@@ -621,15 +662,15 @@ class Cart extends BaseController
       $product_data = $this->product_model->getProductData($product->pid);
       
       // initialize images
-      $images = [];
+      $images = []; 
       $imageIds = [];
-
+      
       // Fetch product images
       if($product_data->images) {
         $imageIds = explode(',',$product_data->images);
         $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
       }
-
+        
       // Output array
       $cart_products[] = [
         'pid' => $product->pid,
@@ -640,169 +681,792 @@ class Cart extends BaseController
     }  
       
     $promo_data = $this->promo_model->getPromo($promo);
+
+    $product_descount = [];
    
     // $this->data['prom_data'] = $promo_data;         
     // $test = json_encode($promo_data);
     
-    if(!empty($promo_data)){
+    if(!empty($promo_data)) {
+      switch($promo_data[0]->promo_type) {
+        case "percent_off":
+          //promo spec prod
+          if($promo_data[0]->promo_product == "promo_products_specific"){
+            $totalVal = 0;
+            $distotal = 0;
+            $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
 
-        //percent_off
-       if($promo_data[0]->promo_type == "percent_off"){
-
-        // Check if the promotion type is specific products
-      if($promo_data[0]->promo_product == "promo_products_specific"){
-        $totalVal = 0;
-
-        // Get the list of specific product IDs for the promotion
-        $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
-
-        // Loop through each product in the cart
-        foreach($cart_products as $value){
-
-          // Output the product price and ID
-          // print_r($promo_data).'<br>';
-          // echo $value['product_data']->id.'<br>---';
-          
-          // if()
-          $req_purchase = $promo_data['mechanics']->req_purchase;
-
-          print_r($req_purchase).'<br>';
-          // If the product is in the list of discounted products
-          if(in_array($value['product_data']->id, $promo_prod)){
-            echo 'in array <br>';
-
-            // Calculate the discount and net total price
-            $productPrice = $value['product_data']->price;
-            $discount = $productPrice * ($promo_data[0]->discount_value / 100);
-            $netTotal = $productPrice -  $discount;
-            echo $discount.' <br>';
-            echo $netTotal.' <br> ------------ <br>';
-
-            // Update the product's price to the net total
-            $value['product_data']->price = $netTotal;
-          }
-          
-          // Output a separator
-          echo' <br> ------------ <br>';
-
-      // Add the updated price to the total value
-      $totalVal += $value['product_data']->price;
-    }
-  
-    // Output the total value
-    echo 'Total Value: '.$totalVal;
-  }
-
-   // Check if the promo product is a category
-  if($promo_data[0]->promo_product == "promo_products_cat"){
-
-  // Get discounted categories
-  $promo_cat = explode(',' , $promo_data[0]->discounted_category_id);
-  $totalVal = 0;
-  print_r($promo_cat); 
-  // Loop through cart products
-  foreach($cart_products as $value){
-    
-    // Output product price and category
-    echo $value['product_data']->price.'<br>';
-    echo $value['product_data']->category.'<br>---';
-
-    // Check if product category is in discounted categories
-    if(in_array($value['product_data']->category, $promo_cat)){
-
-      // Output "in array" message
-      echo 'in array <br>';
-
-      // Calculate discount and net total
-      $productPrice = $value['product_data']->price;
-      $discount = $productPrice * ($promo_data[0]->discount_value / 100);
-      $netTotal = $productPrice  - $discount;
-      echo $discount.' <br>';
-      echo $netTotal.' <br> ------------ <br>';
-
-      // Set new price for product
-      $value['product_data']->price = $netTotal;
-    }
-    
-    // Output separator
-
-      // Add the updated price to the total value
-      $totalVal += $value['product_data']->price;
-     
-    }
-  
-    // Output the total value
-    echo 'Total Value: '.$totalVal;
-}
-     }
-
-      // $exclude = $value['product_data']->id;
-            // // $exclude1 = (array)$exclude;
-             
-            // $updatedData = array_replace($value, array_diff_key($data1, array_flip($exclude)));
+            foreach($cart_products as $value){
+              
+              if($promo_data[0]->require_purchase == 1){
+                $req_prod = explode(',' , $promo_data[0]->required_product_id);
+                $req_cat = explode(',' , $promo_data[0]->required_category_id);
+                $discount = 0;
+                switch(true) {
+                  case in_array($value['product_data']->id, $promo_prod):
+                   
+                    $productPrice = $value['product_data']->price;
+                    $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                    $netTotal = $productPrice -  $discount;
+       
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                  case in_array($value['product_data']->id, $req_prod):
+                    
+                    $productPrice = $value['product_data']->price;
+                    $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                    $netTotal = $productPrice -  $discount;
+                 
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                  case in_array($value['product_data']->category, $req_cat):
+                    // echo '2nd array condition for req_purchase cat<br>';
+                    $productPrice = $value['product_data']->price;
+                    $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                    $netTotal = $productPrice - $discount;
             
-            // $this->data['product_id'] = $array_promo;
-            // $cart_products[] = [
-            //   'pid' => $product->pid,
-            //   'qty' => $product->qty,
-            //   'product_data' => $product_data,
-            //   'images' => $images,
-            // ];
-            // return redirect()->to('/cart/checkout')->with($this->data);
-            // print_r($total_discount);
-            // print_r($value['product_data']->id);
-   
-// //       foreach( $promo_data['mechanics'] as $prom => $val){ 
-// //       if($val->promo_products == "promo_products_specific"){
-// //         $promo_prod = $prom['mechanics']['promo_products']->id;
-// //         if($promo_data[0]->promo_type == "percent_off"){
-
-// //        if($promo_data[0]->require_purchase == 1){
-        
-// //         if($promo_data[0]->promo_product == 'promo_products_specific'){
-// //             // foreach($promo_data[0]->products_specific as $product_spec){
-// //               $price = $this->product_model->select('price')->where('id', $promo_data[0]->required_product_id)->first();
-
-// //               // $total = $price - ($price * ($promo_data[0]->discount_value / 100));
-
-// //             // }
-// //         }
-// //         elseif($promo_data[0]->promo_product == 'promo_products_cat'){
-
-// //         }           
-// //         else{ 
-
-// //         }
-// //       }
-// //       $discount = $promo_data[0]->discount_value;
-      
-// //     }
-// //   }
-// // } 
-// //   //   // if($promo_data->promo_type == "fixed"){
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                }
+              } elseif($promo_data[0]->require_purchase == "none"){
+                $discount = 0;
+                if(in_array($value['product_data']->id, $promo_prod)){            
+                  
+                  $productPrice = $value['product_data']->price;
+                  $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                  $netTotal = $productPrice -  $discount;
+                    
+                  $value['product_data']->price = $netTotal;         
+                  
+                  $disProduct = [
+                    'id' => $value['product_data']->id,
+                    'discounted_price' => $discount,
+                    'total_cost' => $netTotal
+                ];
+              
+                array_push($product_descount, $disProduct);
+                }             
+              }
+              // echo' tama ni<br> ------------ <br>';
+              $distotal += $discount;
+              $totalVal += $value['product_data']->price;
+            } 
+            
+          } 
+            //promo cat prod
+          if ($promo_data[0]->promo_product == 'promo_products_cat') {
+            $promo_cat = explode(',', $promo_data[0]->discounted_category_id);
+            $totalVal = 0;
+            $distotal = 0;
+            // print_r($promo_cat);
+            foreach ($cart_products as $value) {
+                // echo $value['product_data']->price . '<br>';
+                // echo $value['product_data']->category . '<br>---';
+                if ($promo_data[0]->require_purchase == 1) {
+                    $req_prod = explode(',', $promo_data[0]->required_product_id);
+                    $req_cat = explode(',', $promo_data[0]->required_category_id);
+                    $discount = 0;
+                    switch (true) {
+                        case in_array($value['product_data']->category, $promo_cat):
+                            // echo 'in array <br>';
+                            $productPrice = $value['product_data']->price;
+                            $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                            $netTotal = $productPrice  - $discount;
+                            // echo $discount . ' <br>';
+                            // echo $netTotal . ' <br> ------------ <br>';
+                            $value['product_data']->price = $netTotal;
+                            $disProduct = [
+                              'id' => $value['product_data']->id,
+                              'discounted_price' => $discount,
+                              'total_cost' => $netTotal
+                          ];
+                            array_push($product_descount, $disProduct);
+                            break;
+                        case in_array($value['product_data']->id, $req_prod):
+                            // echo '2nd array condition for req_purchase prod in categ<br>';
+                            $productPrice = $value['product_data']->price;
+                            $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                            $netTotal = $productPrice -  $discount;
+                            // echo $discount . ' <br>';
+                            // echo $netTotal . ' <br> ------------ <br>';
+                            $value['product_data']->price = $netTotal;
+                            $disProduct = [
+                              'id' => $value['product_data']->id,
+                              'discounted_price' => $discount,
+                              'total_cost' => $netTotal
+                          ];
+                            array_push($product_descount, $disProduct);
+                            break;
+                        case in_array($value['product_data']->category, $req_cat):
+                            // echo '2nd array condition for req_purchase cat in categ<br>';
+                            $productPrice = $value['product_data']->price;
+                            $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                            $netTotal = $productPrice - $discount;
+                            // echo $discount . ' <br>';
+                            // echo $netTotal . ' <br> ------------ <br>';
+                            $value['product_data']->price = $netTotal;
+                            $disProduct = [
+                              'id' => $value['product_data']->id,
+                              'discounted_price' => $discount,
+                              'total_cost' => $netTotal
+                          ];
+                            array_push($product_descount, $disProduct);
+                            break;
+                    }
+                    // echo ' tama ni<br> ------------ <br>';
+                    // $totalVal += $value['product_data']->price;
+                } elseif ($promo_data[0]->require_purchase == "none") {
+                  $discount = 0;
+                  if (in_array($value['product_data']->category, $promo_cat)) {
+                        // echo 'in array <br>';
+                        $productPrice = $value['product_data']->price;
+                        $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                        $netTotal = $productPrice  - $discount;
+                        // echo $discount . ' <br>';
+                        // echo $netTotal . ' <br>------------ <br>';
+                        $value['product_data']->price = $netTotal;
+                        $disProduct = [
+                          'id' => $value['product_data']->id,
+                          'discounted_price' => $discount,
+                          'total_cost' => $netTotal
+                      ];
+                      // echo  'mao ni'.$disProduct;
+                      array_push($product_descount, $disProduct);
+                    }
+                }
+                $distotal += $discount;
+                $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: ' . $totalVal;
+        }
+            //promo all
+            if ($promo_data[0]->promo_product == 'promo_products_all') {
+              $totalVal = 0;
+              $distotal = 0;
+              foreach ($cart_products as $value) {
+                  // echo $value['product_data']->price . '<br>';
+                  // echo $value['product_data']->id . '<br>---';
+                  if (isset($value['product_data'])) {
+                      // echo 'in array prod_all<br>';
+                      $discount = 0;
+                      $productPrice = $value['product_data']->price;
+                      $discount = $productPrice * ($promo_data[0]->discount_value / 100);
+                      $netTotal = $productPrice  - $discount;
+                      // echo $discount . ' <br>';
+                      // echo $netTotal . ' <br>------------ <br>';
+                      $value['product_data']->price = $netTotal;
+                      $disProduct = [
+                        'id' => $value['product_data']->id,
+                        'discounted_price' => $discount,
+                        'total_cost' => $netTotal
+                    ];
+                    // echo  'mao ni'.$disProduct;
+                    array_push($product_descount, $disProduct);
+                  }
+                  $distotal += $discount;
+                  $totalVal += $value['product_data']->price;
+              }
+              // echo 'Total Value: ' . $totalVal;
+          }
+          break;
+        case "fixed":
+           //promo spec prod fix off
+           if($promo_data[0]->promo_product == "promo_products_specific"){
+            $totalVal = 0;
+            $distotal = 0;
+            $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
     
-// //   //   // }
-// //   //   // if($promo_data->promo_type == "sale_price"){
-     
-// //   //   // }
-// //   //   // if($promo_data->promo_type == "bxgx"){
-     
-// //   //   // }
-// //   //   // if($promo_data->promo_type == "bundle"){
-      
-// //   //   // }
-// //     // $data_arr = array("success" => TRUE,"message" => 'Promotion Saved!'.$prod_data);
-// //     // // print_r($promo_code);
-// //     // die(json_encode($data_arr));
-// //   // }
-// //   // print_r($prom_data);
-// //   // return redirect()->to('/cart/checkout');
-  }else{
-    echo "Invalid promo code. Please try again.";    
- }
+            foreach($cart_products as $value){
+              // echo $value['product_data']->price.'---price<br>';
+              // echo $value['product_data']->id.'---id<br>';
+              
+              if($promo_data[0]->require_purchase == 1){
+                $req_prod = explode(',' , $promo_data[0]->required_product_id);
+                $req_cat = explode(',' , $promo_data[0]->required_category_id);
+                $discount = 0;
+                switch(true) {
+                  case in_array($value['product_data']->id, $promo_prod):
+                    // echo '1st array <br>';
+                    $productPrice = $value['product_data']->price;
+                    $discount = $promo_data[0]->discount_value;
+                    $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break; 
+                  case in_array($value['product_data']->id, $req_prod):
+                    // echo '2nd array condition for req_purchase prod<br>';
+                    $productPrice = $value['product_data']->price;
+                    $discount = $promo_data[0]->discount_value;
+                    $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                    // echo $netTotal.'----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                  case in_array($value['product_data']->category, $req_cat):
+                    // echo '2nd array condition for req_purchase cat<br>';
+                    $productPrice = $value['product_data']->price;
+                    $discount = $promo_data[0]->discount_value;
+                    $netTotal = $productPrice - $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                }
+              } elseif($promo_data[0]->require_purchase == "none"){
+                $discount = 0;
+                if(in_array($value['product_data']->id, $promo_prod)){
+                  // echo '1st array for none<br>';
+                  $productPrice = $value['product_data']->price;
+                  $discount = $promo_data[0]->discount_value;
+                  $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                  // echo $netTotal.'-----net_total <br> ------------ <br>';
+                  $value['product_data']->price = $netTotal;
+                  $disProduct = [
+                    'id' => $value['product_data']->id,
+                    'discounted_price' => $discount,
+                    'total_cost' => $netTotal
+                ];
+                // echo  'mao ni'.$disProduct;
+                array_push($product_descount, $disProduct);
+                }
+              }
+              // echo' tama ni<br> ------------ <br>';
+              $distotal += $discount;
+              $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: '.$totalVal;
+          }
+            //promo cat prod fix off
+            if ($promo_data[0]->promo_product == 'promo_products_cat') {
+              $promo_cat = explode(',', $promo_data[0]->discounted_category_id);
+              $totalVal = 0;
+              $distotal = 0;
+              // print_r($promo_cat);
+              foreach ($cart_products as $value) {
+                  // echo $value['product_data']->price . '<br>';
+                  // echo $value['product_data']->category . '<br>---';
+                  if ($promo_data[0]->require_purchase == 1) {
+                      $req_prod = explode(',', $promo_data[0]->required_product_id);
+                      $req_cat = explode(',', $promo_data[0]->required_category_id);
+                      $discount = 0;
+                      switch (true) {
+                          case in_array($value['product_data']->category, $promo_cat):
+                              // echo 'in array <br>';
+                              $productPrice = $value['product_data']->price;
+                              $discount = $promo_data[0]->discount_value;
+                              $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                          case in_array($value['product_data']->id, $req_prod):
+                              // echo '2nd array condition for req_purchase prod in categ<br>';
+                              $productPrice = $value['product_data']->price;
+                              $discount = $promo_data[0]->discount_value;
+                              $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                          case in_array($value['product_data']->category, $req_cat):
+                              // echo '2nd array condition for req_purchase cat in categ<br>';
+                              $productPrice = $value['product_data']->price;
+                              $discount = $promo_data[0]->discount_value;
+                              $netTotal = $productPrice - $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                      }
+                      // echo ' tama ni<br> ------------ <br>';
+                      // $totalVal += $value['product_data']->price;
+                  } elseif ($promo_data[0]->require_purchase == "none") {
+                    $discount = 0;  
+                    if (in_array($value['product_data']->category, $promo_cat)) {
+                          // echo 'in array <br>';
+                          $productPrice = $value['product_data']->price;
+                          $discount = $promo_data[0]->discount_value;
+                          $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                          // echo $netTotal . '----net_total <br>------------ <br>';
+                          $value['product_data']->price = $netTotal;
+                          $disProduct = [
+                            'id' => $value['product_data']->id,
+                            'discounted_price' => $discount,
+                            'total_cost' => $netTotal
+                        ];
+                        // echo  'mao ni'.$disProduct;
+                        array_push($product_descount, $disProduct);
+                      }        
+                  }
+                  $distotal += $discount;
+                  $totalVal += $value['product_data']->price;
+              }
+              // echo 'Total Value: ' . $totalVal;
+          }
+           //promo all fix off
+           if ($promo_data[0]->promo_product == 'promo_products_all') {
+            $totalVal = 0;
+            $distotal = 0;
+            foreach ($cart_products as $value) {
+                // echo $value['product_data']->price . '<br>';
+                // echo $value['product_data']->id . '<br>---';
+                if (isset($value['product_data'])) {
+                    // echo 'in array prod_all<br>';
+                    $discount = 0;
+                    $productPrice = $value['product_data']->price;
+                    $discount = $promo_data[0]->discount_value;
+                    $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                    // echo $netTotal . '----net_total <br>------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                  // echo  'mao ni'.$disProduct;
+                  array_push($product_descount, $disProduct);
+                }
+                $distotal += $discount;
+                $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: ' . $totalVal;
+        }
+          break;
+        case "sale_price":
+          //promo spec prod sale price
+          if($promo_data[0]->promo_product == "promo_products_specific"){
+            $totalVal = 0;
+            $distotal = 0;
+            $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
+    
+            foreach($cart_products as $value){
+              // echo $value['product_data']->price.'---price<br>';
+              // echo $value['product_data']->id.'---id<br>';
+              
+              if($promo_data[0]->require_purchase == 1){
+                $req_prod = explode(',' , $promo_data[0]->required_product_id);
+                $req_cat = explode(',' , $promo_data[0]->required_category_id);
+                $discount = 0;
+                switch(true) {
+                  case in_array($value['product_data']->id, $promo_prod):
+                    // echo '1st array <br>';
+                    $productPrice = $promo_data[0]->discount_value;
+                    $netTotal = $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break; 
+                  case in_array($value['product_data']->id, $req_prod):
+                    // echo '2nd array condition for req_purchase prod<br>';
+                    $productPrice = $promo_data[0]->discount_value;
+                    $netTotal = $promo_data[0]->discount_value;
+                    // echo $netTotal.'----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                  case in_array($value['product_data']->category, $req_cat):
+                    // echo '2nd array condition for req_purchase cat<br>';
+                    $productPrice = $promo_data[0]->discount_value;
+                    $netTotal = $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                    array_push($product_descount, $disProduct);
+                    break;
+                }
+              } elseif($promo_data[0]->require_purchase == "none"){
+                $discount = 0;
+                if(in_array($value['product_data']->id, $promo_prod)){
+                  // echo '1st array for none<br>';
+                  $productPrice = $promo_data[0]->discount_value;
+                  $netTotal = $promo_data[0]->discount_value;
+                  // echo $netTotal.'-----net_total <br> ------------ <br>';
+                  $value['product_data']->price = $netTotal;
+                  $disProduct = [
+                    'id' => $value['product_data']->id,
+                    'discounted_price' => $discount,
+                    'total_cost' => $netTotal
+                ];
+                // echo  'mao ni'.$disProduct;
+                array_push($product_descount, $disProduct);
+                }
+              }
+              // echo' tama ni<br> ------------ <br>';
+              $distotal += $discount;
+              $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: '.$totalVal;
+            // print_r($cart_products);
+          }
+            //promo cat prod sale price
+            if ($promo_data[0]->promo_product == 'promo_products_cat') {
+              $promo_cat = explode(',', $promo_data[0]->discounted_category_id);
+              $totalVal = 0;
+              $distotal = 0;
+              // print_r($promo_cat);
+              foreach ($cart_products as $value) {
+                  // echo $value['product_data']->price . '<br>';
+                  // echo $value['product_data']->category . '--cat_id<br>---';
+                  if ($promo_data[0]->require_purchase == 1) {
+                      $req_prod = explode(',', $promo_data[0]->required_product_id);
+                      $req_cat = explode(',', $promo_data[0]->required_category_id);
+                      $discount = 0;
+                      switch (true) {
+                          case in_array($value['product_data']->category, $promo_cat):
+                              // echo 'in array <br>';
+                              $productPrice = $promo_data[0]->discount_value;
+                              $netTotal = $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                          case in_array($value['product_data']->id, $req_prod):
+                              // echo '2nd array condition for req_purchase prod in categ<br>';
+                              $productPrice = $promo_data[0]->discount_value;
+                              $netTotal = $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                          case in_array($value['product_data']->category, $req_cat):
+                              // echo '2nd array condition for req_purchase cat in categ<br>';
+                              $productPrice = $promo_data[0]->discount_value;
+                              $netTotal = $promo_data[0]->discount_value;
+                              // echo $netTotal . '-----net_total <br> ------------ <br>';
+                              $value['product_data']->price = $netTotal;
+                              $disProduct = [
+                                'id' => $value['product_data']->id,
+                                'discounted_price' => $discount,
+                                'total_cost' => $netTotal
+                            ];
+                              array_push($product_descount, $disProduct);
+                              break;
+                          default:
+                              break;
+                      }
+                      // echo ' tama ni<br> ------------ <br>';
+                      $totalVal += $value['product_data']->price;
+                  } elseif ($promo_data[0]->require_purchase == "none") {
+                    $discount = 0; 
+                    if (in_array($value['product_data']->category, $promo_cat)) {
+                          // echo 'in array <br>';
+                          $productPrice = $promo_data[0]->discount_value;
+                          $netTotal = $promo_data[0]->discount_value;
+                          // echo $netTotal . '----net_total <br>------------ <br>';
+                          $value['product_data']->price = $netTotal;
+                          $disProduct = [
+                            'id' => $value['product_data']->id,
+                            'discounted_price' => $discount,
+                            'total_cost' => $netTotal
+                        ];
+                        // echo  'mao ni'.$disProduct;
+                        array_push($product_descount, $disProduct);
+                      }
+                      $distotal += $discount;
+                      $totalVal += $value['product_data']->price;
+                  }
+              }
+              // echo 'Total Value: ' . $totalVal;
+          }
+           //promo all sale price
+           if ($promo_data[0]->promo_product == 'promo_products_all') {
+            $totalVal = 0;
+            $distotal = 0;
+            foreach ($cart_products as $value) {
+                // echo $value['product_data']->price . '<br>';
+                // echo $value['product_data']->id . '<br>---';
+                if (isset($value['product_data'])) {
+                    // echo 'in array prod_all<br>'; 
+                    $discount = 0;
+                    $productPrice = $promo_data[0]->discount_value;
+                    $netTotal = $promo_data[0]->discount_value;
+                    // echo $netTotal . '----net_total <br>------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'total_cost' => $netTotal
+                  ];
+                  // echo  'mao ni'.$disProduct;
+                  array_push($product_descount, $disProduct);
+                }
+                $distotal += $discount;
+                $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: ' . $totalVal;
+        }
+          break;
+        case "bxgx":
+          //promo spec prod buy 1 get 1
+               if ($promo_data[0]->promo_product == 'promo_products_specific') {
+                $totalVal = 0;
+                foreach ($cart_products as $key => $value) {
+                    // echo $value['product_data']->price . '<br>';
+                    // echo $value['product_data']->id . '<br>---';
+                    if ($key === 1) {
+                        // echo ' 2nd in array prod_all<br>';
+                        $netTotal = 0; 
+                        // echo $netTotal . '----net_total <br>------------ <br>';
+                        $value['product_data']->price = $netTotal; 
+                    } 
+                    $totalVal += $value['product_data']->price;
+                }
+                // echo 'Total Value: ' . $totalVal;
+                // print_r($cart_products);
+            }
+             //promo cat prod buy 1 get 1
+             if ($promo_data[0]->promo_product == 'promo_products_cat') {
+              $totalVal = 0;
+              foreach ($cart_products as $key => $value) {
+                  // echo $value['product_data']->price . '<br>';
+                  // echo $value['product_data']->id . '<br>---';
+                  if ($key === 1) {
+                      // echo ' 2nd in array prod_all<br>';
+                      $netTotal = 0; 
+                      // echo $netTotal . '----net_total <br>------------ <br>';
+                      $value['product_data']->price = $netTotal; 
+                  } 
+                  $totalVal += $value['product_data']->price;
+              }
+              // echo 'Total Value: ' . $totalVal;
+              // print_r($cart_products);
+          }
+          //promo all buy 1 get 1
+          if ($promo_data[0]->promo_product == 'promo_products_all') {
+            $totalVal = 0;
+            foreach ($cart_products as $key => $value) {
+                // echo $value['product_data']->price . '<br>';
+                // echo $value['product_data']->id . '<br>---';
+                if ($key === 1) {
+                    // echo ' 2nd in array prod_all<br>';
+                    $netTotal = 0; 
+                    // echo $netTotal . '----net_total <br>------------ <br>';
+                    $value['product_data']->price = $netTotal; 
+                } 
+                $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: ' . $totalVal;
+            // print_r($cart_products);
+        }
+          break; 
+        case "bundle":
+          //promo spec prod bundle
+          if($promo_data[0]->promo_product == "promo_products_specific"){
+            $totalVal = 0;
+           
+            $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
+           
+            foreach($cart_products as $value){
+              // echo $value['product_data']->price.'---price<br>';
+              // echo $value['product_data']->id.'---id<br>';
+              
+              if($promo_data[0]->require_purchase == 1){
+                $req_prod = explode(',' , $promo_data[0]->required_product_id);
+                $req_cat = explode(',' , $promo_data[0]->required_category_id);
+                $productPrice = 0;
+                switch(true) {
+                  case in_array($value['product_data']->id, $promo_prod):
+                    // echo '1st array <br>';
+                    $productPrice += $value['product_data']->price;
+                    $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    break; 
+                  case in_array($value['product_data']->id, $req_prod):
+                    // echo '2nd array condition for req_purchase prod<br>';
+                    $productPrice += $value['product_data']->price;
+                    $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                    // echo $netTotal.'----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    break;
+                  case in_array($value['product_data']->category, $req_cat):
+                    // echo '2nd array condition for req_purchase cat<br>';
+                    $productPrice += $value['product_data']->price;
+                    $netTotal = $productPrice - $promo_data[0]->discount_value;
+                    // echo $netTotal.'-----net_total <br> ------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                    break;
+                }
+              } elseif($promo_data[0]->require_purchase == "none"){
+                $productPrice = 0;
+                if(in_array($value['product_data']->id, $promo_prod)){
+                  // echo '1st array for none<br>';
+                  $productPrice += $value['product_data']->price;
+                  $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                  // echo $netTotal.'-----net_total <br> ------------ <br>';
+                  $value['product_data']->price = $netTotal;
+                }
+              }
+              // echo' tama ni<br> ------------ <br>';
+              $totalVal += $value['product_data']->price;
+            }
+            // echo 'Total Value: '.$totalVal;
+          }
+      //promo cat prod bundle
+      if ($promo_data[0]->promo_product == 'promo_products_cat') {
+        $promo_cat = explode(',', $promo_data[0]->discounted_category_id);
+        $totalVal = 0;
+        // print_r($promo_cat);
+        foreach ($cart_products as $value) {
+            // echo $value['product_data']->price . '<br>';
+            // echo $value['product_data']->category . '<br>---';
+            if ($promo_data[0]->require_purchase == 1) {
+                $req_prod = explode(',', $promo_data[0]->required_product_id);
+                $req_cat = explode(',', $promo_data[0]->required_category_id);
+                $productPrice = 0;
+                switch (true) {
+                    case in_array($value['product_data']->category, $promo_cat):
+                        // echo 'in array <br>';
+                        $productPrice += $value['product_data']->price;
+                        $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                        // echo $netTotal . '-----net_total <br> ------------ <br>';
+                        $value['product_data']->price = $netTotal;
+                        break;
+                    case in_array($value['product_data']->id, $req_prod):
+                        // echo '2nd array condition for req_purchase prod in categ<br>';
+                        $productPrice += $value['product_data']->price;
+                        $netTotal = $productPrice -  $promo_data[0]->discount_value;
+                        // echo $netTotal . '-----net_total <br> ------------ <br>';
+                        $value['product_data']->price = $netTotal;
+                        break;
+                    case in_array($value['product_data']->category, $req_cat):
+                        echo '2nd array condition for req_purchase cat in categ<br>';
+                        $productPrice += $value['product_data']->price;
+                        $netTotal = $productPrice - $promo_data[0]->discount_value;
+                        // echo $netTotal . '-----net_total <br> ------------ <br>';
+                        $value['product_data']->price = $netTotal;
+                        break;
+                    default:
+                        break;
+                }
+                // echo ' tama ni<br> ------------ <br>';
+                $totalVal += $value['product_data']->price;
+            } elseif ($promo_data[0]->require_purchase == "none") {
+                $productPrice = 0;
+                if (in_array($value['product_data']->category, $promo_cat)) {
+                    // echo 'in array <br>';
+                    $productPrice += $value['product_data']->price;
+                    $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                    // echo $netTotal . '----net_total <br>------------ <br>';
+                    $value['product_data']->price = $netTotal;
+                }
+                $totalVal += $value['product_data']->price;
+            }
+        }
+        // echo 'Total Value: ' . $totalVal;
+    }
+          //promo all bundle
+          if ($promo_data[0]->promo_product == 'promo_products_all') {
+            $totalPrice = 0;
+            foreach ($cart_products as $value) {
+              // echo $value['product_data']->price . '<br>';
+              // echo $value['product_data']->id . '<br>---';
+              if (isset($value['product_data'])) {
+                // echo 'in array prod_all<br>';
+                $productPrice = $value['product_data']->price;
+                $netTotal = $productPrice  - $promo_data[0]->discount_value;
+                // echo $netTotal . '----net_total <br>------------ <br>';
+                // $value['product_data']->price = $productPrice;
+                
+            }   
+              $totalPrice += $value['product_data']->price;       
+              $totalVal = $totalPrice - $promo_data[0]->discount_value;
+          }
+            // echo 'Total Value: ' . $totalVal;
+            // print_r($cart_products);
+        }
+          break; 
+      }
+      $this->data['totalVal'] = $distotal;
+      $this->data['product_descount'] = $product_descount;
+      $session->discountSub = $this->data['product_descount'];
+      $session->totalSub = $this->data['totalVal'];
 
-  // print_r($data_prod);
-  // return view('/cart/checkout');
+      // return redirect('/cart/checkout');
+      $data_arr = array("success" => TRUE,"message" => 'Promo Code Save!');
+    }else {
+      // echo 'Invalid promo code. Please try again.';
+        //  session()->setFlashdata('error', 'Invalid promo code.');
+        $validationError = json_encode($validation->getErrors());
+        $data_arr = array("success" => FALSE,"message" => 'Invalid promo code.');
+  }
+}else{
+    $data_arr = array("success" => FALSE,"message" => 'No posted data!');
+  }
+  die(json_encode($data_arr));
 }
 }
 

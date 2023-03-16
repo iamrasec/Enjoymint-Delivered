@@ -33,8 +33,18 @@
               <div class="col-lg-12">
                 <h3><?= $order_data->first_name ?> <?= $order_data->first_name ?></h3>
                 <div class="mb-2">Order Key: <input id="order_key" type="text" value="<?= $order_data->order_key; ?>" disabled></div>
-                <div>Order ID: <input id="order_id" type="text" value="<?= $order_data->id; ?>" disabled></div>
-              </div>
+                <div class="mb-2">Order ID: <input id="order_id" type="text" value="<?= $order_data->id; ?>" disabled></div>
+                <form id="update-promo-code" class="enjoymint-form" enctype="multipart/form-data">
+                <div>Promo Code:   <select class="promo-update form-control w-100 border px-2" name="promo_code" style="width:157px;" id="promo_code" onfocus="focused(this)" onfocusout="defocused(this)">
+                 <option value="<?= $order_data->promo_code; ?>"><?= $order_data->promo_code; ?></option>
+                  <?php foreach($all_promo as $promo): ?>
+                    <option value="<?php echo $promo->promo_code; ?>"><?php echo $promo->promo_code; ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <button type="submit" class="btn bg-gradient-primary mb-0 ms-lg-auto me-lg-0 me-auto mt-lg-0 mt-2">Save</button>		 
+                </form>	
+              </div>             
             </div>
 
             <div class="row mt-4">
@@ -50,7 +60,7 @@
                       <input type="hidden" name="delivery_time" id="delivery_time" value="<?= $order_data->delivery_time; ?>">
                     </div>  
                 </div>
-
+            
                 <p class="no-products d-none">There are no products in the cart. Please add a product to cart to save changes.</p>
 
                 <table id="cart_products" class="w-100">
@@ -91,19 +101,19 @@
                 <div class="row mt-3 mb-1">
                   <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
                   <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">Subtotal:</div>
-                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold subtotal_temp">0</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold subtotal_temps">0</div>
                 </div>
 
                 <div class="row mt-3 mb-1">
                   <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
                   <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">Tax:</div>
-                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold tax_temp">0</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold tax_temps">0</div>
                 </div>
 
                 <div class="row mt-3 mb-1">
                   <div class="col-8 col-md-8 d-xs-none d-md-block"></div>
                   <div class="col-2 col-md-2 col-xs-8 text-right fw-bold">TOTAL:</div>
-                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold total_temp">0</div>
+                  <div class="col-2 col-md-2 col-xs-4 text-right fw-bold total_temps">0</div>
                 </div>
 
                 <div class="row mt-5 mb-3">
@@ -251,12 +261,60 @@
 
 <?php $this->section('scripts'); ?>
    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>   
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
+   <script src="<?php echo base_url(); ?>/assets/js/promo_code.js"></script>
 
+   <script>
+
+  // Create our number formatter.
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+      $(document).ready(function() {
+      $('.promo-update').select2({
+        // placeholder: "",
+        // allowClear: true
+      });
+    });
+    var tax = <?= $tax_rate; ?>;  // 35%
+    var subtotal = 0;
+    var subtotalprice = 0;
+    var sub_tax = 0;
+    var total = 0;
+    var priceSub = <?= $pricesubtotal ?>;
+    
+    $(".product-total-price").each(function() {
+
+      if(!priceSub){
+        subtotal += parseFloat($(this).val());
+      }else{
+        subtotalprice += parseFloat($(this).val());
+        subtotal = subtotalprice - priceSub;
+      }
+     
+    });
+    sub_tax = subtotal * (tax - 1);
+    total = subtotal * tax;
+
+    $(".subtotal_temps").html(formatter.format(subtotal));
+    $(".tax_temps").html(formatter.format(sub_tax));
+    $(".total_temps").html(formatter.format(total));
+    console.log(priceSub);
+    console.log(subtotal);
+    console.log(subtotalprice);  
+    console.log(tax)
+   </script>
 <script>
+
 // var jwt = $("[name='atoken']").attr('content');
 
 const order_pids = [<?= $order_pids; ?>];
@@ -452,6 +510,7 @@ $(document).ready(function () {
     data.notes = $("#order_notes").val();
     data.del_date = $("#delivery_date").val();
     data.del_time = $("#delivery_time").val();
+    data.promo_code = $("#promo_code").val();
     data.del_type = $("#del_type").find(":selected").val();
 
     // data.products = $("#edit_order_form");
