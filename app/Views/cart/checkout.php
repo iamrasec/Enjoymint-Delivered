@@ -271,9 +271,15 @@
 				
 			<?php 
 				$subtotal = 0;	
+				$subtotalprice = 0;
 				foreach($cart_products as $product) {
-					// echo "<pre>".print_r($product, 1)."</pre>";
+					// echo "<pre>".print_r($product, 1)."</pre>";					
+					if(!empty($product['priceTotal'])){
+						$subtotalprice += ($product['product_data']->price * $product['qty']);
+						$subtotal = $subtotalprice - $product['priceTotal'];
+					}else{
 					$subtotal += ($product['product_data']->price * $product['qty']);
+					}
 				}
 				$tax_cost = $subtotal * ($tax_rate - 1);
 				$total_cost = $subtotal * $tax_rate;

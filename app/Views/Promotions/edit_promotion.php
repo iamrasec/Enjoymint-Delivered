@@ -30,7 +30,9 @@
   <!-- End Navbar -->
   
   <div class="container-fluid py-4">
-    <form id="edit_promo" class="enjoymint-form" enctype="multipart/form-data">
+    <form id="edit_promotion" class="enjoymint-form" enctype="multipart/form-data">
+    <?php foreach($promo_data as $promo): ?>
+    <input type="hidden" value="<?= $promo->id; ?>" name="id" id="id">
       <div class="row">
         <div class="col-lg-6">
           <h4><?php echo $page_title; ?></h4>
@@ -44,8 +46,8 @@
           <div class="card">
             <div class="card-body">
               <h5 class="font-weight-bolder">Promo Information</h5>
-              <?php foreach($promo_data as $promo): ?>
-                <input type="hidden" value="<?= $promo->id; ?>" name="id" id="id">
+             
+                
               <div class="row mt-4">
                 <div class="col-12 col-md-12 col-xs-12 mb-3">
                   <label class="form-label" for="name">Title</label>
@@ -75,8 +77,8 @@
                 <div class="col-12 col-md-12 col-xs-12 mb-3">
                   <label class="form-label" for="name">Description</label>
                   <div class="input-group input-group-dynamic">
-                    <div id="quill_editor" class="w-100"></div>
-                    <input type="hidden" id="quill_content" value="<?= $promo->description ; ?>" name="description">
+                    <div id="quill_editor" class="w-100"><?= addslashes($promo->description); ?></div>
+                    <input type="hidden" id="quill_content" name="description">
                   </div>
                 </div>
               </div>
@@ -162,7 +164,7 @@
                   <input type="hidden" id="promo-con-cntr" value="1">
 
                   <div class="card" data-promo-condition="1">
-                    <div class="card-body">
+                    <div class="card-body">         
                       <!-- START: Condition #1 -->
                       <strong>Primary Condition</strong>
                       <div class="border p-3" id="primary-condition">
@@ -171,17 +173,20 @@
                             <label class="form-label fw-bold" for="name">Promo Products</label>
                             <div class="d-flex">
                               <div class="form-check me-4">
-                              <?php if($promo->mechanics['promo_products'] != "") : ?>
-                                <input class="form-check-input promo_products" value="<?= $promo['mechanics']->promo_products ; ?>" type="radio" name="promo_products1" id="promo_products_all" value="promo_products_all" data-promo-cond-id="1" checked>
+                     
+                                <input class="form-check-input promo_products" value="" type="radio" name="promo_products1" id="promo_products_all" 
+                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1" checked>
                                 <label class="form-check-label" for="promo_products_all">All Products</label>
                               </div>
-                              <?php endif; ?>
+
                               <div class="form-check me-4">
-                                <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_specific" value="promo_products_specific" data-promo-cond-id="1">
+                                <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_specific" 
+                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_specific">Specific Product(s)</label>
                                 </div>
                               <div class="form-check me-4">
-                                <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_cat" value="promo_products_cat" data-promo-cond-id="1">
+                                <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_cat" 
+                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_cat">Products in Category</label>
                               </div>
                             </div>
@@ -190,7 +195,9 @@
                               <div class="col-12 col-md-12 col-xs-12 mb-3">
                               <label class="form-label" for="promo_products_selected">Select Product(s) Included in the Promo</label>
                               <select class="select2-field promo_products_select_products_select" id="promo_products_select_products_select" name="all_products[]" multiple="multiple">
-                               
+                              <?php foreach($all_products as $product): ?>
+                                <option value="<?= $product->id;?>"><?= $product->name; ?></option>
+                                <?php endforeach; ?>
                               </select>
                               </div>
                             </div>
@@ -199,7 +206,10 @@
                               <div class="col-12 col-md-12 col-xs-12 mb-3">
                               <label class="form-label" for="promo_products_selected">Select Category Included in the Promo</label>
                               <select class="select2-field promo_products_select_cat_select" id="promo_products_select_cat_select" name="all_categories[]" multiple="multiple">
-                                
+                              <?php foreach($all_categories as $category): ?>
+                                <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                                <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $product_categories; ?></option>       
+                              <?php endforeach; ?>  
                               </select>
                               </div>
                             </div>
@@ -209,7 +219,7 @@
                         <div class="row mt-4">
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                             <div class="input-group input-group-dynamic">
-                              <input type="checkbox" id="cond_req_purchase" class="cond_req_purchase" name="cond_req_purchase" data-promo-cond-id="1"> &nbsp; <strong>Require Purchase</strong>
+                              <input type="checkbox" id="cond_req_purchase" class="cond_req_purchase" name="cond_req_purchase" value="<?= $update_data[0]->req_purchase ; ?>" data-promo-cond-id="1"> &nbsp; <strong>Require Purchase</strong>
                               <small class="d-block fs-xs fst-italic ms-2">(The required product will be purchased at REGULAR PRICE)</small>
                             </div>
                           </div>
@@ -222,11 +232,11 @@
                               <label class="form-check-label" for="req_purchase_type_any">Any Product(s)</label>
                             </div>
                             <div class="form-check me-4">
-                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_product" value="req_purchase_type_product" data-promo-cond-id="1">
+                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_product" value="<?= $update_data[0]->req_pp ; ?>" data-promo-cond-id="1">
                               <label class="form-check-label" for="req_purchase_type_product">Specific Product(s)</label>
                             </div>
                             <div class="form-check me-4">
-                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_category" value="req_purchase_type_category" data-promo-cond-id="1">
+                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_category" value="<?= $update_data[0]->req_pp ; ?>" data-promo-cond-id="1">
                               <label class="form-check-label" for="req_purchase_type_category">Products in Category</label>
                             </div>
                           </div>
@@ -236,7 +246,9 @@
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                           <label class="form-label fw-bold" for="required_product">Required Purchase: Select Product(s)</label>
                           <select class="select2-field required_product_select" id="required_product_select" name="all_products[]" multiple="multiple">
-                            
+                            <?php foreach($all_products as $product): ?>
+                              <option value="<?= $product->id; ?>"><?= $product->name; ?></option>
+                              <?php endforeach; ?>
                           </select>
                           </div>
                         </div>
@@ -245,16 +257,20 @@
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                           <label class="form-label fw-bold" for="required_product">Required Purchase: Select Category</label>
                           <select class="select2-field required_category_select" id="required_category_select" name="all_categories[]" multiple="multiple">
-                            
+
+                          <?php foreach($all_categories as $category): ?>
+                            <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
+                             <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $product_categories; ?></option>       
+                          <?php endforeach; ?>  
                           </select>
                           </div>
-                        </div>
+                        </div>  
 
                         <div class="row mt-4 if_required_purchase d-none">
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                             <label class="form-label fw-bold" for="required_product">Required Quantity Purchased <small class="d-block fw-normal fs-xs fst-italic ms-2">(Minimum quantity is 1)</small></label>
                             <div class="input-group input-group-dynamic">
-                              <input type="number" class="req_purchase_qty" id="req_purchase_qty" name="req_purchase_qty" min="1" value="1" step="1">
+                              <input type="number" class="req_purchase_qty" id="req_purchase_qty" name="req_purchase_qty" min="1" value="<?= $update_data[0]->req_pp_qty ; ?>" step="1">
                             </div>
                           </div>
                         </div>
@@ -268,7 +284,7 @@
                               <li><small class="d-block fw-normal fs-xs fst-italic ms-2">Leaving this at 0 will not impose any limitation on the Number of Products Discounted.</small></li>
                             </ul>
                             <div class="input-group input-group-dynamic">
-                              <input type="number" class="num_prod_discounted_cond" id="num_prod_discounted_cond" name="num_prod_discounted_cond" placeholder="0" min="0" value="0" step="1">
+                              <input type="number" class="num_prod_discounted_cond" id="num_prod_discounted_cond" name="num_prod_discounted_cond" placeholder="0" min="0" value="<?= $update_data[0]->req_pp_discounted_counter ; ?>" step="1">
                             </div>
                           </div>
                         </div>
@@ -310,7 +326,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="<?php echo base_url(); ?>/assets/js/edit_promo.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/edit_promotion.js"></script>
 <script>
   var toolbarOptions = [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons

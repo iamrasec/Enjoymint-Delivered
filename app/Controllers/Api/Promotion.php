@@ -255,7 +255,7 @@ class Promotion extends ResourceController
     die(json_encode($data_arr));
   }
 
-  public function edit_promo($id)
+  public function edit_promotion($id)
   {
     $session = session();
     helper(['form', 'functions']); // load helpers
@@ -484,7 +484,7 @@ class Promotion extends ResourceController
 
          }
       
-        $data_arr = array("success" => TRUE,"message" => 'Promotion Saved!');
+        $data_arr = array("success" => TRUE,"message" => 'Promotion Updated!');
       } else {
         $validationError = json_encode($validation->getErrors());
         $data_arr = array("success" => FALSE,"message" => 'Validation Error!'.$validationError);

@@ -116,7 +116,7 @@
       });
     });
   
-      $(document).on("#edit_promo").submit(function(e) {
+      $(document).on("#edit_promotion").submit(function(e) {
         e.preventDefault();
   
         // const formData = new FormData();
@@ -369,8 +369,10 @@
       formData.append('sale_start_date', $('#sale_start_date').val());
       formData.append('sale_end_date', $('#sale_end_date').val());
     }
-  
-    fetch('/api/promotion/edit_promo',  {
+
+    // var id = $('#id').val();
+    
+    fetch('/api/promotion/edit_promotion/' + $('#id').val(),  {
         method: 'POST',
         body: formData,
         headers : {
