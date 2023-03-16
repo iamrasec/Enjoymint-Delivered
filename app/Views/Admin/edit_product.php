@@ -340,62 +340,20 @@
               <div class="card-body">
                 <h6>Active Promotions</h6>
                 <div class="row mt-4">
-                  <?php if(!empty($discount)): ?>
+                  
                   <div class="col-md-12 col-xs-12">
-                    <table class="w-100">
+                  <div class="table-responsive">
+                    <table id="promo-table" class="w-100">
                       <thead>
                         <tr>
                           <th>Promo ID</th>
-                          <th>Variation ID</th>
-                          <th>Discount</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
+                          <th>Promo Title</th>
                           <th>Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <?php foreach($discount as $active_discount): ?>
-                        <?php
-                        $start_date = "";
-                        $end_date = "";
-
-                        if($active_discount->start_date != "") {
-                          $start_raw = explode(" ", $active_discount->start_date);
-                          $start_time = date('h:i a', strtotime($start_raw[1]));
-                          $start_date = $start_raw[0] ." ". $start_time;
-                        }
-
-                        if($active_discount->end_date != "") {
-                          $end_raw = explode(" ", $active_discount->end_date);
-                          $end_time = date('h:i a', strtotime($end_raw[1]));
-                          $end_date = $end_raw[0] ." ". $end_time;
-                        }
-                        
-                        ?>
-                        <tr>
-                          <td><?= $active_discount->id; ?></td>
-                          <td><?= $active_discount->variant_id; ?></td>
-                          <?php if($active_discount->discount_attribute == 'percent'): ?>
-                            <td><?= $active_discount->discount_value; ?>%</td>
-                          <?php elseif($active_discount->discount_attribute == 'fixed'): ?>
-                            <td>$<?= $active_discount->discount_value; ?> Off</td>
-                          <?php else: ?>
-                            <td>$<?= $active_discount->discount_value; ?></td>
-                          <?php endif; ?>
-                          <td><?= $start_date; ?></td>
-                          <td><?= $end_date; ?></td>
-                          <td>
-                            <button type="button" class="btn btn-warning edit-promo-<?= $active_discount->id; ?>"><span class="material-icons">edit</span> Edit</button>
-                            <button type="button" class="btn btn-danger end-promo-<?= $active_discount->id; ?>"><span class="material-icons">block</span> End</button>
-                          </td>
-                        </tr>
-                        <?php endforeach; ?>
-                      </tbody>
                     </table>
                   </div>
-                  <?php else: ?>
-                    <p>No Active Sale/Promotions Available</p>
-                  <?php endif; ?>
+                  </div>
                 </div>
                 <!-- <pre><?= print_r($discount, 1); ?></pre> -->
               </div>
@@ -471,4 +429,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo base_url(); ?>/assets/js/edit_product.js"></script>
+
+<!-- Load Data Table JS -->
+<script src="<?= base_url('assets/js/plugins/jquery.dataTables.min.js') ?>"></script>
+
+<!-- Product List page js -->
+<script>
+  $(document).ready(function () {
+      $('#promo-table').DataTable({
+        // Processing indicator
+        "processing": true,
+        // DataTables server-side processing mode
+        "serverSide": true,
+        // Initial no order.
+        "order": [],
+        // Load data from an Ajax source
+        "ajax": {
+            "url": "<?= base_url('admin/products/getPromoLists'); ?>",
+            "type": "POST"
+        },
+        //Set column definition initialisation properties
+        "columnDefs": [{ 
+            "targets": [0],
+            "orderable": false
+        }]
+    });
+  });
+</script>
+
 <?php $this->endSection() ?>

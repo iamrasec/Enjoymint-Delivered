@@ -21,6 +21,8 @@ class Products extends BaseController {
     $this->order_model = model('CheckoutModel');
     $this->experience_model = model('ExperienceModel');
     $this->discount_model = model('DiscountModel');
+    $this->promo_model = model('PromoModel');
+    $this->promo_products_model = model('PromoProductsModel');
 
     $this->data['user_jwt'] = getSignedJWTForUser($this->guid);
     $this->image_model = model('ImageModel');
@@ -285,6 +287,8 @@ class Products extends BaseController {
   }
 
   public function edit_product($pid) {
+    helper('url');
+    $session = session();
     $page_title = 'Edit Product';
     $this->data['page_body_id'] = "products_list";
     $this->data['breadcrumbs'] = [
@@ -300,8 +304,23 @@ class Products extends BaseController {
     $this->data['experiences'] = $this->experience_model->get()->getResult();
     $this->data['measurements'] = $this->measurement_model->get()->getResult();
     $this->data['discount'] = $this->discount_model->where('pid', $pid)->get()->getResult();
-
+    
+   
+   
+    $this->data['promo'] = $this->promo_products_model->where('discounted_specific_product', $pid)->get()->getResult();
+    // $uri = current_url();
+    // $segments = $this->request->uri->getSegment(4);
+    // $prod_spec = $this->promo_products_model->select('promo_id')
+    // ->like('discounted_specific_product', $segments)
+    // ->get()
+    // ->getResult();
+    // print_r($prod_spec);
     if(!empty($this->data['discount'])) {
+      for($i = 0; $i < count($this->data['discount']); $i++) {
+        
+      }
+    }
+    if(!empty($this->data['promo'])) {
       for($i = 0; $i < count($this->data['discount']); $i++) {
         
       }
@@ -317,7 +336,7 @@ class Products extends BaseController {
         $imageIds = explode(',',$product->images);
         $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
     }
-
+    
     $categories = $this->product_category->select('cid')->where('pid', $pid)->get()->getResult();
     $experience = $this->product_experience->select('exp_id')->where('pid', $pid)->get()->getResult();
     $assignedCat = [];
@@ -416,7 +435,7 @@ class Products extends BaseController {
       $this->product_model->where("stocks <= lowstock_threshold");
       $this->product_model->where("stocks > 0");
     }
-
+ 
     if($state == 'out-of-stock') {
       $this->product_model->where("stocks = 0");
     }
@@ -445,4 +464,54 @@ class Products extends BaseController {
     exit();
   }
 
+  public function getPromoLists()
+  {
+   
+    $data  = array();
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+    $uri = current_url();
+    $segments = $this->request->uri->getSegment(4);
+
+    $promo_products = "promo_products_all";
+   // $promo_products1 = "promo_products_cat";
+    $promo_all = $this->promo_model->select('*')
+      ->like('mechanics', $promo_products)
+      ->limit($length, $start)
+      ->get()
+      ->getResult();
+
+  // $cat_id = $session->get('cat_id');
+  // $categories = $this->category_model->get()->getResult();
+  //  $data = $this->promo_products_model->get()->getResults();
+  //  foreach($data as $pid){
+  //   if(in_array($pid))
+
+    $prodSpec = $this->promo_model->select('*')
+    ->where('JSON_CONTAINS(mechanics, \'{"products_specific": "'.$segments.'"}\')')
+    ->limit($length, $start)
+    ->get()
+    ->getResult();
+    
+     $merged = array_merge($promo_all, $prodSpec);
+    // print_r($merged);
+    foreach($merged as $promo_data){
+        $start++;
+      $data[] = array(
+        $promo_data->id, 
+        $promo_data->title, 
+        '<a href='.base_url('admin/promotion/').' target="_blank">view</a> | <a href='.base_url('admin/promotion/edit_promo/').'>edit</a>',
+      );
+    }
+
+    $output = array(
+      // "draw" => $_POST['draw'],
+      "recordsTotal" => $this->promo_model->countAll(),
+      "recordsFiltered" => $this->promo_model->countAll(),
+      "data" => $data,
+    );
+    
+    echo json_encode($output);
+    
+  }
 }

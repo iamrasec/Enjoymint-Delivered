@@ -1121,7 +1121,7 @@ public function uploadID(){
 					],
 				],
 				'email' => [
-					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email]',  // check if email is valid.  check if email is unique on users table
+					'rules' => 'min_length[6]|max_length[50]|valid_email|is_unique[users.email, id, '.$id.']',  // check if email is valid.  check if email is unique on users table
 					'errors' => [
 						'min_length' => 'Email should be longer than 6 characters.',
 						'max_length' => 'Email should be no longer than 50 characters.',

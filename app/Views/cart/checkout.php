@@ -203,6 +203,9 @@
                     <label class="for-checkbox-tools" for="tool-4">Debit Card</label>
 					</div>
 				</div>						
+									<span class="text-sm">Payments will be collected upon delivery.</span>
+                </div>
+
               </div>
             </div>
 						<div class="row mb-4">
