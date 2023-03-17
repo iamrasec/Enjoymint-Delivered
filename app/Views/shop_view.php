@@ -26,7 +26,7 @@
           <h1>Shop</h1>
          
             <div class="search" style="text-align: right ;">
-            <button class="btn bg-primary-green"><a href="<?= base_url('promo_view'); ?>"> Sale and Promo Page </a></button><br>
+            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage'); ?>"> Sale and Promo Page </a></button><br>
             <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
