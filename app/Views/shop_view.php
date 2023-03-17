@@ -24,8 +24,9 @@
           <h1>Fast Tracked Shop</h1>
           <?php else: ?>
           <h1>Shop</h1>
+         
             <div class="search" style="text-align: right ;">
-            <button type="submit" class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage')?>">Products Promo</a></button>
+            <button class="btn bg-primary-green"><a href="<?= base_url('promo_view'); ?>"> Sale and Promo Page </a></button><br>
             <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
             <button type="submit" class="btn bg-primary-green">Search</button>
@@ -50,26 +51,26 @@
            </div> 
            <?php endif; ?>      
 
-            <?php foreach($products as $product): ?>
-            <!-- <pre><?php print_r($product); ?></pre> -->
+            <?php for($i = 0; $i < count($products); $i++): ?>
+           
             <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
               <div class="card product-featured">
                 <div class="img-wrap">          
                   <?php 
-                    $url = !empty($searchData) ? $product['url'] : $product['url'];
-                    if(isset($product['images'][0])):
+                    $url = !empty($searchData) ? $products[$i]['url'] : $products[$i]['url'] ;
+                    if(isset($products['images'][0])):
                   ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product['images'][0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$products['images'][0]->filename); ?>" /></a>
                   <?php else: ?>
                   <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                   <?php endif; ?>
                 </div>
                 <div class="product-info d-flex flex-column px-2">
-                  <a href="<?= base_url('products/'. $product['url']); ?>"><h5><?=  $product['name']; ?></h5></a>
+                  <a href="<?= base_url('products/'. $products[$i]['url'] ); ?>"><h5><?=  $products[$i]['name']; ?></h5></a>
                   <div class="product-info-bottom d-flex flex-column mt-auto">
                     <p>
-                      <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $product['thc_value'] . (($product['thc_unit'] == 'pct') ? '%' : $product['thc_unit']); ?></span> 
-                      <?php if($product['stocks'] > 0): ?>
+                      <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $products[$i]['thc_value'] . (($products[$i]['thc_unit'] == 'pct') ? '%' : $products[$i]['thc_unit']); ?></span> 
+                      <?php if($products[$i]['stocks'] > 0): ?>
                       <?php $btn_disabled = ''; ?>
                       <span class="badge text-bg-success">In Stock</span>
                       <?php else: ?>
@@ -80,33 +81,33 @@
                     <hr id="color" class="mt-0">
 
                     <?php 
-                    switch(trim($product['unit_measure'])){
+                    switch(trim($products[$i]['unit_measure'])){
                       case 'mg':
-                        $base_product_unit = $product['unit_value'] . " mg.";
+                        $base_product_unit = $products[$i]['unit_value'] . " mg.";
                         break;
                       case 'g':
-                        if($product['unit_value'] > 1) {
-                          $base_product_unit = $product['unit_value'] . " grams";
+                        if($products[$i]['unit_value'] > 1) {
+                          $base_product_unit = $products[$i]['unit_value'] . " grams";
                         }
                         else {
-                          $base_product_unit = $product['unit_value'] . " gram";
+                          $base_product_unit = $products[$i]['unit_value'] . " gram";
                         }
                         
                         break;
                       case 'oz':
-                        $base_product_unit = $product['unit_value'] . " ounces";
+                        $base_product_unit = $products[$i]['unit_value'] . " ounces";
                         break;
                       case 'piece':
-                        if($product['unit_value'] == 1) {
+                        if($products[$i]['unit_value'] == 1) {
                           // $base_product_unit = "each";
-                          $base_product_unit = round($product['unit_value']) . " piece";
+                          $base_product_unit = round($products[$i]['unit_value']) . " piece";
                         }
                         else {
-                          $base_product_unit = round($product['unit_value']) . " pieces";
+                          $base_product_unit = round($products[$i]['unit_value']) . " pieces";
                         }
                         break;
                       case 'pct':
-                        $base_product_unit = $product['unit_value'] . "%";
+                        $base_product_unit = $products[$i]['unit_value'] . "%";
                         // if($product['unit_value'] == 1) {
                         //   $base_product_unit = "each";
                         // }
@@ -117,25 +118,28 @@
                     } 
                     ?>
 
-                    <?php if($product['has_variant'] == 1): ?>
+                    <?php if($products[$i]['has_variant'] == 1): ?>
                       <?php include('templates/_product_variation_selector.php'); ?>
                     <?php else: ?>
-                      <?php if($product['on_sale'] == 1) : ?>   
-                      <div class="price p-2 mb-3 fw-bold" style="text-decoration: line-through;">$<?= $product['price']; ?></div>
-                      <div class="price p-2 mb-3 fw-bold">$<span><?= $sale_price; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+                      <?php if($products[$i]['on_sale'] == 1) : ?>  
+                     
+                      <div class="price p-2 mb-3 fw-bold" style="text-decoration: line-through; color: red;">$<?= $products[$i]['price']; ?></div>
+        
+                      <div class="price p-2 mb-3 fw-bold" >$<span><?= $sale_price[$i]; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+                     
                       <?php else: ?>
-                      <div class="price p-2 mb-3 fw-bold">$<span><?= $product['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+                      <div class="price p-2 mb-3 fw-bold">$<span><?= $products[$i]['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
                       <?php endif; ?>
                       <?php endif; ?>
                     
                     <hr id="color" class="mt-0">
-                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product['stocks'] > 0 && $product['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $product['stocks']; ?> left!</div>
-                    <?php if($product['stocks'] > 0): ?>  
-                    <button class="btn add-to-cart add-product-<?= $product['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0">
+                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($products[$i]['stocks'] > 0 && $products[$i]['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $products[$i]['stocks']; ?> left!</div>
+                    <?php if($products[$i]['stocks'] > 0): ?>  
+                    <button class="btn add-to-cart add-product-<?= $products[$i]['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $products[$i]['id']; ?>" data-vid="0">
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
-                    <?php elseif($product['stocks'] <= 0): ?>
-                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product['id']; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
+                    <?php elseif($products[$i]['stocks'] <= 0): ?>
+                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $products[$i]['id']; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
                       <span class="material-icons">add_shopping_cart</span> Add to Cart
                     </button>
                     <?php endif; ?>
@@ -144,7 +148,7 @@
                 </div>
               </div>
             </div>
-            <?php endforeach; ?>
+            <?php endfor; ?>
           </div>
           <div><?= $pager->links() ?></div>
           <?php else: ?>
