@@ -28,7 +28,8 @@ class Shop extends BaseController
         $this->productcategory_model = model('ProductCategory');
         $this->user_model = model('UserModel');
         $this->discount_model = model('DiscountModel');
-    
+        $this->promo_model = model('PromoModel');
+        
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');

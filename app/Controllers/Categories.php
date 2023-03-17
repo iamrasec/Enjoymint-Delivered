@@ -20,6 +20,7 @@ class Categories extends BaseController
         $this->category_model = model('CategoryModel');
         $this->measurement_model = model('MeasurementModel');
         $this->location_model = model('LocationModel');
+        $this->discount_model = model('DiscountModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
@@ -55,7 +56,24 @@ class Categories extends BaseController
 
         $product_arr = [];
         $count = 0;
+        $price = [];
         foreach($all_products as $product) {
+            if($product['on_sale'] == 1){
+                $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                if(!empty($discount)){
+                if($discount[0]->discount_attribute == "percent"){
+                $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                 $sale_price = $product['price'] - $new_price;
+                // print_r($this->data['sale_price']);
+                }elseif($discount[0]->discount_attribute == "fixed"){
+                    $sale_price = $product['price'] - $discount[0]->discount_value ;
+                }elseif($discount[0]->discount_attribute == "sale_price"){
+                    $sale_price = $discount[0]->discount_value;
+                }
+                $price[$count] = $sale_price;
+                
+            }
+        }
             $product_arr[$count] = $product;
             if($product['images']) {
                 $imageIds = [];
@@ -73,6 +91,7 @@ class Categories extends BaseController
         }
 
         $this->data['uid'] = $user_id;
+        $this->data['sale_price'] = $price;
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->category_model->pager;
         $this->data['categories'] = $this->category_model->get()->getResult();
