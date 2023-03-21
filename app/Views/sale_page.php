@@ -3,9 +3,9 @@
 <?php $this->section("styles") ?>
 <link id="pagestyle" href="<?php echo base_url('assets/css/shop-view.css'); ?>" rel="stylesheet" />
 <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.css" /> -->
-<!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
+  <!-- <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />   -->
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-<?php $this->endSection() ?>
+  <?php $this->endSection() ?>
     
 <?php $this->section("content") ?>
 
@@ -15,143 +15,29 @@
   <section class="pt-3 pb-4" id="popular-products">
     <div class="container">
       <div class="row">
-        <button id="product-filter-toggle" class="d-block d-lg-none text-center">Filter</button>
         
-        <?php echo $this->include('templates/_product_filter.php'); ?>
-        
-        <div class="col-lg-10 col-sm-12 mt-5 text-center">
-          <?php if($fast_tracked == true): ?>
-          <h1>Fast Tracked Shop</h1>
-          <?php else: ?>
-          <h1>Shop</h1>
-            
-            <div class="search" style="text-align: right ;">
-            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/salePage'); ?>">Sale Page</a></button><br>
-            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage'); ?>">Promo Page</a></button><br>
-            <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
-            <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
-            <button type="submit" class="btn bg-primary-green">Search</button>
+        <div class="col-lg-12 col-sm-12 mt-5 text-center">
+          <h1>Product Sale Page</h1>
+            <div class="search" style="text-align: left ;">
+            <button type="submit" class="btn bg-primary-green"><a href="<?= base_url('/shop/')?>">Back</a></button>
             </div>
-          </form>
           <br>
-          <?php endif; ?>
+          
           <?php if(!empty($products)): ?>
           <div id="products-list-view" class="row">
               
-            <?php if($fast_tracked == false): ?>
-            <div class="input-group" style="float: right; margin-top:-27px; margin-left: -73px;">
-              <div class="input-group-prepend">
-                <button type="button" id="toggle" class="input-group-text">    
-                <label class="text-black" style="font-weight: bold; font-size: 16px; margin-top: -30px; margin-right: -128px;">
-                Delivery Schedule</label> 
-                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;
-                <input type="hidden" id="picker" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
-                <span class="del_date_display text-black">Delivery Schedule</span>
-                </button>
-              </div>
-           </div> 
-           <?php endif; ?>      
-
-            <?php for($i = 0; $i < count($products); $i++): ?>
-           
-            <div class="col-lg-3 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
-              <div class="card product-featured">
-                <div class="img-wrap">          
-                  <?php 
-                    $url = !empty($searchData) ? $products[$i]['url'] : $products[$i]['url'] ;
-                    if(isset($products['images'][0])):
-                  ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$products['images'][0]->filename); ?>" /></a>
-                  <?php else: ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
-                  <?php endif; ?>
-                </div>
+            <?php foreach($products as $product): ?>
+              <!-- <pre><?php print_r($product); ?></pre> -->
+            <div class="col-lg-2 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
+              <div class="card" style="height: 100px;">
                 <div class="product-info d-flex flex-column px-2">
-                  <a href="<?= base_url('products/'. $products[$i]['url'] ); ?>"><h5><?=  $products[$i]['name']; ?></h5></a>
-                  <div class="product-info-bottom d-flex flex-column mt-auto">
-                    <p>
-                      <span class="badge bg-dark"><span class="text-warning">THC</span> <?= $products[$i]['thc_value'] . (($products[$i]['thc_unit'] == 'pct') ? '%' : $products[$i]['thc_unit']); ?></span> 
-                      <?php if($products[$i]['stocks'] > 0): ?>
-                      <?php $btn_disabled = ''; ?>
-                      <span class="badge text-bg-success">In Stock</span>
-                      <?php else: ?>
-                      <?php $btn_disabled = 'disabled'; ?>
-                      <span class="badge text-bg-danger">Out Of Stock</span>
-                      <?php endif; ?>
-                    </p>
-                    <hr id="color" class="mt-0">
-
-                    <?php 
-                    switch(trim($products[$i]['unit_measure'])){
-                      case 'mg':
-                        $base_product_unit = $products[$i]['unit_value'] . " mg.";
-                        break;
-                      case 'g':
-                        if($products[$i]['unit_value'] > 1) {
-                          $base_product_unit = $products[$i]['unit_value'] . " grams";
-                        }
-                        else {
-                          $base_product_unit = $products[$i]['unit_value'] . " gram";
-                        }
-                        
-                        break;
-                      case 'oz':
-                        $base_product_unit = $products[$i]['unit_value'] . " ounces";
-                        break;
-                      case 'piece':
-                        if($products[$i]['unit_value'] == 1) {
-                          // $base_product_unit = "each";
-                          $base_product_unit = round($products[$i]['unit_value']) . " piece";
-                        }
-                        else {
-                          $base_product_unit = round($products[$i]['unit_value']) . " pieces";
-                        }
-                        break;
-                      case 'pct':
-                        $base_product_unit = $products[$i]['unit_value'] . "%";
-                        // if($product['unit_value'] == 1) {
-                        //   $base_product_unit = "each";
-                        // }
-                        // else {
-                        //   $base_product_unit = round($product['unit_value']) . " pieces";
-                        // }
-                        break;
-                    } 
-                    ?>
-
-                    <?php if($products[$i]['has_variant'] == 1): ?>
-                      <?php include('templates/_product_variation_selector.php'); ?>
-                    <?php else: ?>
-                      <?php if($products[$i]['on_sale'] == 1) : ?>  
-                     
-                      <div class="price p-2 mb-3 fw-bold" style="text-decoration: line-through; color: red;">$<?= $products[$i]['price']; ?></div>
-        
-                      <div class="price p-2 mb-3 fw-bold" >$<span><?= $sale_price[$i]; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
-                     
-                      <?php else: ?>
-                      <div class="price p-2 mb-3 fw-bold">$<span><?= $products[$i]['price']; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
-                      <?php endif; ?>
-                      <?php endif; ?>
-                    
-                    <hr id="color" class="mt-0">
-                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($products[$i]['stocks'] > 0 && $products[$i]['stocks'] <= 5) ? '' : 'd-none' ?>">Only <?= $products[$i]['stocks']; ?> left!</div>
-                    <?php if($products[$i]['stocks'] > 0): ?>  
-                    <button class="btn add-to-cart add-product-<?= $products[$i]['id']; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $products[$i]['id']; ?>" data-vid="0">
-                      <span class="material-icons">add_shopping_cart</span> Add to Cart
-                    </button>
-                    <?php elseif($products[$i]['stocks'] <= 0): ?>
-                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $products[$i]['id']; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
-                      <span class="material-icons">add_shopping_cart</span> Add to Cart
-                    </button>
-                    <?php endif; ?>
-                    <div class="lds-hourglass d-none"></div>
-                  </div>
+                  <a href="<?= base_url('promotion/index/'. $product->url); ?>"><h5><?=  $product->name; ?></h5></a>
                 </div>
               </div>
             </div>
-            <?php endfor; ?>
+            <?php endforeach; ?>
           </div>
-          <div><?= $pager->links() ?></div>
+          
           <?php else: ?>
           <div class="mt-5"><p>No Products Available.</p></div>
           <?php endif; ?>
@@ -227,7 +113,6 @@ optionsList.forEach(o => {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url('assets/js/product-filter.js'); ?>"></script>
-<script src="<?= base_url('assets/js/product-variation-selector.js'); ?>"></script>
 <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -363,16 +248,12 @@ optionsList.forEach(o => {
     // console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
-    let vid = $(this).data('vid');
     let qty = 1;
     let get_cookie = '';
     let cookie_products = [];
 
-    // console.log("add to cart: PID: " + pid);
-    // console.log("add to cart: VID: " + vid);
-
     if($("[name='atoken']").attr('content') != "") {
-      add_to_cart(<?= $uid; ?>, pid, qty, vid);
+      add_to_cart(<?= $uid; ?>, pid, qty);
     }
     else {
       // Current user is not logged in
