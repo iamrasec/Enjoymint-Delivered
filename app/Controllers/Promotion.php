@@ -53,21 +53,10 @@ class Promotion extends BaseController
             $product = $this->product_model->get()->getResult();
             return $this->view_all_products();
         }
-        // $ip_views = $this->request->getIPAddress();
-        // $newData = ['ip_views' => $ip_views]; 
-        // $checkIp = $this->pagecounter_model->where('ip_views', $newData)->first();
-        // if($checkIp){
-        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
-        // }
-        // else {  
-        //     $page_data['stock'] = $this->product_model->where('id', 2)->select('stocks')->first();
-        //     $page_data['ip_views'] = $this->pagecounter_model->countAll();
-        //     $this->pagecounter_model->save($newData);
-        // }
+       
 
         $session->product_id = $product;
-        
+       // print_r($product);
         $page_title = $product->title;
 
         $this->data['page_body_id'] = "product-".$product->id;
@@ -185,6 +174,7 @@ class Promotion extends BaseController
           $this->data['product_data'] = null;
         }
        //print_r($this->data['product_data'] );
-        echo view('promo_view', $this->data);
+        // echo view('promo_view', $this->data);
+        return view('promo_view', $this->data);
     }
 }
