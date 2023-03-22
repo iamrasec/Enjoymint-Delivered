@@ -75,7 +75,7 @@
                         $base_product_unit = $products[$i]['unit_value'] . " mg.";
                         break;
                       case 'g':
-                        if($product['unit_value'] > 1) {
+                        if($products[$i]['unit_value'] > 1) {
                           $base_product_unit = $products[$i]['unit_value'] . " grams";
                         }
                         else {
