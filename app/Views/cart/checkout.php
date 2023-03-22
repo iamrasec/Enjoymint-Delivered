@@ -277,9 +277,9 @@
 				$subtotalprice = 0;
 				foreach($cart_products as $product) {
 					// echo "<pre>".print_r($product, 1)."</pre>";					
-					if(!empty($product['priceTotal'])){
+					if(!empty($product['priceTotal']) && !empty($product['sale_total'])){
 						$subtotalprice += ($product['product_data']->price * $product['qty']);
-						$subtotal = $subtotalprice - $product['priceTotal'];
+						$subtotal = ($subtotalprice - ($product['priceTotal'] + $product['sale_total']));
 					}else{
 					$subtotal += ($product['product_data']->price * $product['qty']);
 					}

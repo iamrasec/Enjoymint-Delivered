@@ -105,10 +105,24 @@
                                 <?php for($x = 0; $x<count($discount_data); $x++){
                                   if($discount_data[$x]['id'] === $product['pid']){
                                     ?>
-                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">$<?= $discount_data[$x]['discounted_price'] * $product['qty']; ?></strong><br>
+                                      
+                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">-$<?= $discount_data[$x]['discounted_price'] * $product['qty']; ?></strong><br>
                                    <strong class="total-price-display" style="color:red;">$<?= $discount_data[$x]['total_cost'] * $product['qty']; ?></strong><br>
                                   <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                                   <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
+                                <?php
+                                  }
+                                } ?>
+                                
+
+                                  <?php }elseif (in_array($product['pid'], $dissale_id)){ ?>
+                                  <?php for($x = 0; $x<count($sale_discount); $x++){
+                                  if($sale_discount[$x]['id'] === $product['pid']){
+                                    ?>
+                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">-$<?= $sale_discount[$x]['dis_sale'] * $product['qty']; ?></strong><br>
+                                   <strong class="total-price-display" style="color:red;">$<?= $sale_discount[$x]['saleTotal'] * $product['qty']; ?></strong><br>
+                                  <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
+                                  <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($sale_discount[$x]['origPrice'] * $product['qty'], 2, '.', ','); ?></strong>
                                 <?php
                                   }
                                 } ?>
