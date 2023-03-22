@@ -52,7 +52,7 @@ class Cart extends BaseController
       $discount_data[] = [
         'id' => $discount_prod['id'],
         'discounted_price' => $discount_prod['discounted_price'],
-        'percent_price' => $discount_prod['percent_price'],
+        'promo_type' => $discount_prod['promo_type'],
         'total_cost' => $discount_prod['total_cost'],
       ];
     }
@@ -110,8 +110,8 @@ class Cart extends BaseController
     $sale_price = $this->discount_model->get()->getResult();
     //print_r($sale_price);
     $sale_discount = [];
-    if (!empty($sale_price) && $sale_price[0]->status == 1) {
-      $sale_total = 0;
+    $sale_total = 0;
+    if (!empty($sale_price) && $sale_price[0]->status == 1) { 
   
       foreach ($cart_products as $cart) {
           $cart_item_id = $cart['product_data']->id;
@@ -140,7 +140,6 @@ class Cart extends BaseController
                     break;
                 case 'sale_price':
                     $dis_sale = $sale_price[0]->discount_value;
-                    echo "lle". $dis_sale;
                     $netTotal = $dis_sale;
                     break;
             }
@@ -158,7 +157,7 @@ class Cart extends BaseController
             $sale_total += $dis_sale;
         }
       }
-      echo '<br>Total sale: ' . $sale_total . '<br>';
+      // echo '<br>Total sale: ' . $sale_total . '<br>';
   }
   
     $this->data['sale_total'] = $sale_total;
@@ -166,7 +165,7 @@ class Cart extends BaseController
     $this->data['cart_products'] = $cart_products;
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
-    print_r($this->data['sale_discount']);
+    // print_r($this->data['sale_discount']);
     //echo 'Sale Discount------' . print_r($this->data['sale_discount'], true) . '<br>';
     //echo 'Promo Discount------' . print_r($this->data['discount_data'], true);
     $discount_id = [];
@@ -182,7 +181,7 @@ class Cart extends BaseController
   }
 }
     $this->data['dissale_id'] = $dissale_id;
-    print_r($this->data['dissale_id']);
+    // print_r($this->data['dissale_id']);
     $session->sale_id =  $dissale_id;
     $this->data['discount_id'] = $discount_id;
     $this->data['guid'] = ($this->guid > 0) ? $this->guid : 0;
@@ -783,7 +782,7 @@ class Cart extends BaseController
     $promo_data = $this->promo_model->getPromo($promo);
 
     $product_descount = [];
-    
+     
     // $this->data['prom_data'] = $promo_data;         
     // $test = json_encode($promo_data);
     // print_r($promo_data);
@@ -817,6 +816,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -833,6 +833,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -849,6 +850,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -873,6 +875,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal,
                   ];
                   //echo 'Total Value: ' . $per_price;
@@ -915,6 +918,7 @@ class Cart extends BaseController
                               'id' => $value['product_data']->id,
                               'discounted_price' => $discount,
                               'percent_price' => $per_price,
+                              'promo_type' => $promo_data[0]->promo_type,
                               'total_cost' => $netTotal
                           ];
                             array_push($product_descount, $disProduct);
@@ -932,6 +936,7 @@ class Cart extends BaseController
                               'id' => $value['product_data']->id,
                               'discounted_price' => $discount,
                               'percent_price' => $per_price,
+                              'promo_type' => $promo_data[0]->promo_type,
                               'total_cost' => $netTotal
                           ];
                             array_push($product_descount, $disProduct);
@@ -949,6 +954,7 @@ class Cart extends BaseController
                               'id' => $value['product_data']->id,
                               'discounted_price' => $discount,
                               'percent_price' => $per_price,
+                              'promo_type' => $promo_data[0]->promo_type,
                               'total_cost' => $netTotal
                           ];
                             array_push($product_descount, $disProduct);
@@ -973,6 +979,7 @@ class Cart extends BaseController
                           'id' => $value['product_data']->id,
                           'discounted_price' => $discount,
                           'percent_price' => $per_price,
+                          'promo_type' => $promo_data[0]->promo_type,
                           'total_cost' => $netTotal
                       ];
                       // echo  'mao ni'.$disProduct;
@@ -1006,6 +1013,7 @@ class Cart extends BaseController
                         'id' => $value['product_data']->id,
                         'discounted_price' => $discount,
                         'percent_price' => $per_price,
+                        'promo_type' => $promo_data[0]->promo_type,
                         'total_cost' => $netTotal
                     ];
                     // echo  'mao ni'.$disProduct;
@@ -1046,6 +1054,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1062,6 +1071,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1078,6 +1088,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1099,6 +1110,7 @@ class Cart extends BaseController
                     'id' => $value['product_data']->id,
                     'discounted_price' => $discount,
                     'percent_price' => $per_price,
+                    'promo_type' => $promo_data[0]->promo_type,
                     'total_cost' => $netTotal
                 ];
                 // echo  'mao ni'.$disProduct;
@@ -1139,6 +1151,7 @@ class Cart extends BaseController
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
                                 'percent_price' => $per_price,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1155,6 +1168,7 @@ class Cart extends BaseController
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
                                 'percent_price' => $per_price,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1171,6 +1185,7 @@ class Cart extends BaseController
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
                                 'percent_price' => $per_price,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1194,6 +1209,7 @@ class Cart extends BaseController
                             'id' => $value['product_data']->id,
                             'discounted_price' => $discount,
                             'percent_price' => $per_price,
+                            'promo_type' => $promo_data[0]->promo_type,
                             'total_cost' => $netTotal
                         ];
                         // echo  'mao ni'.$disProduct;
@@ -1227,6 +1243,7 @@ class Cart extends BaseController
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
                       'percent_price' => $per_price,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                   // echo  'mao ni'.$disProduct;
@@ -1265,6 +1282,8 @@ class Cart extends BaseController
                     $disProduct = [
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
+                      'promo_type' => $promo_data[0]->promo_type,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1278,6 +1297,7 @@ class Cart extends BaseController
                     $disProduct = [
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1291,6 +1311,7 @@ class Cart extends BaseController
                     $disProduct = [
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                     array_push($product_descount, $disProduct);
@@ -1309,6 +1330,7 @@ class Cart extends BaseController
                   $disProduct = [
                     'id' => $value['product_data']->id,
                     'discounted_price' => $discount,
+                    'promo_type' => $promo_data[0]->promo_type,
                     'total_cost' => $netTotal
                 ];
                 // echo  'mao ni'.$disProduct;
@@ -1347,6 +1369,7 @@ class Cart extends BaseController
                               $disProduct = [
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1360,6 +1383,7 @@ class Cart extends BaseController
                               $disProduct = [
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1373,6 +1397,7 @@ class Cart extends BaseController
                               $disProduct = [
                                 'id' => $value['product_data']->id,
                                 'discounted_price' => $discount,
+                                'promo_type' => $promo_data[0]->promo_type,
                                 'total_cost' => $netTotal
                             ];
                               array_push($product_descount, $disProduct);
@@ -1395,6 +1420,7 @@ class Cart extends BaseController
                           $disProduct = [
                             'id' => $value['product_data']->id,
                             'discounted_price' => $discount,
+                            'promo_type' => $promo_data[0]->promo_type,
                             'total_cost' => $netTotal
                         ];
                         // echo  'mao ni'.$disProduct;
@@ -1425,6 +1451,7 @@ class Cart extends BaseController
                     $disProduct = [
                       'id' => $value['product_data']->id,
                       'discounted_price' => $discount,
+                      'promo_type' => $promo_data[0]->promo_type,
                       'total_cost' => $netTotal
                   ];
                   // echo  'mao ni'.$disProduct;
@@ -1440,51 +1467,88 @@ class Cart extends BaseController
         case "bxgx":
           //promo spec prod buy 1 get 1
                if ($promo_data[0]->promo_product == 'promo_products_specific') {
-                $totalVal = 0;
+                $distotal = 0;
+                $promo_prod = explode(',' , $promo_data[0]->discounted_specific_product);
                 foreach ($cart_products as $key => $value) {
                     // echo $value['product_data']->price . '<br>';
                     // echo $value['product_data']->id . '<br>---';
+                    if(!in_array($value['product_data']->id, $sale_id)){
                     if ($key === 1) {
-                        // echo ' 2nd in array prod_all<br>';
-                        $netTotal = 0; 
+
+                    $discount = 0;    
+                    $netTotal = 0; 
+                        
                         // echo $netTotal . '----net_total <br>------------ <br>';
                         $value['product_data']->price = $netTotal; 
+                        $disProduct = [
+                          'id' => $value['product_data']->id,
+                          'discounted_price' => $discount,
+                          'promo_type' => $promo_data[0]->promo_type,
+                          'total_cost' => $netTotal
+                      ];
+                      // echo  'mao ni'.$disProduct;
+                      array_push($product_descount, $disProduct);
                     } 
-                    $totalVal += $value['product_data']->price;
+                    $distotal += $value['product_data']->price;
+                  } 
                 }
                 // echo 'Total Value: ' . $totalVal;
                 // print_r($cart_products);
             }
              //promo cat prod buy 1 get 1
              if ($promo_data[0]->promo_product == 'promo_products_cat') {
-              $totalVal = 0;
+              $distotal = 0;
               foreach ($cart_products as $key => $value) {
                   // echo $value['product_data']->price . '<br>';
                   // echo $value['product_data']->id . '<br>---';
+                  if(!in_array($value['product_data']->id, $sale_id)){
                   if ($key === 1) {
                       // echo ' 2nd in array prod_all<br>';
+                      $discount = 0; 
                       $netTotal = 0; 
                       // echo $netTotal . '----net_total <br>------------ <br>';
                       $value['product_data']->price = $netTotal; 
+                      $disProduct = [
+                        'id' => $value['product_data']->id,
+                        'discounted_price' => $discount,
+                        'promo_type' => $promo_data[0]->promo_type,
+                        'total_cost' => $netTotal
+                    ];
+                    // echo  'mao ni'.$disProduct;
+                    array_push($product_descount, $disProduct);
                   } 
-                  $totalVal += $value['product_data']->price;
+                  $distotal += $value['product_data']->price;
+                }
+                  // $totalVal += $value['product_data']->price;
               }
               // echo 'Total Value: ' . $totalVal;
               // print_r($cart_products);
           }
           //promo all buy 1 get 1
           if ($promo_data[0]->promo_product == 'promo_products_all') {
-            $totalVal = 0;
+            $distotal = 0;
             foreach ($cart_products as $key => $value) {
                 // echo $value['product_data']->price . '<br>';
                 // echo $value['product_data']->id . '<br>---';
+                if(!in_array($value['product_data']->id, $sale_id)){
                 if ($key === 1) {
                     // echo ' 2nd in array prod_all<br>';
+                    $discount = 0; 
                     $netTotal = 0; 
                     // echo $netTotal . '----net_total <br>------------ <br>';
                     $value['product_data']->price = $netTotal; 
+                    $disProduct = [
+                      'id' => $value['product_data']->id,
+                      'discounted_price' => $discount,
+                      'promo_type' => $promo_data[0]->promo_type,
+                      'total_cost' => $netTotal
+                  ];
+                  // echo  'mao ni'.$disProduct;
+                  array_push($product_descount, $disProduct);
                 } 
-                $totalVal += $value['product_data']->price;
+                $distotal += $value['product_data']->price;
+              }
+                // $totalVal += $value['product_data']->price;
             }
             // echo 'Total Value: ' . $totalVal;
             // print_r($cart_products);
