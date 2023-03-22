@@ -140,7 +140,7 @@
             <span class="nav-link-text ms-2 ps-1">Promotions</span>
           </a>
           <div class="collapse" id="promotion">
-            <ul class="nav ">
+            <ul class="nav">
               <li class="nav-item <?php if( $uri->getSegment(2) === 'promotion' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
                 <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'promotion' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/promotion'); ?>">
                   <span class="sidenav-mini-icon">  </span>
@@ -151,6 +151,24 @@
                 <a class="nav-link text-white <?= $uri->getSegment(3) == 'add_blog' ? 'active' : '' ?>" href="<?php echo base_url('/admin/promotion/add_promo'); ?>">
                   <span class="sidenav-mini-icon">  </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Add Promotion </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <hr class="horizontal light mt-0">
+        <li class="nav-item">
+          <a data-bs-toggle="collapse" href="#sales" class="nav-link text-white" aria-controls="sale" role="button" aria-expanded="false">
+            <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">tag</i>
+            <span class="nav-link-text ms-2 ps-1">On sale</span>
+          </a>
+          <div class="collapse" id="sales">
+            <ul class="nav ">
+              <li class="nav-item <?php if( $uri->getSegment(2) === 'sales' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>">
+                <a class="nav-link text-white <?php if( $uri->getSegment(2) === 'sales' AND $uri->getSegment(3) == "" ) { echo 'active'; }else { } ?>" href="<?php echo base_url('/admin/discount'); ?>">
+                  <span class="sidenav-mini-icon">  </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> List Products on Sale </span>
                 </a>
               </li>
             </ul>

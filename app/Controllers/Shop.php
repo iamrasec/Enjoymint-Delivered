@@ -27,9 +27,9 @@ class Shop extends BaseController
         $this->location_model = model('LocationModel');
         $this->productcategory_model = model('ProductCategory');
         $this->user_model = model('UserModel');
+        $this->discount_model = model('DiscountModel');
         $this->promo_model = model('PromoModel');
-        $this->promo_products_model = model('PromoProductsModel');
-    
+        
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
         $this->image_model = model('ImageModel');
         $this->product_variant_model = model('ProductVariantModel');
@@ -110,9 +110,25 @@ class Shop extends BaseController
 
                     $product_arr = [];
                     $count = 0;
-
+                    $price = [];
                     foreach($all_products as $product) {
                         // echo "<pre>".print_r($product, 1)."</pre>";
+                        if($product['on_sale'] == 1){
+                            $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                            if(!empty($discount)){
+                            if($discount[0]->discount_attribute == "percent"){
+                            $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                             $sale_price = $product['price'] - $new_price;
+                            // print_r($this->data['sale_price']);
+                            }elseif($discount[0]->discount_attribute == "fixed"){
+                                $sale_price = $product['price'] - $discount[0]->discount_value ;
+                            }elseif($discount[0]->discount_attribute == "sale_price"){
+                                $sale_price = $discount[0]->discount_value;
+                            }
+                            $price[$count] = $sale_price;
+                            
+                        }
+                    }
                         
                         $product_arr[$count] = $product;
                         
@@ -144,6 +160,7 @@ class Shop extends BaseController
                     }
             
                     $this->data['uid'] = $user_id;
+                    $this->data['sale_price'] = $price;
                     $this->data['products'] = $product_arr;
                     $this->data['pager'] = $this->product_model->pager;
                     $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
@@ -214,8 +231,25 @@ class Shop extends BaseController
 
         $product_arr = [];             
         $count = 0;
+        $price = [];
         foreach($all_products as $product) {
             // echo "<pre>".print_r($product, 1)."</pre>";
+            if($product['on_sale'] == 1){
+                $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                if(!empty($discount)){
+                if($discount[0]->discount_attribute == "percent"){
+                $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                 $sale_price = $product['price'] - $new_price;
+                // print_r($this->data['sale_price']);
+                }elseif($discount[0]->discount_attribute == "fixed"){
+                    $sale_price = $product['price'] - $discount[0]->discount_value ;
+                }elseif($discount[0]->discount_attribute == "sale_price"){
+                    $sale_price = $discount[0]->discount_value;
+                }
+                $price[$count] = $sale_price;
+                
+            }
+        }
              $product_arr[$count] = $product;
 
             if(!empty($product['images'])) {
@@ -224,12 +258,10 @@ class Shop extends BaseController
                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
                 $product_arr[$count]['images'] = $images;
             }
-
             // If product has variants, get variants data
             if($product['has_variant'] == 1) {
                 $product_arr[$count]['variants'] = $this->product_variant_model->where('pid', $product['id'])->get()->getResult();
             }
-
              $count++;
         }
 
@@ -238,6 +270,7 @@ class Shop extends BaseController
         }
          
         $this->data['uid'] = $user_id;
+        $this->data['sale_price'] = $price;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -328,9 +361,25 @@ class Shop extends BaseController
 
                 $product_arr = [];
                 $count = 0;
-
+                $price = [];
                 foreach($all_products as $product) {
                     // echo "<pre>".print_r($product, 1)."</pre>";
+                    if($product['on_sale'] == 1){
+                        $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                        if(!empty($discount)){
+                        if($discount[0]->discount_attribute == "percent"){
+                        $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                         $sale_price = $product['price'] - $new_price;
+                        // print_r($this->data['sale_price']);
+                        }elseif($discount[0]->discount_attribute == "fixed"){
+                            $sale_price = $product['price'] - $discount[0]->discount_value ;
+                        }elseif($discount[0]->discount_attribute == "sale_price"){
+                            $sale_price = $discount[0]->discount_value;
+                        }
+                        $price[$count] = $sale_price;
+                        
+                    }
+                }
                     $product_arr[$count] = $product;
                     if(!empty($product['images'])) {
                         $imageIds = [];
@@ -353,6 +402,7 @@ class Shop extends BaseController
 
                 // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
                 $this->data['uid'] = $user_id;
+                $this->data['sale_price'] = $price;
                 $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
                 $this->data['products'] = $product_arr;
                 $this->data['pager'] = $this->product_model->pager;
@@ -409,9 +459,25 @@ class Shop extends BaseController
 
         $product_arr = [];
         $count = 0;
-
+        $price = [];
         foreach($all_products as $product) {
             // echo "<pre>".print_r($product, 1)."</pre>";
+            if($product['on_sale'] == 1){
+                $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                if(!empty($discount)){
+                if($discount[0]->discount_attribute == "percent"){
+                $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                 $sale_price = $product['price'] - $new_price;
+                // print_r($this->data['sale_price']);
+                }elseif($discount[0]->discount_attribute == "fixed"){
+                    $sale_price = $product['price'] - $discount[0]->discount_value ;
+                }elseif($discount[0]->discount_attribute == "sale_price"){
+                    $sale_price = $discount[0]->discount_value;
+                }
+                $price[$count] = $sale_price;
+                
+            }
+        }
              $product_arr[$count] = $product;
             if(!empty($product['images'])) {
                 $imageIds = [];
@@ -434,6 +500,7 @@ class Shop extends BaseController
         
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         $this->data['uid'] = $user_id;
+        $this->data['sale_price'] = $price;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();                       
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -496,7 +563,24 @@ class Shop extends BaseController
         
         $product_arr = [];
         $count = 0;
+        $price = [];
         foreach($all_products as $product) {
+            if($product['on_sale'] == 1){
+                $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                if(!empty($discount)){
+                if($discount[0]->discount_attribute == "percent"){
+                $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                 $sale_price = $product['price'] - $new_price;
+                // print_r($this->data['sale_price']);
+                }elseif($discount[0]->discount_attribute == "fixed"){
+                    $sale_price = $product['price'] - $discount[0]->discount_value ;
+                }elseif($discount[0]->discount_attribute == "sale_price"){
+                    $sale_price = $discount[0]->discount_value;
+                }
+                $price[$count] = $sale_price;
+                
+            }
+        }
             $product_arr[$count] = $product;
             if($product['images']) {
                 $imageIds = [];                  
@@ -512,6 +596,7 @@ class Shop extends BaseController
             $session->setFlashdata('message', 'Please login first');
           }
         $this->data['uid'] = $user_id;
+        $this->data['sale_price'] = $price;
         $this->data['location_keyword'] = $location;   
         $this->data['products'] = $product_arr;
         $this->data['pager'] = $this->product_model->pager;
@@ -590,7 +675,25 @@ class Shop extends BaseController
         
         $product_arr = [];
         $count = 0;
+        $price = [];
         foreach($all_products as $product) {
+          
+            if($product['on_sale'] == 1){
+                $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
+                if(!empty($discount)){
+                if($discount[0]->discount_attribute == "percent"){
+                $new_price = $product['price'] * ($discount[0]->discount_value /100);
+                 $sale_price = $product['price'] - $new_price;
+                // print_r($this->data['sale_price']);
+                }elseif($discount[0]->discount_attribute == "fixed"){
+                    $sale_price = $product['price'] - $discount[0]->discount_value ;
+                }elseif($discount[0]->discount_attribute == "sale_price"){
+                    $sale_price = $discount[0]->discount_value;
+                }
+                $price[$count] = $sale_price;
+                
+            }
+        }
             $product_arr[$count] = $product;
             if($product['images']) {
                 $imageIds = [];                  
@@ -601,8 +704,9 @@ class Shop extends BaseController
             
             $count++;
         }           
-
+      
         $this->data['products'] = $product_arr;
+        $this->data['sale_price'] = $price;
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -656,6 +760,45 @@ class Shop extends BaseController
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
         //  $this->location();
          return view('promo_page', $this->data);
+
+    }
+
+    public function salePage(){
+        $session = session();
+        $search_data = $session->get('search');
+        // $location = $session->get('search1');
+        $user_id = $this->uid;
+        $page_title = 'Shop';
+
+        $this->data['page_body_id'] = "shop";
+        $this->data['breadcrumbs'] = [
+        'parent' => [],
+        'current' => $page_title,
+        ];
+        $this->data['page_title'] = $page_title;
+        // $this->data['products'] = $this->product_model->get()->getResult();
+
+        if($user_id == null){
+            $session->setFlashdata('message', 'Please login first');
+        }
+         
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['products'] = $this->product_model->where('on_sale', 1)->get()->getResult();
+        // $this->data['pager'] = $this->product_model->pager;
+        $this->data['categories'] = $this->category_model->getAllCategory();
+        $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
+        $this->data['fast_tracked'] = false;
+        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+
+        if($this->data['currDate']->format('H') > '18') {
+            $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
+        }
+
+        // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
+        //  $this->location();
+         return view('sale_page', $this->data);
 
     }
     

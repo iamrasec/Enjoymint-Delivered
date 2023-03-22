@@ -422,6 +422,7 @@ class Cart extends BaseController
         'total' => $product_data->price * $product->qty,
         'vid' => $product->vid,
       ];
+    
 
     // echo "<pre>".print_r($cart_products, 1)."</pre>";die();
 
