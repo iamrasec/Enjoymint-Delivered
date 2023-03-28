@@ -455,23 +455,30 @@ update_cart_count();
     // Compute for subtotal cost
     var subtotal = 0;
     var subtotalprice = 0;
+    <?php if(!empty($pricesubtotal)) : ?>
     var priceSub = <?= $pricesubtotal ?>;
+    <?php else: ?>
+      var priceSub = null;
+    <?php endif; ?>
     <?php if($location_keyword == null): ?>
       var location = "";
     <?php else: ?>
     var location = "<?= $location_keyword['address'] ?>";
     <?php endif; ?>  
+   
     $(".product-total-price").each(function() {
-
-      if(!priceSub){  
+      // subtotal += parseFloat($(this).val());
+      if(!priceSub){ 
         subtotal += parseFloat($(this).val());
-        console.log(subtotal);
       }else{
         subtotalprice += parseFloat($(this).val());
         subtotal = subtotalprice - priceSub;
-      }
-     
+        }
     });
+      
+   
+     
+   
     
   if(location.match("Hollister") || location.match("Half Moon Bay") || location.match("Moss Beach")) {
     if(subtotal <= 50 && subtotal > 0) {
