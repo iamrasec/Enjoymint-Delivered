@@ -45,7 +45,7 @@ class Cart extends BaseController
     $priceTotal = $session->get('totalSub');
     $discount_product = $session->get('discountSub');
     $testtest = $session->get('promo_edit');
-    print_r($testtest);
+    // print_r($priceTotal);
     $discount_data = [];
     if (!empty($discount_product)) {
     foreach($discount_product as $discount_prod){
@@ -157,7 +157,7 @@ class Cart extends BaseController
             $sale_total += $dis_sale;
         }
       }
-      // echo '<br>Total sale: ' . $sale_total . '<br>';
+       //echo '<br>Total sale: ' . $sale_total . '<br>';
   }
   
     $this->data['sale_total'] = $sale_total;
@@ -1472,7 +1472,7 @@ class Cart extends BaseController
                 foreach ($cart_products as $key => $value) {
                     // echo $value['product_data']->price . '<br>';
                     // echo $value['product_data']->id . '<br>---';
-                    if(!in_array($value['product_data']->id, $sale_id)){
+                    // if(!in_array($value['product_data']->id, $sale_id)){
                     if ($key === 1) {
 
                     $discount = 0;    
@@ -1489,11 +1489,11 @@ class Cart extends BaseController
                       // echo  'mao ni'.$disProduct;
                       array_push($product_descount, $disProduct);
                     } 
-                    $distotal += $value['product_data']->price;
+                    $distotal += 0;
                   } 
-                }
+                // }
                 // echo 'Total Value: ' . $totalVal;
-                // print_r($cart_products);
+                //print_r($cart_products);
             }
              //promo cat prod buy 1 get 1
              if ($promo_data[0]->promo_product == 'promo_products_cat') {

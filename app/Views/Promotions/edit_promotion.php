@@ -175,18 +175,18 @@
                               <div class="form-check me-4">
                      
                                 <input class="form-check-input promo_products" value="" type="radio" name="promo_products1" id="promo_products_all" 
-                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1" checked>
+                                value="promo_products_all" data-promo-cond-id="1" checked>
                                 <label class="form-check-label" for="promo_products_all">All Products</label>
                               </div>
 
                               <div class="form-check me-4">
                                 <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_specific" 
-                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1">
+                                value="promo_products_specific" data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_specific">Specific Product(s)</label>
                                 </div>
                               <div class="form-check me-4">
                                 <input class="form-check-input promo_products" type="radio" name="promo_products1" id="promo_products_cat" 
-                                value="<?= $update_data[0]->promo_products ; ?>" <?php if ($update_data[0]->promo_products == $update_data[0]->promo_products) { echo "checked"; } ?> data-promo-cond-id="1">
+                                value="promo_products_cat" data-promo-cond-id="1">
                                 <label class="form-check-label" for="promo_products_cat">Products in Category</label>
                               </div>
                             </div>
@@ -207,8 +207,7 @@
                               <label class="form-label" for="promo_products_selected">Select Category Included in the Promo</label>
                               <select class="select2-field promo_products_select_cat_select" id="promo_products_select_cat_select" name="all_categories[]" multiple="multiple">
                               <?php foreach($all_categories as $category): ?>
-                                <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
-                                <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $product_categories; ?></option>       
+                                <option value="<?= $category->id;?>"><?= $category->name; ?></option>     
                               <?php endforeach; ?>  
                               </select>
                               </div>
@@ -232,11 +231,11 @@
                               <label class="form-check-label" for="req_purchase_type_any">Any Product(s)</label>
                             </div>
                             <div class="form-check me-4">
-                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_product" value="<?= $update_data[0]->req_pp ; ?>" data-promo-cond-id="1">
+                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_product" value="req_purchase_type_product" data-promo-cond-id="1">
                               <label class="form-check-label" for="req_purchase_type_product">Specific Product(s)</label>
                             </div>
                             <div class="form-check me-4">
-                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_category" value="<?= $update_data[0]->req_pp ; ?>" data-promo-cond-id="1">
+                              <input class="form-check-input req_purchase_type" type="radio" name="req_purchase_type1" id="req_purchase_type_category" value="req_purchase_type_category" data-promo-cond-id="1">
                               <label class="form-check-label" for="req_purchase_type_category">Products in Category</label>
                             </div>
                           </div>
@@ -257,10 +256,8 @@
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                           <label class="form-label fw-bold" for="required_product">Required Purchase: Select Category</label>
                           <select class="select2-field required_category_select" id="required_category_select" name="all_categories[]" multiple="multiple">
-
                           <?php foreach($all_categories as $category): ?>
-                            <?php $selected = (in_array($category->id, $product_categories)) ? ' selected' : ''; ?>
-                             <option value="<?php echo $category->id; ?>"<?= $selected; ?>><?php echo $product_categories; ?></option>       
+                            <option value="<?= $category->id;?>"><?= $category->name; ?></option>
                           <?php endforeach; ?>  
                           </select>
                           </div>
