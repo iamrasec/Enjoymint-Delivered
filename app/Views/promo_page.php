@@ -39,7 +39,7 @@
           </div>
           
           <?php else: ?>
-          <div class="mt-5"><p>No Products Available.</p></div>
+          <div class="mt-5"><p>No Promo Available.</p></div>
           <?php endif; ?>
         </div>
       </div>
