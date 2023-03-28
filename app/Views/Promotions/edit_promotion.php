@@ -267,7 +267,11 @@
                           <div class="col-12 col-md-12 col-xs-12 mb-3">
                             <label class="form-label fw-bold" for="required_product">Required Quantity Purchased <small class="d-block fw-normal fs-xs fst-italic ms-2">(Minimum quantity is 1)</small></label>
                             <div class="input-group input-group-dynamic">
+                              <?php if(!empty($update_data[0]->req_pp_qty)): ?>
                               <input type="number" class="req_purchase_qty" id="req_purchase_qty" name="req_purchase_qty" min="1" value="<?= $update_data[0]->req_pp_qty ; ?>" step="1">
+                              <?php else: ?>
+                              <input type="number" class="req_purchase_qty" id="req_purchase_qty" name="req_purchase_qty" min="1" value="1" step="1">
+                              <?php endif; ?>
                             </div>
                           </div>
                         </div>
@@ -281,7 +285,11 @@
                               <li><small class="d-block fw-normal fs-xs fst-italic ms-2">Leaving this at 0 will not impose any limitation on the Number of Products Discounted.</small></li>
                             </ul>
                             <div class="input-group input-group-dynamic">
+                            <?php if(!empty($update_data[0]->req_pp_discounted_counter)): ?>
                               <input type="number" class="num_prod_discounted_cond" id="num_prod_discounted_cond" name="num_prod_discounted_cond" placeholder="0" min="0" value="<?= $update_data[0]->req_pp_discounted_counter ; ?>" step="1">
+                              <?php else: ?>
+                                <input type="number" class="num_prod_discounted_cond" id="num_prod_discounted_cond" name="num_prod_discounted_cond" placeholder="0" min="0" value="0" step="1">
+                              <?php endif; ?>
                             </div>
                           </div>
                         </div>
