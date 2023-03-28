@@ -353,10 +353,12 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script> 
-<script>
-$(document).on("click", ".place-order", function() {
-	$("#checkout").submit();
-})
+	<script>
+		$(document).on("click", ".place-order", function() {
+			$("#checkout").submit();
+		})
+	</script>
+<script>  
 
 jQuery.datetimepicker.setDateFormatter('moment')
 

@@ -78,7 +78,7 @@ class Promotion extends BaseController {
     $this->data['page_title'] = $page_title;
     $promo = $this->promo_model->where('id', $id)->get()->getResult();
     $mechanics = json_decode($promo[0]->mechanics);
-    print_r($mechanics[0]->products_cat);
+
     // foreach($promo as $update){
     //   // initialize images
     //   $update_data [] = [
@@ -97,16 +97,16 @@ class Promotion extends BaseController {
 
     // $categories = $this->product_category->select('cid')->where('pid', $id)->get()->getResult();
     
-    $assignedCat = [];
+    // $assignedCat = [];
 
-    if(!empty($mechanics)) {
-      // print_r($categories);die();
-      foreach($mechanics as $mechanic_cat) {
-        $assignedCat[] = $mechanic_cat->products_cat[0]->text;
-      }
-    }
+    // if(!empty($mechanics)) {
+    //   // print_r($categories);die();
+    //   foreach($mechanics as $mechanic_cat) {
+    //     $assignedCat[] = $mechanic_cat->products_cat[0]->text;
+    //   }
+    // }
 
-    $this->data['product_categories'] = $assignedCat;
+    // $this->data['product_categories'] = $assignedCat;
     $this->data['update_data'] = $mechanics;  
     $this->data['promo_data'] = $promo;
     $this->data['all_products'] = $this->product_model->getAllProductsNoPaginate();
@@ -115,7 +115,6 @@ class Promotion extends BaseController {
     $this->data['all_req_categories'] = $this->category_model->get()->getResult();
 
     // $this->data['blog_data'] = $this->blog_model->getBlogbyID($id);
-     print_r($this->data['product_categories']);
     return view('Promotions/edit_promotion', $this->data);
   }
 
