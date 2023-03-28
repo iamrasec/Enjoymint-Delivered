@@ -118,7 +118,6 @@
                                   }  
                                  }
                                 } ?>
-                        
                                   <?php }elseif (in_array($product['pid'], $dissale_id)){ ?>
                                   <?php for($x = 0; $x<count($sale_discount); $x++){
                                   if($sale_discount[$x]['id'] === $product['pid']){
@@ -221,8 +220,7 @@
           <?php echo $this->include('templates/_delivery_popup.php'); ?>
           <?php endif; ?>
           
-           
-         
+
         </form>
       </div>
       <?php endif; ?>
