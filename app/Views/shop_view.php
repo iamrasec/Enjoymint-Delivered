@@ -59,9 +59,9 @@
                 <div class="img-wrap">          
                   <?php 
                     $url = !empty($searchData) ? $products[$i]['url'] : $products[$i]['url'] ;
-                    if(isset($products['images'][0])):
+                    if(isset($products[$i]['images'][0])):
                   ?>
-                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$products['images'][0]->filename); ?>" /></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$products[$i]['images'][0]->filename); ?>" /></a>
                   <?php else: ?>
                   <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
                   <?php endif; ?>
