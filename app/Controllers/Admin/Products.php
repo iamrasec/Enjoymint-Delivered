@@ -477,7 +477,8 @@ class Products extends BaseController {
     $segments = $this->request->uri->getSegment(4);
 
     $promo_products = "promo_products_all";
-   // $promo_products1 = "promo_products_cat";
+    $promo_products_spec = "promo_products_specific";
+  // $promo_products1 = "promo_products_cat";
     $promo_all = $this->promo_model->select('*')
       ->like('mechanics', $promo_products)
       ->limit($length, $start)
@@ -491,7 +492,8 @@ class Products extends BaseController {
   //   if(in_array($pid))
 
     $prodSpec = $this->promo_model->select('*')
-    ->where('JSON_CONTAINS(mechanics, \'{"products_specific": "'.$segments.'"}\')')
+    ->like('mechanics', $promo_products_spec)
+    //->where('JSON_CONTAINS(mechanics, \'{"promo_products_specific": "'.$segments.'"}\')')
     ->limit($length, $start)
     ->get()
     ->getResult();
@@ -510,7 +512,6 @@ class Products extends BaseController {
     $output = array(
       // "draw" => $_POST['draw'],
       "recordsTotal" => $this->promo_model->countAll(),
-       "recordsFiltered" => $this->promo_model->countAll(),
       "recordsFiltered" => $this->promo_model->countAll(),
       "data" => $data,
     );
