@@ -268,13 +268,13 @@
 			
           
         </div>
-      </div>
+      
 
 			<?php if(!empty($cart_products)): ?>
 				
 			<?php 
 				$subtotal = 0;	
-				$subtotalprice = 0;
+				$subtotalprice = 0; 
 				foreach($cart_products as $product) {
 					// echo "<pre>".print_r($product, 1)."</pre>";					
 					if(!empty($product['priceTotal']) && !empty($product['sale_total'])){
