@@ -22,11 +22,15 @@
         <div class="col-lg-10 col-sm-12 mt-5 text-center">
           <?php if($fast_tracked == true): ?>
           <h1>Fast Tracked Shop</h1>
+          <div class="search" style="text-align: right ;">
+            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/salePage'); ?>">Sale Page</a></button>
+            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage'); ?>">Promo Page</a></button><br>
+
           <?php else: ?>
           <h1>Shop</h1>
             
             <div class="search" style="text-align: right ;">
-            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/salePage'); ?>">Sale Page</a></button><br>
+            <button class="btn bg-primary-green"><a href="<?= base_url('/shop/salePage'); ?>">Sale Page</a></button>
             <button class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage'); ?>">Promo Page</a></button><br>
             <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
             <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
