@@ -399,15 +399,15 @@ class Cart extends BaseController
       }
 
       // Compute for subtotal cost
-      // $subtotal += $product_data->price * $product->qty;
+      $subtotal += $product_data->price * $product->qty;
 
-      if(!empty($priceTotal)){
-        $subtotalprice = $product_data->price * $product->qty;
-        $subtotal = $product['priceTotal'] + $subtotalprice;
-      }
-      else{
-        $subtotal += $product_data->price * $product->qty;
-      }
+      // if(!empty($priceTotal)){
+      //   $subtotalprice = $product_data->price * $product->qty;
+      //   $subtotal = $product['priceTotal'] + $subtotalprice;
+      // }
+      // else{
+      //   $subtotal += $product_data->price * $product->qty;
+      // }
 
       // Order products array
       $cart_products[] = [
