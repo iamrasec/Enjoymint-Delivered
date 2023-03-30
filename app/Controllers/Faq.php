@@ -13,6 +13,7 @@ class Faq extends BaseController
         $this->role = session()->get('role');
         $this->isLoggedIn = session()->get('isLoggedIn');
         $this->guid = session()->get('guid');
+        $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
     
@@ -23,6 +24,7 @@ class Faq extends BaseController
 
     public function index()
     {
+        $user_id = $this->guid;
         $page_title = 'Frequently Asked Questions';
 
         $this->data['page_body_id'] = "faq";
@@ -32,6 +34,9 @@ class Faq extends BaseController
         ];
         $this->data['page_title'] = $page_title;
 
+
+        $this->data['uid'] = $user_id;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
 
 
         return view('faqs_view', $this->data);
