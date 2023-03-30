@@ -194,6 +194,17 @@
               <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
             </div>
+            <?php if(!empty($pricesubtotal)): ?>
+              <div class="row mt-4">           
+                <div class="col-8 col-md-8 col-xs-8">Discounted</div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $pricesubtotal; ?></span></div>
+              </div>
+            <?php else: ?>
+              <div class="row mt-4 d-none">           
+                <div class="col-8 col-md-8 col-xs-8">Discounted</div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $pricesubtotal; ?></span></div>
+              </div>
+            <?php endif; ?>
             <div class="row mt-3">
               <div class="col-8 col-md-8 col-xs-8">Tax (Estimated)</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="tax-cost">0</span></div>
@@ -476,10 +487,6 @@ update_cart_count();
         }
     });
       
-   
-     
-   
-    
   if(location.match("Hollister") || location.match("Half Moon Bay") || location.match("Moss Beach")) {
     if(subtotal <= 50 && subtotal > 0) {
       $(".subtotal_below_min1").removeClass("d-none");

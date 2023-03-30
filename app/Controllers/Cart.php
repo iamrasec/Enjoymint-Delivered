@@ -45,7 +45,7 @@ class Cart extends BaseController
     $priceTotal = $session->get('totalSub');
     $discount_product = $session->get('discountSub');
     $testtest = $session->get('promo_edit');
-    // print_r($priceTotal);
+    //  print_r($priceTotal);
     $discount_data = [];
     if (!empty($discount_product)) {
     foreach($discount_product as $discount_prod){
@@ -58,7 +58,7 @@ class Cart extends BaseController
     }
   } 
 
-    // print_r($discount_data);
+     //print_r($priceTotal);
 
     $location = $session->get('search1');
     $this->data['location_keyword'] = $this->location;
@@ -165,11 +165,16 @@ class Cart extends BaseController
     $this->data['cart_products'] = $cart_products;
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
+
+    $promo_sale =  $priceTotal + $sale_total;
+    $session->promo_sale = $promo_sale;
+     //print_r($promo_sale);
+
     // print_r($this->data['sale_discount']);
     //echo 'Sale Discount------' . print_r($this->data['sale_discount'], true) . '<br>';
     //echo 'Promo Discount------' . print_r($this->data['discount_data'], true);
     $discount_id = [];
-    if(!empty($discount_product)){
+    if(!empty($discount_product)){ 
     foreach ($discount_product as $dd) {
       $discount_id[] = $dd["id"]; // add the age value to the new array
     }
@@ -214,7 +219,7 @@ class Cart extends BaseController
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
-    $this->data['pricesubtotal'] = $priceTotal;
+    $this->data['pricesubtotal'] = $promo_sale;
     $this->data['pricesub'] = $discount_product;
     // print_r($this->data['pricesub']);
 
@@ -228,7 +233,8 @@ class Cart extends BaseController
     $postData = $this->request->getPost();
     $priceTotal = $session->get('totalSub');
     $sale_total = $session->get('sale_total');
-
+    $promo_sales = $session->get('promo_sale');
+    //print_r($promo_sales);
     // echo "<pre>".print_r($postData, 1)."</pre>";die();
 
     if(!empty($postData)){
@@ -293,10 +299,8 @@ class Cart extends BaseController
         'qty' => $product->qty,
         'product_data' => $product_data,
         'images' => $images,
-        'priceTotal' => $priceTotal,
-        'sale_total' => $sale_total,
-
-      ];
+        'priceTotal' => $promo_sales,
+      ]; 
     }
 
     // }
@@ -343,7 +347,8 @@ class Cart extends BaseController
     $session = session();
 
     $priceTotal = $session->get('totalSub');
-    print_r( $priceTotal);
+    $promo_codes = $session->get('promo_codes');
+    //print_r( $priceTotal);
 
     $data = $this->request->getPost();
 
@@ -372,6 +377,7 @@ class Cart extends BaseController
       'delivery_schedule' => $data['delivery_schedule'],
       'delivery_time' => $data['time_window'],
       'delivery_type' => $delivery_type,
+      'promo_code' => $promo_codes,
     ];
     
     // echo "<pre>".print_r($data, 1)."</pre>";die();
@@ -746,6 +752,7 @@ class Cart extends BaseController
       $validation =  \Config\Services::validation();
 
     $promo = $this->request->getVar('promo_code');
+    $session->promo_codes =  $promo;
     $this->data['prom_code'] = $promo;
     //$this->data['location_keyword'] = $this->location;
 
