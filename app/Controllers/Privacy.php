@@ -24,7 +24,8 @@ class Privacy extends BaseController
     }
 
     public function index()
-    {
+    { 
+       $session = session();
         $user_id = $this->guid;
         $page_title = 'Privacy Policy';
         
