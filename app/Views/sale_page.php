@@ -94,7 +94,7 @@
                     ?>
 
                     <?php if($product->has_variant == 1): ?>
-                      <?php include('templates/_product_variation_selector.php'); ?>
+                      <?php include('templates/_product_variation_selector_sale_page.php'); ?>
                     <?php else: ?>
                        
                      
