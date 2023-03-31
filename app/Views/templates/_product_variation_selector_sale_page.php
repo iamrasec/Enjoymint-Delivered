@@ -5,7 +5,7 @@
 
   <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
     <li class="d-none">
-      <a class="dropdown-item" href="#" data-variation-id="0" data-pid="<?= $product->id; ?>" data-price="<?= $product->price; ?>" data-unit="<?= $base_product_unit; ?>" data-stock="<?= $product->stock; ?>">
+      <a class="dropdown-item" href="#" data-variation-id="0" data-pid="<?= $product->id; ?>" data-price="<?= $product->price; ?>" data-unit="<?= $base_product_unit; ?>" data-stock="<?= $product->stocks; ?>">
         <div class="price fw-bold">$<span><?= $product->price; ?></span> - <span class="unit text-lowercase fw-normal"><?= $base_product_unit; ?></span></div>
       </a>
     </li>
