@@ -106,6 +106,13 @@ class Shop extends BaseController
                         'availability' => $searchData['availability'],
                     ];
                     
+                    if(empty($search)) {
+                        $this->data['search_keyword'] = null;
+                    }
+                    else {  
+                        $this->data['search_keyword'] = $search_data;
+                    }  
+                    
                     $this->data['current_filter'] = $current_filter;
 
                     $product_arr = [];
@@ -356,7 +363,14 @@ class Shop extends BaseController
                     'max_cbd' => $searchData['max_cbd'],
                     'availability' => $searchData['availability'],
                 ];
-                    
+
+                if(empty($search)) {
+                    $this->data['search_keyword'] = null;
+                }
+                else {  
+                    $this->data['search_keyword'] = $search_data;
+                }  
+
                 $this->data['current_filter'] = $current_filter;
 
                 $product_arr = [];
@@ -456,6 +470,12 @@ class Shop extends BaseController
         // $all_products = $this->product_model->paginate(30);
 
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
+        if(empty($search)) {
+            $this->data['search_keyword'] = null;
+        }
+        else {  
+            $this->data['search_keyword'] = $search_data;
+        }  
 
         $product_arr = [];
         $count = 0;
