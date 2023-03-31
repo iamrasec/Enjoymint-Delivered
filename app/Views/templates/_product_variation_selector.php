@@ -9,6 +9,7 @@
         <div class="price fw-bold">$<span><?= $products[$i]['price']; ?></span> - <span class="unit text-lowercase fw-normal"><?= $base_product_unit; ?></span></div>
       </a>
     </li>
+    <?php if(!empty($products[$i]['variants'])) :?>
     <?php foreach($products[$i]['variants'] as $variant): ?>
     <?php 
     switch(trim($variant->unit)) {
@@ -52,6 +53,7 @@
       </a>
     </li>
     <?php endforeach; ?>
+    <?php endif; ?>
   </ul>
   
 </div>
