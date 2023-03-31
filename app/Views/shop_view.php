@@ -25,7 +25,11 @@
           <div class="search" style="text-align: right ;">
             <button class="btn bg-primary-green"><a href="<?= base_url('/shop/salePage'); ?>">Sale Page</a></button>
             <button class="btn bg-primary-green"><a href="<?= base_url('/shop/promoPage'); ?>">Promo Page</a></button><br>
-
+            <form method="GET" action="<?= base_url('/shop/searchProduct')?>">
+            <input type="text" value="<?= $search_keyword ;?>" class="text-gray" name="inputdata" placeholder="Search">
+            <button type="submit" class="btn bg-primary-green">Search</button>
+            </div>
+          </form>
           <?php else: ?>
           <h1>Shop</h1>
             
