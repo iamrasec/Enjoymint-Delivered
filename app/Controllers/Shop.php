@@ -183,7 +183,7 @@ class Shop extends BaseController
                     if($searchData['availability'] == 2){
                         $this->data['fast_tracked'] = true;
                     }
-
+                    $session->filter = $product_arr;
                     return view('shop_view', $this->data);
                 }
                 else {           
@@ -217,6 +217,7 @@ class Shop extends BaseController
             
                     $this->data['current_filter'] = $current_filter;
             
+                    $session->filter = $this->data['current_filter'];
                     // $search_location = $this->request->getPost('location');
                                 
                     // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
@@ -291,6 +292,7 @@ class Shop extends BaseController
             $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
         }
 
+        $session->filter = $this->data['current_filter'];
         // echo "<pre>".print_r($this->data, 1)."</pre>";die();
 
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
@@ -539,6 +541,7 @@ class Shop extends BaseController
     public function searchProduct(){
 
         $session = session();
+       
         $location = $session->get('search1');
         $search = $this->request->getGet('inputdata');
         $search_location = $this->request->getPost('location');  
@@ -550,8 +553,10 @@ class Shop extends BaseController
         }
 
         if(!empty($search)){
+            
             $search = $this->request->getGet('inputdata');
-            $all_products = $this->product_model->getProducts($search);         
+            $all_products = $this->product_model->getProducts($search);  
+            // print_r($all_products);
         }else{
                 // $all_products = $this->product_model->paginate(30);
                 $all_products = $this->product_model->getAllProducts();
@@ -801,10 +806,44 @@ class Shop extends BaseController
         if($user_id == null){
             $session->setFlashdata('message', 'Please login first');
         }
-         
+         $all_products = $this->product_model->where('on_sale', 1)->get()->getResult();
+
+         $product_arr = [];
+         $count = 0;
+         $price = [];
+         foreach($all_products as $product) {
+           
+             if($product->on_sale == 1){
+                 $discount = $this->discount_model->where('pid', $product->id)->get()->getResult();
+                 if(!empty($discount)){
+                 if($discount[0]->discount_attribute == "percent"){
+                 $new_price = $product->price * ($discount[0]->discount_value /100);
+                  $sale_price = $product->price - $new_price;
+                 // print_r($this->data['sale_price']);
+                 }elseif($discount[0]->discount_attribute == "fixed"){
+                     $sale_price = $product->price - $discount[0]->discount_value ;
+                 }elseif($discount[0]->discount_attribute == "sale_price"){
+                     $sale_price = $discount[0]->discount_value;
+                 }
+                 $price[$count] = $sale_price;
+                 
+             }
+         }
+             $product_arr[$count] = $product;
+             if($product->images) {
+                 $imageIds = [];                  
+                 $imageIds = explode(',',$product->images);
+                 $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
+                 $product_arr[$count]->images = $images;
+             }
+             
+             $count++;
+         }
+
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-        $this->data['products'] = $this->product_model->where('on_sale', 1)->get()->getResult();
+        $this->data['products'] =$product_arr;
+        $this->data['sale_price'] = $price;
         // $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->getAllCategory();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();

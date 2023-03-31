@@ -27,11 +27,96 @@
           <div id="products-list-view" class="row">
               
             <?php foreach($products as $product): ?>
-              <!-- <pre><?php print_r($product); ?></pre> -->
+         
             <div class="col-lg-2 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
-              <div class="card" style="height: 100px;">
+              <div class="card" style="height: 400px;">
+              <div class="img-wrap">          
+                  <?php 
+                    $url = !empty($searchData) ? $product->url : $product->url ;
+                    if(isset($product->images[0])):
+                  ?>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="<?= base_url('products/images/'.$product->images[0]->filename); ?>" /></a>
+                  <?php else: ?>
+                  <a href="<?= base_url('products/'. $url); ?>"><img class="prod_image" src="" /></a>
+                  <?php endif; ?>
+                </div>
                 <div class="product-info d-flex flex-column px-2">
                   <a href="<?= base_url('promotion/index/'. $product->url); ?>"><h5><?=  $product->name; ?></h5></a>
+                  <div class="product-info-bottom d-flex flex-column mt-auto">
+                    <p>
+                     
+                      <?php if($product->stocks> 0): ?>
+                      <?php $btn_disabled = ''; ?>
+                      <span class="badge text-bg-success">In Stock</span>
+                      <?php else: ?>
+                      <?php $btn_disabled = 'disabled'; ?>
+                      <span class="badge text-bg-danger">Out Of Stock</span>
+                      <?php endif; ?>
+                    </p>
+                    <hr id="color" class="mt-0">
+
+                    <?php 
+                    switch(trim($product->unit_measure)){
+                      case 'mg':
+                        $base_product_unit = $product->unit_value . " mg.";
+                        break;
+                      case 'g':
+                        if($product->unit_value > 1) {
+                          $base_product_unit = $product->unit_value . " grams";
+                        }
+                        else {
+                          $base_product_unit = $product->unit_value . " gram";
+                        }
+                        
+                        break;
+                      case 'oz':
+                        $base_product_unit = $product->unit_value . " ounces";
+                        break;
+                      case 'piece':
+                        if($product->unit_value == 1) {
+                          // $base_product_unit = "each";
+                          $base_product_unit = round($product->unit_value) . " piece";
+                        }
+                        else {
+                          $base_product_unit = round($product->unit_value) . " pieces";
+                        }
+                        break;
+                      case 'pct':
+                        $base_product_unit = $product->unit_value . "%";
+                        // if($product['unit_value'] == 1) {
+                        //   $base_product_unit = "each";
+                        // }
+                        // else {
+                        //   $base_product_unit = round($product['unit_value']) . " pieces";
+                        // }
+                        break;
+                    } 
+                    ?>
+
+                    <?php if($product->has_variant == 1): ?>
+                      <?php include('templates/_product_variation_selector.php'); ?>
+                    <?php else: ?>
+                       
+                     
+                      <div class="price p-2 mb-3 fw-bold" style="text-decoration: line-through; color: red;">$<?= $product->price; ?></div>
+        
+                      <div class="price p-2 mb-3 fw-bold" >$<span><?= $sale_price[0]; ?></span> - <span class="unit fw-normal"><?= $base_product_unit; ?></span></div>
+    
+                      <?php endif; ?>
+                    
+                    <hr id="color" class="mt-0">
+                    <div class="low-stock-indicator text-xs text-danger mb-2 fw-bold <?php echo ($product->stocks > 0 && $product->stocks <= 5) ? '' : 'd-none' ?>">Only <?= $product->stocks; ?> left!</div>
+                    <?php if($product->stocks > 0): ?>  
+                    <button class="btn add-to-cart add-product-<?= $product->id; ?> btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product->id; ?>" data-vid="0">
+                      <span class="material-icons">add_shopping_cart</span> Add to Cart
+                    </button>
+                    <?php elseif($product->stocks <= 0): ?>
+                      <button class="btn btn-md bg-warning text-white" name="add-to-cart" data-pid="<?= $product->id; ?>" data-vid="0" <?= $btn_disabled = 'disabled'; ?>>
+                      <span class="material-icons">add_shopping_cart</span> Add to Cart
+                    </button>
+                    <?php endif; ?>
+                    <div class="lds-hourglass d-none"></div>
+                  </div>
                 </div>
               </div>
             </div>
