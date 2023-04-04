@@ -50,6 +50,9 @@
   font-size: 1.3em;
   font-weight: bold;
 }
+#col-price{
+  width: 9.333333rem;
+}
 </style>
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -120,7 +123,7 @@
                   </div>
 
                   <div class="row mb-5">
-                    <div class="col-4 col-md-4 col-sm-12">
+                    <div class="col-4 col-md-4" id="col-price">
                       <div class="product-variation selected card m-2" data-variant-id="0">
                         <div class="card-body p-1 text-center">
                           <?php 
@@ -155,7 +158,7 @@
                     </div>
                     <?php if($variants): ?>
                       <?php foreach($variants as $variant): ?>
-                      <div class="col-4 col-md-4 col-sm-12">
+                      <div class="col-4 col-md-4" id="col-price">
                         <div class="product-variation card m-2" data-variant-id="<?= $variant->id; ?>">
                           <div class="card-body p-1 text-center">
                             <?php 
