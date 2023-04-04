@@ -60,7 +60,6 @@ class Cart extends BaseController
   } 
 
      //print_r($priceTotal);
-
     $location = $session->get('search1');
     $this->data['location_keyword'] = $this->location;
     $cart_products = [];
@@ -75,12 +74,13 @@ class Cart extends BaseController
       
       // Get products from the database using pid
       if($product->vid != 0){
-        //$variant = $this->product_variant_model->where('pid', $product->pid)->first();
-        $product_data = $this->product_model->getProductData($product->pid);
+        //$this->data['variant'] = true;
+        $product_data = $this->product_model->getProductDataVariant($product->pid);
+        $this->_clear_cart($user['id']);
       }else{
       $product_data = $this->product_model->getProductData($product->pid);
       }
-      //print_r($product_data);
+      print_r($product_data);
       if($product_data->on_sale == 1){
 
       }
@@ -710,7 +710,7 @@ class Cart extends BaseController
     else {
       $cart_raw = $cookie_cart;
     }
-print_r($cart_raw);
+//print_r($cart_raw);
     return $cart_raw;
   }
 
