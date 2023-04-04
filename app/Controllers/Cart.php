@@ -75,12 +75,11 @@ class Cart extends BaseController
       // Get products from the database using pid
       if($product->vid != 0){
         //$this->data['variant'] = true;
-        $product_data = $this->product_model->getProductDataVariant($product->pid);
-        $this->_clear_cart($user['id']);
+      $product_data = $this->product_model->getProductDataVariant($product->pid);
       }else{
       $product_data = $this->product_model->getProductData($product->pid);
       }
-      print_r($product_data);
+
       if($product_data->on_sale == 1){
 
       }
@@ -169,7 +168,6 @@ class Cart extends BaseController
     $this->data['sale_total'] = $sale_total;
     $this->data['sale_discount'] = $sale_discount;
     $this->data['cart_products'] = $cart_products;
-    //print_r($this->data['cart_products']);
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
 
@@ -710,7 +708,7 @@ class Cart extends BaseController
     else {
       $cart_raw = $cookie_cart;
     }
-//print_r($cart_raw);
+
     return $cart_raw;
   }
 

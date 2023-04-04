@@ -66,11 +66,10 @@ class CartModel extends Model {
    * @param integer $vid  Variant ID.  vid=0 is base product
    * @return bool
    */
-  public function delete_cart_item($uid, $pid, $vid=0)
+  public function delete_cart_item($uid, $pid,)
   {
     $this->where('uid', $uid);
     $this->where('pid', $pid);
-    $this->where('vid', $vid);
     return $this->delete();
   }
 }
