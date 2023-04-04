@@ -71,7 +71,7 @@
                     <?php foreach($images as $image): ?>
                       <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
                         <a href="<?= base_url('products/images/'.$image->filename); ?>" itemprop="contentUrl" data-size="500x600">
-                          <img class="w-100 min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
+                          <img class="min-height-100 max-height-100 border-radius-lg shadow" src="<?= base_url('products/images/'.$image->filename); ?>" alt="" />
                         </a>
                     </figure>
                     <?php endforeach; ?>
