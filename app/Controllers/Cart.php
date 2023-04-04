@@ -29,6 +29,7 @@ class Cart extends BaseController
     $this->promo_model = model('PromoModel');
     $this->promoProducts_model = model('PromoProductsModel');
     $this->discount_model = model('DiscountModel');
+    $this->product_variant_model = model('ProductVariantModel');
 
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';		
     $this->data['tax_rate'] = 1.35;  // 35%
@@ -73,8 +74,13 @@ class Cart extends BaseController
     foreach($cart_raw as $product) {
       
       // Get products from the database using pid
+      if($product->vid != 0){
+        //$variant = $this->product_variant_model->where('pid', $product->pid)->first();
+        $product_data = $this->product_model->getProductData($product->pid);
+      }else{
       $product_data = $this->product_model->getProductData($product->pid);
-      
+      }
+      //print_r($product_data);
       if($product_data->on_sale == 1){
 
       }
@@ -163,6 +169,7 @@ class Cart extends BaseController
     $this->data['sale_total'] = $sale_total;
     $this->data['sale_discount'] = $sale_discount;
     $this->data['cart_products'] = $cart_products;
+    //print_r($this->data['cart_products']);
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
 
@@ -703,7 +710,7 @@ class Cart extends BaseController
     else {
       $cart_raw = $cookie_cart;
     }
-
+print_r($cart_raw);
     return $cart_raw;
   }
 
