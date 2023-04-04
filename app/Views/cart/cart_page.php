@@ -145,7 +145,7 @@
                     <?php endforeach; ?>
                   </tbody>
                 </table>
-              </form>
+              </form> 
             </div>
           </div>
           <div class="row">
@@ -194,15 +194,15 @@
               <div class="col-8 col-md-8 col-xs-8">Subtotal</div>
               <div class="col-4 col-md-4 col-xs-4 text-right"><span class="subtotal-cost">0</span></div>
             </div>
-            <?php if(!empty($pricesubtotal)): ?>
+            <?php if(!empty($promo_sale)): ?>
               <div class="row mt-4">           
                 <div class="col-8 col-md-8 col-xs-8">Discounted</div>
-                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $pricesubtotal; ?></span></div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $promo_sale; ?></span></div>
               </div>
             <?php else: ?>
               <div class="row mt-4 d-none">           
                 <div class="col-8 col-md-8 col-xs-8">Discounted</div>
-                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $pricesubtotal; ?></span></div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $promo_sale; ?></span></div>
               </div>
             <?php endif; ?>
             <div class="row mt-3">

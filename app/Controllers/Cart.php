@@ -219,7 +219,8 @@ class Cart extends BaseController
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
-    $this->data['pricesubtotal'] = $promo_sale;
+    $this->data['pricesubtotal'] = $priceTotal;
+    $this->data['promo_sale'] = $promo_sale;
     $this->data['pricesub'] = $discount_product;
     // print_r($this->data['pricesub']);
 
@@ -562,7 +563,7 @@ class Cart extends BaseController
 
         // Output array
         $cart_products[] = [
-          'pid' => $product->product_id, 
+          'pid' => $product->product_id,
           'qty' => $product->qty,
           'product_data' => $product,
           'images' => $images,
