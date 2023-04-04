@@ -29,7 +29,7 @@
             <?php foreach($products as $product): ?>
          
             <div class="col-lg-2 col-sm-6 pt-4 pb-4 reveal-fadein zoom">
-              <div class="card" style="height: 400px;">
+              <div class="card product-featured" >
               <div class="img-wrap">          
                   <?php 
                     $url = !empty($searchData) ? $product->url : $product->url ;
