@@ -607,9 +607,11 @@ class Cart extends BaseController
     $new_cart_data = '';
 
     if($this->isLoggedIn == 1) {
+      if(!empty($data['cart'])){
       foreach($data['cart'] as $cart_pid => $cart_product) {
         $this->cart_model->set('qty', $cart_product['qty'])->where('uid', $this->uid)->where('pid', $cart_pid)->update();
       }
+    }
     }
     // else {
     //   for($i = 0; count($cart_raw) > $i; $i++) {
