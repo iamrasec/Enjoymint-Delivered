@@ -41,7 +41,7 @@
                   <?php endif; ?>
                 </div>
                 <div class="product-info d-flex flex-column px-2">
-                  <a href="<?= base_url('promotion/index/'. $product->url); ?>"><h5><?=  $product->name; ?></h5></a>
+                  <a href="<?= base_url('products/'. $url); ?>"><h5><?=  $product->name; ?></h5></a>
                   <div class="product-info-bottom d-flex flex-column mt-auto">
                     <p>
                      

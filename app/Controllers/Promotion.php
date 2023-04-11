@@ -26,7 +26,7 @@ class Promotion extends BaseController
           return redirect()->to('/');
         }
     }
-
+ 
     public function index($url = '')
     {
         $session = session();
@@ -56,8 +56,8 @@ class Promotion extends BaseController
        
 
         $session->product_id = $product;
-       // print_r($product);
-        $page_title = $product->title;
+        //print_r($product);
+        $page_title = $product['title'];
 
         $this->data['page_body_id'] = "product-".$product->id;
         $this->data['breadcrumbs'] = [
