@@ -31,30 +31,32 @@ $(document).ready(function () {
     var day = 0;
     var year = 0;
     $("#age-submit").on("click", function () {
-      age['month'] = $("#verify-month").val();
-      age['day'] = $("#verify-day").val();
-      age['year'] = $("#verify-year").val();
+      // age['month'] = $("#verify-month").val();
+      // age['day'] = $("#verify-day").val();
+      // age['year'] = $("#verify-year").val();
       //checkDate();
       checkAge();
     });
   }
 //Age checker if user check the both box
   function checkAge() {
-    var checkbox1 = document.getElementById("age_check");
-    var checkbox2 = document.getElementById("accept_terms");
-    var button = document.getElementById("age-submit");
-    
-    if (checkbox1.checked && checkbox2.checked) {
+    if($('#age_check').prop('checked') == true && $('#accept_terms').prop('checked') == true ){
       setCookie('popupCookie', 'submited', 1);
-      $('#ageModal').modal('hide');
-      // Place your age verification logic here
-    } else {
-      
-    alert("You must check both checkboxes to proceed.");
-      console.log("it is false");
+        $('#ageModal').modal('hide');
+    }
+    else{
+      alert('Please check both to proceed')
+      console.log('false')
     }
   }
-  // Check to see if user entered a valid date...
+
+  function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  //Check to see if user entered a valid date...
   function checkDate() {
     if (age.month == 'none' || age.day == 'none' || age.year == 'none') {
       // Fade in the error...
@@ -103,14 +105,8 @@ $(document).ready(function () {
     }
   }
 
-  function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
 
-  // Compares age entered with todays date 21 years ago...
+  //Compares age entered with todays date 21 years ago...
   function oldEnough() {
     var ageLimit = moment().subtract(21, 'years').calendar();
     var birthDate = age.month + " " + age.day + " " + age.year;
