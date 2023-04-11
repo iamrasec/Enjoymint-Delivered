@@ -24,20 +24,36 @@ $(document).ready(function () {
     initAge();
   }
 
+  
   // starts the age verification process
   function initAge() {
     var month = 0;
     var day = 0;
     var year = 0;
-
     $("#age-submit").on("click", function () {
       age['month'] = $("#verify-month").val();
       age['day'] = $("#verify-day").val();
       age['year'] = $("#verify-year").val();
-      checkDate();
+      //checkDate();
+      checkAge();
     });
   }
-
+//Age checker if user check the both box
+  function checkAge() {
+    var checkbox1 = document.getElementById("age_check");
+    var checkbox2 = document.getElementById("accept_terms");
+    var button = document.getElementById("age-submit");
+    
+    if (checkbox1.checked && checkbox2.checked) {
+      setCookie('popupCookie', 'submited', 1);
+      $('#ageModal').modal('hide');
+      // Place your age verification logic here
+    } else {
+      
+    alert("You must check both checkboxes to proceed.");
+      console.log("it is false");
+    }
+  }
   // Check to see if user entered a valid date...
   function checkDate() {
     if (age.month == 'none' || age.day == 'none' || age.year == 'none') {
