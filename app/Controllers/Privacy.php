@@ -17,7 +17,7 @@ class Privacy extends BaseController
         $this->location_model = model('LocationModel');
     
         $this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
-    
+     
         if($this->isLoggedIn !== 1 && $this->role !== 1) {
           return redirect()->to('/');
         }
@@ -25,7 +25,7 @@ class Privacy extends BaseController
 
     public function index()
     { 
-       $session = session();
+        $session = session();
         $user_id = $this->guid;
         $page_title = 'Privacy Policy';
         
@@ -40,7 +40,7 @@ class Privacy extends BaseController
           }
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
 
         return view('privacy_policy_view', $this->data);
     }

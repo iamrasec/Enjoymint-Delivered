@@ -222,6 +222,7 @@ class Cart extends BaseController
     }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
     $this->data['pricesubtotal'] = $promo_sale;
@@ -341,6 +342,7 @@ class Cart extends BaseController
     }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
 
@@ -579,6 +581,7 @@ class Cart extends BaseController
       }
       $this->data['uid'] = $user_id;
       $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+      $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
       $this->data['order_data'] = $order;
       $this->data['order_products'] = $cart_products;
       $this->data['order_completed'] = 1;

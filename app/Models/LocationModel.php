@@ -11,6 +11,7 @@ class Location extends Model {
     protected $allowedFields = [
         'address',
         'user_id',
+        'delivery_schedule',
       
     ];
 

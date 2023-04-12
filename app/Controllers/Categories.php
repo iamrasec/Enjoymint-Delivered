@@ -98,6 +98,7 @@ class Categories extends BaseController
         $this->data['brands'] = $this->brand_model->get()->getResult();
         $this->data['strains'] = $this->strain_model->get()->getResult();
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         return view('categories_view', $this->data);
     }
 }

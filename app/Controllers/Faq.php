@@ -37,7 +37,7 @@ class Faq extends BaseController
 
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
 
         return view('faqs_view', $this->data);
     }

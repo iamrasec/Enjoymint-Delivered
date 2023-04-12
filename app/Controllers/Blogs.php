@@ -55,7 +55,7 @@ class Blogs extends BaseController
     }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-
+    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     return view('Blogs/view_blog', $this->data);
   }
 
@@ -86,7 +86,7 @@ class Blogs extends BaseController
     // print_r($this->data['blogs']);
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-
+    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     return view('Blogs/index', $this->data);
 }
 
