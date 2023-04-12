@@ -42,7 +42,8 @@ class Promotion extends BaseController
       }
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
-        if($url != '') {
+    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();  
+    if($url != '') {
             $product = $this->promo_model-> getProductFromUrl($url);
 
             if(!empty($product)) {

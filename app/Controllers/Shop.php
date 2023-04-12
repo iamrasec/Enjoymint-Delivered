@@ -155,20 +155,13 @@ class Shop extends BaseController
                     }
 
                     // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-                    $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
-       
-        
-                    if(empty($location)) {
-                        $this->data['location_keyword'] = "";
-                    }
-                    else {  
-                        $this->data['location_keyword'] = $location;
-                        //return view('shop_view', $this->data);
-                    }
+                    
             
                     $this->data['uid'] = $user_id;
                     $this->data['sale_price'] = $price;
                     $this->data['products'] = $product_arr;
+                    $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+                    $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
                     $this->data['pager'] = $this->product_model->pager;
                     $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
                     $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -235,6 +228,7 @@ class Shop extends BaseController
         }
         else {  
             $this->data['search_keyword'] = $search_data;
+            $this->data['location_delivery'] = $delivery;
         }  
 
         $product_arr = [];             
@@ -276,11 +270,13 @@ class Shop extends BaseController
         if($user_id == null) {
             $session->setFlashdata('message', 'Please login first');
         }
-         
+      
+   
         $this->data['uid'] = $user_id;
         $this->data['sale_price'] = $price;
-        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
         $this->data['products'] = $product_arr;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->getAllCategory();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -416,11 +412,13 @@ class Shop extends BaseController
                     $session->setFlashdata('message', 'Please login first');
                 }
 
+                
                 // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
                 $this->data['uid'] = $user_id;
                 $this->data['sale_price'] = $price;
-                $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
                 $this->data['products'] = $product_arr;
+                $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+                $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
                 $this->data['pager'] = $this->product_model->pager;
                 $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
                 $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -519,12 +517,14 @@ class Shop extends BaseController
         if($user_id == null) {
             $session->setFlashdata('message', 'Please login first');
         }
-        
+       
+            
         // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
         $this->data['uid'] = $user_id;
-        $this->data['sale_price'] = $price;
-        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();                       
+        $this->data['sale_price'] = $price;                      
         $this->data['products'] = $product_arr;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -621,9 +621,10 @@ class Shop extends BaseController
             $session->setFlashdata('message', 'Please login first');
           }
         $this->data['uid'] = $user_id;
-        $this->data['sale_price'] = $price;
-        $this->data['location_keyword'] = $location;   
+        $this->data['sale_price'] = $price;  
         $this->data['products'] = $product_arr;
+        $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
         $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
@@ -657,11 +658,20 @@ class Shop extends BaseController
       else  
       {                 
         if(!empty($search)){   
-           
+          $day = $this->request->getPost('delivery');
+            $session->buttonValue = $day;
+           if($day == "same_day"){
+            $day = "same day";
+           }
+           elseif($day == "next_day"){
+            $day = "next day";
+           }
+       
             if(empty($location['user_id'])){
                 $to_save = [
                     'address' => $this->request->getVar('location'),
                     'user_id' => $this->uid,
+                    'delivery_schedule' => $day,
                 ];
 
              $this->location_model->save($to_save); 
@@ -669,6 +679,7 @@ class Shop extends BaseController
             }elseif($location['user_id'] == $user_id){
                 $to_save = [
                     'address' => $this->request->getVar('location'),
+                    'delivery_schedule' => $day,
                 ];
                 // $this->location_model->update($id, ['address' => $to_save['address']]);
                 $this->location_model->set($to_save)->where('user_id', $user_id)->update();
@@ -677,15 +688,16 @@ class Shop extends BaseController
     }   
     }
         
-        $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
-        $all_products = $this->product_model->getAllProducts();
         
-        if(empty($location)){
-            $this->data['location_keyword'] = null;
-            }else{  
+        $all_products = $this->product_model->getAllProducts();
+          
+        $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
+        $delivery = $this->location_model->where('user_id',$user_id)->select('delivery_schedule')->first(); 
+
             $this->data['location_keyword'] = $location;
+            $this->data['location_delivery'] = $delivery;
             //return view('shop_view', $this->data);
-            }
+        
             $this->data['search_keyword'] = null;
             //  $session->search1 = $location;
       
@@ -770,6 +782,7 @@ class Shop extends BaseController
          
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         $this->data['products'] = $this->promo_model->get()->getResult();
         // $this->data['pager'] = $this->product_model->pager;
         $this->data['categories'] = $this->category_model->getAllCategory();
@@ -842,6 +855,7 @@ class Shop extends BaseController
 
         $this->data['uid'] = $user_id;
         $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+        $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
         $this->data['products'] =$product_arr;
         $this->data['sale_price'] = $price;
         // $this->data['pager'] = $this->product_model->pager;

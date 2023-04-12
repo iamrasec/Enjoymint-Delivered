@@ -1,15 +1,54 @@
 <?php $this->section("content") ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    /* Define the checked style */
+    .btn {
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .btn-default {
+      background-color: #f8f8f8;
+      color: #333;
+    }
+    .btn-checked {
+      background-color: #333;
+      color: #fff;
+      border: solid 3px;
+    }
+    .btn-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #f00;
+      color: #fff;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+  </style>
 <div class="modal fade" id="location-modal" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-md text-center" role="document">
     <div class="modal-content-datepicker">
       <div class="modal-body p-0">
         <div class="card card-plain">
+        <form method='post' action="<?= base_url('/shop/location')?>" id="locationForm">
+        <div class="card-header pb-0 text-left">
+            <h5 class="">Delivery Scheduled</h5>
+            <input type="hidden" id="delivery" name="delivery">
+            <button type="button" id="btn1" class="btn btn-default" value="same_day" style="border:solid 2px;">Scheduled same day</button>
+            <button type="button" id="btn2" class="btn btn-default" value="next_day" style="border:solid 2px;">Scheduled next day</button>
+          </div>
           <div class="card-header pb-0 text-left">
             <h5 class="">Enter your Location</h5>
-           
           </div>
           <div class="card-body">
-          <form method='post' action="<?= base_url('/shop/location')?>" id="locationForm">
+          
               <div class="row">
                 <div class="col-12">
                 <p class="text-danger restrict">
@@ -106,7 +145,40 @@
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
  <script>
+  
+    // Get the buttons by their IDs
+    const btn1 = document.getElementById('btn1');
+    const btn2 = document.getElementById('btn2');
 
+   
+    console.log('<?php echo $location_delivery['delivery_schedule']; ?>');
+    // Add click event listeners to the buttons
+    btn1.addEventListener('click', function() {
+      event.preventDefault();
+      // Toggle checked style on button 1
+      btn1.classList.toggle('btn-checked');
+      // Remove checked style from button 2
+      btn2.classList.remove('btn-checked');
+      $('#delivery').val('same_day');
+     
+    });
+    <?php if($location_delivery['delivery_schedule'] == 'same day') {?>
+    btn1.classList.toggle('btn-checked');
+    btn2.classList.remove('btn-checked');
+    <?php }if($location_delivery['delivery_schedule'] == 'next day'){?>
+    btn2.classList.toggle('btn-checked');
+    btn1.classList.remove('btn-checked');
+    <?php }?>
+    
+    btn2.addEventListener('click', function() {
+      event.preventDefault();
+      // Toggle checked style on button 2
+      btn2.classList.toggle('btn-checked');
+      // Remove checked style from button 1
+      btn1.classList.remove('btn-checked');
+      $('#delivery').val('next_day');
+      
+    });
   var autocomplete;
         function initMap() {
             var input = document.getElementById('searchLocation');

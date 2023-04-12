@@ -582,7 +582,8 @@ class Users extends BaseController
 		  }
 		$this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();   
-		return view('customer_dashboard/index', $this->data);
+	$this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();	
+	return view('customer_dashboard/index', $this->data);
 	}
 
 	public function customerVerification()
@@ -598,6 +599,7 @@ class Users extends BaseController
 		  }
 		$this->data['uid'] = $user_id;
 		$this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
+		$this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
 		$this->data['page_body_id'] = "customer Verification";
 		$this->data['breadcrumbs'] = [
 		'parent' => [],
