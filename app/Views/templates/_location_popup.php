@@ -150,8 +150,16 @@
     const btn1 = document.getElementById('btn1');
     const btn2 = document.getElementById('btn2');
 
-   
-    console.log('<?php echo $location_delivery['delivery_schedule']; ?>');
+<?php if(!empty($location_delivery)) : ?>
+    console.log('<?php echo json_encode($location_delivery); ?>');
+    <?php if($location_delivery['delivery_schedule'] == 'same day') {?>
+    btn1.classList.toggle('btn-checked');
+    btn2.classList.remove('btn-checked');
+    <?php }if($location_delivery['delivery_schedule'] == 'next day'){?>
+    btn2.classList.toggle('btn-checked');
+    btn1.classList.remove('btn-checked');
+    <?php }?>
+  <?php endif; ?>
     // Add click event listeners to the buttons
     btn1.addEventListener('click', function() {
       event.preventDefault();
@@ -162,13 +170,7 @@
       $('#delivery').val('same_day');
      
     });
-    <?php if($location_delivery['delivery_schedule'] == 'same day') {?>
-    btn1.classList.toggle('btn-checked');
-    btn2.classList.remove('btn-checked');
-    <?php }if($location_delivery['delivery_schedule'] == 'next day'){?>
-    btn2.classList.toggle('btn-checked');
-    btn1.classList.remove('btn-checked');
-    <?php }?>
+ 
     
     btn2.addEventListener('click', function() {
       event.preventDefault();
