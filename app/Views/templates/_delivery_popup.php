@@ -18,10 +18,10 @@
                   <div class="input-group input-group-dynamic">
                     <select name="time_window" class="form-control w-100 border px-2" id="time_window">
                       <option value="1000-1300">10:00 am to 01:00 pm</option>
-                      <option value="1030-1330">10:30 am to 01:30 pm</option>
-                      <option value="1100-1400">11:00 am to 02:00 pm</option>
-                      <option value="1130-1430">11:30 am to 02:30 pm</option>
-                      <option value="1200-1500">12:00 pm to 03:00 pm</option>
+                      <option value="1300-1600">01:00 pm to 04:00 pm</option>
+                      <option value="1600-1900">04:00 pm to 07:00 pm</option>
+                      <option value="1900-2200">07:00 pm to 10:00 pm</option>
+                      <!-- <option value="1200-1500">12:00 pm to 03:00 pm</option>
                       <option value="1230-1530">12:30 pm to 03:30 pm</option>
                       <option value="1300-1600">01:00 pm to 04:00 pm</option>
                       <option value="1330-1630">01:30 pm to 04:30 pm</option>
@@ -34,7 +34,7 @@
                       <option value="1700-2000">05:00 pm to 08:00 pm</option>
                       <option value="1730-2030">05:30 pm to 08:30 pm</option>
                       <option value="1800-2100">06:00 pm to 09:00 pm</option>
-                      <option value="1830-2130">06:30 pm to 09:30 pm</option>
+                      <option value="1830-2130">06:30 pm to 09:30 pm</option> -->
                     </select>
                   </div>
                 </div>
