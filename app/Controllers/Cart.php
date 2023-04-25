@@ -72,6 +72,7 @@ class Cart extends BaseController
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
       
+      
       // Get products from the database using pid
       if($product->vid != 0){
         //$this->data['variant'] = true;
@@ -97,6 +98,7 @@ class Cart extends BaseController
       $cart_products[] = [
         'pid' => $product->pid,
         'qty' => $product->qty,
+        'vid' => $product->vid,
         'product_data' => $product_data,
         'images' => $images,
       ];
@@ -112,55 +114,63 @@ class Cart extends BaseController
    }
 
     //sale price
+   // $all_products = $this->product_model->where('on_sale', 1)->get()->getResult();
     $sale_price = $this->discount_model->get()->getResult();
-    //print_r($sale_price);
+    
+    
     $sale_discount = [];
     $sale_total = 0;
-    if (!empty($sale_price) && $sale_price[0]->status == 1) { 
-  
+    
+      $prev_id = null;
       foreach ($cart_products as $cart) {
+        if ($cart['product_data']->on_sale == 1) { 
           $cart_item_id = $cart['product_data']->id;
+          
           $discount = 0;
-          $sale_price_query = $this->discount_model->select('discount_attribute')
+          $sale_price_query = $this->discount_model
               ->where('pid', $cart_item_id)
-              ->get();
-          $sale_price_data = $sale_price_query->getResult();
-  
-          if (!empty($sale_price_data)) {
+              ->get()
+              ->getResult();
+          //$id = explode(",",$cart_item_id);
+          // print_r($cart); 
+          //$sale_price_data = $sale_price_query;
+         //for($x = 0; $x<count($id); $x++){
+          if (!empty($sale_price_query)) {
             $productPrice = $cart['product_data']->price;
-            $dis_sale = 0;
-            $per_sale = 0;
-            $netTotal = 0;
-        
-            switch ($sale_price_data[0]->discount_attribute) {
-                case 'percent':
-                    $dis_sale = $productPrice * ($sale_price[0]->discount_value / 100);
-                    $per_sale = $dis_sale * ($productPrice / 100);
-                    $netTotal = $productPrice - $dis_sale;
-                    break;
-                case 'fixed':
-                    $dis_sale = $sale_price[0]->discount_value;
-                    $per_sale =  $dis_sale * ($productPrice / 100);
-                    $netTotal = $productPrice - $dis_sale;
-                    break;
-                case 'sale_price':
-                    $dis_sale = $sale_price[0]->discount_value;
-                    $netTotal = $dis_sale;
-                    break;
+
+            if($sale_price_query[0]->discount_attribute == "percent") {
+             
+              $dis_sale = $productPrice * ($sale_price_query[0]->discount_value / 100);
+              $netTotal = $productPrice - $dis_sale;
+             
             }
+            if($sale_price_query[0]->discount_attribute == "fixed"){ 
+              $dis_sale = $sale_price_query[0]->discount_value;
+              $netTotal = $productPrice - $dis_sale;  
+            
+            }
+            if($sale_price_query[0]->discount_attribute == "sale_price"){
+             
+              $dis_sale = $sale_price_query[0]->discount_value;
+              $netTotal = $dis_sale;
+             
+            }
+          
+          }
+           // print_r($dis_sale);
             $cart['product_data']->price = $netTotal;
             $disProduct = [
                 'id' => $cart_item_id,
-                'discount_attribute' => $sale_price_data[0]->discount_attribute,
+                'discount_attribute' => $sale_price_query[0]->discount_attribute,
                 'dis_sale' => $dis_sale,
-                'per_sale' => $per_sale,
                 'saleTotal' => $netTotal,
                 'origPrice' => $productPrice,
                 'discount_value' => $dis_sale // add this line to retrieve the discount value
             ];
+            // if($disProduct['id'] != $prev_id){
             array_push($sale_discount, $disProduct);
             $sale_total += $dis_sale;
-        }
+    
       }
        //echo '<br>Total sale: ' . $sale_total . '<br>';
   }
@@ -168,6 +178,7 @@ class Cart extends BaseController
     $this->data['sale_total'] = $sale_total;
     $this->data['sale_discount'] = $sale_discount;
     $this->data['cart_products'] = $cart_products;
+    //print_r($this->data['sale_discount']);
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
 
@@ -187,13 +198,14 @@ class Cart extends BaseController
   $dissale_id = [];
   if(!empty($sale_discount)){
   foreach ($sale_discount as $ds) {
-    $dissale_id[] = $ds["id"]; // add the age value to the new array
+    $dissale_id[] = $ds['id'];
   }
 }
     $this->data['dissale_id'] = $dissale_id;
-    // print_r($this->data['dissale_id']);
+    //print_r($this->data['dissale_id']);
     $session->sale_id =  $dissale_id;
     $this->data['discount_id'] = $discount_id;
+    //print_r($this->data['discount_id']);
     $this->data['guid'] = ($this->guid > 0) ? $this->guid : 0;
     // $this->data['guid'] = $this->guid;
 
@@ -227,7 +239,7 @@ class Cart extends BaseController
     $this->data['fsDelTime'] = $fsDelTime;
     $this->data['pricesubtotal'] = $promo_sale;
     $this->data['pricesub'] = $discount_product;
-    // print_r($this->data['pricesub']);
+    //print_r($this->data['pricesubtotal']);
 
     return view('cart/cart_page', $this->data);
   }
@@ -355,7 +367,11 @@ class Cart extends BaseController
 
     $priceTotal = $session->get('totalSub');
     $promo_codes = $session->get('promo_codes');
-    //print_r( $priceTotal);
+    if(!empty($promo_codes)){
+      $promo = $promo_codes;
+    }else{
+      $promo = "";
+    }
 
     $data = $this->request->getPost();
 
@@ -384,9 +400,9 @@ class Cart extends BaseController
       'delivery_schedule' => $data['delivery_schedule'],
       'delivery_time' => $data['time_window'],
       'delivery_type' => $delivery_type,
-      'promo_code' => $promo_codes,
+      'promo_code' => $promo,
     ];
-    
+  
     // echo "<pre>".print_r($data, 1)."</pre>";die();
    
     // Insert initial order record and grab the order id
