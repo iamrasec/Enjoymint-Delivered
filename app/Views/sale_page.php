@@ -333,12 +333,13 @@ optionsList.forEach(o => {
     // console.log("add to cart clicked");
 
     let pid = $(this).data('pid');
+    let vid = $(this).data('vid');
     let qty = 1;
     let get_cookie = '';
     let cookie_products = [];
 
     if($("[name='atoken']").attr('content') != "") {
-      add_to_cart(<?= $uid; ?>, pid, qty);
+      add_to_cart(<?= $uid; ?>, pid, qty, vid);
     }
     else {
       // Current user is not logged in
@@ -352,7 +353,7 @@ optionsList.forEach(o => {
         // console.log('cart_data cookie not set.');
 
         // Set value to add to the cookie
-        cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
+        cookie_products = [{"pid": pid, "vid": vid, "qty": parseInt(qty),}];  // Create an array of the product data
 
         // Create cookie
         setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
@@ -384,7 +385,7 @@ optionsList.forEach(o => {
 
         // If product is not found after the loop, append the product
         if(pid_exists == false) {
-          cookie_products.push({"pid": pid, "qty": parseInt(qty)});
+          cookie_products.push({"pid": pid, "vid" : vid, "qty": parseInt(qty)});
         }
 
         // console.log("New product array: ");
