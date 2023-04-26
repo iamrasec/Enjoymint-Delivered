@@ -394,7 +394,7 @@ optionsList.forEach(o => {
         // console.log('cart_data cookie not set.');
 
         // Set value to add to the cookie
-        cookie_products = [{"pid": pid, "qty": parseInt(qty),}];  // Create an array of the product data
+        cookie_products = [{"pid": pid, "vid": vid, "qty": parseInt(qty), }];  // Create an array of the product data
 
         // Create cookie
         setCookie(cookie_cart, JSON.stringify(cookie_products), '1');
@@ -418,6 +418,7 @@ optionsList.forEach(o => {
           if(product.pid == pid) {
             // console.log("product "+pid+" found");
             product.qty = parseInt(product.qty) + parseInt(qty);
+            product.vid = vid;
 
             // Update the variable to indicate that the product id exists in the cookie
             pid_exists = true;
@@ -426,7 +427,7 @@ optionsList.forEach(o => {
 
         // If product is not found after the loop, append the product
         if(pid_exists == false) {
-          cookie_products.push({"pid": pid, "qty": parseInt(qty)});
+          cookie_products.push({"pid": pid, "vid": vid, "qty": parseInt(qty)});
         }
 
         // console.log("New product array: ");

@@ -121,7 +121,7 @@ class Cart extends BaseController
     $sale_discount = [];
     $sale_total = 0;
     
-      $prev_id = null;
+      
       foreach ($cart_products as $cart) {
         if ($cart['product_data']->on_sale == 1) { 
           $cart_item_id = $cart['product_data']->id;
@@ -131,10 +131,7 @@ class Cart extends BaseController
               ->where('pid', $cart_item_id)
               ->get()
               ->getResult();
-          //$id = explode(",",$cart_item_id);
-          // print_r($cart); 
-          //$sale_price_data = $sale_price_query;
-         //for($x = 0; $x<count($id); $x++){
+          
           if (!empty($sale_price_query)) {
             $productPrice = $cart['product_data']->price;
 
@@ -652,7 +649,7 @@ class Cart extends BaseController
   public function add()
   {
     $data = $this->request->getPost();
-
+    //print_r($data);
     // If user is currently logged in
     if($data['uid'] > 0) {
       $product_in_cart = $this->cart_model->checkProductExists($data['uid'], $data['pid']);
@@ -682,6 +679,7 @@ class Cart extends BaseController
           [
             "pid" => $data['pid'],
             "qty" => $data['qty'],
+            
           ]
         ];
       }
@@ -701,10 +699,10 @@ class Cart extends BaseController
     // Check first if cookie cart is set
     if(isset($_COOKIE['cart_data'])) {
       $user_cart = $_COOKIE['cart_data'];
-
+      
       $cookie_cart = json_decode($user_cart);
     }
-
+   //print_r($cookie_cart);
     // if(isset($this->session->flashdata('updated_cart_qty'))) {
     //   $cookie_cart = $this->session->flashdata('in');
     // }
@@ -713,7 +711,7 @@ class Cart extends BaseController
     if($this->isLoggedIn == 1) {
       
       $db_cart = $this->_fetch_cart_items();
-      // print_r($db_cart);die();
+      // print_r($db_cart);
 
       // If there are products from db, they should show up on the page
       if(!empty($db_cart)) {
@@ -758,11 +756,13 @@ class Cart extends BaseController
 
   private function _cookie_to_db($cookie_cart)
   {
+    
     foreach($cookie_cart as $cart_product) {
       $toSave = [ 
         'uid' => $this->uid,
         'pid' => $cart_product->pid,
         'qty' => $cart_product->qty,
+        'vid' => $cart_product->vid,
       ];
 
       $this->cart_model->insert($toSave);
@@ -788,6 +788,7 @@ class Cart extends BaseController
     //   $cart_raw = $db_cart;
     // }
     $cart_raw = $this->get_cart_data();
+    
     // Loop through all the products and fetch all the product info
     foreach($cart_raw as $product) {
       // Get products from the database using pid
