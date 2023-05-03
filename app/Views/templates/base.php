@@ -85,6 +85,16 @@
 
 <?php echo $this->renderSection("scripts"); ?>
 
+<script>
+$(document).ready(function(){
+
+  if (getCookie("popupCookie") != "submited") {
+    $('#location-modal').modal('show');
+  }
+
+});
+</script>
+
 <script type="text/javascript">
   const baseUrl = "<?= base_url(); ?>";
   const jwt = $("[name='atoken']").attr('content');

@@ -46,7 +46,7 @@ class Cart extends BaseController
     $priceTotal = $session->get('totalSub');
     $discount_product = $session->get('discountSub');
     $testtest = $session->get('promo_edit');
-    //  print_r($priceTotal);
+     //print_r($discount_product);
     $discount_data = [];
     if (!empty($discount_product)) {
     foreach($discount_product as $discount_prod){
@@ -59,7 +59,7 @@ class Cart extends BaseController
     }
   } 
 
-     //print_r($priceTotal);
+    //print_r($priceTotal);
     $location = $session->get('search1');
     $this->data['location_keyword'] = $this->location;
     $cart_products = [];
@@ -181,7 +181,7 @@ class Cart extends BaseController
 
     $promo_sale =  $priceTotal + $sale_total;
     $session->promo_sale = $promo_sale;
-     //print_r($promo_sale);
+     //print_r($sale_total);
 
     // print_r($this->data['sale_discount']);
     //echo 'Sale Discount------' . print_r($this->data['sale_discount'], true) . '<br>';
@@ -229,13 +229,14 @@ class Cart extends BaseController
     if($user_id == null){
       $session->setFlashdata('message', 'Please login first');
     }
+   
     $this->data['uid'] = $user_id;
     $this->data['location_keyword'] = $this->location_model->where('user_id', $user_id )->select('address')->first();
     $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
     $this->data['pricesubtotal'] = $promo_sale;
-    $this->data['pricesub'] = $discount_product;
+    $this->data['pricesub'] = $discount_data;
     //print_r($this->data['pricesubtotal']);
 
     return view('cart/cart_page', $this->data);
@@ -778,12 +779,14 @@ class Cart extends BaseController
       $validation =  \Config\Services::validation();
 
     $promo = $this->request->getVar('promo_code');
+    //$promo_valid = $this->promo_model->isValid($promo);
+    
     $session->promo_codes =  $promo;
     $this->data['prom_code'] = $promo;
     //$this->data['location_keyword'] = $this->location;
-
+    $promo_data = $this->promo_model->getPromo($promo);
     // $db_cart = $this->_fetch_cart_items();
-
+     if (!empty($promo_data)) {
     // if(!empty($db_cart)) {
     //   $cart_raw = $db_cart;
     // }
@@ -813,7 +816,7 @@ class Cart extends BaseController
       ];
     }  
       
-    $promo_data = $this->promo_model->getPromo($promo);
+    
 
     $product_descount = [];
      
@@ -821,7 +824,7 @@ class Cart extends BaseController
     // $test = json_encode($promo_data);
     // print_r($promo_data);
    
-    if(!empty($promo_data)) {
+    if($this->promo_model->isValid($promo)) {
       switch($promo_data[0]->promo_type) {
         case "percent_off":
           //promo spec prod
@@ -1727,8 +1730,12 @@ class Cart extends BaseController
       // echo 'Invalid promo code. Please try again.';
         //  session()->setFlashdata('error', 'Invalid promo code.');
         $validationError = json_encode($validation->getErrors());
-        $data_arr = array("success" => FALSE,"message" => 'Invalid promo code.');
+        $data_arr = array("success" => FALSE,"message" => 'Promo code expired.');
   }
+}else{
+  $validationError = json_encode($validation->getErrors());
+  $data_arr = array("success" => FALSE,"message" => 'Invalid promo code.');
+}
 }else{
     $data_arr = array("success" => FALSE,"message" => 'No posted data!');
   }
