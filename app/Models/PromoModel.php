@@ -26,5 +26,12 @@ class PromoModel extends Model
     $this->where('promotion.url', $url);
     return $this->get()->getResult();
   }
-    
+  public function isValid($code)
+  {
+      $promoCode = $this->where('promo_code', $code)
+                        ->where('end_date >=', date('Y-m-d'))
+                        ->first();
+
+      return !empty($promoCode);
+  }
 }

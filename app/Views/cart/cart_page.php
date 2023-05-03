@@ -110,7 +110,7 @@
                                          <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                                          <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>                                        
                                   <?php } else {?>                                 
-                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">-$<?= $discount_data[$x]['discounted_price'] * $product['qty']; ?></strong><br>
+                                   <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">-$<?= $discount_data[$x]['discounted_price'] ; ?></strong><br>
                                    <strong class="total-price-display" style="color:red;">$<?= $discount_data[$x]['total_cost'] * $product['qty']; ?></strong><br>
                                   <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                                   <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
@@ -199,12 +199,12 @@
             <?php if(!empty($pricesubtotal)): ?>
               <div class="row mt-4">           
                 <div class="col-8 col-md-8 col-xs-8">Discounted</div>
-                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $pricesubtotal; ?></span></div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $pricesubtotal * $product['qty']; ?></span></div>
               </div>
             <?php else: ?>
               <div class="row mt-4 d-none">           
                 <div class="col-8 col-md-8 col-xs-8">Discounted</div>
-                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $pricesubtotal; ?></span></div>
+                <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $pricesubtotal * $product['qty']; ?></span></div>
               </div>
             <?php endif; ?>
             <div class="row mt-3">
@@ -468,8 +468,8 @@ update_cart_count();
     // Compute for subtotal cost
     var subtotal = 0;
     var subtotalprice = 0;
-    <?php if(!empty($pricesubtotal)) : ?>
-    var priceSub = <?= $pricesubtotal;
+    <?php if(!empty($pricesub)) : ?>
+    var priceSub = <?= $pricesub;
      ?>;
     <?php else: ?>
       var priceSub = null;
@@ -486,7 +486,7 @@ update_cart_count();
         subtotal += parseFloat($(this).val());
       }else{
         subtotalprice += parseFloat($(this).val());
-        subtotal = subtotalprice;
+        subtotal = subtotalprice ;
         
         }
     });

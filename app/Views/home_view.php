@@ -7,7 +7,7 @@
 <?php $this->section("content") ?>
 
 <?php echo $this->include('templates/__navigation.php'); ?>
-
+<?php echo $this->include('templates/_location_popup.php'); ?>
 <!-- -------- START HEADER 1 w/ text and image on right ------- -->
 
 <header>

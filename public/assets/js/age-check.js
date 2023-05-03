@@ -19,7 +19,6 @@ $(document).ready(function () {
 
 
   if (getCookie('popupCookie') != 'submited') {
-
     $('#ageModal').modal('show');
     initAge();
   }
