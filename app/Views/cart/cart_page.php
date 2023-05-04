@@ -198,12 +198,12 @@
             </div>
             <?php if(!empty($pricesubtotal)): ?>
               <div class="row mt-4">           
-                <div class="col-8 col-md-8 col-xs-8">Discounted</div>
+                <div class="col-8 col-md-8 col-xs-8">Promo Discounted</div>
                 <div class="col-4 col-md-4 col-xs-4 text-right"><span class="">$<?= $pricesubtotal * $product['qty']; ?></span></div>
               </div>
             <?php else: ?>
               <div class="row mt-4 d-none">           
-                <div class="col-8 col-md-8 col-xs-8">Discounted</div>
+                <div class="col-8 col-md-8 col-xs-8">Promo Discounted</div>
                 <div class="col-4 col-md-4 col-xs-4 text-right"><span class="d-none">$<?= $pricesubtotal * $product['qty']; ?></span></div>
               </div>
             <?php endif; ?>
