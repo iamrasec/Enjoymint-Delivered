@@ -423,7 +423,7 @@ class Cart extends BaseController
       $new_stock_qty = array('stocks' => '(stocks - '.$product->qty.')');
 
         $update_stocks = $this->product_model->where('id', $product->pid)->set('stocks', '(stocks - '.$product->qty.')', false)->update();
-      }
+      
 
       // Compute for subtotal cost
       $subtotal += $product_data->price * $product->qty;
@@ -449,7 +449,7 @@ class Cart extends BaseController
         'vid' => $product->vid,
       ];
     
-
+    }
     // echo "<pre>".print_r($cart_products, 1)."</pre>";die();
 
     $save_products = $this->order_products_model->insertBatch($cart_products);
