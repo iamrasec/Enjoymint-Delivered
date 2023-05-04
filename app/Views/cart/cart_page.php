@@ -111,7 +111,7 @@
                                          <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>                                        
                                   <?php } else {?>                                 
                                    <strong class="total-price-display" style="color:#42413d;background-color: #3BAD07;padding-left:5px; padding-right:5px; border-radius: 4px;">-$<?= $discount_data[$x]['discounted_price'] ; ?></strong><br>
-                                   <strong class="total-price-display" style="color:red;">$<?= $discount_data[$x]['total_cost'] * $product['qty']; ?></strong><br>
+                                   <strong class="total-price-display" style="color:red;">$<?= ($product['product_data']->price * $product['qty']) - $pricesubtotal; ?></strong><br>
                                   <input type="hidden" class="product-total-price product-<?= $product['pid']; ?>-total-price" value="<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ''); ?>" data-pid="<?= $product['pid']; ?>">
                                   <strong class="total-price-display" style="color: #3E413C; text-decoration: line-through;">$<?= number_format($product['product_data']->price * $product['qty'], 2, '.', ','); ?></strong>
                                 <?php
@@ -468,6 +468,12 @@ update_cart_count();
     // Compute for subtotal cost
     var subtotal = 0;
     var subtotalprice = 0;
+    <?php if(!empty($pricesubtotal)) : ?>
+    var promo_discount = <?= $pricesubtotal;
+     ?>;
+    <?php else: ?>
+      var promo_discount = null;
+    <?php endif; ?>
     <?php if(!empty($pricesub)) : ?>
     var priceSub = <?= $pricesub;
      ?>;
@@ -482,11 +488,11 @@ update_cart_count();
    
     $(".product-total-price").each(function() {
       // subtotal += parseFloat($(this).val());
-      if(!priceSub){ 
+      if(!priceSub && !promo_discount){ 
         subtotal += parseFloat($(this).val());
       }else{
         subtotalprice += parseFloat($(this).val());
-        subtotal = subtotalprice ;
+        subtotal = subtotalprice - promo_discount;
         
         }
     });
