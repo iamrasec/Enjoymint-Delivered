@@ -59,7 +59,6 @@ class Cart extends BaseController
     }
   } 
 
-    //print_r($priceTotal);
     $location = $session->get('search1');
     $this->data['location_keyword'] = $this->location;
     $cart_products = [];
@@ -175,13 +174,12 @@ class Cart extends BaseController
     $this->data['sale_total'] = $sale_total;
     $this->data['sale_discount'] = $sale_discount;
     $this->data['cart_products'] = $cart_products;
-    //print_r($this->data['sale_discount']);
     $this->data['discount_data'] = $discount_data;
     $session->sale_total = $sale_total;
 
     $promo_sale =  $priceTotal + $sale_total;
     $session->promo_sale = $promo_sale;
-     //print_r($sale_total);
+     //print_r($this->data['discount_data']);
 
     // print_r($this->data['sale_discount']);
     //echo 'Sale Discount------' . print_r($this->data['sale_discount'], true) . '<br>';
@@ -235,9 +233,12 @@ class Cart extends BaseController
     $this->data['location_delivery'] = $this->location_model->where('user_id', $user_id )->select('delivery_schedule')->first();
     $this->data['fscurrDay'] = $currDate->toDateString();
     $this->data['fsDelTime'] = $fsDelTime;
-    $this->data['pricesubtotal'] = $promo_sale;
+    $this->data['pricesubtotal'] = $priceTotal;
+    if(!empty($discount_data)){
+      $this->data['pricesub'] = $discount_data[0]['discounted_price'];
+    }else{
     $this->data['pricesub'] = $discount_data;
-    //print_r($this->data['pricesubtotal']);
+   }
 
     return view('cart/cart_page', $this->data);
   }
@@ -1285,9 +1286,10 @@ class Cart extends BaseController
                   ];
                   // echo  'mao ni'.$disProduct;
                   array_push($product_descount, $disProduct);
+                  $distotal += $discount;
                 }
               }
-                $distotal += $discount;
+                
                 $totalVal += $value['product_data']->price;
             }
             // echo 'Total Value: ' . $totalVal;
