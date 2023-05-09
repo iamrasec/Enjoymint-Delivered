@@ -77,8 +77,7 @@ class Shop extends BaseController
                 $all_products = $this->product_model->getAllProducts();
             }
             else {   
-                if($searchData['availability'] == 2) {
-            
+
                     $category = $searchData['category'];
                     $min_price = $searchData['min_price'];
                     $max_price = $searchData['max_price'];
@@ -88,8 +87,8 @@ class Shop extends BaseController
                     $max_thc = $searchData['max_thc'];
                     $min_cbd = $searchData['min_cbd'];
                     $max_cbd = $searchData['max_cbd'];
-                    $availability = $searchData['availability'];
-                    $all_products = $this->product_model->getDataWithParamFast_Tracked($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
+                    // $availability = $searchData['availability'];
+                    $all_products = $this->product_model->getDataWithParamFast_Tracked($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd);
 
                     // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
 
@@ -103,120 +102,10 @@ class Shop extends BaseController
                         'max_thc' => $searchData['max_thc'],
                         'min_cbd' => $searchData['min_cbd'],
                         'max_cbd' => $searchData['max_cbd'],
-                        'availability' => $searchData['availability'],
                     ];
                     
-                    if(empty($search)) {
-                        $this->data['search_keyword'] = null;
-                    }
-                    else {  
-                        $this->data['search_keyword'] = $search_data;
-                    }  
-                    
-                    $this->data['current_filter'] = $current_filter;
-
-                    $product_arr = [];
-                    $count = 0;
-                    $price = [];
-                    foreach($all_products as $product) {
-                        // echo "<pre>".print_r($product, 1)."</pre>";
-                        if($product['on_sale'] == 1){
-                            $discount = $this->discount_model->where('pid', $product['id'])->get()->getResult();
-                            if(!empty($discount)){
-                            if($discount[0]->discount_attribute == "percent"){
-                            $new_price = $product['price'] * ($discount[0]->discount_value /100);
-                             $sale_price = $product['price'] - $new_price;
-                            // print_r($this->data['sale_price']);
-                            }elseif($discount[0]->discount_attribute == "fixed"){
-                                $sale_price = $product['price'] - $discount[0]->discount_value ;
-                            }elseif($discount[0]->discount_attribute == "sale_price"){
-                                $sale_price = $discount[0]->discount_value;
-                            }
-                            $price[$count] = $sale_price;
-                            
-                        }
-                    }
-                        
-                        $product_arr[$count] = $product;
-                        
-                        if(!empty($product['images'])) {
-                            $imageIds = [];
-                            $imageIds = explode(',',$product['images']);
-                            $images = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
-                            $product_arr[$count]['images'] = $images;
-                        }
-
-                        // If product has variants, get variants data
-                        if($product['has_variant'] == 1) {
-                            $product_arr[$count]['variants'] = $this->product_variant_model->where('pid', $product['id'])->get()->getResult();
-                        }
-
-                        $count++;
-                    }
-
-                    // echo "<pre>".print_r($product_arr, 1)."</pre>"; die();
-                    $location = $this->location_model->where('user_id',$user_id)->select('address')->first();
-                    $delivery = $this->location_model->where('user_id',$user_id)->select('delivery_schedule')->first();
-        
-                    if(empty($location)) {
-                        $this->data['location_keyword'] = "";
-                        $this->data['location_delivery'] = "";
-                    }
-                    else {  
-                        $this->data['location_keyword'] = $location;
-                        $this->data['location_delivery'] = $delivery;
-                        //return view('shop_view', $this->data);
-                    }
-            
-                    $this->data['uid'] = $user_id;
-                    $this->data['sale_price'] = $price;
-                    $this->data['products'] = $product_arr;
-                    $this->data['pager'] = $this->product_model->pager;
-                    $this->data['categories'] = $this->category_model->orderBy('name', 'ASC')->get()->getResult();
-                    $this->data['brands'] = $this->brand_model->orderBy('name', 'ASC')->get()->getResult();
-                    $this->data['strains'] = $this->strain_model->orderBy('name', 'ASC')->get()->getResult();
-                    
-                    $this->data['currDate'] = new \CodeIgniter\I18n\Time("now", "America/Los_Angeles", "en_EN");
-
-                    if($this->data['currDate']->format('H') > '18') {
-                        $this->data['currDate'] = new \CodeIgniter\I18n\Time("tomorrow", "America/Los_Angeles", "en_EN");
-                    }
-
-                    if($searchData['availability'] == 2){
-                        $this->data['fast_tracked'] = true;
-                    }
-                    $session->filter = $product_arr;
-                    return view('shop_view', $this->data);
-                }
-                else {           
-                    $category = $searchData['category'];
-                    $min_price = $searchData['min_price'];
-                    $max_price = $searchData['max_price'];
-                    $strain = $searchData['strain'];
-                    $brands = $searchData['brands'];
-                    $min_thc = $searchData['min_thc'];      
-                    $max_thc = $searchData['max_thc'];
-                    $min_cbd = $searchData['min_cbd'];
-                    $max_cbd = $searchData['max_cbd'];
-                    $availability = $searchData['availability'];
-                    $all_products = $this->product_model->getDataWithParam($category, $min_price, $max_price, $strain, $brands, $min_thc, $max_thc, $min_cbd, $max_cbd, $availability);
-
-                    // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>";
-
-                    $current_filter = [
-                        'category' => $searchData['category'],
-                        'strain' => $searchData['strain'],
-                        'brands' => $searchData['brands'],
-                        'min_price' => $searchData['min_price'],
-                        'max_price' => $searchData['max_price'],
-                        'min_thc' => $searchData['min_thc'],
-                        'max_thc' => $searchData['max_thc'],
-                        'min_cbd' => $searchData['min_cbd'],
-                        'max_cbd' => $searchData['max_cbd'],
-                        'availability' => $searchData['availability'],
-                    ];
+                    // echo "<pre>".print_r($this->product_model->getLastQuery()->getQuery(), 1)."</pre>"
                 
-            
                     $this->data['current_filter'] = $current_filter;
             
                     $session->filter = $this->data['current_filter'];
@@ -226,8 +115,7 @@ class Shop extends BaseController
        
                 }   
             }
-        }
-    
+        
         // $all_products = $this->product_model->paginate(30);
         // echo "<pre>".print_r($all_products, 1)."</pre>"; die();
         // echo "<pre>".print_r($this->data['currDate']->format('H'), 1)."</pre>";die();
