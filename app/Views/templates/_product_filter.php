@@ -4,13 +4,7 @@
     <div class="row">
 
       <div class="select-box" >
-        <label class="mt-3 py-0">Availability:</label>
-        <select class="selected" name="availability">
-          <option value="0">All</option>
-          <option value="1" <?= ((isset($_GET['availability']) && $_GET['availability'] == 1) ? 'selected' : ''); ?>>Scheduled</option>
-          <option value="2" <?= ((isset($_GET['availability']) && $_GET['availability'] == 2) ? 'selected' : ''); ?>>Fast-tracked</option>
-        </select>
-
+       
         <label class="mt-3 py-0">Category:</label>
         <select class="selected" name="category">
           <option value="0">All</option>
