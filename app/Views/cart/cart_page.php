@@ -451,6 +451,13 @@ else {
 update_cart_count();
 });
  
+$('.checkout-btn').click(function() {
+
+
+ 
+
+});
+
   var tax_rate = <?= $tax_rate; ?>;  // 35%
   var service_charge = <?= $service_charge; ?>;
   
@@ -582,9 +589,12 @@ $(".total-cost").html(formatter.format(total_cost));
   $(document).on("click", ".checkout-btn", function(e) {
     e.preventDefault();
     var sched = $('.datetime_picker').val();
-
+    
+// var calendarData = myCalendar.clientEvents(); // get calendar data
+  var calendarDataString = JSON.stringify(sched); // convert to string
+  localStorage.setItem('calendarData', calendarDataString);
     // console.log($("input[name=guid]").val());
-    // console.log(sched);
+    // console.log(sched);  
 
     if($("input[name=guid]").val() == 0) {
       $("#loginRegisterModal").modal('show');
