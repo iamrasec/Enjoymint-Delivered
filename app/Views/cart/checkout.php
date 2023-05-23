@@ -292,16 +292,18 @@
           <h4 class="text-white">Cart Summary</h4>   
 
 					<div>
-						<?php if($del_type == "nfs"): ?>
+						<?php
+						
+						if($del_type == "nfs"): ?>
 						<label class="text-white" style="font-size: 16px;">Delivery Schedule</label>
 						<button type="button" id="toggle" class="input-group-text w-100 border-0" style="margin-top: -15px;">
 						<i class="fa fa-calendar-alt" style="color: white"></i>&nbsp;&nbsp; 
-						<input style="color: white;" type="hidden" placeholder="delivery schedule" name="delivery_schedule" class="form-control datetime_picker">
+						<input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" placeholder="delivery schedule" id="delivery_schedule" name="delivery_schedule" class="form-control datetime_picker">
 						<span class="del_date_display" style="color: #aeb0b5">Delivery Schedule</span>
 						</button>
-						<input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control">
+						<input style="color: white;" type="hidden" value="nfs" name="del_type" class="form-control" value="sample">
 						<?php else: ?>
-						<input style="color: white;" type="hidden" value="<?= $fscurrDay; ?>" name="delivery_schedule" class="form-control datetime_picker">
+						<input style="color: white;" type="hidden" value="sample" name="delivery_schedule" id="delivery_schedule" class="form-control datetime_picker">
 						<input style="color: white;" type="hidden" value="<?= $fsDelTime; ?>" name="time_window" class="form-control time_window">
 						<?php endif; ?>
 						<input style="color: white;" type="hidden" value="<?= $del_type; ?>" name="del_type" class="form-control">
@@ -331,7 +333,7 @@
       </div>
 			<?php endif; ?>
     </div>
-		
+		                                                           
 		<?php if($del_type == 'nfs'): ?>
 		<div class="d-none">
 			<button type="button" class="btn delivery-popup btn-block btn-light mb-3" data-bs-toggle="modal" data-bs-target="#delivery-modal">Show Calendar</button>
@@ -341,7 +343,7 @@
 	</form>
   </div>
 </main>
-
+       
 <?php echo $this->include('cart/_login_register_modal.php'); ?>
 
 <?php $this->endSection(); ?>
@@ -359,7 +361,6 @@
 		})
 	</script>
 <script>  
-
 jQuery.datetimepicker.setDateFormatter('moment')
 
 var serverDate = '<?php echo $currDate; ?>';
@@ -380,7 +381,6 @@ for (var i = 1; i <= 6; i++) {
 }
 
 
-<?php if($del_type == 'nfs'): ?>
 $('#inline_picker').datetimepicker({
   timepicker: false,
   datepicker: true,
@@ -431,6 +431,17 @@ $('#toggle').on('click', function(){
 });
 
 $(document).ready(function() {
+var calendarDataString = localStorage.getItem('calendarData'); // retrieve from local storage
+var calendarData = JSON.parse(calendarDataString);
+console.log(calendarDataString);
+$('#delivery_schedule').val(calendarData);
+//clear the local storage
+localStorage.removeItem('calendarData');
+});
+
+$(document).ready(function() {
+
+ 
   if(!delivery_cookie) {
     // Show delivery schedule popup if no cookie is found.
     $(".delivery-popup").click();
@@ -463,7 +474,7 @@ $(document).ready(function() {
     $(".btn-link").click();
   });
 });
-<?php endif; ?>
+
 
 // const form = document.getElementById('pro_code');
 //   const submitBtn = document.getElementById('submitProm');
@@ -516,5 +527,5 @@ $(document).ready(function() {
 
 //     $("#update-cart-form").submit();
 //   });
-
+</script>
 <?php $this->endSection(); ?>
