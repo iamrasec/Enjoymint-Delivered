@@ -133,21 +133,19 @@
         <h2>Discover</h2>
         <p>We have a wide range of products and various strains.<br>Choose the effects and benefits that suits you.</p>
         <div class="row mt-5">
-          <?php for($i = 0; $i < count($experience); $i++)  : ?> 
-          <div class="col-6 col-sm-6 col-md-3 mb-3">
+    <?php for ($i = 0; $i < min(count($experience), count($images)); $i++) : ?>
+        <div class="col-6 col-sm-6 col-md-3 mb-3">
             <div class="discover-benefit reveal-fadein zoom">
-              <div class="img-wrap">
-                <!-- <a href="#"><img src="/assets/img/illustrations/illustration-verification.jpg" /></a> -->
-                <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><img src="<?= $images[$i] ?>" /></a> 
-              </div>
-              <div class="discover-benefit-info py-2">
-                <a href="<?= base_url('experience/'.$experience[$i]->url); ?>"><h5><?= $experience[$i]->name ?></h5></a>
-                <!-- <a class="btn" href="<?= base_url('experience/'.$experience[$i]->url); ?>">Shop Now</a> -->
-              </div>
+                <div class="img-wrap">
+                    <a href="<?= base_url('experience/' . $experience[$i]->url); ?>"><img src="<?= $images[$i] ?>" /></a>
+                </div>
+                <div class="discover-benefit-info py-2">
+                    <a href="<?= base_url('experience/' . $experience[$i]->url); ?>"><h5><?= $experience[$i]->name ?></h5></a>
+                </div>
             </div>
-          </div>
-         <?php endfor ; ?>
         </div>
+    <?php endfor; ?>
+</div>
       </div>
     </div>
   </div>
