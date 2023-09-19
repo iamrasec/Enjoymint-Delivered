@@ -31,13 +31,15 @@ class CategoryModel extends Model {
     return $this->paginate(28);
   }
 
-  public function getAllCategory(){
-     $this->select('categories.*');
-     $this->join('product_categories', 'product_categories.cid = categories.id', 'left');
-     $this->join('products', 'products.id = product_categories.pid', 'left');
-     $this->groupBy('product_categories.cid');
-    
-     return $this->get()->getResult();
-    }
+  public function getAllCategory()
+  {
+      $query = $this->db->table('categories')
+          ->select('categories.id, categories.name, COUNT(product_categories.cid) as product_count')
+          ->join('product_categories', 'product_categories.cid = categories.id', 'left')
+          ->join('products', 'products.id = product_categories.pid', 'left')
+          ->groupBy('categories.id, categories.name');
+  
+      return $query->get()->getResult();
+  }
    
 }
