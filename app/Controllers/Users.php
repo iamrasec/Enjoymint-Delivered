@@ -29,7 +29,7 @@ class Users extends BaseController
         $this->order_model = model('CheckoutModel');
 		$this->data['user_jwt'] = ($this->guid != '') ? getSignedJWTForUser($this->guid) : '';
 
-		$this->sender_email = 'richard@fuegonetworx.com';
+		$this->sender_email = getenv('SMTP_EMAIL_USER');
 		$this->reciever_email = 'welyelf@fuegonetworx.com';
 	}
 
