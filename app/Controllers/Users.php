@@ -492,7 +492,7 @@ class Users extends BaseController
 		$email->setFrom($sender_email);
 		$email->setTo($user['email']);
 		$email->setSubject('Confirm Your Registration');
-		$email->setNewline = "\r\n";
+		$email->setNewline("\r\n");
 
 		$template = view('email/registration', $user);
 
