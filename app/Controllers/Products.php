@@ -113,7 +113,7 @@ class Products extends BaseController
             $this->data['images'] = $this->image_model->whereIn('id', $imageIds)->get()->getResult();
         }
         // $number_reviews = $this->rating_model->where('product_id', $product->id)->countrows();
-        $this->data['rate'] = $this->rating_model->where('product_id', $product->id)->select('star, product_id, COUNT(star) AS total_ratings, AVG(`star`) As avg_r',FALSE)->groupBy('product_id')->get()->getResult();
+        $this->data['rate'] = $this->rating_model->where('product_id', $product->id)->select('star, product_id, COUNT(star) AS total_ratings, AVG(`star`) As avg_r',FALSE)->groupBy(['product_id', 'star'])->get()->getResult();
         //  $this->data['user_id'] = session()->get('id');
         // $this->data['test'] = $this->rating_model->select('total_ratings, average_ratings')->getAvgRatings($this->id);
         $id = $product->id;
