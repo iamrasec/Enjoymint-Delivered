@@ -468,8 +468,17 @@ class Dashboard extends BaseController {
 
     $db = \Config\Database::connect();
     $builder = $db->table('v_top_selling_products');
-    $return = $builder->limit($limit)->get()->getResult();
-
-    return $return;
+    
+    // Specify the columns you want to select
+    $builder->select('product_name'); // Replace with actual column names
+    
+    // Group by the selected columns if needed
+    // $builder->groupBy('column1, column2, column3'); // Uncomment and replace if required
+    
+    // Limit the number of results
+    $builder->limit($limit);
+    
+    // Retrieve the results
+    $return = $builder->get()->getResult();
   }
 }
