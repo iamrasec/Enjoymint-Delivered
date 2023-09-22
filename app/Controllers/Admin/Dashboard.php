@@ -480,5 +480,6 @@ class Dashboard extends BaseController {
     
     // Retrieve the results
     $return = $builder->get()->getResult();
+    return $return;
   }
 }
