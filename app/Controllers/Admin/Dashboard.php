@@ -471,10 +471,7 @@ class Dashboard extends BaseController {
     
     // Specify the columns you want to select
     $builder->select('product_name'); // Replace with actual column names
-    
-    // Group by the selected columns if needed
-    // $builder->groupBy('column1, column2, column3'); // Uncomment and replace if required
-    
+      
     // Limit the number of results
     $builder->limit($limit);
     
