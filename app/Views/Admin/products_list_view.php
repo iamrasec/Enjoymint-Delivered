@@ -135,7 +135,7 @@
             let actions = '';
             actions += '<a href="<?= base_url('products'); ?>/'+row.url+'" target="_blank"><i class="fas fa-eye"></i></a> | ';
             actions += '<a href="<?= base_url('admin/products/edit_product'); ?>/'+row.id+'"><i class="fas fa-edit"></i></a> | ';
-            actions += '<a href="javascript;;" class="removeBtn" data-id="'+row.id+'"><i class="fas fa-trash"></i></a>';
+            actions += '<a  href="javascript:void(0);" class="removeBtn" data-id="'+row.id+'" onclick="reloadPage();"><i class="fas fa-trash"></i></a>';
 
             return actions;
           }
@@ -161,5 +161,8 @@
     }); 
   });
 
+  function reloadPage() {
+    location.reload(); // Reloads the current page
+}
 </script>
 <?php $this->endSection(); ?>
