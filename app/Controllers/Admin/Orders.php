@@ -54,7 +54,7 @@ class Orders extends BaseController {
         $order = $this->order_model->where('id', $id)->get()->getRow();
         $order_products = $this->order_products->where('order_id', $id)->get()->getResult();
         $session->order_products = $order_products;
-        print_r($session->order_products = $order_products);
+        // print_r($session->order_products = $order_products);
         $all_products = $this->product_model->getAllProductsNoPaginate('asc');
 
         $order_pids = [];

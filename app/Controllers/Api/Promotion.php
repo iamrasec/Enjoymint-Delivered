@@ -261,15 +261,15 @@ class Promotion extends ResourceController
     helper(['form', 'functions']); // load helpers
     addJSONResponseHeader(); // set response header to json
     $validation =  \Config\Services::validation();
-    if($this->request->getPost()) {
-      $rules = [
-        'title' => 'required|min_length[3]',
-        'promo_url' => 'min_length[3]|max_length[100]',
-        'description' => 'required|min_length[10]',
-      ];
+    // if($this->request->getPost()) {
+    //   $rules = [
+    //     'title' => 'required|min_length[3]',
+    //     'promo_url' => '',
+    //     'description' => '',
+    //   ];
 
-      if($this->validate($rules)) {
-        $data['validation'] = $this->validator;
+    //   if($this->validate($rules)) {
+    //     $data['validation'] = $this->validator;
 
         $sale_start_date = "";
         $sale_end_date = "";
@@ -277,13 +277,14 @@ class Promotion extends ResourceController
         if($this->request->getVar('sale_start_date')) {
           $sale_start_date_raw = $this->request->getVar('sale_start_date');
           $get_start_time = explode(" ", $sale_start_date_raw);
-          $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]." ".$get_start_time[2]));
+          print_r($get_start_time);
+          $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]));
         }
 
         if($this->request->getVar('sale_end_date')) {
           $sale_end_date_raw = $this->request->getVar('sale_end_date');
           $get_end_time = explode(" ", $sale_end_date_raw);
-          $sale_end_date = $get_end_time[0] ." ". date('H:i:s', strtotime($get_end_time[1]." ".$get_end_time[2]));
+          $sale_end_date = $get_end_time[0] ." ". date('H:i:s', strtotime($get_end_time[1]));
         }
         
         // Save Mechanics
@@ -484,14 +485,14 @@ class Promotion extends ResourceController
 
          }
       
-        $data_arr = array("success" => TRUE,"message" => 'Promotion Updated!');
-      } else {
-        $validationError = json_encode($validation->getErrors());
-        $data_arr = array("success" => FALSE,"message" => 'Validation Error!'.$validationError);
-      }
-    } else {
-      $data_arr = array("success" => FALSE,"message" => 'No posted data!');
-    }
+         $data_arr = array("success" => TRUE,"message" => 'Promotion Update!');
+    //   } else {
+    //     $validationError = json_encode($validation->getErrors());
+    //     $data_arr = array("success" => FALSE,"message" => 'Validation Error!'.$validationError);
+    //   }
+    // } else {
+    //   $data_arr = array("success" => FALSE,"message" => 'No posted data!');
+    // }
     die(json_encode($data_arr));
   }
   
