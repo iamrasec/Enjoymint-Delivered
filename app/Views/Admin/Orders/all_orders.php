@@ -233,7 +233,7 @@ $(document).ready(function () {
               actions += '<div class="dropdown d-inline actions-'+row.id+'"><button class="btn btn-link actions-'+row.id+' text-secondary ps-0 pe-2" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v text-lg" aria-hidden="true"></i></button>';
               actions += '<div class="dropdown-menu dropdown-menu-end me-sm-n4 me-n3" aria-labelledby="navbarDropdownMenuLink" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 44px);">';
               actions += '<a class="dropdown-item" href="<?= base_url('admin/orders/edit'); ?>/'+row.id+'"><i class="fas fa-edit"></i> Edit Order</a>';
-              actions += '<a class="dropdown-item" href="javascript;;"><i class="fas fa-trash"></i> Delete Order</a>';
+              actions += '<a class="dropdown-item" href="javascript:void(0);" onclick="reloadPage();"><i class="fas fa-trash"></i> Delete Order</a>';
               actions += '</div></div>';
             }
 
@@ -243,7 +243,7 @@ $(document).ready(function () {
       ],
       order: [[0, 'desc']],
     });
-
+  
     function product_area(d)
     {
       console.log('PRODUCT AREA');
@@ -346,6 +346,9 @@ $(document).ready(function () {
       $('#imagemodal').modal('show');
     });
 });
+function reloadPage() {
+    location.reload(); // Reloads the current page
+    } 
 </script>
 
 <?php $this->endSection(); ?>
