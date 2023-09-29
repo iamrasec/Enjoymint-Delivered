@@ -257,17 +257,17 @@ class Products extends ResourceController
     // print_r($this->request->getPost()); die();
 
     if($this->request->getPost()) {
-      $rules = [
-        'name' => 'required|min_length[3]',
-        'sku' => 'required|min_length[3]',
-        'purl' => 'required|min_length[3]',
-        'qty' => 'required|decimal',
-        'thc_val' => 'required',
-        'cbd_val' => 'required',
-      ];
+      // $rules = [
+      //   'name' => 'required|min_length[3]',
+      //   'sku' => 'required|min_length[3]',
+      //   'purl' => 'required|min_length[3]',
+      //   'qty' => 'required|decimal',
+      //   'thc_val' => 'required',
+      //   'cbd_val' => 'required',
+      // ];
 
-      if($this->validate($rules)) {
-        $data['validation'] = $this->validator;
+      // if($this->validate($rules)) {
+      //   $data['validation'] = $this->validator;
 
         $images = array(); // initialize image array
 
@@ -387,39 +387,39 @@ class Products extends ResourceController
         // print_r($this->product_category->getLastQuery());
 
         // Save Sale/Discount
-        if($this->request->getVar('discount_val') > 0) {
-          $sale_start_date = "";
-          $sale_end_date = "";
-          $variant_id = 0;
-          
-          if($this->request->getVar('sale_start_date')) {
-            $sale_start_date_raw = $this->request->getVar('sale_start_date');
-            $get_start_time = explode(" ", $sale_start_date_raw);
-            $sale_start_date = $get_start_time[0] ." ". date('H:i:s', strtotime($get_start_time[1]." ".$get_start_time[2]));
-          }
+if($this->request->getVar('discount_val') > 0) {
+    $sale_start_date = "";
+    $sale_end_date = "";
+    $variant_id = 0;
 
-          if($this->request->getVar('sale_end_date')) {
-            $sale_end_date_raw = $this->request->getVar('sale_end_date');
-            $get_end_time = explode(" ", $sale_end_date_raw);
-            $sale_end_date = $get_end_time[0] ." ". date('H:i:s', strtotime($get_end_time[1]." ".$get_end_time[2]));
-          }
+    if($this->request->getVar('sale_start_date')) {
+        $sale_start_date_raw = $this->request->getVar('sale_start_date');
+        $get_start_time = explode(" ", $sale_start_date_raw);
+        $sale_start_date = $get_start_time[0] . " " . date('H:i:s', strtotime($get_start_time[1] . " " . $get_start_time[2]));
+    }
 
-          $saveDiscount = [
-            'pid' => $pid,
-            'variant_id' => $variant_id,
-            'discount_value' => $this->request->getVar('discount_val'),
-            'discount_attribute' => $this->request->getVar('discount_type'),
-            'start_date' => $sale_start_date,
-            'end_date' => $sale_end_date,
-            'status' => 1,
-          ];
+    if($this->request->getVar('sale_end_date')) {
+        $sale_end_date_raw = $this->request->getVar('sale_end_date');
+        $get_end_time = explode(" ", $sale_end_date_raw);
+        $sale_end_date = $get_end_time[0] . " " . date('H:i:s', strtotime($get_end_time[1] . " " . $get_end_time[2]));
+    }
 
-          $this->discount_model->save($saveDiscount);
-        /** SAVE VARIANTS */
-        if(!empty($variants)) {
-          $this->product_variant_model->where('pid', $pid)->delete();
+    $saveDiscount = [
+      'pid' => $pid,
+      'variant_id' => $variant_id,
+      'discount_value' => $this->request->getVar('discount_val'),
+      'discount_attribute' => $this->request->getVar('discount_type'),
+      'start_date' => $sale_start_date,
+      'end_date' => $sale_end_date,
+      'status' => 1,
+    ];
 
-          foreach($variants as $variant) {
+    $this->discount_model->save($saveDiscount);
+    /** SAVE VARIANTS */
+    if(!empty($variants)) {
+        $this->product_variant_model->where('pid', $pid)->delete();
+
+        foreach($variants as $variant) {
             $save_variant = [
               'pid' => $pid,
               'unit' => $variant->variant_unit,
@@ -429,26 +429,27 @@ class Products extends ResourceController
             ];
 
             $this->product_variant_model->save($save_variant);
-          }
-
-          // echo "<pre>".print_r($variants, 1)."</pre>";
         }
 
+        // echo "<pre>".print_r($variants, 1)."</pre>";
+    }
+    }
         $data_arr = array("success" => TRUE,"message" => 'Product Saved!');
-      } else {
-        $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
-      }
+      // } else {
+      //   $data_arr = array("success" => FALSE,"message" => 'Validation Error!');
+      // }
     } else {
       $data_arr = array("success" => FALSE,"message" => 'No posted data!');
     }
     die(json_encode($data_arr));
   }
-  }
-    /**
-   * This function will update order status completed
-   * @param  int    id  The id of order
-   * @return object A json object response with status and message
-   */
+  
+  //   /**
+  //  * This function will update order status completed
+  //  * @param  int    id  The id of order
+  //  * @return object A json object response with status and message
+  //  */
+
   public function orderFullfill($id = null)
   {
     $success = true;
