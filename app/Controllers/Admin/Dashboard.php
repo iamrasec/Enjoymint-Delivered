@@ -465,18 +465,25 @@ class Dashboard extends BaseController {
   }
 
   private function top_selling_prods($limit = 10) {
-
     $db = \Config\Database::connect();
     $builder = $db->table('v_top_selling_products');
     
     // Specify the columns you want to select
-    $builder->select('product_name'); // Replace with actual column names
-      
+    // In this case, you should use an aggregate function
+    // like MAX, MIN, AVG, COUNT, etc., for non-grouped columns
+    $builder->select('product_name, MAX(sales_quantity) as max_sales_quantity');
+    
+    // Group the results by product_name
+    $builder->groupBy('product_name');
+    
+    // Order the results by the aggregate column in descending order
+    $builder->orderBy('max_sales_quantity', 'DESC');
+    
     // Limit the number of results
     $builder->limit($limit);
     
     // Retrieve the results
     $return = $builder->get()->getResult();
     return $return;
-  }
+}
 }
