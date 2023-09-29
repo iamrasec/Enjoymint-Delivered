@@ -274,11 +274,11 @@ class Products extends ResourceController
         $current_images = $this->request->getVar('current_images');
 
         // print_r($current_images); die();
-
-        foreach($current_images as $current_image) {
-          array_push($images, $current_image);
+      if($current_images != null) {
+      foreach($current_images as $current_image) {
+        array_push($images, $current_image);
+       }
         }
-
         if ($this->request->getFiles()) {
           $file = $this->request->getFiles(); // get all files from post request
           // loop through all files uploaded
