@@ -528,6 +528,10 @@ class Orders extends ResourceController
     echo json_encode($output);
     exit();
   }
+  public function cancelled_product($pid){
+    $this->order_model->update($pid, ['status' => 3]);
+    die(json_encode(array("success" => TRUE,"message" => 'Product Delete!')));
+  }
 
   public function promo_update(){
     $session = session();
