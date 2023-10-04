@@ -218,7 +218,7 @@ class Orders extends ResourceController
     }
 
     $update_promocode = $update_order['promo_code'];
-    $session->promo_edit = $order_products;
+   // $session->promo_edit = $order_products;
     
     $this->order_model->where('id', $post['oid'])->set($update_order)->update();
 
